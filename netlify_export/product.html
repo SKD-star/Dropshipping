@@ -332,6 +332,315 @@ if ('serviceWorker' in navigator) {
     .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
     .skiptranslate iframe { display: none !important; }
 </style>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// ✦ LUMINA ATELIER CLIENT-SIDE CATALOG ROUTER & HYDRATION ENGINE
+// ══════════════════════════════════════════════════════════════
+const ATELIER_CATALOG = [
+  {
+    id: 1,
+    slug: 'the-atelier-cashmere-cocoon-coat',
+    title: 'The Atelier Cashmere Cocoon Coat',
+    vendor: 'Lumina Atelier Milano',
+    price: 4399,
+    compare_price: 5939,
+    image: '/img/cashmere_cocoon_coat.jpg',
+    gallery: ['/img/cashmere_cocoon_coat.jpg', '/img/model_look_classic.jpg', '/img/melton_wool_peacoat.jpg', '/img/model_look_executive.jpg'],
+    badge: 'Archival Edition · Strictly 150 Cuts',
+    tag: 'Grade-A Pure Cashmere',
+    shade: 'Camel Cashmere',
+    weight: '700 GSM Net',
+    fabric: 'Grade-A Pure Cashmere',
+    stitching: 'Single-Needle',
+    desc: 'An architectural double-faced silhouette hand-cut from 700 GSM pure Mongolian cashmere with fluid drop shoulders, unlined horn button closures, and sculpted welt pockets.',
+    details: 'Hand-cut from 700 GSM Grade-A Mongolian cashmere with double-faced seams and water buffalo horn buttons. Museum-grade thermal efficiency with zero synthetic chemicals.'
+  },
+  {
+    id: 2,
+    slug: 'vintage-okayama-selvedge-trousers',
+    title: 'Vintage Okayama 14.5oz Selvedge Trousers',
+    vendor: 'Lumina Denim Lab',
+    price: 4299,
+    compare_price: 5804,
+    image: '/img/okayama_selvedge_denim.jpg',
+    gallery: ['/img/okayama_selvedge_denim.jpg', '/img/model_look_street.jpg', '/img/denim_jacket_type2.jpg', '/img/model_look_classic.jpg'],
+    badge: 'Limited Batch · Okayama Loomed',
+    tag: '14.5oz Vintage Indigo Selvedge',
+    shade: 'Natural Indigo',
+    weight: '14.5oz Selvedge',
+    fabric: 'Shuttle-Loomed Denim',
+    stitching: 'Chain-Stitched',
+    desc: '14.5oz shuttle-loomed selvedge denim from Okayama, Japan, rope-dyed in authentic natural indigo vats with red-line selvedge ID that develops a distinctive personalized patina.',
+    details: 'Custom shuttle-loomed denim with vintage copper hardware and chain-stitched hems that develop personalized honeycombs and whiskers over time.'
+  },
+  {
+    id: 3,
+    slug: 'sculpted-heavyweight-terry-hoodie',
+    title: 'Sculpted 500 GSM Terry Hoodie',
+    vendor: 'Lumina Essentials',
+    price: 2899,
+    compare_price: 3914,
+    image: '/img/terry_hoodie_luxury.jpg',
+    gallery: ['/img/terry_hoodie_luxury.jpg', '/img/model_look_street.jpg', '/img/model_look_classic.jpg', '/img/mannequin_look_street.jpg'],
+    badge: 'Core Capsule · Custom Pre-Shrunk',
+    tag: '500 GSM Loopback Cotton',
+    shade: 'Washed Obsidian',
+    weight: '500 GSM Loopback',
+    fabric: '100% Organic Cotton',
+    stitching: 'Flatlock Reinforced',
+    desc: 'Substantial 500 GSM loopback cotton jersey garments, custom garment-dyed in muted architectural tones for effortless daily poise.',
+    details: 'Heavyweight 500 GSM loopback cotton hoodie with double-layered crossover hood and flatlock reinforced seams for lifelong structure.'
+  },
+  {
+    id: 4,
+    slug: 'mulberry-silk-bias-slip-dress',
+    title: '22-Momme Mulberry Silk Bias Slip Dress',
+    vendor: 'Lumina Haute Couture',
+    price: 4999,
+    compare_price: 6749,
+    image: '/img/mulberry_silk_dress.jpg',
+    gallery: ['/img/mulberry_silk_dress.jpg', '/img/silk_charmeuse_blouse.jpg', '/img/model_look_executive.jpg', '/img/mannequin_look_classic.jpg'],
+    badge: 'Haute Couture · Hand-Rolled Seams',
+    tag: 'Grade 6A Mulberry Silk',
+    shade: 'Champagne Oyster',
+    weight: '22-Momme Net',
+    fabric: 'Grade 6A Mulberry Silk',
+    stitching: 'Hand-Rolled French',
+    desc: 'Fluid bias-cut evening dresses crafted from certified 22-momme Mulberry silk with exquisite hand-rolled French seams for liquid contouring.',
+    details: 'Sandwashed pure Mulberry silk that drapes organically along bodily contours with liquid sheen and adjustable silk-cord straps.'
+  },
+  {
+    id: 5,
+    slug: 'super-150s-double-breasted-blazer',
+    title: 'Super 150s Double-Breasted Wool Blazer',
+    vendor: 'Lumina Sartoria',
+    price: 6999,
+    compare_price: 9449,
+    image: '/img/wool_blazer_luxury.jpg',
+    gallery: ['/img/wool_blazer_luxury.jpg', '/img/italian_pleated_trousers.jpg', '/img/melton_wool_peacoat.jpg', '/img/model_look_executive.jpg'],
+    badge: 'Bespoke Cut · Floating Horsehair Canvas',
+    tag: 'Super 150s Vitale Barberis Wool',
+    shade: 'Heather Charcoal',
+    weight: 'Super 150s Wool',
+    fabric: 'Vitale Barberis Canonico',
+    stitching: 'Bespoke Pick-Stitch',
+    desc: 'Double-breasted blazers cut from Super 150s Italian virgin wool with floating horsehair canvas construction that molds to the body.',
+    details: 'Woven in Biella, Italy with peak lapels, cupro sleeve lining, and floating canvas that molds to the wearer’s physique.'
+  },
+  {
+    id: 6,
+    slug: 'double-breasted-melton-wool-peacoat',
+    title: 'Double-Breasted Melton Wool Peacoat',
+    vendor: 'Lumina Atelier Milano',
+    price: 5699,
+    compare_price: 7694,
+    image: '/img/melton_wool_peacoat.jpg',
+    gallery: ['/img/melton_wool_peacoat.jpg', '/img/cashmere_cocoon_coat.jpg', '/img/model_look_classic.jpg', '/img/mannequin_look_executive.jpg'],
+    badge: 'Archival Outerwear · Sub-Zero Tested',
+    tag: '850 GSM Structured Melton Wool',
+    shade: 'Midnight Navy',
+    weight: '850 GSM Melton',
+    fabric: 'Virgin Melton Wool',
+    stitching: 'Double-Needle Saddle',
+    desc: 'Tailored from heavyweight structured virgin Melton wool for severe sub-zero thermal protection with sharp nautical lapels.',
+    details: 'Architectural virgin wool peacoat with anchor-embossed horn buttons and deep fleece-lined hand warmer pockets.'
+  },
+  {
+    id: 7,
+    slug: 'mongolian-ribbed-turtleneck-knit',
+    title: 'Mongolian Ribbed Turtleneck Knit',
+    vendor: 'Lumina Knitwear',
+    price: 3499,
+    compare_price: 4724,
+    image: '/img/cashmere_turtleneck_knit.jpg',
+    gallery: ['/img/cashmere_turtleneck_knit.jpg', '/img/cashmere_cocoon_coat.jpg', '/img/model_look_classic.jpg', '/img/terry_hoodie_luxury.jpg'],
+    badge: 'Winter Archive · 7-Gauge Rib',
+    tag: '100% Inner Mongolian Cashmere',
+    shade: 'Oatmeal Melange',
+    weight: '7-Gauge Chunky Knit',
+    fabric: '100% Inner Mongolian Cashmere',
+    stitching: 'Seamless Tubular',
+    desc: 'Grade-A virgin cashmere knit with 7-gauge fisherman ribbing for plush, featherlight warmth combed humanely from Inner Mongolian goats.',
+    details: 'Chunky 7-gauge cashmere turtleneck sweater with ribbed cuffs and hem, combed humanely from Inner Mongolian goats.'
+  },
+  {
+    id: 8,
+    slug: 'type-ii-shuttle-loom-denim-jacket',
+    title: 'Type II Shuttle-Loom Denim Jacket',
+    vendor: 'Lumina Denim Lab',
+    price: 5299,
+    compare_price: 7154,
+    image: '/img/denim_jacket_type2.jpg',
+    gallery: ['/img/denim_jacket_type2.jpg', '/img/okayama_selvedge_denim.jpg', '/img/model_look_street.jpg', '/img/terry_hoodie_luxury.jpg'],
+    badge: 'Toyoda Loom Edition · 15oz Raw Indigo',
+    tag: 'Red-Line Selvedge Interior Placket',
+    shade: 'Rope-Dyed Indigo',
+    weight: '15oz Raw Selvedge',
+    fabric: 'Toyoda Loom Denim',
+    stitching: 'Twin-Needle Tobacco',
+    desc: 'Iconic Type II jacket silhouette crafted on vintage Toyoda shuttle looms with red-line selvedge along the interior placket.',
+    details: 'Boxy pleat architecture with dual chest flap pockets, knife pleats with box-stitching, and solid brass donut buttons.'
+  },
+  {
+    id: 9,
+    slug: 'sandwashed-silk-charmeuse-blouse',
+    title: 'Sandwashed Silk Charmeuse Blouse',
+    vendor: 'Lumina Haute Couture',
+    price: 3799,
+    compare_price: 5129,
+    image: '/img/silk_charmeuse_blouse.jpg',
+    gallery: ['/img/silk_charmeuse_blouse.jpg', '/img/mulberry_silk_dress.jpg', '/img/model_look_executive.jpg', '/img/mannequin_look_classic.jpg'],
+    badge: 'Liquid Drape · Mother-of-Pearl Closures',
+    tag: '19-Momme Sandwashed Charmeuse',
+    shade: 'Ivory Pearl',
+    weight: '19-Momme Charmeuse',
+    fabric: 'Grade 6A Mulberry Silk',
+    stitching: 'French Seams',
+    desc: 'Grade 6A Mulberry silk blouse with fluid liquid drape, sandwashed velvety texture, and mother-of-pearl button closures.',
+    details: 'Ultra-soft sandwashed silk charmeuse blouse with French cuffs and concealed placket for effortless sartorial styling.'
+  },
+  {
+    id: 10,
+    slug: 'italian-pleated-wool-trousers',
+    title: 'Italian Pleated Wool Trousers',
+    vendor: 'Lumina Sartoria',
+    price: 3499,
+    compare_price: 4724,
+    image: '/img/italian_pleated_trousers.jpg',
+    gallery: ['/img/italian_pleated_trousers.jpg', '/img/wool_blazer_luxury.jpg', '/img/calfskin_penny_loafers.jpg', '/img/model_look_executive.jpg'],
+    badge: 'Biella Wool Weave · Reverse Pleats',
+    tag: 'Unhemmed Bespoke Tailoring',
+    shade: 'Flannel Grey',
+    weight: '320 GSM Suiting',
+    fabric: 'Biella Virgin Wool',
+    stitching: 'Pick-Stitched Inseam',
+    desc: 'Biella Italian virgin wool trousers with deep reverse pleats, side tab adjusters, and unhemmed cuffs for bespoke fitting.',
+    details: 'High-rise relaxed tailoring trousers in mid-weight Italian wool with curtained waistband and unhemmed cuffs for bespoke fitting.'
+  }
+];
+
+window.currentActiveProduct = ATELIER_CATALOG[0];
+
+function hydrateProductPage() {
+  const path = window.location.pathname.toLowerCase();
+  const searchParams = new URLSearchParams(window.location.search);
+  const slugFromParam = searchParams.get('slug') || searchParams.get('p');
+  const idFromParam = searchParams.get('id');
+
+  let matched = null;
+  if (slugFromParam) {
+    matched = ATELIER_CATALOG.find(p => p.slug === slugFromParam.toLowerCase());
+  } else if (idFromParam) {
+    matched = ATELIER_CATALOG.find(p => p.id == idFromParam);
+  } else {
+    for (let p of ATELIER_CATALOG) {
+      if (path.includes(p.slug)) {
+        matched = p;
+        break;
+      }
+    }
+  }
+
+  if (!matched) {
+    matched = ATELIER_CATALOG[0];
+  }
+
+  window.currentActiveProduct = matched;
+
+  // 1. Page Title & Meta
+  document.title = matched.title + ' — Lumina Atelier';
+
+  // 2. Breadcrumb
+  const breadcrumb = document.querySelector('nav.flex.items-center span.text-\[\#e9c176\]');
+  if (breadcrumb) breadcrumb.textContent = matched.title;
+
+  // 3. Product Title (H1)
+  const h1 = document.querySelector('h1.font-serif');
+  if (h1) h1.textContent = matched.title;
+
+  // 4. Prices
+  const priceEl = document.getElementById('mainDisplayPrice');
+  if (priceEl) {
+    priceEl.setAttribute('data-price-inr', matched.price);
+    priceEl.textContent = typeof formatPrice === 'function' ? formatPrice(matched.price) : ('₹' + Number(matched.price).toLocaleString('en-IN'));
+  }
+  const compareEl = document.getElementById('mainComparePrice');
+  if (compareEl) {
+    compareEl.setAttribute('data-price-inr', matched.compare_price);
+    compareEl.textContent = typeof formatPrice === 'function' ? formatPrice(matched.compare_price) : ('₹' + Number(matched.compare_price).toLocaleString('en-IN'));
+  }
+
+  // 5. Hero Photo
+  const mainPhoto = document.getElementById('mainProductPhoto');
+  if (mainPhoto) {
+    mainPhoto.src = matched.image;
+    mainPhoto.alt = matched.title;
+  }
+
+  // 6. Shade Label
+  const shadeLabel = document.getElementById('activeShadePhotoLabel');
+  if (shadeLabel) shadeLabel.textContent = 'Shade: ' + matched.shade;
+  const selectedColorName = document.getElementById('selectedColorName');
+  if (selectedColorName) selectedColorName.textContent = matched.shade;
+
+  // 7. Gallery Thumbnails
+  const thumbBtns = document.querySelectorAll('.gallery-thumb-btn');
+  if (thumbBtns && thumbBtns.length > 0 && matched.gallery) {
+    thumbBtns.forEach((btn, idx) => {
+      const img = btn.querySelector('img');
+      const gUrl = matched.gallery[idx] || matched.image;
+      if (img) img.src = gUrl;
+      btn.setAttribute('onclick', `selectMainPhoto('${gUrl}', this)`);
+    });
+  }
+
+  // 8. Wire up Direct Buttons (Single Buy, 1-Click Buy, Add to Cart, Group Buy, Wishlist)
+  const groupBuyPrice = Math.round(matched.price * 0.6);
+
+  // Single purchase box
+  const singleBuyBox = document.querySelector('div[onclick*="openExpressCheckout"]');
+  if (singleBuyBox) {
+    singleBuyBox.setAttribute('onclick', `openExpressCheckout(${matched.id}, '${matched.title.replace(/'/g, "\'")}', ${matched.price}, '${matched.image}', 1);`);
+    const priceTxt = singleBuyBox.querySelector('.font-serif');
+    if (priceTxt) priceTxt.textContent = typeof formatPrice === 'function' ? formatPrice(matched.price) : ('₹' + Number(matched.price).toLocaleString('en-IN'));
+  }
+
+  // Group buy box
+  const groupBuyBox = document.querySelector('div[onclick*="openGroupBuyModal"]');
+  if (groupBuyBox) {
+    groupBuyBox.setAttribute('onclick', `openGroupBuyModal(${matched.id}, '${matched.title.replace(/'/g, "\'")}', ${groupBuyPrice}, '${matched.image}');`);
+    const gbPriceTxt = groupBuyBox.querySelector('.font-serif');
+    if (gbPriceTxt) gbPriceTxt.textContent = typeof formatPrice === 'function' ? formatPrice(groupBuyPrice) : ('₹' + Number(groupBuyPrice).toLocaleString('en-IN'));
+  }
+
+  // Instant 1-Click button
+  const instantBtn = document.querySelector('button[onclick*="openExpressCheckout"]');
+  if (instantBtn) {
+    instantBtn.setAttribute('onclick', `openExpressCheckout(${matched.id}, '${matched.title.replace(/'/g, "\'")}', ${matched.price}, '${matched.image}', 1);`);
+  }
+
+  // Add to Wardrobe Bag button
+  const addBagBtn = document.querySelector('button[onclick*="addToCart"]');
+  if (addBagBtn) {
+    addBagBtn.setAttribute('onclick', `addToCart({id:${matched.id}, title:'${matched.title.replace(/'/g, "\'")}', price:${matched.price}, image:'${matched.image}'}, 1)`);
+  }
+
+  // Wishlist button
+  const wishBtn = document.querySelector('button[onclick*="toggleWishlistItem"]');
+  if (wishBtn) {
+    wishBtn.setAttribute('onclick', `toggleWishlistItem({id:${matched.id}, title:'${matched.title.replace(/'/g, "\'")}', price:${matched.price}, image:'${matched.image}'})`);
+  }
+
+  if (typeof updateAllPricesOnPage === 'function') {
+    updateAllPricesOnPage();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', hydrateProductPage);
+window.addEventListener('popstate', hydrateProductPage);
+</script>
+
 </head>
 <body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex flex-col selection:bg-accent-light selection:text-primary overflow-x-hidden w-full max-w-full">
 
@@ -375,8 +684,8 @@ if ('serviceWorker' in navigator) {
       <!-- Primary Desktop Links -->
       <nav class="hidden md:flex items-center gap-6 lg:gap-8 whitespace-nowrap" aria-label="Main Navigation">
         <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="./">Lookbook</a>
-        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="./collections">Collections</a>
-        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="./shop">Boutique</a>
+        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="/collections">Collections</a>
+        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="/shop">Boutique</a>
       </nav>
     </div>
 
@@ -600,10 +909,10 @@ if ('serviceWorker' in navigator) {
         <span>Estimated Total:</span>
         <span id="quickBagSubtotal" data-price-inr="0" class="text-base sm:text-lg text-[#a16207]">₹0</span>
       </div>
-      <a href="./cart" class="w-full py-2.5 border border-stone-300 text-stone-900 font-button text-xs uppercase tracking-widest text-center hover:bg-stone-100 transition-colors block font-semibold rounded-xl">
+      <a href="/cart" class="w-full py-2.5 border border-stone-300 text-stone-900 font-button text-xs uppercase tracking-widest text-center hover:bg-stone-100 transition-colors block font-semibold rounded-xl">
         View Full Bag
       </a>
-      <a href="./checkout" class="w-full py-3 bg-stone-950 text-white font-button text-xs uppercase tracking-widest text-center hover:bg-stone-800 transition-colors shadow-md block font-bold rounded-xl">
+      <a href="/checkout" class="w-full py-3 bg-stone-950 text-white font-button text-xs uppercase tracking-widest text-center hover:bg-stone-800 transition-colors shadow-md block font-bold rounded-xl">
         Proceed to Checkout →
       </a>
       <div class="text-[10px] text-center text-stone-500 flex items-center justify-center gap-1.5 pt-0.5">
@@ -675,11 +984,11 @@ if ('serviceWorker' in navigator) {
           <span class="material-symbols-outlined text-lg text-accent">auto_awesome_motion</span>
           <span>Runway Lookbook</span>
         </a>
-        <a href="./collections" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
+        <a href="/collections" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
           <span class="material-symbols-outlined text-lg text-accent">style</span>
           <span>Collections</span>
         </a>
-        <a href="./shop" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
+        <a href="/shop" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
           <span class="material-symbols-outlined text-lg text-accent">checkroom</span>
           <span>Boutique Catalog</span>
         </a>
@@ -1211,12 +1520,12 @@ window.handleExpressOrderSubmit = function(e) {
       if (res.redirected) {
         window.location.href = res.url;
       } else {
-        window.location.href = './checkout';
+        window.location.href = '/checkout';
       }
     })
     .catch(() => {
       // Fallback: Redirect directly to checkout
-      window.location.href = './checkout';
+      window.location.href = '/checkout';
     });
 };
 
@@ -1249,7 +1558,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <nav class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white/60">
         <a href="./" class="hover:text-white transition-colors">Lookbook</a>
         <span class="text-white/30">/</span>
-        <a href="./shop" class="hover:text-white transition-colors">Boutique</a>
+        <a href="/shop" class="hover:text-white transition-colors">Boutique</a>
         <span class="text-white/30">/</span>
         <span class="text-[#e9c176] font-bold truncate max-w-[240px] sm:max-w-md">The Atelier Cashmere Cocoon Coat</span>
       </nav>
@@ -2188,7 +2497,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="flex flex-wrap items-center gap-3.5 flex-shrink-0 w-full lg:w-auto relative z-10">
-        <a href="./shop" class="flex-1 lg:flex-initial px-8 py-3.5 bg-gradient-to-r from-amber-400 to-[#e9c176] text-black font-button text-xs uppercase tracking-widest font-bold hover:opacity-90 transition-all rounded-xl text-center shadow-xl">
+        <a href="/shop" class="flex-1 lg:flex-initial px-8 py-3.5 bg-gradient-to-r from-amber-400 to-[#e9c176] text-black font-button text-xs uppercase tracking-widest font-bold hover:opacity-90 transition-all rounded-xl text-center shadow-xl">
           Explore All Archives →
         </a>
       </div>
@@ -2673,8 +2982,8 @@ document.addEventListener('keydown', function(e) {
       <h4 class="font-label-caps text-xs text-[#e9c176] md:text-primary uppercase tracking-[0.2em] mb-6 font-bold">Explore</h4>
       <ul class="space-y-3.5 font-body-md text-sm">
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./">Runway Lookbook</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./collections">Editorial Collections</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./shop">Boutique Catalog</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="/collections">Editorial Collections</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="/shop">Boutique Catalog</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./tracking">Order Tracking</a></li>
       </ul>
     </div>
@@ -2684,7 +2993,7 @@ document.addEventListener('keydown', function(e) {
       <ul class="space-y-3.5 font-body-md text-sm">
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./shipping">Shipping &amp; Logistics</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./account">Atelier Account</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./stylist">AI Stylist Advice</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="/stylist">AI Stylist Advice</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./admin">Merchant Portal</a></li>
       </ul>
     </div>
@@ -3595,7 +3904,7 @@ window.closeMysteryDropModal = function() {
           </a>
 
     <!-- Shop / Boutique -->
-    <a href="./shop" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 text-stone-400 hover:text-stone-200" title="Explore Catalog">
+    <a href="/shop" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 text-stone-400 hover:text-stone-200" title="Explore Catalog">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5">checkroom</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Shop</span>
           </a>
@@ -4306,7 +4615,7 @@ window.closeMysteryDropModal = function() {
         <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
           <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
           <p>Your saved wardrobe is empty.</p>
-          <a href="./shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
+          <a href="/shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
         </div>
       </div>
     </div>
@@ -5212,7 +5521,7 @@ window.handleQvInstantBuy = function() {
   if (window.openExpressCheckout) {
     openExpressCheckout(currentQvProduct.id, currentQvProduct.title, currentQvProduct.price, currentQvProduct.image);
   } else {
-    window.location.href = './checkout';
+    window.location.href = '/checkout';
   }
 };
 
@@ -5441,7 +5750,7 @@ function generateStylistAiResponse(query) {
     <p class="font-medium text-stone-900">A refined choice. For this aesthetic, timeless harmony is achieved by balancing neutral architectural tones:</p>
     <p class="text-stone-600 font-light">Pair <strong class="text-stone-900">Onyx Noir</strong> or <strong class="text-stone-900">Camel Cashmere</strong> with structured Japanese selvedge denim or pleated wool trousers for commanding poise.</p>
     <div class="pt-1 flex gap-2">
-      <a href="./shop" class="flex-1 py-1.5 bg-stone-950 text-[#e9c176] text-center rounded-lg font-mono text-[10px] uppercase font-bold">
+      <a href="/shop" class="flex-1 py-1.5 bg-stone-950 text-[#e9c176] text-center rounded-lg font-mono text-[10px] uppercase font-bold">
         Explore Boutique →
       </a>
       <button type="button" onclick="sendStylistPrompt('Autumn Layering Look')" class="px-3 py-1.5 bg-stone-100 text-stone-800 hover:bg-stone-200 rounded-lg font-mono text-[10px] font-medium cursor-pointer">
@@ -5512,7 +5821,7 @@ window.renderWishlistItems = function() {
       <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
         <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
         <p>Your saved wardrobe is empty.</p>
-        <a href="./shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
+        <a href="/shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
       </div>`;
     return;
   }

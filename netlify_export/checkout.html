@@ -375,8 +375,8 @@ if ('serviceWorker' in navigator) {
       <!-- Primary Desktop Links -->
       <nav class="hidden md:flex items-center gap-6 lg:gap-8 whitespace-nowrap" aria-label="Main Navigation">
         <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="./">Lookbook</a>
-        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="./collections">Collections</a>
-        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="./shop">Boutique</a>
+        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="/collections">Collections</a>
+        <a class="font-label-caps text-xs uppercase tracking-[0.18em] transition-all duration-200 cursor-pointer text-stone-700 hover:text-[#a16207] font-medium" href="/shop">Boutique</a>
       </nav>
     </div>
 
@@ -600,10 +600,10 @@ if ('serviceWorker' in navigator) {
         <span>Estimated Total:</span>
         <span id="quickBagSubtotal" data-price-inr="0" class="text-base sm:text-lg text-[#a16207]">₹0</span>
       </div>
-      <a href="./cart" class="w-full py-2.5 border border-stone-300 text-stone-900 font-button text-xs uppercase tracking-widest text-center hover:bg-stone-100 transition-colors block font-semibold rounded-xl">
+      <a href="/cart" class="w-full py-2.5 border border-stone-300 text-stone-900 font-button text-xs uppercase tracking-widest text-center hover:bg-stone-100 transition-colors block font-semibold rounded-xl">
         View Full Bag
       </a>
-      <a href="./checkout" class="w-full py-3 bg-stone-950 text-white font-button text-xs uppercase tracking-widest text-center hover:bg-stone-800 transition-colors shadow-md block font-bold rounded-xl">
+      <a href="/checkout" class="w-full py-3 bg-stone-950 text-white font-button text-xs uppercase tracking-widest text-center hover:bg-stone-800 transition-colors shadow-md block font-bold rounded-xl">
         Proceed to Checkout →
       </a>
       <div class="text-[10px] text-center text-stone-500 flex items-center justify-center gap-1.5 pt-0.5">
@@ -675,11 +675,11 @@ if ('serviceWorker' in navigator) {
           <span class="material-symbols-outlined text-lg text-accent">auto_awesome_motion</span>
           <span>Runway Lookbook</span>
         </a>
-        <a href="./collections" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
+        <a href="/collections" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
           <span class="material-symbols-outlined text-lg text-accent">style</span>
           <span>Collections</span>
         </a>
-        <a href="./shop" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
+        <a href="/shop" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
           <span class="material-symbols-outlined text-lg text-accent">checkroom</span>
           <span>Boutique Catalog</span>
         </a>
@@ -1211,12 +1211,12 @@ window.handleExpressOrderSubmit = function(e) {
       if (res.redirected) {
         window.location.href = res.url;
       } else {
-        window.location.href = './checkout';
+        window.location.href = '/checkout';
       }
     })
     .catch(() => {
       // Fallback: Redirect directly to checkout
-      window.location.href = './checkout';
+      window.location.href = '/checkout';
     });
 };
 
@@ -1239,7 +1239,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div>
         <!-- Breadcrumb Navigation -->
         <nav class="flex items-center gap-2 text-[10px] sm:text-xs font-mono text-white/60 mb-2.5 uppercase tracking-wider">
-          <a class="text-[#e9c176] font-bold border-b border-[#e9c176]/60 pb-0.5" href="./cart">Curated Bag</a>
+          <a class="text-[#e9c176] font-bold border-b border-[#e9c176]/60 pb-0.5" href="/cart">Curated Bag</a>
           <span class="material-symbols-outlined text-[13px] text-white/40">chevron_right</span>
           <span class="text-white/60">White-Glove Checkout</span>
         </nav>
@@ -1256,7 +1256,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <span class="material-symbols-outlined text-5xl text-accent mb-4 block animate-bounce">shopping_bag</span>
       <h2 class="font-headline-sm text-2xl text-primary font-serif mb-2">Your Bag is Currently Empty</h2>
       <p class="font-body-md text-on-surface-variant mb-8 max-w-sm mx-auto text-xs">Explore our curated gallery of architectural garments and handcrafted lifestyle essentials.</p>
-      <a href="./shop" class="inline-block bg-primary text-white font-button text-xs uppercase tracking-widest px-8 py-4 hover:bg-secondary transition-colors shadow-xl">
+      <a href="/shop" class="inline-block bg-primary text-white font-button text-xs uppercase tracking-widest px-8 py-4 hover:bg-secondary transition-colors shadow-xl">
         Discover Creations →
       </a>
     </div>
@@ -1304,8 +1304,8 @@ function updateCartItem(variantId, qty) {
       <h4 class="font-label-caps text-xs text-[#e9c176] md:text-primary uppercase tracking-[0.2em] mb-6 font-bold">Explore</h4>
       <ul class="space-y-3.5 font-body-md text-sm">
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./">Runway Lookbook</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./collections">Editorial Collections</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./shop">Boutique Catalog</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="/collections">Editorial Collections</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="/shop">Boutique Catalog</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./tracking">Order Tracking</a></li>
       </ul>
     </div>
@@ -1315,7 +1315,7 @@ function updateCartItem(variantId, qty) {
       <ul class="space-y-3.5 font-body-md text-sm">
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./shipping">Shipping &amp; Logistics</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./account">Atelier Account</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./stylist">AI Stylist Advice</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="/stylist">AI Stylist Advice</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./admin">Merchant Portal</a></li>
       </ul>
     </div>
@@ -2226,7 +2226,7 @@ window.closeMysteryDropModal = function() {
           </a>
 
     <!-- Shop / Boutique -->
-    <a href="./shop" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 text-stone-400 hover:text-stone-200" title="Explore Catalog">
+    <a href="/shop" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 text-stone-400 hover:text-stone-200" title="Explore Catalog">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5">checkroom</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Shop</span>
           </a>
@@ -2937,7 +2937,7 @@ window.closeMysteryDropModal = function() {
         <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
           <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
           <p>Your saved wardrobe is empty.</p>
-          <a href="./shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
+          <a href="/shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
         </div>
       </div>
     </div>
@@ -3843,7 +3843,7 @@ window.handleQvInstantBuy = function() {
   if (window.openExpressCheckout) {
     openExpressCheckout(currentQvProduct.id, currentQvProduct.title, currentQvProduct.price, currentQvProduct.image);
   } else {
-    window.location.href = './checkout';
+    window.location.href = '/checkout';
   }
 };
 
@@ -4072,7 +4072,7 @@ function generateStylistAiResponse(query) {
     <p class="font-medium text-stone-900">A refined choice. For this aesthetic, timeless harmony is achieved by balancing neutral architectural tones:</p>
     <p class="text-stone-600 font-light">Pair <strong class="text-stone-900">Onyx Noir</strong> or <strong class="text-stone-900">Camel Cashmere</strong> with structured Japanese selvedge denim or pleated wool trousers for commanding poise.</p>
     <div class="pt-1 flex gap-2">
-      <a href="./shop" class="flex-1 py-1.5 bg-stone-950 text-[#e9c176] text-center rounded-lg font-mono text-[10px] uppercase font-bold">
+      <a href="/shop" class="flex-1 py-1.5 bg-stone-950 text-[#e9c176] text-center rounded-lg font-mono text-[10px] uppercase font-bold">
         Explore Boutique →
       </a>
       <button type="button" onclick="sendStylistPrompt('Autumn Layering Look')" class="px-3 py-1.5 bg-stone-100 text-stone-800 hover:bg-stone-200 rounded-lg font-mono text-[10px] font-medium cursor-pointer">
@@ -4143,7 +4143,7 @@ window.renderWishlistItems = function() {
       <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
         <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
         <p>Your saved wardrobe is empty.</p>
-        <a href="./shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
+        <a href="/shop" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
       </div>`;
     return;
   }
