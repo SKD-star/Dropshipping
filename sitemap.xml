@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>http://localhost/Dropshipping/</loc><priority>1.0</priority><changefreq>daily</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/shop</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/the-atelier-cashmere-cocoon-coat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/vintage-okayama-selvedge-trousers</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/sculpted-heavyweight-terry-hoodie</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/mulberry-silk-bias-slip-dress</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/super-150s-double-breasted-blazer</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/double-breasted-melton-wool-peacoat</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/mongolian-ribbed-turtleneck-knit</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/type-ii-shuttle-loom-denim-jacket</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/sandwashed-silk-charmeuse-blouse</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>http://localhost/Dropshipping/product/italian-pleated-wool-trousers</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+</urlset>

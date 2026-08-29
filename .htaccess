@@ -1,0 +1,45 @@
+RewriteEngine On
+RewriteBase /Dropshipping/
+
+# ── Deny access to sensitive files ───────────────────────────────
+RewriteRule ^\.env - [F,L]
+RewriteRule ^\.env\..* - [F,L]
+RewriteRule ^application/ - [F,L]
+RewriteRule ^system/ - [F,L]
+RewriteRule ^composer\.(json|lock) - [F,L]
+RewriteRule ^migrations/ - [F,L]
+
+# ── Deny dev-tools directory (ngrok, cloudflared, bat scripts) ───
+RewriteRule ^dev-tools/ - [F,L]
+RewriteRule ^cloudflared\.exe - [F,L]
+RewriteRule ^db\.php - [F,L]
+
+# ── Block direct access to legacy /admin/ PHP bootstrap files ────
+# (remove this block after /admin/ is fully decommissioned)
+RewriteRule ^admin/head\.php - [F,L]
+RewriteRule ^admin/layout_header\.php - [F,L]
+RewriteRule ^admin/layout_footer\.php - [F,L]
+RewriteRule ^admin/sidebar\.php - [F,L]
+RewriteRule ^admin/maxbar\.php - [F,L]
+RewriteRule ^admin/loading\.php - [F,L]
+
+# Route REST API V1 endpoints
+RewriteRule ^api/v1/(.*)$ api/v1/index.php [QSA,L]
+RewriteRule ^api/v1$ api/v1/index.php [QSA,L]
+
+# Remove index.php from URL
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+
+# Security headers
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+# Cache static assets
+<FilesMatch "\.(jpg|jpeg|png|gif|svg|webp|ico|woff|woff2|ttf|css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>

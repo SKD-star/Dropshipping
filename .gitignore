@@ -1,0 +1,41 @@
+# NovaDrop — .gitignore
+# ─── Environment & Secrets ────────────────────────────────────
+.env
+.env.local
+.env.production
+
+# ─── Dev tools (never commit these to repo) ──────────────────
+/dev-tools/
+cloudflared.exe
+*.bat
+*.vbs
+
+# ─── Upload directories ───────────────────────────────────────
+/admin/uploads/
+/assets/uploads/
+
+# ─── CI framework cache & logs ───────────────────────────────
+/application/logs/*.log
+/application/cache/*
+!/application/cache/.htaccess
+!/application/logs/.htaccess
+
+# ─── Composer ────────────────────────────────────────────────
+/vendor/
+
+# ─── OS / editor ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.code-workspace
+
+# ─── Database dumps ──────────────────────────────────────────
+*.sql.gz
+/migrations/*.bak.sql
+
+# ─── Temporary ────────────────────────────────────────────────
+/scratch/
+

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+<title>NovaDrop Atelier Luxury Collective</title>
+<link>http://localhost/Dropshipping/</link>
+<description>Autonomous Luxury Commerce & Curated Garments</description>
+  <item>
+    <g:id>1</g:id>
+    <g:title><![CDATA[The Atelier Cashmere Cocoon Coat]]></g:title>
+    <g:description><![CDATA[Hand-cut from 700 GSM Grade-A Mongolian cashmere with double-faced seams and water buffalo horn buttons. Museum-grade thermal efficiency with zero synthetic chemicals.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/the-atelier-cashmere-cocoon-coat</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/cashmere_cocoon_coat.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>4399.00 INR</g:price>
+    <g:brand>Lumina Atelier Milano</g:brand>
+  </item>
+  <item>
+    <g:id>2</g:id>
+    <g:title><![CDATA[Vintage Okayama 14.5oz Selvedge Trousers]]></g:title>
+    <g:description><![CDATA[Custom shuttle-loomed denim with vintage copper hardware and chain-stitched hems that develop personalized honeycombs and whiskers over time.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/vintage-okayama-selvedge-trousers</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/okayama_selvedge_denim.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>4299.00 INR</g:price>
+    <g:brand>Lumina Denim Lab</g:brand>
+  </item>
+  <item>
+    <g:id>3</g:id>
+    <g:title><![CDATA[Sculpted 500 GSM Terry Hoodie]]></g:title>
+    <g:description><![CDATA[Heavyweight 500 GSM loopback cotton hoodie with double-layered crossover hood and flatlock reinforced seams for lifelong structure.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/sculpted-heavyweight-terry-hoodie</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/terry_hoodie_luxury.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>2899.00 INR</g:price>
+    <g:brand>Lumina Essentials</g:brand>
+  </item>
+  <item>
+    <g:id>4</g:id>
+    <g:title><![CDATA[22-Momme Mulberry Silk Bias Slip Dress]]></g:title>
+    <g:description><![CDATA[Sandwashed pure Mulberry silk that drapes organically along bodily contours with liquid sheen and adjustable silk-cord straps.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/mulberry-silk-bias-slip-dress</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/mulberry_silk_dress.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>4999.00 INR</g:price>
+    <g:brand>Lumina Haute Couture</g:brand>
+  </item>
+  <item>
+    <g:id>5</g:id>
+    <g:title><![CDATA[Super 150s Double-Breasted Wool Blazer]]></g:title>
+    <g:description><![CDATA[Woven in Biella, Italy with peak lapels, cupro sleeve lining, and floating canvas that molds to the wearer’s physique.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/super-150s-double-breasted-blazer</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/wool_blazer_luxury.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>6999.00 INR</g:price>
+    <g:brand>Lumina Sartoria</g:brand>
+  </item>
+  <item>
+    <g:id>6</g:id>
+    <g:title><![CDATA[Double-Breasted Melton Wool Peacoat]]></g:title>
+    <g:description><![CDATA[Architectural virgin wool peacoat with anchor-embossed horn buttons and deep fleece-lined hand warmer pockets.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/double-breasted-melton-wool-peacoat</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/melton_wool_peacoat.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>5699.00 INR</g:price>
+    <g:brand>Lumina Atelier Milano</g:brand>
+  </item>
+  <item>
+    <g:id>7</g:id>
+    <g:title><![CDATA[Mongolian Ribbed Turtleneck Knit]]></g:title>
+    <g:description><![CDATA[Chunky 7-gauge cashmere turtleneck sweater with ribbed cuffs and hem, combed humanely from Inner Mongolian goats.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/mongolian-ribbed-turtleneck-knit</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/cashmere_turtleneck_knit.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>3499.00 INR</g:price>
+    <g:brand>Lumina Knitwear</g:brand>
+  </item>
+  <item>
+    <g:id>8</g:id>
+    <g:title><![CDATA[Type II Shuttle-Loom Denim Jacket]]></g:title>
+    <g:description><![CDATA[Iconic Type II jacket silhouette crafted on vintage Toyoda shuttle looms with red-line selvedge along the interior placket.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/type-ii-shuttle-loom-denim-jacket</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/denim_jacket_type2.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>5299.00 INR</g:price>
+    <g:brand>Lumina Denim Lab</g:brand>
+  </item>
+  <item>
+    <g:id>9</g:id>
+    <g:title><![CDATA[Sandwashed Silk Charmeuse Blouse]]></g:title>
+    <g:description><![CDATA[Ultra-soft sandwashed silk charmeuse blouse with French cuffs and concealed placket for effortless sartorial styling.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/sandwashed-silk-charmeuse-blouse</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/silk_charmeuse_blouse.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>3799.00 INR</g:price>
+    <g:brand>Lumina Haute Couture</g:brand>
+  </item>
+  <item>
+    <g:id>10</g:id>
+    <g:title><![CDATA[Italian Pleated Wool Trousers]]></g:title>
+    <g:description><![CDATA[High-rise relaxed tailoring trousers in mid-weight Italian wool with curtained waistband and unhemmed cuffs for bespoke fitting.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/italian-pleated-wool-trousers</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/italian_pleated_trousers.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>3499.00 INR</g:price>
+    <g:brand>Lumina Sartoria</g:brand>
+  </item>
+</channel>
+</rss>
