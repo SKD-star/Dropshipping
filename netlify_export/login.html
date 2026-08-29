@@ -5545,5 +5545,167 @@ window.unlockStorefrontScroll = function() {
 };
 
 </script>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// ✦ LUMINA ATELIER AUTONOMOUS CLIENT-SIDE STORE ENGINE (NO SQL REQUIRED)
+// ══════════════════════════════════════════════════════════════
+(function() {
+  function getLocalBag() {
+    try {
+      return JSON.parse(localStorage.getItem('lumina_bag_items')) || [];
+    } catch(e) {
+      return [];
+    }
+  }
+
+  function saveLocalBag(items) {
+    localStorage.setItem('lumina_bag_items', JSON.stringify(items));
+    updateBagUI();
+  }
+
+  window.addToCart = function(product, qty) {
+    qty = parseInt(qty) || 1;
+    let items = getLocalBag();
+    let existing = items.find(i => (i.id == product.id && i.size == (product.size || 'M')));
+    if (existing) {
+      existing.quantity = (parseInt(existing.quantity) || 1) + qty;
+    } else {
+      items.push({
+        id: product.id || Date.now(),
+        title: product.title || 'Curated Piece',
+        price: parseFloat(product.price) || 0,
+        image: product.image || '/img/cashmere_cocoon_coat.jpg',
+        size: product.size || 'M',
+        color: product.color || 'Signature',
+        quantity: qty
+      });
+    }
+    saveLocalBag(items);
+    if (typeof toggleQuickBagDrawer === 'function') {
+      var qb = document.getElementById('quickBagOverlay');
+      if (qb && qb.classList.contains('hidden')) {
+        toggleQuickBagDrawer();
+      }
+    }
+    if (typeof showStashToast === 'function') {
+      showStashToast((product.title || 'Piece') + ' added to your curated bag! ✦');
+    } else if (typeof ndToast === 'function') {
+      ndToast((product.title || 'Piece') + ' added to your bag!', 'success');
+    }
+  };
+
+  window.removeFromCart = function(id, size) {
+    let items = getLocalBag();
+    items = items.filter(i => !(i.id == id && (size ? i.size == size : true)));
+    saveLocalBag(items);
+  };
+
+  window.updateCartItemQty = function(id, size, delta) {
+    let items = getLocalBag();
+    let it = items.find(i => (i.id == id && (size ? i.size == size : true)));
+    if (it) {
+      it.quantity = Math.max(1, (parseInt(it.quantity) || 1) + delta);
+      saveLocalBag(items);
+    }
+  };
+
+  function updateBagUI() {
+    const items = getLocalBag();
+    const count = items.reduce((sum, i) => sum + (parseInt(i.quantity) || 1), 0);
+    const subtotal = items.reduce((sum, i) => sum + (parseFloat(i.price) * (parseInt(i.quantity) || 1)), 0);
+
+    // Badges
+    const badge = document.getElementById('cartBadgeCount');
+    const mobBadge = document.getElementById('mobileBottomCartBadge');
+    if (badge) {
+      badge.textContent = count;
+      if (count > 0) badge.classList.remove('hidden');
+      else badge.classList.add('hidden');
+    }
+    if (mobBadge) {
+      mobBadge.textContent = count;
+      if (count > 0) mobBadge.classList.remove('hidden');
+      else mobBadge.classList.add('hidden');
+    }
+
+    // Quick Bag Drawer items render
+    const list = document.getElementById('quickBagItemsList');
+    if (list) {
+      if (items.length === 0) {
+        list.innerHTML = `
+          <div class="py-12 text-center text-stone-500 text-sm flex flex-col items-center">
+            <span class="material-symbols-outlined text-4xl mb-2 text-stone-300">shopping_bag</span>
+            <p class="font-serif text-base text-stone-800 font-bold mb-1">Your Curated Bag is Empty</p>
+            <p class="text-xs text-stone-400">Discover our generational archive to begin tailoring.</p>
+            <a href="/shop" class="mt-4 px-5 py-2 bg-stone-950 text-[#e9c176] rounded-xl text-xs font-mono font-bold uppercase tracking-wider">Explore Boutique →</a>
+          </div>`;
+      } else {
+        let html = '';
+        items.forEach((item, idx) => {
+          const itemTotal = (parseFloat(item.price) * (parseInt(item.quantity) || 1));
+          html += `
+            <div class="flex items-center gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-200 shadow-xs relative group">
+              <img src="${item.image}" class="w-16 h-20 object-cover rounded-xl border border-stone-200 flex-shrink-0">
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                  <h4 class="font-serif text-sm font-bold text-stone-950 truncate">${item.title}</h4>
+                  <button type="button" onclick="removeFromCart(${item.id}, '${item.size || 'M'}')" class="text-stone-400 hover:text-rose-500 p-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                  </button>
+                </div>
+                <div class="text-[10px] font-mono text-stone-500 mt-0.5">Size: ${item.size || 'M'} · Express Dispatch</div>
+                <div class="flex justify-between items-center mt-2">
+                  <div class="flex items-center gap-1 bg-white border border-stone-200 rounded-lg p-0.5">
+                    <button type="button" onclick="updateCartItemQty(${item.id}, '${item.size || 'M'}', -1)" class="w-6 h-6 flex items-center justify-center text-xs text-stone-700 hover:bg-stone-100 rounded">-</button>
+                    <span class="font-mono text-xs font-bold px-2">${item.quantity}</span>
+                    <button type="button" onclick="updateCartItemQty(${item.id}, '${item.size || 'M'}', 1)" class="w-6 h-6 flex items-center justify-center text-xs text-stone-700 hover:bg-stone-100 rounded">+</button>
+                  </div>
+                  <span class="font-serif text-sm font-bold text-stone-950" data-price-inr="${itemTotal}">₹${Number(itemTotal).toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+            </div>`;
+        });
+        list.innerHTML = html;
+      }
+    }
+
+    // Subtotals and Delivery Meter
+    const subtotalEl = document.getElementById('quickBagSubtotal');
+    if (subtotalEl) {
+      subtotalEl.setAttribute('data-price-inr', subtotal);
+      subtotalEl.textContent = '₹' + Number(subtotal).toLocaleString('en-IN');
+    }
+    const finalTotalEl = document.getElementById('quickBagFinalTotal');
+    if (finalTotalEl) {
+      finalTotalEl.setAttribute('data-price-inr', subtotal);
+      finalTotalEl.textContent = '₹' + Number(subtotal).toLocaleString('en-IN');
+    }
+
+    const freeLimit = 2499;
+    const meterBar = document.getElementById('freeShippingMeter');
+    const meterTxt = document.getElementById('quickBagShippingText');
+    if (meterBar && meterTxt) {
+      if (subtotal >= freeLimit) {
+        meterBar.style.width = '100%';
+        meterTxt.innerHTML = '<span class="text-emerald-500 font-bold">✓ Complimentary Express Delivery Unlocked!</span>';
+      } else {
+        const pct = Math.min(100, Math.round((subtotal / freeLimit) * 100));
+        meterBar.style.width = pct + '%';
+        const rem = freeLimit - subtotal;
+        meterTxt.innerHTML = 'Add <span class="font-bold text-stone-900">₹' + Number(rem).toLocaleString('en-IN') + '</span> for Free Express Delivery';
+      }
+    }
+
+    if (typeof updateAllPricesOnPage === 'function') {
+      updateAllPricesOnPage();
+    }
+  }
+
+  window.loadQuickBagItems = updateBagUI;
+  document.addEventListener('DOMContentLoaded', updateBagUI);
+})();
+</script>
+
 </body>
 </html>

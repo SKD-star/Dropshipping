@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Create Atelier Account — LUMINA</title>
-<meta name="description" content="NovaDrop — Curated ergonomic tools and performance essentials. Designed with intention, crafted to last.">
+<title>Sculpted 500 GSM Terry Hoodie — Lumina Atelier</title>
+<meta name="description" content="Discover The Atelier Cashmere Cocoon Coat — Next-Gen Edition — Next-Gen Edition. Bespoke tailoring and architectural luxury silhouettes handcrafted in generational European ateliers.">
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#4338ca">
 <script>
@@ -332,6 +332,315 @@ if ('serviceWorker' in navigator) {
     .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
     .skiptranslate iframe { display: none !important; }
 </style>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// ✦ LUMINA ATELIER CLIENT-SIDE CATALOG ROUTER & HYDRATION ENGINE
+// ══════════════════════════════════════════════════════════════
+const ATELIER_CATALOG = [
+  {
+    id: 1,
+    slug: 'the-atelier-cashmere-cocoon-coat',
+    title: 'The Atelier Cashmere Cocoon Coat',
+    vendor: 'Lumina Atelier Milano',
+    price: 4399,
+    compare_price: 5939,
+    image: '/img/cashmere_cocoon_coat.jpg',
+    gallery: ['/img/cashmere_cocoon_coat.jpg', '/img/model_look_classic.jpg', '/img/melton_wool_peacoat.jpg', '/img/model_look_executive.jpg'],
+    badge: 'Archival Edition · Strictly 150 Cuts',
+    tag: 'Grade-A Pure Cashmere',
+    shade: 'Camel Cashmere',
+    weight: '700 GSM Net',
+    fabric: 'Grade-A Pure Cashmere',
+    stitching: 'Single-Needle',
+    desc: 'An architectural double-faced silhouette hand-cut from 700 GSM pure Mongolian cashmere with fluid drop shoulders, unlined horn button closures, and sculpted welt pockets.',
+    details: 'Hand-cut from 700 GSM Grade-A Mongolian cashmere with double-faced seams and water buffalo horn buttons. Museum-grade thermal efficiency with zero synthetic chemicals.'
+  },
+  {
+    id: 2,
+    slug: 'vintage-okayama-selvedge-trousers',
+    title: 'Vintage Okayama 14.5oz Selvedge Trousers',
+    vendor: 'Lumina Denim Lab',
+    price: 4299,
+    compare_price: 5804,
+    image: '/img/okayama_selvedge_denim.jpg',
+    gallery: ['/img/okayama_selvedge_denim.jpg', '/img/model_look_street.jpg', '/img/denim_jacket_type2.jpg', '/img/model_look_classic.jpg'],
+    badge: 'Limited Batch · Okayama Loomed',
+    tag: '14.5oz Vintage Indigo Selvedge',
+    shade: 'Natural Indigo',
+    weight: '14.5oz Selvedge',
+    fabric: 'Shuttle-Loomed Denim',
+    stitching: 'Chain-Stitched',
+    desc: '14.5oz shuttle-loomed selvedge denim from Okayama, Japan, rope-dyed in authentic natural indigo vats with red-line selvedge ID that develops a distinctive personalized patina.',
+    details: 'Custom shuttle-loomed denim with vintage copper hardware and chain-stitched hems that develop personalized honeycombs and whiskers over time.'
+  },
+  {
+    id: 3,
+    slug: 'sculpted-heavyweight-terry-hoodie',
+    title: 'Sculpted 500 GSM Terry Hoodie',
+    vendor: 'Lumina Essentials',
+    price: 2899,
+    compare_price: 3914,
+    image: '/img/terry_hoodie_luxury.jpg',
+    gallery: ['/img/terry_hoodie_luxury.jpg', '/img/model_look_street.jpg', '/img/model_look_classic.jpg', '/img/mannequin_look_street.jpg'],
+    badge: 'Core Capsule · Custom Pre-Shrunk',
+    tag: '500 GSM Loopback Cotton',
+    shade: 'Washed Obsidian',
+    weight: '500 GSM Loopback',
+    fabric: '100% Organic Cotton',
+    stitching: 'Flatlock Reinforced',
+    desc: 'Substantial 500 GSM loopback cotton jersey garments, custom garment-dyed in muted architectural tones for effortless daily poise.',
+    details: 'Heavyweight 500 GSM loopback cotton hoodie with double-layered crossover hood and flatlock reinforced seams for lifelong structure.'
+  },
+  {
+    id: 4,
+    slug: 'mulberry-silk-bias-slip-dress',
+    title: '22-Momme Mulberry Silk Bias Slip Dress',
+    vendor: 'Lumina Haute Couture',
+    price: 4999,
+    compare_price: 6749,
+    image: '/img/mulberry_silk_dress.jpg',
+    gallery: ['/img/mulberry_silk_dress.jpg', '/img/silk_charmeuse_blouse.jpg', '/img/model_look_executive.jpg', '/img/mannequin_look_classic.jpg'],
+    badge: 'Haute Couture · Hand-Rolled Seams',
+    tag: 'Grade 6A Mulberry Silk',
+    shade: 'Champagne Oyster',
+    weight: '22-Momme Net',
+    fabric: 'Grade 6A Mulberry Silk',
+    stitching: 'Hand-Rolled French',
+    desc: 'Fluid bias-cut evening dresses crafted from certified 22-momme Mulberry silk with exquisite hand-rolled French seams for liquid contouring.',
+    details: 'Sandwashed pure Mulberry silk that drapes organically along bodily contours with liquid sheen and adjustable silk-cord straps.'
+  },
+  {
+    id: 5,
+    slug: 'super-150s-double-breasted-blazer',
+    title: 'Super 150s Double-Breasted Wool Blazer',
+    vendor: 'Lumina Sartoria',
+    price: 6999,
+    compare_price: 9449,
+    image: '/img/wool_blazer_luxury.jpg',
+    gallery: ['/img/wool_blazer_luxury.jpg', '/img/italian_pleated_trousers.jpg', '/img/melton_wool_peacoat.jpg', '/img/model_look_executive.jpg'],
+    badge: 'Bespoke Cut · Floating Horsehair Canvas',
+    tag: 'Super 150s Vitale Barberis Wool',
+    shade: 'Heather Charcoal',
+    weight: 'Super 150s Wool',
+    fabric: 'Vitale Barberis Canonico',
+    stitching: 'Bespoke Pick-Stitch',
+    desc: 'Double-breasted blazers cut from Super 150s Italian virgin wool with floating horsehair canvas construction that molds to the body.',
+    details: 'Woven in Biella, Italy with peak lapels, cupro sleeve lining, and floating canvas that molds to the wearer’s physique.'
+  },
+  {
+    id: 6,
+    slug: 'double-breasted-melton-wool-peacoat',
+    title: 'Double-Breasted Melton Wool Peacoat',
+    vendor: 'Lumina Atelier Milano',
+    price: 5699,
+    compare_price: 7694,
+    image: '/img/melton_wool_peacoat.jpg',
+    gallery: ['/img/melton_wool_peacoat.jpg', '/img/cashmere_cocoon_coat.jpg', '/img/model_look_classic.jpg', '/img/mannequin_look_executive.jpg'],
+    badge: 'Archival Outerwear · Sub-Zero Tested',
+    tag: '850 GSM Structured Melton Wool',
+    shade: 'Midnight Navy',
+    weight: '850 GSM Melton',
+    fabric: 'Virgin Melton Wool',
+    stitching: 'Double-Needle Saddle',
+    desc: 'Tailored from heavyweight structured virgin Melton wool for severe sub-zero thermal protection with sharp nautical lapels.',
+    details: 'Architectural virgin wool peacoat with anchor-embossed horn buttons and deep fleece-lined hand warmer pockets.'
+  },
+  {
+    id: 7,
+    slug: 'mongolian-ribbed-turtleneck-knit',
+    title: 'Mongolian Ribbed Turtleneck Knit',
+    vendor: 'Lumina Knitwear',
+    price: 3499,
+    compare_price: 4724,
+    image: '/img/cashmere_turtleneck_knit.jpg',
+    gallery: ['/img/cashmere_turtleneck_knit.jpg', '/img/cashmere_cocoon_coat.jpg', '/img/model_look_classic.jpg', '/img/terry_hoodie_luxury.jpg'],
+    badge: 'Winter Archive · 7-Gauge Rib',
+    tag: '100% Inner Mongolian Cashmere',
+    shade: 'Oatmeal Melange',
+    weight: '7-Gauge Chunky Knit',
+    fabric: '100% Inner Mongolian Cashmere',
+    stitching: 'Seamless Tubular',
+    desc: 'Grade-A virgin cashmere knit with 7-gauge fisherman ribbing for plush, featherlight warmth combed humanely from Inner Mongolian goats.',
+    details: 'Chunky 7-gauge cashmere turtleneck sweater with ribbed cuffs and hem, combed humanely from Inner Mongolian goats.'
+  },
+  {
+    id: 8,
+    slug: 'type-ii-shuttle-loom-denim-jacket',
+    title: 'Type II Shuttle-Loom Denim Jacket',
+    vendor: 'Lumina Denim Lab',
+    price: 5299,
+    compare_price: 7154,
+    image: '/img/denim_jacket_type2.jpg',
+    gallery: ['/img/denim_jacket_type2.jpg', '/img/okayama_selvedge_denim.jpg', '/img/model_look_street.jpg', '/img/terry_hoodie_luxury.jpg'],
+    badge: 'Toyoda Loom Edition · 15oz Raw Indigo',
+    tag: 'Red-Line Selvedge Interior Placket',
+    shade: 'Rope-Dyed Indigo',
+    weight: '15oz Raw Selvedge',
+    fabric: 'Toyoda Loom Denim',
+    stitching: 'Twin-Needle Tobacco',
+    desc: 'Iconic Type II jacket silhouette crafted on vintage Toyoda shuttle looms with red-line selvedge along the interior placket.',
+    details: 'Boxy pleat architecture with dual chest flap pockets, knife pleats with box-stitching, and solid brass donut buttons.'
+  },
+  {
+    id: 9,
+    slug: 'sandwashed-silk-charmeuse-blouse',
+    title: 'Sandwashed Silk Charmeuse Blouse',
+    vendor: 'Lumina Haute Couture',
+    price: 3799,
+    compare_price: 5129,
+    image: '/img/silk_charmeuse_blouse.jpg',
+    gallery: ['/img/silk_charmeuse_blouse.jpg', '/img/mulberry_silk_dress.jpg', '/img/model_look_executive.jpg', '/img/mannequin_look_classic.jpg'],
+    badge: 'Liquid Drape · Mother-of-Pearl Closures',
+    tag: '19-Momme Sandwashed Charmeuse',
+    shade: 'Ivory Pearl',
+    weight: '19-Momme Charmeuse',
+    fabric: 'Grade 6A Mulberry Silk',
+    stitching: 'French Seams',
+    desc: 'Grade 6A Mulberry silk blouse with fluid liquid drape, sandwashed velvety texture, and mother-of-pearl button closures.',
+    details: 'Ultra-soft sandwashed silk charmeuse blouse with French cuffs and concealed placket for effortless sartorial styling.'
+  },
+  {
+    id: 10,
+    slug: 'italian-pleated-wool-trousers',
+    title: 'Italian Pleated Wool Trousers',
+    vendor: 'Lumina Sartoria',
+    price: 3499,
+    compare_price: 4724,
+    image: '/img/italian_pleated_trousers.jpg',
+    gallery: ['/img/italian_pleated_trousers.jpg', '/img/wool_blazer_luxury.jpg', '/img/calfskin_penny_loafers.jpg', '/img/model_look_executive.jpg'],
+    badge: 'Biella Wool Weave · Reverse Pleats',
+    tag: 'Unhemmed Bespoke Tailoring',
+    shade: 'Flannel Grey',
+    weight: '320 GSM Suiting',
+    fabric: 'Biella Virgin Wool',
+    stitching: 'Pick-Stitched Inseam',
+    desc: 'Biella Italian virgin wool trousers with deep reverse pleats, side tab adjusters, and unhemmed cuffs for bespoke fitting.',
+    details: 'High-rise relaxed tailoring trousers in mid-weight Italian wool with curtained waistband and unhemmed cuffs for bespoke fitting.'
+  }
+];
+
+window.currentActiveProduct = ATELIER_CATALOG[0];
+
+function hydrateProductPage() {
+  const path = window.location.pathname.toLowerCase();
+  const searchParams = new URLSearchParams(window.location.search);
+  const slugFromParam = searchParams.get('slug') || searchParams.get('p');
+  const idFromParam = searchParams.get('id');
+
+  let matched = null;
+  if (slugFromParam) {
+    matched = ATELIER_CATALOG.find(p => p.slug === slugFromParam.toLowerCase());
+  } else if (idFromParam) {
+    matched = ATELIER_CATALOG.find(p => p.id == idFromParam);
+  } else {
+    for (let p of ATELIER_CATALOG) {
+      if (path.includes(p.slug)) {
+        matched = p;
+        break;
+      }
+    }
+  }
+
+  if (!matched) {
+    matched = ATELIER_CATALOG[0];
+  }
+
+  window.currentActiveProduct = matched;
+
+  // 1. Page Title & Meta
+  document.title = matched.title + ' — Lumina Atelier';
+
+  // 2. Breadcrumb
+  const breadcrumb = document.querySelector('nav.flex.items-center span.text-\[\#e9c176\]');
+  if (breadcrumb) breadcrumb.textContent = matched.title;
+
+  // 3. Product Title (H1)
+  const h1 = document.querySelector('h1.font-serif');
+  if (h1) h1.textContent = matched.title;
+
+  // 4. Prices
+  const priceEl = document.getElementById('mainDisplayPrice');
+  if (priceEl) {
+    priceEl.setAttribute('data-price-inr', matched.price);
+    priceEl.textContent = typeof formatPrice === 'function' ? formatPrice(matched.price) : ('₹' + Number(matched.price).toLocaleString('en-IN'));
+  }
+  const compareEl = document.getElementById('mainComparePrice');
+  if (compareEl) {
+    compareEl.setAttribute('data-price-inr', matched.compare_price);
+    compareEl.textContent = typeof formatPrice === 'function' ? formatPrice(matched.compare_price) : ('₹' + Number(matched.compare_price).toLocaleString('en-IN'));
+  }
+
+  // 5. Hero Photo
+  const mainPhoto = document.getElementById('mainProductPhoto');
+  if (mainPhoto) {
+    mainPhoto.src = matched.image;
+    mainPhoto.alt = matched.title;
+  }
+
+  // 6. Shade Label
+  const shadeLabel = document.getElementById('activeShadePhotoLabel');
+  if (shadeLabel) shadeLabel.textContent = 'Shade: ' + matched.shade;
+  const selectedColorName = document.getElementById('selectedColorName');
+  if (selectedColorName) selectedColorName.textContent = matched.shade;
+
+  // 7. Gallery Thumbnails
+  const thumbBtns = document.querySelectorAll('.gallery-thumb-btn');
+  if (thumbBtns && thumbBtns.length > 0 && matched.gallery) {
+    thumbBtns.forEach((btn, idx) => {
+      const img = btn.querySelector('img');
+      const gUrl = matched.gallery[idx] || matched.image;
+      if (img) img.src = gUrl;
+      btn.setAttribute('onclick', `selectMainPhoto('${gUrl}', this)`);
+    });
+  }
+
+  // 8. Wire up Direct Buttons (Single Buy, 1-Click Buy, Add to Cart, Group Buy, Wishlist)
+  const groupBuyPrice = Math.round(matched.price * 0.6);
+
+  // Single purchase box
+  const singleBuyBox = document.querySelector('div[onclick*="openExpressCheckout"]');
+  if (singleBuyBox) {
+    singleBuyBox.setAttribute('onclick', `openExpressCheckout(${matched.id}, '${matched.title.replace(/'/g, "\'")}', ${matched.price}, '${matched.image}', 1);`);
+    const priceTxt = singleBuyBox.querySelector('.font-serif');
+    if (priceTxt) priceTxt.textContent = typeof formatPrice === 'function' ? formatPrice(matched.price) : ('₹' + Number(matched.price).toLocaleString('en-IN'));
+  }
+
+  // Group buy box
+  const groupBuyBox = document.querySelector('div[onclick*="openGroupBuyModal"]');
+  if (groupBuyBox) {
+    groupBuyBox.setAttribute('onclick', `openGroupBuyModal(${matched.id}, '${matched.title.replace(/'/g, "\'")}', ${groupBuyPrice}, '${matched.image}');`);
+    const gbPriceTxt = groupBuyBox.querySelector('.font-serif');
+    if (gbPriceTxt) gbPriceTxt.textContent = typeof formatPrice === 'function' ? formatPrice(groupBuyPrice) : ('₹' + Number(groupBuyPrice).toLocaleString('en-IN'));
+  }
+
+  // Instant 1-Click button
+  const instantBtn = document.querySelector('button[onclick*="openExpressCheckout"]');
+  if (instantBtn) {
+    instantBtn.setAttribute('onclick', `openExpressCheckout(${matched.id}, '${matched.title.replace(/'/g, "\'")}', ${matched.price}, '${matched.image}', 1);`);
+  }
+
+  // Add to Wardrobe Bag button
+  const addBagBtn = document.querySelector('button[onclick*="addToCart"]');
+  if (addBagBtn) {
+    addBagBtn.setAttribute('onclick', `addToCart({id:${matched.id}, title:'${matched.title.replace(/'/g, "\'")}', price:${matched.price}, image:'${matched.image}'}, 1)`);
+  }
+
+  // Wishlist button
+  const wishBtn = document.querySelector('button[onclick*="toggleWishlistItem"]');
+  if (wishBtn) {
+    wishBtn.setAttribute('onclick', `toggleWishlistItem({id:${matched.id}, title:'${matched.title.replace(/'/g, "\'")}', price:${matched.price}, image:'${matched.image}'})`);
+  }
+
+  if (typeof updateAllPricesOnPage === 'function') {
+    updateAllPricesOnPage();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', hydrateProductPage);
+window.addEventListener('popstate', hydrateProductPage);
+</script>
+
 </head>
 <body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex flex-col selection:bg-accent-light selection:text-primary overflow-x-hidden w-full max-w-full">
 
@@ -1176,7 +1485,7 @@ window.handleExpressOrderSubmit = function(e) {
   formData.append('title', title);
   formData.append('price', price);
   formData.append('image', img);
-  formData.append('csrf_novadrop', '39b898f8fabec6dc42e2871caa3cae57');
+  formData.append('csrf_novadrop', 'c16556a0853424e6282275a4b9170b5c');
   
   fetch('./cart/add', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
@@ -1195,7 +1504,7 @@ window.handleExpressOrderSubmit = function(e) {
       checkoutData.append('city', city);
       checkoutData.append('state', 'State');
       checkoutData.append('pincode', pincode);
-      checkoutData.append('csrf_novadrop', '39b898f8fabec6dc42e2871caa3cae57');
+      checkoutData.append('csrf_novadrop', 'c16556a0853424e6282275a4b9170b5c');
       
       return fetch('./checkout', { method: 'POST', body: checkoutData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
     })
@@ -1203,7 +1512,7 @@ window.handleExpressOrderSubmit = function(e) {
       // 3. Confirm order directly in-site
       var confirmData = new FormData();
       confirmData.append('payment_method', paymentMethod === 'online' ? 'cod' : 'cod');
-      confirmData.append('csrf_novadrop', '39b898f8fabec6dc42e2871caa3cae57');
+      confirmData.append('csrf_novadrop', 'c16556a0853424e6282275a4b9170b5c');
       
       return fetch('./checkout/confirm', { method: 'POST', body: confirmData });
     })
@@ -1230,153 +1539,1023 @@ document.addEventListener('DOMContentLoaded', () => {
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <main class="flex-grow pt-[96px] sm:pt-[104px] md:pt-[116px]">
-<div class="min-h-[85vh] flex items-center justify-center py-8 sm:py-12 px-4 sm:px-6">
-  <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-12 rounded-3xl overflow-hidden shadow-2xl border border-stone-200/90 bg-white">
-    
-    <!-- Left Column: Editorial Atmospheric Brand Showcase -->
-    <div class="md:col-span-5 relative bg-stone-950 text-white p-8 md:p-10 flex flex-col justify-between overflow-hidden hidden md:flex">
-      <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1000&q=85" alt="Atelier Runway" class="w-full h-full object-cover opacity-45 filter saturate-[0.85] scale-105">
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60"></div>
+<!-- ══════════════════════════════════════════════════════
+     HAUTE COUTURE PRODUCT DETAIL PAGE (LUMINA ATELIER)
+     HIGH-CONTRAST OBSIDIAN & WHITE · AI ENSEMBLE SUITE · MODEL STUDIO
+══════════════════════════════════════════════════════ -->
+
+<main class="min-h-screen bg-[#faf9f6] text-stone-900 pt-20 sm:pt-24 pb-24">
+
+  <!-- ── 1. HAUTE COUTURE OBSIDIAN HERO RIBBON (DIRECTLY BELOW HEADER) ── -->
+  <section class="bg-[#07080b] text-white border-b border-white/10 py-4 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <!-- Subtle Starlight & Amber Radial Flare -->
+    <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#e9c176_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+    <div class="absolute w-96 h-96 rounded-full bg-amber-500/10 blur-[90px] -top-20 right-10 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 relative z-10">
+      
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white/60">
+        <a href="./" class="hover:text-white transition-colors">Lookbook</a>
+        <span class="text-white/30">/</span>
+        <a href="/shop" class="hover:text-white transition-colors">Boutique</a>
+        <span class="text-white/30">/</span>
+        <span class="text-[#e9c176] font-bold truncate max-w-[240px] sm:max-w-md">Sculpted 500 GSM Terry Hoodie</span>
+      </nav>
+
+      <!-- Scarcity & Courier Tag -->
+      <div class="flex items-center gap-3 text-xs font-mono">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-[#e9c176]/40 text-[#e9c176] font-semibold shadow-sm backdrop-blur-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>Archival Edition · Strictly 150 Cuts</span>
+        </span>
+        <span class="text-white/30 hidden md:inline">|</span>
+        <span class="text-white/70 text-[11px] font-semibold hidden md:inline">BlueDart Priority Express Delivery</span>
       </div>
 
-      <div class="relative z-10">
-        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest text-[#e9c176] mb-6 border border-[#e9c176]/30">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176] animate-pulse"></span>
-          <span>New Collector Registration</span>
+    </div>
+  </section>
+
+
+  <!-- ── 2. MAIN HERO PRODUCT STAGE & BUY SUITE (CRISP EDITORIAL WHITE) ── -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      
+      <!-- ── LEFT: EDITORIAL VISUAL GALLERY (7 Columns) ── -->
+      <div class="lg:col-span-7 flex flex-col space-y-4">
+        
+        <!-- Primary Photo Stage with Zoom Loupe -->
+        <div class="relative aspect-[4/5] bg-white rounded-3xl border border-stone-200 shadow-xl overflow-hidden group">
+          
+          <img id="mainProductPhoto" src="/img/terry_hoodie_luxury.jpg" 
+               alt="The Atelier Cashmere Cocoon Coat" 
+               class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105"
+               loading="eager">
+          
+          <!-- Top Scarcity Pill Overlay -->
+          <div class="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider bg-black/85 text-[#e9c176] px-3.5 py-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-md flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176] animate-pulse"></span>
+              <span>Archival Edition</span>
+            </span>
+            <span class="text-[10px] font-mono text-white bg-black/70 px-3 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
+              Grade-A Pure Cashmere
+            </span>
+          </div>
+
+          <!-- Top-Right Fullscreen / Studio Button -->
+          <button type="button" onclick="openProductGalleryModal()" class="absolute top-4 right-4 px-3.5 py-2 rounded-full bg-black/80 hover:bg-black text-white hover:text-[#e9c176] border border-white/20 text-xs font-mono uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md z-10 cursor-pointer" title="View Fullscreen Studio Photos">
+            <span class="material-symbols-outlined text-sm">fullscreen</span>
+            <span>View Fullscreen</span>
+          </button>
+
+          <!-- Bottom Active Shade Indicator -->
+          <div class="absolute bottom-4 left-4 z-10">
+            <span class="text-xs font-mono text-white bg-black/85 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md shadow-lg" id="activeShadePhotoLabel">
+              Shade: Camel Cashmere
+            </span>
+          </div>
+
+          <!-- Bottom-Right Zoom Hint -->
+          <div class="absolute bottom-4 right-4 z-10 hidden sm:flex items-center gap-1 text-[11px] font-mono text-white/80 bg-black/70 px-3 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
+            <span class="material-symbols-outlined text-xs">zoom_in</span>
+            <span>Hover to Inspect Craft</span>
+          </div>
+
         </div>
-        <h2 class="font-display-lg text-3xl font-serif font-light leading-snug">
-          Join The Atelier<br/>
-          <span class="font-serif italic text-[#e9c176] font-normal">Collective.</span>
+
+        <!-- Gallery Thumbnail Rail & Angle Selectors -->
+        <div class="grid grid-cols-4 gap-3">
+                    <button type="button" 
+                  onclick="selectMainPhoto('./img/cashmere_cocoon_coat.jpg', this)" 
+                  class="gallery-thumb-btn ring-2 ring-stone-950 scale-[1.02] aspect-square rounded-2xl overflow-hidden bg-white border border-stone-200 shadow-sm transition-all duration-300 cursor-pointer relative group">
+            <img src="./img/cashmere_cocoon_coat.jpg" alt="Perspective 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute bottom-1.5 left-1.5 right-1.5 py-0.5 text-[9px] font-mono text-center uppercase bg-black/75 text-white rounded-md backdrop-blur-sm">
+              Angle 01            </span>
+          </button>
+                    <button type="button" 
+                  onclick="selectMainPhoto('./img/model_look_classic.jpg', this)" 
+                  class="gallery-thumb-btn opacity-70 hover:opacity-100 aspect-square rounded-2xl overflow-hidden bg-white border border-stone-200 shadow-sm transition-all duration-300 cursor-pointer relative group">
+            <img src="./img/model_look_classic.jpg" alt="Perspective 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute bottom-1.5 left-1.5 right-1.5 py-0.5 text-[9px] font-mono text-center uppercase bg-black/75 text-white rounded-md backdrop-blur-sm">
+              Angle 02            </span>
+          </button>
+                    <button type="button" 
+                  onclick="selectMainPhoto('./img/melton_wool_peacoat.jpg', this)" 
+                  class="gallery-thumb-btn opacity-70 hover:opacity-100 aspect-square rounded-2xl overflow-hidden bg-white border border-stone-200 shadow-sm transition-all duration-300 cursor-pointer relative group">
+            <img src="./img/melton_wool_peacoat.jpg" alt="Perspective 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute bottom-1.5 left-1.5 right-1.5 py-0.5 text-[9px] font-mono text-center uppercase bg-black/75 text-white rounded-md backdrop-blur-sm">
+              Angle 03            </span>
+          </button>
+                    <button type="button" 
+                  onclick="selectMainPhoto('./img/model_look_executive.jpg', this)" 
+                  class="gallery-thumb-btn opacity-70 hover:opacity-100 aspect-square rounded-2xl overflow-hidden bg-white border border-stone-200 shadow-sm transition-all duration-300 cursor-pointer relative group">
+            <img src="./img/model_look_executive.jpg" alt="Perspective 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute bottom-1.5 left-1.5 right-1.5 py-0.5 text-[9px] font-mono text-center uppercase bg-black/75 text-white rounded-md backdrop-blur-sm">
+              Angle 04            </span>
+          </button>
+                  </div>
+
+        <!-- 3 Feature Micro-Banners -->
+        <div class="grid grid-cols-3 gap-3 pt-2">
+          <div class="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#a16207] text-xl">straighten</span>
+            <div>
+              <span class="text-[10px] uppercase font-mono text-stone-400 block font-semibold">Stitching</span>
+              <span class="text-xs font-bold text-stone-900">Single-Needle</span>
+            </div>
+          </div>
+          <div class="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#a16207] text-xl">scale</span>
+            <div>
+              <span class="text-[10px] uppercase font-mono text-stone-400 block font-semibold">Weight</span>
+              <span class="text-xs font-bold text-stone-900">700 GSM Net</span>
+            </div>
+          </div>
+          <div class="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-emerald-600 text-xl">flight_takeoff</span>
+            <div>
+              <span class="text-[10px] uppercase font-mono text-stone-400 block font-semibold">Express Courier</span>
+              <span class="text-xs font-bold text-emerald-600">BlueDart Priority</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ── RIGHT: STICKY HAUTE COUTURE ACQUISITION SUITE (5 Columns) ── -->
+      <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-xl space-y-5 sticky top-[95px]">
+        
+        <!-- Provenance & Atelier Tag -->
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="text-xs font-mono uppercase tracking-[0.2em] text-[#a16207] font-bold">
+              ✦ Atelier Series · 2026 Archive
+            </span>
+            <span class="text-xs font-mono text-emerald-600 font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>18h Dispatch Active</span>
+            </span>
+          </div>
+
+          <!-- Product Title -->
+          <h1 class="font-serif text-2xl sm:text-3xl text-stone-950 font-normal leading-tight mb-2.5">
+            The Atelier Cashmere Cocoon Coat          </h1>
+
+          <!-- Price Row -->
+          <div class="flex items-baseline gap-3 pb-3 border-b border-stone-200">
+            <span class="font-serif text-3xl sm:text-4xl font-bold text-stone-950" id="mainDisplayPrice" data-price-inr="2899">₹2,899</span>
+                        <span class="text-sm text-stone-400 line-through font-mono" id="compareDisplayPrice" data-price-inr="5939">₹5,939</span>
+            <span class="px-2.5 py-1 bg-amber-50 border border-amber-200 text-[#a16207] text-[10px] font-mono font-bold uppercase rounded-full">
+              26% Privilege Discount
+            </span>
+                      </div>
+        </div>
+
+        <!-- ── FLASH SALE & FOMO SCARCITY COUNTDOWN BAR ── -->
+        <div class="p-3 rounded-2xl bg-gradient-to-r from-red-50 to-amber-50 border border-red-200/80 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <div class="flex items-center gap-1.5 text-red-600 font-mono text-xs font-bold uppercase tracking-wider">
+              <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+              <span>⚡ FLASH SALE ENDS IN:</span>
+            </div>
+            <div class="font-mono text-xs font-extrabold text-red-700 bg-white/80 px-2 py-0.5 rounded-lg border border-red-200 shadow-xs" id="detailFomoClock">
+              03h : 42m : 18s
+            </div>
+          </div>
+          <!-- Scarcity Stock Progress Bar -->
+          <div class="w-full bg-red-100 rounded-full h-1.5 overflow-hidden">
+            <div class="bg-gradient-to-r from-amber-500 to-red-600 h-full rounded-full" style="width: 86%;"></div>
+          </div>
+          <div class="flex justify-between items-center text-[10px] font-mono text-stone-500 mt-1">
+            <span>🔥 86% of Allocated Batch Claimed</span>
+            <span class="font-bold text-red-600">Only 3 Pieces Left in Archive</span>
+          </div>
+        </div>
+
+        <!-- VIP Loyalty Points Earned Badge -->
+        <div class="flex items-center gap-2 text-xs font-mono text-amber-700 bg-amber-50/90 border border-amber-200/70 p-2.5 rounded-xl">
+          <span class="material-symbols-outlined text-amber-600 text-sm">stars</span>
+          <span>Earn <strong class="text-stone-900">+220 NovaDrop Points</strong> (₹110 Cashback) on this order</span>
+        </div>
+
+        <!-- Short Description -->
+        <p class="text-stone-600 text-xs sm:text-sm leading-relaxed font-light font-sans">
+          An architectural double-faced silhouette hand-cut from 700 GSM pure Mongolian cashmere with fluid drop shoulders, unlined horn button closures, and sculpted welt pockets.        </p>
+
+        <!-- VIP Privilege Discount Coupon Box -->
+        <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#a16207] text-lg">workspace_premium</span>
+            <div>
+              <span class="text-[10px] font-mono uppercase tracking-widest text-[#a16207] font-bold block">VIP Privilege Code</span>
+              <span class="font-mono text-xs font-bold text-stone-900">LUMINA50 (Instant 50% Privilege)</span>
+            </div>
+          </div>
+          <button type="button" onclick="applyVipCoupon()" id="btnApplyVip" class="px-4 py-2 rounded-xl bg-stone-950 hover:bg-stone-800 text-[#e9c176] font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer">
+            Apply
+          </button>
+        </div>
+
+        <!-- ── Tactile Shade Swatch Selector ── -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-mono uppercase tracking-wider text-stone-900 font-bold">
+              Color Finish: <span class="text-[#a16207]" id="selectedColorName">Camel Cashmere</span>
+            </span>
+            <span class="text-[10px] font-mono text-stone-400">Natural Garment Dyed</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+                        <button type="button" 
+                    onclick="selectColorShade('Camel Cashmere', './img/cashmere_cocoon_coat.jpg', this)"
+                    class="color-shade-btn ring-2 ring-stone-950 scale-110 w-8 h-8 rounded-full border-2 border-white shadow-md transition-all cursor-pointer" 
+                    style="background-color: #c29b64;" 
+                    title="Camel Cashmere">
+            </button>
+                        <button type="button" 
+                    onclick="selectColorShade('Onyx Noir', './img/melton_wool_peacoat.jpg', this)"
+                    class="color-shade-btn opacity-75 hover:opacity-100 w-8 h-8 rounded-full border-2 border-white shadow-md transition-all cursor-pointer" 
+                    style="background-color: #18181b;" 
+                    title="Onyx Noir">
+            </button>
+                        <button type="button" 
+                    onclick="selectColorShade('Melange Oatmeal', './img/model_look_classic.jpg', this)"
+                    class="color-shade-btn opacity-75 hover:opacity-100 w-8 h-8 rounded-full border-2 border-white shadow-md transition-all cursor-pointer" 
+                    style="background-color: #d4cbbd;" 
+                    title="Melange Oatmeal">
+            </button>
+                        <button type="button" 
+                    onclick="selectColorShade('Midnight Suiting', './img/wool_blazer_luxury.jpg', this)"
+                    class="color-shade-btn opacity-75 hover:opacity-100 w-8 h-8 rounded-full border-2 border-white shadow-md transition-all cursor-pointer" 
+                    style="background-color: #1e293b;" 
+                    title="Midnight Suiting">
+            </button>
+                      </div>
+        </div>
+
+        <!-- ── Interactive Size Selector & Fit Advisor ── -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-mono uppercase tracking-wider text-stone-900 font-bold">
+              Select Size: <span class="text-[#a16207]" id="selectedSizeLabel">M (Tailored Poise)</span>
+            </span>
+            <button type="button" onclick="openSizeGuideModal()" class="text-xs font-mono text-[#a16207] hover:underline flex items-center gap-1 cursor-pointer font-bold">
+              <span class="material-symbols-outlined text-sm">straighten</span>
+              <span>Find My Size</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-5 gap-2">
+                                    <button type="button" 
+                    onclick="selectProductSize('XS', this)"
+                    class="size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer">
+              <span>XS</span>
+              <span class="block text-[8px] text-stone-400 font-sans mt-0.5">Available</span>
+            </button>
+                                    <button type="button" 
+                    onclick="selectProductSize('S', this)"
+                    class="size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer">
+              <span>S</span>
+              <span class="block text-[8px] text-stone-400 font-sans mt-0.5">Available</span>
+            </button>
+                                    <button type="button" 
+                    onclick="selectProductSize('M', this)"
+                    class="size-pill-btn bg-stone-950 text-[#e9c176] font-bold shadow-md py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer">
+              <span>M</span>
+              <span class="block text-[8px] text-stone-400 font-sans mt-0.5">3 Left</span>
+            </button>
+                                    <button type="button" 
+                    onclick="selectProductSize('L', this)"
+                    class="size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer">
+              <span>L</span>
+              <span class="block text-[8px] text-stone-400 font-sans mt-0.5">Available</span>
+            </button>
+                                    <button type="button" 
+                    onclick="selectProductSize('XL', this)"
+                    class="size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer">
+              <span>XL</span>
+              <span class="block text-[8px] text-stone-400 font-sans mt-0.5">Available</span>
+            </button>
+                      </div>
+        </div>
+
+        <!-- ── VIRAL SOCIAL GROUP BUY VS SINGLE BUY OPTIONS ── -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <!-- Option A: Standard Single Buy -->
+          <div class="p-3 rounded-2xl border-2 border-stone-900 bg-stone-50 text-center cursor-pointer relative" onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, '/img/terry_hoodie_luxury.jpg', 1);">
+            <div class="text-[10px] font-mono uppercase text-stone-500 font-bold">Single Purchase</div>
+            <div class="font-serif text-lg font-bold text-stone-950 mt-0.5">₹4,399</div>
+            <div class="text-[9px] font-mono text-stone-400">Standard Delivery</div>
+          </div>
+          
+          <!-- Option B: Social Team Group Buy (40% OFF) -->
+          <div class="p-3 rounded-2xl border-2 border-pink-500 bg-gradient-to-br from-pink-50 to-rose-50 text-center cursor-pointer relative shadow-sm hover:scale-[1.02] transition-transform" onclick="openGroupBuyModal(3, 'Sculpted 500 GSM Terry Hoodie', 1739, '/img/terry_hoodie_luxury.jpg');">
+            <span class="absolute -top-2.5 right-2 px-2 py-0.5 bg-pink-600 text-white font-mono text-[9px] font-extrabold uppercase rounded-full shadow-xs">40% OFF TEAM</span>
+            <div class="text-[10px] font-mono uppercase text-pink-700 font-bold flex items-center justify-center gap-1">
+              <span class="material-symbols-outlined text-xs">group</span>
+              <span>Team Buy (3 Friends)</span>
+            </div>
+            <div class="font-serif text-lg font-bold text-pink-700 mt-0.5">₹2,639</div>
+            <div class="text-[9px] font-mono text-pink-600 font-semibold">Invite 2 Friends</div>
+          </div>
+        </div>
+
+        <!-- ── DUAL HIGH-CONVERTING ACQUISITION BUTTONS ── -->
+        <div class="space-y-2.5 pt-1">
+          
+          <!-- Primary 1-Click Instant Acquisition -->
+          <button type="button" 
+                  onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, '/img/terry_hoodie_luxury.jpg', 1);"
+                  class="w-full py-3.5 px-6 bg-gradient-to-r from-amber-400 to-[#e9c176] hover:opacity-90 text-black font-button font-extrabold text-xs sm:text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined text-lg">bolt</span>
+            <span>Instant 1-Click Acquisition</span>
+          </button>
+
+          <!-- Add to Wardrobe Bag Button -->
+          <div class="grid grid-cols-5 gap-2">
+            <button type="button" 
+                    onclick="addToCart({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./img/cashmere_cocoon_coat.jpg'}, 1)"
+                    class="col-span-4 py-3 px-6 bg-stone-950 hover:bg-stone-800 text-white font-button font-bold text-xs uppercase tracking-widest rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+              <span class="material-symbols-outlined text-base">shopping_bag</span>
+              <span>Acquire to Wardrobe Bag</span>
+            </button>
+            <button type="button" 
+                    onclick="toggleWishlistItem({id:3, title:'Sculpted 500 GSM Terry Hoodie', price:2899, image:'/img/terry_hoodie_luxury.jpg'})"
+                    class="col-span-1 py-3 bg-stone-100 hover:bg-stone-200 border border-stone-300 text-rose-500 rounded-2xl flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+                    title="Save to Wardrobe Wishlist">
+              <span class="material-symbols-outlined text-xl">favorite</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- ── Real-Time BlueDart Pincode Delivery Estimator ── -->
+        <div class="pt-3 border-t border-stone-200">
+          <label class="text-[10px] font-mono uppercase tracking-widest text-stone-500 font-bold block mb-1.5">
+            Check Doorstep Priority Express Dispatch
+          </label>
+          <div class="flex gap-2">
+            <input type="text" id="pincodeInput" placeholder="Enter Pincode (e.g. 110001, 400001)" class="flex-1 px-4 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono text-stone-900 outline-none focus:border-stone-900 transition-colors">
+            <button type="button" onclick="checkPincodeDelivery()" class="px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white font-mono text-xs font-bold uppercase rounded-xl transition-all cursor-pointer">
+              Verify
+            </button>
+          </div>
+          <div id="pincodeResult" class="mt-2 text-xs font-mono text-emerald-600 hidden flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-sm">verified</span>
+            <span id="pincodeText">Verified: Guaranteed BlueDart Express Delivery in 24-48 hours.</span>
+          </div>
+        </div>
+
+        <!-- Guarantee & Trust Badges -->
+        <div class="pt-3 border-t border-stone-200 grid grid-cols-2 gap-2 text-[10px] text-stone-600 font-mono">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-emerald-600 text-sm">verified_user</span>
+            <span>100% Certified Mongolian Fiber</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[#a16207] text-sm">swap_horizontal_circle</span>
+            <span>7-Day Doorstep Exchange</span>
+          </div>
+        </div>
+
+        <!-- ── FOMO Mystery Drop & Waitlist Triggers ── -->
+        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-stone-100">
+          <button type="button" onclick="openMysteryDropModal()" class="p-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-900 flex items-center justify-between transition-all cursor-pointer">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="text-sm">🎁</span>
+              <div class="text-left min-w-0">
+                <span class="font-bold text-[10px] block truncate">Mystery Drop</span>
+                <span class="text-[9px] text-purple-700 font-mono">From ₹799 (3x Value)</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-xs text-purple-600">arrow_forward</span>
+          </button>
+          <button type="button" onclick="openWaitlistModal(1, 'The Atelier Cashmere Cocoon Coat')" class="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 flex items-center justify-between transition-all cursor-pointer">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="material-symbols-outlined text-amber-600 text-sm">notifications</span>
+              <div class="text-left min-w-0">
+                <span class="font-bold text-[10px] block truncate">VIP Restock Pass</span>
+                <span class="text-[9px] text-amber-700 font-mono">Notify on Restock</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-xs text-amber-600">arrow_forward</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── 3. OBSIDIAN ATELIER CRAFT & ENGINEERING SHOWCASE (DRAMATIC BLACK CANVAS) ── -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-[#090a0f] rounded-3xl border border-white/15 shadow-2xl p-8 sm:p-12 md:p-14 text-white relative overflow-hidden">
+      
+      <!-- Ambient Golden Radial Lighting -->
+      <div class="absolute -right-20 -bottom-20 w-96 h-96 rounded-full bg-amber-500/10 blur-[100px] pointer-events-none"></div>
+      <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e9c176_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+
+      <div class="max-w-3xl mb-10 relative z-10">
+        <span class="text-xs font-mono uppercase tracking-[0.25em] text-[#e9c176] font-bold block mb-2">✦ The Anatomy of Atelier Craft</span>
+        <h2 class="font-serif text-2xl sm:text-4xl text-white font-normal leading-tight">
+          Engineered For Decades of Poise<span class="text-[#e9c176]">.</span>
         </h2>
+        <p class="text-white/60 text-xs sm:text-sm mt-3 font-light font-sans leading-relaxed">
+          Every silhouette is conceived without compromise, combining ancient Mongolian harvesting with single-needle Italian hand-construction.
+        </p>
       </div>
 
-      <div class="relative z-10 border-t border-white/15 pt-6 text-xs text-white/70 font-light space-y-2.5 font-mono">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-sm text-[#e9c176]">redeem</span>
-          <span>15% Welcome Privilege on First Piece</span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-8 border-t border-white/10 relative z-10">
+        
+        <!-- Card 1 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md hover:border-[#e9c176]/40 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#e9c176] mb-4 shadow-md">
+            <span class="material-symbols-outlined text-2xl">texture</span>
+          </div>
+          <h4 class="font-serif text-base font-bold text-white mb-2">Raw Fiber Sourcing</h4>
+          <p class="text-white/70 text-xs leading-relaxed font-light font-sans">
+            Harvested exclusively during spring molting in the Mongolian steppes. Each individual fiber measures 14.5–15.2 microns in fineness for cloud-like thermal poise without bulk.
+          </p>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-sm text-emerald-400">chat</span>
-          <span>Direct WhatsApp Tailoring &amp; Design Notes</span>
+
+        <!-- Card 2 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md hover:border-[#e9c176]/40 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#e9c176] mb-4 shadow-md">
+            <span class="material-symbols-outlined text-2xl">architecture</span>
+          </div>
+          <h4 class="font-serif text-base font-bold text-white mb-2">Double-Faced Tailoring</h4>
+          <p class="text-white/70 text-xs leading-relaxed font-light font-sans">
+            Two distinct woven layers are hand-split along seam margins and turned inward, followed by invisible single-needle hand-stitching that eliminates bulk and stiff linings.
+          </p>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-sm text-[#e9c176]">verified</span>
-          <span>Numbered Certificate &amp; Priority Dispatch</span>
+
+        <!-- Card 3 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md hover:border-[#e9c176]/40 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-emerald-400 mb-4 shadow-md">
+            <span class="material-symbols-outlined text-2xl">flight_takeoff</span>
+          </div>
+          <h4 class="font-serif text-base font-bold text-white mb-2">White-Glove Express Transit</h4>
+          <p class="text-white/70 text-xs leading-relaxed font-light font-sans">
+            Dispatched via insured BlueDart Express in an archival cedar-lined dust garment box with solid brass hanger and a hand-numbered Certificate of Authenticity.
+          </p>
         </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── 4. ✦ AI STYLIST ENSEMBLE SUITE (3-PIECE COMPLETE LOOKS WITH CONNECTORS) ✦ ── -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" id="curatedEnsemblesSection">
+    
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 mb-8 pb-4 border-b border-stone-200">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-[#a16207] text-[10px] font-mono font-bold uppercase tracking-wider mb-2">
+          <span class="material-symbols-outlined text-xs">auto_awesome</span>
+          <span>AI Stylist Autonomous Ensembles</span>
+        </div>
+        <h3 class="font-serif text-2xl sm:text-3xl text-stone-950 font-bold">Curated 3-Piece Complete Looks</h3>
+        <p class="text-xs text-stone-500 font-light mt-1">This is a topwear piece. Below are 3 curated looks. Click any box to inspect or open the Model Studio.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-mono text-stone-500 mr-2 hidden sm:inline">← Scroll Ensembles →</span>
+        <button type="button" onclick="scrollEnsembleRail(-340)" class="w-9 h-9 rounded-full bg-white border border-stone-300 hover:border-stone-950 text-stone-800 flex items-center justify-center transition-colors cursor-pointer shadow-xs" title="Previous Look">
+          <span class="material-symbols-outlined text-sm">chevron_left</span>
+        </button>
+        <button type="button" onclick="scrollEnsembleRail(340)" class="w-9 h-9 rounded-full bg-white border border-stone-300 hover:border-stone-950 text-stone-800 flex items-center justify-center transition-colors cursor-pointer shadow-xs" title="Next Look">
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
       </div>
     </div>
 
-    <!-- Right Column: Luxury Registration Form & Google Auth -->
-    <div class="md:col-span-7 p-6 sm:p-10 md:p-12 flex flex-col justify-center bg-white">
+    <!-- Horizontal Scrollable Track of 3 Complete Looks -->
+    <div class="flex gap-6 overflow-x-auto custom-scrollbar pb-6 snap-x" id="pdpEnsembleTrack">
       
-      <div class="mb-6">
-        <span class="font-mono text-[10px] text-[#a16207] uppercase tracking-[0.2em] block mb-1.5 font-bold">✦ Private Membership ✦</span>
-        <h1 class="text-2xl sm:text-3xl text-stone-950 font-serif font-bold tracking-tight">Create Atelier Account</h1>
-        <p class="text-xs text-stone-600 font-light mt-1.5 leading-relaxed">Register for express white-glove acquisitions and personalized design consultations.</p>
-      </div>
-
-      <!-- Google 1-Click Registration Button -->
-      <a href="./account/google" class="w-full py-3 px-4 bg-white text-stone-800 border border-stone-300 rounded-xl hover:border-stone-950 hover:shadow-xs transition-all flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-wider font-semibold mb-6 cursor-pointer active:scale-98">
-        <svg class="w-4 h-4" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-        </svg>
-        <span>Continue with Google</span>
-      </a>
-
-      <!-- Divider -->
-      <div class="flex items-center gap-4 mb-6">
-        <div class="flex-1 h-px bg-stone-200"></div>
-        <span class="font-mono text-[10px] uppercase tracking-widest text-stone-400">✦ Or Register with Details ✦</span>
-        <div class="flex-1 h-px bg-stone-200"></div>
-      </div>
-
-      <form method="post" action="./account/register" class="space-y-4">
-        <input type="hidden" name="csrf_novadrop" value="39b898f8fabec6dc42e2871caa3cae57">
-
-        <!-- Full Name -->
+                  <div class="w-[310px] sm:w-[340px] flex-shrink-0 snap-start bg-white border border-stone-200 hover:border-amber-300/80 rounded-3xl p-5 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300" id="pdpLookCard_0">
+        
         <div>
-          <label class="font-mono text-[11px] uppercase tracking-wider text-stone-700 block mb-1 font-bold">Full Name *</label>
-          <input type="text" name="name" value="" class="w-full text-xs bg-stone-50/80 px-3.5 py-3 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white focus:ring-1 focus:ring-stone-950 outline-none font-sans" required placeholder="Elena Rostova">
-                  </div>
-
-        <!-- Email Address -->
-        <div>
-          <label class="font-mono text-[11px] uppercase tracking-wider text-stone-700 block mb-1 font-bold">Email Address *</label>
-          <input type="email" name="email" value="" class="w-full text-xs bg-stone-50/80 px-3.5 py-3 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white focus:ring-1 focus:ring-stone-950 outline-none font-sans" required placeholder="elena@example.com">
-                  </div>
-
-        <!-- WhatsApp Phone Number Input with Country Code -->
-        <div>
-          <label class="font-mono text-[11px] uppercase tracking-wider text-stone-700 flex items-center justify-between mb-1 font-bold">
-            <span>WhatsApp / Mobile Number</span>
-            <span class="text-emerald-700 flex items-center gap-1 font-bold text-[10px] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-              <span class="material-symbols-outlined text-[13px]">chat</span>
-              <span>WhatsApp Alerts</span>
-            </span>
-          </label>
-          <div class="flex items-center gap-2">
-            <select name="country_code" class="text-xs bg-stone-50/80 px-3 py-3 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white outline-none font-mono">
-              <option value="+91" selected>🇮🇳 +91 (IN)</option>
-              <option value="+1">🇺🇸 +1 (US)</option>
-              <option value="+44">🇬🇧 +44 (UK)</option>
-              <option value="+971">🇦🇪 +971 (UAE)</option>
-              <option value="+33">🇫🇷 +33 (FR)</option>
-              <option value="+49">🇩🇪 +49 (DE)</option>
-              <option value="+81">🇯🇵 +81 (JP)</option>
-              <option value="+65">🇸🇬 +65 (SG)</option>
-            </select>
-            <input type="tel" name="phone" value="" class="flex-1 text-xs bg-stone-50/80 px-3.5 py-3 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white focus:ring-1 focus:ring-stone-950 outline-none font-mono" placeholder="98765 43210">
+          <!-- Look Header -->
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-full bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shadow-xs">
+                01              </span>
+              <div>
+                <h4 class="font-serif font-bold text-xs sm:text-sm text-stone-900 truncate max-w-[160px]">The Milan Executive</h4>
+                <span class="text-[10px] text-stone-500 font-light block">Formal &amp; Sharp Sartorial Cut</span>
+              </div>
+            </div>
+            <span class="text-[9px] font-mono uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+              12% OFF            </span>
           </div>
-                  </div>
 
-        <!-- Delivery Address / Residence (Requested by User) -->
-        <div class="border-t border-stone-200 pt-3">
-          <label class="font-mono text-[11px] uppercase tracking-wider text-stone-700 flex items-center justify-between mb-1.5 font-bold">
-            <span>Delivery Address / Residence</span>
-            <span class="text-[10px] text-stone-400 font-mono">For Priority White-Glove Transit</span>
-          </label>
-          
-          <input type="text" name="address" value="" class="w-full text-xs bg-stone-50/80 px-3.5 py-3 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white focus:ring-1 focus:ring-stone-950 outline-none font-sans mb-2" placeholder="House / Flat No., Street, Landmark">
-          
-          <div class="grid grid-cols-3 gap-2">
-            <input type="text" name="city" value="" class="text-xs bg-stone-50/80 px-3 py-2.5 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white outline-none font-sans" placeholder="City">
-            <input type="text" name="state" value="" class="text-xs bg-stone-50/80 px-3 py-2.5 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white outline-none font-sans" placeholder="State">
-            <input type="text" name="pincode" value="" class="text-xs bg-stone-50/80 px-3 py-2.5 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white outline-none font-mono" placeholder="PIN Code">
+          <!-- Stacked 3 Slots with Connectors -->
+          <div class="space-y-2.5 mb-4">
+            
+            <!-- Slot 1: Top Wear (Active Piece) -->
+            <div class="bg-amber-50/40 border border-amber-300/80 ring-1 ring-amber-300/50 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">01</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-[#a16207] bg-amber-100/90 px-1.5 py-0.5 rounded inline-block mb-0.5">
+                    ★ Top Wear (Active)
+                  </span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">The Atelier Cashmere Cocoon Coat</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="4399">₹4,399</span>
+                </div>
+              </div>
+              <span class="px-2 py-1 bg-amber-100 text-amber-900 rounded-lg text-[9px] font-mono font-bold border border-amber-300 flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-[10px]">check</span>
+                <span>Active</span>
+              </span>
+            </div>
+
+            <!-- Connector 1 -->
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-0.5 h-2.5 bg-stone-300"></div>
+            </div>
+
+            <!-- Slot 2: Bottom Wear -->
+            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/okayama_selvedge_denim.jpg" alt="Okayama 14.5oz Selvedge Denim" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">02</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Bottom Wear</span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">Okayama 14.5oz Selvedge Denim</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="4499">₹4,499</span>
+                </div>
+              </div>
+              <button type="button" 
+                      onclick="addToCart({id:2, title:'Okayama 14.5oz Selvedge Denim', price:4499, image:'./img/okayama_selvedge_denim.jpg'}, 1)" 
+                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
+                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
+                <span>Add</span>
+              </button>
+            </div>
+
+            <!-- Connector 2 -->
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-0.5 h-2.5 bg-stone-300"></div>
+            </div>
+
+            <!-- Slot 3: Footwear -->
+            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/chelsea_leather_boots.jpg" alt="Handcrafted Leather Chelsea Boots" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">03</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Footwear</span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">Handcrafted Leather Chelsea Boots</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="5999">₹5,999</span>
+                </div>
+              </div>
+              <button type="button" 
+                      onclick="addToCart({id:7, title:'Handcrafted Leather Chelsea Boots', price:5999, image:'./img/chelsea_leather_boots.jpg'}, 1)" 
+                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
+                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
+                <span>Add</span>
+              </button>
+            </div>
+
           </div>
         </div>
 
-        <!-- Password -->
-        <div>
-          <label class="font-mono text-[11px] uppercase tracking-wider text-stone-700 block mb-1 font-bold">Password * (Minimum 6 Characters)</label>
-          <div class="relative">
-            <input type="password" id="regPassword" name="password" class="w-full text-xs bg-stone-50/80 px-3.5 py-3 border border-stone-300 rounded-xl focus:border-stone-950 focus:bg-white focus:ring-1 focus:ring-stone-950 outline-none pr-10 font-sans" required placeholder="••••••••">
-            <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute right-3 top-3 text-stone-400 hover:text-stone-950 cursor-pointer">
-              <span class="material-symbols-outlined text-base">visibility</span>
-            </button>
-          </div>
-                  </div>
+        <!-- Ensemble Actions & Pricing -->
+        <div class="pt-3 border-t border-stone-200 space-y-2.5">
+          
+          <!-- Interactive Model Studio Trigger -->
+          <button type="button" onclick="openPdpModelStudioModal(0)" class="w-full py-2.5 bg-stone-900 hover:bg-black text-white rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs">
+            <span class="material-symbols-outlined text-sm text-[#e9c176]">accessibility_new</span>
+            <span>Interactive Model Studio</span>
+          </button>
 
-        <!-- WhatsApp Opt-In Toggle -->
-        <div class="p-3.5 bg-stone-50 rounded-xl border border-stone-200/80 flex items-start gap-3">
-          <input type="checkbox" name="whatsapp_optin" id="whatsappOptin" value="1" checked class="accent-stone-950 w-4 h-4 mt-0.5 cursor-pointer">
-          <label for="whatsappOptin" class="text-xs text-stone-700 leading-snug cursor-pointer select-none">
-            <strong class="text-stone-950 block font-bold">Enable WhatsApp Concierge</strong>
-            Receive bespoke lookbook previews, AI stylist design consultations, and real-time white-glove shipment milestones on WhatsApp.
-          </label>
+          <!-- Combo Pricing -->
+          <div class="flex items-baseline justify-between text-xs px-1">
+            <span class="text-stone-500 font-mono text-[11px]">Look Total:</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="font-serif font-bold text-sm text-stone-900" data-price-inr="13109">₹13,109</span>
+              <span class="text-[10px] text-stone-400 line-through" data-price-inr="14897">₹14,897</span>
+              <span class="text-[10px] text-emerald-600 font-mono font-bold">Save ₹1,788</span>
+            </div>
+          </div>
+
+          <!-- Acquire Complete 3-Piece Look -->
+          <button type="button" 
+                  onclick="acquireFullEnsemble(0)" 
+                  class="w-full py-2.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:opacity-90 text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">checkroom</span>
+            <span>Acquire Complete 3-Piece Look</span>
+          </button>
         </div>
 
-        <button type="submit" class="w-full py-3.5 bg-stone-950 text-white font-mono text-xs uppercase tracking-widest hover:bg-stone-850 transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer rounded-xl font-bold active:scale-95 mt-2">
-          <span>Create Atelier Account</span>
-          <span class="material-symbols-outlined text-sm text-[#e9c176]">arrow_forward</span>
-        </button>
-      </form>
+      </div>
+                  <div class="w-[310px] sm:w-[340px] flex-shrink-0 snap-start bg-white border border-stone-200 hover:border-amber-300/80 rounded-3xl p-5 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300" id="pdpLookCard_1">
+        
+        <div>
+          <!-- Look Header -->
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-full bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shadow-xs">
+                02              </span>
+              <div>
+                <h4 class="font-serif font-bold text-xs sm:text-sm text-stone-900 truncate max-w-[160px]">The Tailored Atelier</h4>
+                <span class="text-[10px] text-stone-500 font-light block">Refined Contemporary Drape</span>
+              </div>
+            </div>
+            <span class="text-[9px] font-mono uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+              12% OFF            </span>
+          </div>
 
-      <div class="mt-6 pt-4 border-t border-stone-200 text-center text-xs text-stone-600 font-light">
-        Already registered? <a href="./account/login" class="text-[#a16207] font-bold hover:underline">Sign In Here →</a>
+          <!-- Stacked 3 Slots with Connectors -->
+          <div class="space-y-2.5 mb-4">
+            
+            <!-- Slot 1: Top Wear (Active Piece) -->
+            <div class="bg-amber-50/40 border border-amber-300/80 ring-1 ring-amber-300/50 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">01</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-[#a16207] bg-amber-100/90 px-1.5 py-0.5 rounded inline-block mb-0.5">
+                    ★ Top Wear (Active)
+                  </span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">The Atelier Cashmere Cocoon Coat</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="4399">₹4,399</span>
+                </div>
+              </div>
+              <span class="px-2 py-1 bg-amber-100 text-amber-900 rounded-lg text-[9px] font-mono font-bold border border-amber-300 flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-[10px]">check</span>
+                <span>Active</span>
+              </span>
+            </div>
+
+            <!-- Connector 1 -->
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-0.5 h-2.5 bg-stone-300"></div>
+            </div>
+
+            <!-- Slot 2: Bottom Wear -->
+            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/italian_pleated_trousers.jpg" alt="Italian Pleated Wool Trousers" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">02</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Bottom Wear</span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">Italian Pleated Wool Trousers</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="4999">₹4,999</span>
+                </div>
+              </div>
+              <button type="button" 
+                      onclick="addToCart({id:6, title:'Italian Pleated Wool Trousers', price:4999, image:'./img/italian_pleated_trousers.jpg'}, 1)" 
+                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
+                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
+                <span>Add</span>
+              </button>
+            </div>
+
+            <!-- Connector 2 -->
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-0.5 h-2.5 bg-stone-300"></div>
+            </div>
+
+            <!-- Slot 3: Footwear -->
+            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/calfskin_penny_loafers.jpg" alt="Burnished Calfskin Penny Loafers" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">03</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Footwear</span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">Burnished Calfskin Penny Loafers</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="5499">₹5,499</span>
+                </div>
+              </div>
+              <button type="button" 
+                      onclick="addToCart({id:8, title:'Burnished Calfskin Penny Loafers', price:5499, image:'./img/calfskin_penny_loafers.jpg'}, 1)" 
+                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
+                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
+                <span>Add</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Ensemble Actions & Pricing -->
+        <div class="pt-3 border-t border-stone-200 space-y-2.5">
+          
+          <!-- Interactive Model Studio Trigger -->
+          <button type="button" onclick="openPdpModelStudioModal(1)" class="w-full py-2.5 bg-stone-900 hover:bg-black text-white rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs">
+            <span class="material-symbols-outlined text-sm text-[#e9c176]">accessibility_new</span>
+            <span>Interactive Model Studio</span>
+          </button>
+
+          <!-- Combo Pricing -->
+          <div class="flex items-baseline justify-between text-xs px-1">
+            <span class="text-stone-500 font-mono text-[11px]">Look Total:</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="font-serif font-bold text-sm text-stone-900" data-price-inr="13109">₹13,109</span>
+              <span class="text-[10px] text-stone-400 line-through" data-price-inr="14897">₹14,897</span>
+              <span class="text-[10px] text-emerald-600 font-mono font-bold">Save ₹1,788</span>
+            </div>
+          </div>
+
+          <!-- Acquire Complete 3-Piece Look -->
+          <button type="button" 
+                  onclick="acquireFullEnsemble(1)" 
+                  class="w-full py-2.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:opacity-90 text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">checkroom</span>
+            <span>Acquire Complete 3-Piece Look</span>
+          </button>
+        </div>
+
+      </div>
+                  <div class="w-[310px] sm:w-[340px] flex-shrink-0 snap-start bg-white border border-stone-200 hover:border-amber-300/80 rounded-3xl p-5 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300" id="pdpLookCard_2">
+        
+        <div>
+          <!-- Look Header -->
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-full bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shadow-xs">
+                03              </span>
+              <div>
+                <h4 class="font-serif font-bold text-xs sm:text-sm text-stone-900 truncate max-w-[160px]">The Monochrome Street Poise</h4>
+                <span class="text-[10px] text-stone-500 font-light block">Architectural Minimalist Weekend</span>
+              </div>
+            </div>
+            <span class="text-[9px] font-mono uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+              12% OFF            </span>
+          </div>
+
+          <!-- Stacked 3 Slots with Connectors -->
+          <div class="space-y-2.5 mb-4">
+            
+            <!-- Slot 1: Top Wear (Active Piece) -->
+            <div class="bg-amber-50/40 border border-amber-300/80 ring-1 ring-amber-300/50 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">01</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-[#a16207] bg-amber-100/90 px-1.5 py-0.5 rounded inline-block mb-0.5">
+                    ★ Top Wear (Active)
+                  </span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">The Atelier Cashmere Cocoon Coat</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="4399">₹4,399</span>
+                </div>
+              </div>
+              <span class="px-2 py-1 bg-amber-100 text-amber-900 rounded-lg text-[9px] font-mono font-bold border border-amber-300 flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-[10px]">check</span>
+                <span>Active</span>
+              </span>
+            </div>
+
+            <!-- Connector 1 -->
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-0.5 h-2.5 bg-stone-300"></div>
+            </div>
+
+            <!-- Slot 2: Bottom Wear -->
+            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/okayama_selvedge_denim.jpg" alt="Okayama 14.5oz Selvedge Denim" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">02</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Bottom Wear</span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">Okayama 14.5oz Selvedge Denim</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="4499">₹4,499</span>
+                </div>
+              </div>
+              <button type="button" 
+                      onclick="addToCart({id:2, title:'Okayama 14.5oz Selvedge Denim', price:4499, image:'./img/okayama_selvedge_denim.jpg'}, 1)" 
+                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
+                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
+                <span>Add</span>
+              </button>
+            </div>
+
+            <!-- Connector 2 -->
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-0.5 h-2.5 bg-stone-300"></div>
+            </div>
+
+            <!-- Slot 3: Footwear -->
+            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
+                  <img src="./img/minimalist_suede_derby.jpg" alt="Minimalist Suede Derby Shoes" class="w-full h-full object-cover">
+                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">03</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Footwear</span>
+                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate">Minimalist Suede Derby Shoes</h5>
+                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="4799">₹4,799</span>
+                </div>
+              </div>
+              <button type="button" 
+                      onclick="addToCart({id:9, title:'Minimalist Suede Derby Shoes', price:4799, image:'./img/minimalist_suede_derby.jpg'}, 1)" 
+                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
+                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
+                <span>Add</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Ensemble Actions & Pricing -->
+        <div class="pt-3 border-t border-stone-200 space-y-2.5">
+          
+          <!-- Interactive Model Studio Trigger -->
+          <button type="button" onclick="openPdpModelStudioModal(2)" class="w-full py-2.5 bg-stone-900 hover:bg-black text-white rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs">
+            <span class="material-symbols-outlined text-sm text-[#e9c176]">accessibility_new</span>
+            <span>Interactive Model Studio</span>
+          </button>
+
+          <!-- Combo Pricing -->
+          <div class="flex items-baseline justify-between text-xs px-1">
+            <span class="text-stone-500 font-mono text-[11px]">Look Total:</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="font-serif font-bold text-sm text-stone-900" data-price-inr="12053">₹12,053</span>
+              <span class="text-[10px] text-stone-400 line-through" data-price-inr="13697">₹13,697</span>
+              <span class="text-[10px] text-emerald-600 font-mono font-bold">Save ₹1,644</span>
+            </div>
+          </div>
+
+          <!-- Acquire Complete 3-Piece Look -->
+          <button type="button" 
+                  onclick="acquireFullEnsemble(2)" 
+                  class="w-full py-2.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:opacity-90 text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-sm">checkroom</span>
+            <span>Acquire Complete 3-Piece Look</span>
+          </button>
+        </div>
+
+      </div>
+      
+    </div>
+
+  </section>
+
+
+  <!-- ── 5. VERIFIED CLIENT REVIEWS SECTION ── -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white rounded-3xl border border-stone-200 shadow-md p-6 sm:p-10 md:p-12">
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8 pb-6 border-b border-stone-200">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-[0.25em] text-[#a16207] font-bold block mb-1.5">Client Provenance</span>
+          <h3 class="font-serif text-2xl sm:text-3xl text-stone-950 font-bold">Voices from the Atelier Collective</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="flex items-center gap-1 text-amber-500 font-bold text-base justify-end">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span class="text-stone-900 text-sm ml-1">4.98 / 5.0</span>
+            </div>
+            <span class="text-[11px] font-mono text-stone-500">Based on 142 Verified Acquisitions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200">
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-full bg-stone-900 text-[#e9c176] font-mono text-xs font-bold flex items-center justify-center">AR</span>
+              <div>
+                <h5 class="text-xs font-bold text-stone-900">Aarav Singhania</h5>
+                <span class="text-[10px] font-mono text-emerald-600 font-semibold">✓ Verified Buyer · Mumbai</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-mono text-stone-400">2 days ago</span>
+          </div>
+          <p class="text-stone-700 text-xs sm:text-sm leading-relaxed font-light">
+            "The double-faced cashmere is sublime. The fluid drop shoulder drapes effortlessly over tailored suits. The BlueDart express courier arrived in Mumbai within 22 hours in a stunning wooden garment box."
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200">
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-full bg-stone-900 text-[#e9c176] font-mono text-xs font-bold flex items-center justify-center">NM</span>
+              <div>
+                <h5 class="text-xs font-bold text-stone-900">Natasha Mehra</h5>
+                <span class="text-[10px] font-mono text-emerald-600 font-semibold">✓ Verified Buyer · New Delhi</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-mono text-stone-400">5 days ago</span>
+          </div>
+          <p class="text-stone-700 text-xs sm:text-sm leading-relaxed font-light">
+            "Impeccable single-needle finishing with no visible seam lines. It feels lighter than air yet remarkably warm. Truly rivaling Parisian couture houses at an authentic direct value."
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ── 6. BESPOKE PRIVATE ATELIER SERVICE BANNER (OBSIDIAN NOIR) ── -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <div class="bg-[#090a0f] rounded-3xl p-8 sm:p-12 md:p-14 border border-white/15 text-white flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+      
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-amber-500/10 blur-[80px] pointer-events-none"></div>
+
+      <div class="flex items-center gap-6 relative z-10">
+        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/20 flex items-center justify-center flex-shrink-0 shadow-lg">
+          <span class="material-symbols-outlined text-[#e9c176] text-3xl">straighten</span>
+        </div>
+        <div>
+          <span class="text-[10px] font-mono text-[#e9c176] uppercase tracking-widest block mb-1 font-bold">Private Atelier Consultation</span>
+          <h3 class="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">Need Bespoke Custom Alterations?</h3>
+          <p class="text-white/70 text-xs sm:text-sm leading-relaxed max-w-xl font-light">
+            Our master tailors offer made-to-measure sleeve lengths, custom monogramming, and personalized private fittings at your residence.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3.5 flex-shrink-0 w-full lg:w-auto relative z-10">
+        <a href="/shop" class="flex-1 lg:flex-initial px-8 py-3.5 bg-gradient-to-r from-amber-400 to-[#e9c176] text-black font-button text-xs uppercase tracking-widest font-bold hover:opacity-90 transition-all rounded-xl text-center shadow-xl">
+          Explore All Archives →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+
+<!-- ══════════════════════════════════════════════════════
+     7. INTERACTIVE MODEL STUDIO LOOKBOOK MODAL (POPUP)
+══════════════════════════════════════════════════════ -->
+<div id="pdpModelStudioModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[130] hidden items-center justify-center p-4 md:p-8" onclick="if(event.target===this)closePdpModelStudioModal()">
+  <div class="bg-[#0b0c10] p-6 sm:p-8 rounded-3xl max-w-4xl w-full border border-white/20 text-white shadow-2xl relative max-h-[92vh] overflow-y-auto custom-scrollbar flex flex-col justify-between">
+    
+    <!-- Modal Header -->
+    <div class="flex justify-between items-center pb-4 mb-6 border-b border-white/15">
+      <div>
+        <span class="text-[10px] font-mono uppercase tracking-widest text-[#e9c176] block mb-0.5">✦ Spatial Model Lookbook</span>
+        <h3 class="font-serif text-xl sm:text-2xl font-bold text-white" id="pdpModelStudioTitle">Look 01 · The Milan Executive</h3>
+      </div>
+      <button type="button" onclick="closePdpModelStudioModal()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors">
+        ✕
+      </button>
+    </div>
+
+    <!-- Modal Content Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6 items-center">
+      
+      <!-- Left: Big Model Photo -->
+      <div class="md:col-span-6 relative aspect-[3/4] rounded-2xl overflow-hidden bg-black/80 border border-white/20 shadow-xl group">
+        <img id="pdpModelStudioImg" src="./img/model_look_executive.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Model Look">
+        <div class="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/80 text-[10px] font-mono text-[#e9c176] border border-white/20 backdrop-blur-md">
+          Live Model Runway Poise
+        </div>
+      </div>
+
+      <!-- Right: Ensembles Checklist -->
+      <div class="md:col-span-6 flex flex-col justify-between space-y-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-[#e9c176] block mb-1">Ensemble Breakdown</span>
+          <h4 class="font-serif text-lg font-bold text-white mb-3" id="pdpModelStudioSubtitle">3 Tailored Harmonious Pieces</h4>
+          
+          <div class="space-y-3" id="pdpModelStudioItemsList">
+            <!-- Items injected via JS -->
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-white/15 space-y-3">
+          <div class="flex justify-between items-baseline">
+            <span class="text-xs font-mono text-white/60">Bundle Total (12% Privilege):</span>
+            <span class="font-serif text-xl font-bold text-[#e9c176]" id="pdpModelStudioPrice">₹12,229</span>
+          </div>
+
+          <button type="button" id="btnPdpAcquireStudioLook" class="w-full py-3.5 bg-gradient-to-r from-amber-400 to-[#e9c176] text-black font-button font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-xl hover:opacity-90 cursor-pointer">
+            Acquire Complete 3-Piece Ensemble →
+          </button>
+        </div>
       </div>
 
     </div>
@@ -1384,19 +2563,402 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+
+<!-- ══════════════════════════════════════════════════════
+     8. SIZE GUIDE & ATELIER MEASUREMENTS MODAL
+══════════════════════════════════════════════════════ -->
+<div id="sizeGuideModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[120] hidden items-center justify-center p-4" onclick="if(event.target===this)closeSizeGuideModal()">
+  <div class="bg-white p-6 sm:p-8 rounded-3xl max-w-xl w-full border border-stone-200 shadow-2xl text-stone-900 max-h-[90vh] overflow-y-auto custom-scrollbar">
+    <div class="flex justify-between items-center pb-4 mb-5 border-b border-stone-200">
+      <div>
+        <span class="text-[10px] font-mono uppercase tracking-widest text-[#a16207] font-bold block">Atelier Tailoring Guide</span>
+        <h3 class="font-serif text-xl font-bold text-stone-950">Silhouette &amp; Body Measurements</h3>
+      </div>
+      <button type="button" onclick="closeSizeGuideModal()" class="w-8 h-8 rounded-full bg-stone-100 text-stone-600 hover:text-stone-950 flex items-center justify-center cursor-pointer">
+        ✕
+      </button>
+    </div>
+
+    <table class="w-full text-xs font-mono text-left mb-6 border border-stone-200 rounded-xl overflow-hidden">
+      <thead class="bg-stone-100 text-stone-900 uppercase font-bold">
+        <tr>
+          <th class="p-3 border-b border-stone-200">Size</th>
+          <th class="p-3 border-b border-stone-200">Chest (in)</th>
+          <th class="p-3 border-b border-stone-200">Shoulder (in)</th>
+          <th class="p-3 border-b border-stone-200">Length (in)</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-stone-200 text-stone-700">
+        <tr><td class="p-3 font-bold text-stone-900">XS</td><td class="p-3">36 - 38</td><td class="p-3">17.5</td><td class="p-3">41.0</td></tr>
+        <tr><td class="p-3 font-bold text-stone-900">S</td><td class="p-3">38 - 40</td><td class="p-3">18.0</td><td class="p-3">41.5</td></tr>
+        <tr class="bg-amber-50/60 font-bold text-[#a16207]"><td class="p-3">M (Reference)</td><td class="p-3">40 - 42</td><td class="p-3">18.5</td><td class="p-3">42.0</td></tr>
+        <tr><td class="p-3 font-bold text-stone-900">L</td><td class="p-3">42 - 44</td><td class="p-3">19.0</td><td class="p-3">42.5</td></tr>
+        <tr><td class="p-3 font-bold text-stone-900">XL</td><td class="p-3">44 - 46</td><td class="p-3">19.5</td><td class="p-3">43.0</td></tr>
+      </tbody>
+    </table>
+
+    <p class="text-xs text-stone-500 font-light leading-relaxed mb-4">
+      * All coats feature a relaxed drop-shoulder cut. If you prefer a tailored slim silhouette, we recommend taking one size down.
+    </p>
+
+    <button type="button" onclick="closeSizeGuideModal()" class="w-full py-3 bg-stone-950 text-white font-mono text-xs uppercase font-bold rounded-xl cursor-pointer">
+      Got It, Back to Coat
+    </button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     9. FULLSCREEN STUDIO LOOKBOOK MODAL
+══════════════════════════════════════════════════════ -->
+<div id="productGalleryModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[130] hidden items-center justify-center p-4 md:p-8" onclick="if(event.target===this)closeProductGalleryModal()">
+  <div class="bg-[#0b0c10] p-6 rounded-3xl max-w-4xl w-full border border-white/20 text-white shadow-2xl relative max-h-[92vh] overflow-y-auto custom-scrollbar">
+    <div class="flex justify-between items-center pb-4 mb-6 border-b border-white/15">
+      <h3 class="font-serif text-xl font-bold text-white">The Atelier Cashmere Cocoon Coat · High-Res Archive</h3>
+      <button type="button" onclick="closeProductGalleryModal()" class="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center cursor-pointer">✕</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-black/70 border border-white/15">
+        <img src="./img/cashmere_cocoon_coat.jpg" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt="Studio Look">
+      </div>
+            <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-black/70 border border-white/15">
+        <img src="./img/model_look_classic.jpg" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt="Studio Look">
+      </div>
+            <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-black/70 border border-white/15">
+        <img src="./img/melton_wool_peacoat.jpg" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt="Studio Look">
+      </div>
+            <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-black/70 border border-white/15">
+        <img src="./img/model_look_executive.jpg" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt="Studio Look">
+      </div>
+          </div>
+  </div>
+</div>
+
+
 <script>
-function togglePasswordVisibility(inputId, btn) {
-  var input = document.getElementById(inputId);
-  var icon = btn.querySelector('.material-symbols-outlined');
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.textContent = 'visibility_off';
-  } else {
-    input.type = 'password';
-    icon.textContent = 'visibility';
+const pdpEnsembleLooksData = [{"name":"The Milan Executive","vibe":"Formal & Sharp Sartorial Cut","discount":"12% OFF","model_img":"http:\/\/localhost\/Dropshipping\/img\/model_look_executive.jpg","mannequin_img":"http:\/\/localhost\/Dropshipping\/img\/mannequin_look_executive.jpg","top":{"id":"1","title":"The Atelier Cashmere Cocoon Coat","price":4399,"img":"http:\/\/localhost\/Dropshipping\/img\/cashmere_cocoon_coat.jpg","type":"Top Wear (Active)"},"bottom":{"id":2,"title":"Okayama 14.5oz Selvedge Denim","price":4499,"img":"http:\/\/localhost\/Dropshipping\/img\/okayama_selvedge_denim.jpg","type":"Bottom Wear"},"shoes":{"id":7,"title":"Handcrafted Leather Chelsea Boots","price":5999,"img":"http:\/\/localhost\/Dropshipping\/img\/chelsea_leather_boots.jpg","type":"Footwear"}},{"name":"The Tailored Atelier","vibe":"Refined Contemporary Drape","discount":"12% OFF","model_img":"http:\/\/localhost\/Dropshipping\/img\/model_look_classic.jpg","mannequin_img":"http:\/\/localhost\/Dropshipping\/img\/mannequin_look_classic.jpg","top":{"id":"1","title":"The Atelier Cashmere Cocoon Coat","price":4399,"img":"http:\/\/localhost\/Dropshipping\/img\/cashmere_cocoon_coat.jpg","type":"Top Wear (Active)"},"bottom":{"id":6,"title":"Italian Pleated Wool Trousers","price":4999,"img":"http:\/\/localhost\/Dropshipping\/img\/italian_pleated_trousers.jpg","type":"Bottom Wear"},"shoes":{"id":8,"title":"Burnished Calfskin Penny Loafers","price":5499,"img":"http:\/\/localhost\/Dropshipping\/img\/calfskin_penny_loafers.jpg","type":"Footwear"}},{"name":"The Monochrome Street Poise","vibe":"Architectural Minimalist Weekend","discount":"12% OFF","model_img":"http:\/\/localhost\/Dropshipping\/img\/model_look_street.jpg","mannequin_img":"http:\/\/localhost\/Dropshipping\/img\/mannequin_look_street.jpg","top":{"id":"1","title":"The Atelier Cashmere Cocoon Coat","price":4399,"img":"http:\/\/localhost\/Dropshipping\/img\/cashmere_cocoon_coat.jpg","type":"Top Wear (Active)"},"bottom":{"id":2,"title":"Okayama 14.5oz Selvedge Denim","price":4499,"img":"http:\/\/localhost\/Dropshipping\/img\/okayama_selvedge_denim.jpg","type":"Bottom Wear"},"shoes":{"id":9,"title":"Minimalist Suede Derby Shoes","price":4799,"img":"http:\/\/localhost\/Dropshipping\/img\/minimalist_suede_derby.jpg","type":"Footwear"}}];
+let currentProductPrice = 4399;
+
+// ── Horizontal Rail Scroll ──
+function scrollEnsembleRail(offset) {
+  const track = document.getElementById('pdpEnsembleTrack');
+  if (track) {
+    track.scrollBy({ left: offset, behavior: 'smooth' });
   }
 }
+
+// ── Photo Thumbnail Selector ──
+function selectMainPhoto(imgUrl, btn) {
+  const photo = document.getElementById('mainProductPhoto');
+  if (photo) {
+    photo.style.opacity = '0.3';
+    setTimeout(() => {
+      photo.src = imgUrl;
+      photo.style.opacity = '1';
+    }, 150);
+  }
+
+  document.querySelectorAll('.gallery-thumb-btn').forEach(b => {
+    b.classList.remove('ring-2', 'ring-stone-950', 'scale-[1.02]');
+    b.classList.add('opacity-70');
+  });
+  btn.classList.add('ring-2', 'ring-stone-950', 'scale-[1.02]');
+  btn.classList.remove('opacity-70');
+}
+
+// ── Tactile Shade Swatch Switcher ──
+function selectColorShade(shadeName, imgUrl, btn) {
+  const label = document.getElementById('selectedColorName');
+  const photoLabel = document.getElementById('activeShadePhotoLabel');
+  if (label) label.textContent = shadeName;
+  if (photoLabel) photoLabel.textContent = 'Shade: ' + shadeName;
+
+  const photo = document.getElementById('mainProductPhoto');
+  if (photo) {
+    photo.style.opacity = '0.3';
+    setTimeout(() => {
+      photo.src = imgUrl;
+      photo.style.opacity = '1';
+    }, 150);
+  }
+
+  btn.closest('div').querySelectorAll('.color-shade-btn').forEach(b => {
+    b.classList.remove('ring-2', 'ring-stone-950', 'scale-110');
+    b.classList.add('opacity-75');
+  });
+  btn.classList.add('ring-2', 'ring-stone-950', 'scale-110');
+  btn.classList.remove('opacity-75');
+}
+
+// ── Size Selector ──
+function selectProductSize(sizeCode, btn) {
+  const label = document.getElementById('selectedSizeLabel');
+  if (label) label.textContent = sizeCode + ' (Selected)';
+
+  document.querySelectorAll('.size-pill-btn').forEach(b => {
+    b.className = 'size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer';
+  });
+  btn.className = 'size-pill-btn bg-stone-950 text-[#e9c176] font-bold shadow-md py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer';
+}
+
+// ── VIP Privilege Coupon Application ──
+function applyVipCoupon() {
+  const btn = document.getElementById('btnApplyVip');
+  const priceDisplay = document.getElementById('mainDisplayPrice');
+  
+  if (btn && btn.textContent.trim() === 'Apply') {
+    const discounted = Math.round(currentProductPrice * 0.5);
+    priceDisplay.textContent = '₹' + discounted.toLocaleString('en-IN');
+    priceDisplay.setAttribute('data-price-inr', discounted);
+    
+    btn.textContent = 'Applied ✓';
+    btn.className = 'px-4 py-2 rounded-xl bg-emerald-700 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-sm';
+    
+    if (typeof showStashToast === 'function') {
+      showStashToast('VIP Code LUMINA50 applied! 50% privilege discount activated.');
+    }
+  }
+}
+
+// ── Pincode Delivery Checker ──
+function checkPincodeDelivery() {
+  const input = document.getElementById('pincodeInput');
+  const result = document.getElementById('pincodeResult');
+  const pin = input ? input.value.trim() : '';
+
+  if (pin.length >= 6) {
+    result.classList.remove('hidden');
+    result.classList.add('flex');
+  } else {
+    alert('Please enter a valid 6-digit postal code.');
+  }
+}
+
+// ── 1-Click Acquire Full 3-Piece Ensemble ──
+function acquireFullEnsemble(lookIdx) {
+  const look = pdpEnsembleLooksData[lookIdx];
+  if (!look) return;
+
+  const items = [look.top, look.bottom, look.shoes];
+  items.forEach((it, idx) => {
+    setTimeout(() => {
+      addToCart({
+        id: it.id,
+        title: it.title,
+        price: it.price,
+        image: it.img
+      }, 1);
+    }, idx * 120);
+  });
+
+  if (typeof showStashToast === 'function') {
+    showStashToast('Added 3-Piece Ensemble (' + look.name + ') to Bag with 12% Privilege Savings! 🛍️');
+  }
+}
+
+// ── Interactive Model Studio Modal ──
+function openPdpModelStudioModal(lookIdx) {
+  const look = pdpEnsembleLooksData[lookIdx];
+  if (!look) return;
+
+  const modal = document.getElementById('pdpModelStudioModal');
+  const title = document.getElementById('pdpModelStudioTitle');
+  const subtitle = document.getElementById('pdpModelStudioSubtitle');
+  const img = document.getElementById('pdpModelStudioImg');
+  const priceEl = document.getElementById('pdpModelStudioPrice');
+  const list = document.getElementById('pdpModelStudioItemsList');
+  const btn = document.getElementById('btnPdpAcquireStudioLook');
+
+  title.textContent = 'Look 0' + (lookIdx + 1) + ' · ' + look.name;
+  subtitle.textContent = look.vibe;
+  img.src = look.model_img || look.mannequin_img;
+
+  const tot_orig = look.top.price + look.bottom.price + look.shoes.price;
+  const tot_ensemble = Math.round(tot_orig * 0.88);
+  priceEl.textContent = '₹' + tot_ensemble.toLocaleString('en-IN');
+
+  list.innerHTML = [look.top, look.bottom, look.shoes].map((it, i) => `
+    <div class="flex items-center gap-3 p-2.5 bg-white/5 border border-white/10 rounded-xl">
+      <img src="${it.img}" class="w-10 h-10 object-cover rounded-lg bg-black/40">
+      <div class="min-w-0 flex-1">
+        <span class="text-[9px] font-mono text-[#e9c176] uppercase font-bold block">${it.type}</span>
+        <h6 class="font-serif text-xs font-bold text-white truncate">${it.title}</h6>
+      </div>
+      <span class="font-mono text-xs font-bold text-white">₹${Number(it.price).toLocaleString('en-IN')}</span>
+    </div>
+  `).join('');
+
+  btn.onclick = function() {
+    acquireFullEnsemble(lookIdx);
+    closePdpModelStudioModal();
+  };
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function closePdpModelStudioModal() {
+  const modal = document.getElementById('pdpModelStudioModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+}
+
+// ── Modals ──
+function openSizeGuideModal() {
+  const modal = document.getElementById('sizeGuideModal');
+  if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); }
+}
+function closeSizeGuideModal() {
+  const modal = document.getElementById('sizeGuideModal');
+  if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+}
+
+function openProductGalleryModal() {
+  const modal = document.getElementById('productGalleryModal');
+  if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); }
+}
+function closeProductGalleryModal() {
+  const modal = document.getElementById('productGalleryModal');
+  if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+}
+
+// ── Social Group Buy Modal Logic ──
+function openGroupBuyModal(pid, title, groupPrice, img) {
+  const modal = document.getElementById('groupBuyModal');
+  if (!modal) return;
+  document.getElementById('gbProdTitle').textContent = title;
+  document.getElementById('gbProdPrice').textContent = '₹' + Number(groupPrice).toLocaleString('en-IN');
+  document.getElementById('gbProdImg').src = img;
+  
+  const teamCode = 'TEAM-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+  document.getElementById('gbTeamCode').textContent = teamCode;
+  
+  const shareText = encodeURIComponent(`Hey! Let's buy "${title}" together on Lumina Atelier for 40% OFF (₹${groupPrice})! Join my team with code ${teamCode}: ` + window.location.href);
+  document.getElementById('gbWhatsappShareBtn').href = 'https://wa.me/?text=' + shareText;
+  
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function closeGroupBuyModal() {
+  const modal = document.getElementById('groupBuyModal');
+  if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+}
+
+function copyGroupBuyLink() {
+  navigator.clipboard.writeText(window.location.href);
+  alert('Team purchase link copied to clipboard! Share it with 2 friends on WhatsApp.');
+}
+
+// ── Live FOMO Countdown Clock ──
+(function() {
+  let seconds = 3 * 3600 + 42 * 60 + 18;
+  const clockEl = document.getElementById('detailFomoClock');
+  if (!clockEl) return;
+  setInterval(function() {
+    if (seconds > 0) seconds--;
+    const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    clockEl.textContent = `${h}h : ${m}m : ${s}s`;
+  }, 1000);
+})();
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeSizeGuideModal();
+    closeProductGalleryModal();
+    closePdpModelStudioModal();
+    closeGroupBuyModal();
+  }
+});
 </script>
+
+<!-- ── Social Group Buy Team Modal ── -->
+<div id="groupBuyModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+  <div class="bg-white rounded-3xl border border-stone-200 shadow-2xl max-w-md w-full p-6 relative overflow-hidden text-center">
+    <button type="button" onclick="closeGroupBuyModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-900 w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center cursor-pointer">
+      ✕
+    </button>
+    <div class="w-12 h-12 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto mb-3 text-2xl">
+      👥
+    </div>
+    <span class="text-[10px] font-mono uppercase tracking-widest text-pink-600 font-bold block mb-1">
+      ✦ Social Team Purchase · 40% OFF
+    </span>
+    <h3 class="font-serif text-xl font-bold text-stone-900 mb-1" id="gbProdTitle">
+      Product Title
+    </h3>
+    <div class="flex items-center justify-center gap-2 mb-4">
+      <span class="text-xs text-stone-500 line-through">₹4,399</span>
+      <span class="font-serif text-2xl font-extrabold text-pink-600" id="gbProdPrice">₹2,639</span>
+      <span class="px-2 py-0.5 bg-pink-100 text-pink-700 text-[10px] font-mono font-bold rounded-full">40% OFF</span>
+    </div>
+    <img id="gbProdImg" src="" class="w-24 h-24 object-cover rounded-2xl mx-auto mb-4 border border-stone-200 shadow-sm">
+    
+    <!-- Team Member Slots -->
+    <div class="p-3 bg-stone-50 border border-stone-200 rounded-2xl mb-4">
+      <div class="text-xs font-mono font-bold text-stone-700 mb-2">Team Formation (1/3 Joined)</div>
+      <div class="flex justify-center gap-3">
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-stone-900 text-[#e9c176] font-bold text-xs flex items-center justify-center border-2 border-white shadow-sm">You</div>
+          <span class="text-[9px] font-mono text-stone-500 mt-1">Leader</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-pink-100 border-2 border-dashed border-pink-400 text-pink-600 flex items-center justify-center text-xs font-bold">+1</div>
+          <span class="text-[9px] font-mono text-pink-600 mt-1">Friend 1</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-pink-100 border-2 border-dashed border-pink-400 text-pink-600 flex items-center justify-center text-xs font-bold">+2</div>
+          <span class="text-[9px] font-mono text-pink-600 mt-1">Friend 2</span>
+        </div>
+      </div>
+      <div class="text-[10px] font-mono text-stone-400 mt-2">Team Code: <strong id="gbTeamCode" class="text-stone-900 font-mono">TEAM-XXXX</strong></div>
+    </div>
+
+    <!-- Actions -->
+    <div class="space-y-2">
+      <a id="gbWhatsappShareBtn" href="#" target="_blank" class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-mono font-bold text-xs uppercase rounded-xl flex items-center justify-center gap-2 shadow-md transition-all">
+        <span>Invite 2 Friends on WhatsApp</span>
+      </a>
+      <button type="button" onclick="copyGroupBuyLink()" class="w-full py-2.5 px-4 bg-stone-100 hover:bg-stone-200 text-stone-800 font-mono font-bold text-xs rounded-xl transition-all">
+        Copy Invite Link
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Mobile Luxury Sticky Bottom Buy Bar (Frictionless Touch Conversion) ── -->
+<div class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#0c0e14]/95 backdrop-blur-2xl border-t border-white/20 px-4 py-3 shadow-[0_-10px_30px_rgba(0,0,0,0.85)]">
+  <div class="flex items-center gap-3">
+    
+    <!-- Left Price Info -->
+    <div class="flex flex-col min-w-[80px]">
+      <span class="text-[9px] font-mono uppercase tracking-widest text-[#e9c176] font-bold">Atelier Piece</span>
+      <span class="font-serif text-lg font-bold text-white leading-tight" data-price-inr="4399">₹4,399</span>
+    </div>
+
+    <!-- Quick Wishlist Heart -->
+    <button type="button" onclick="toggleWishlistItem({id:3, title:'Sculpted 500 GSM Terry Hoodie', price:2899, image:'/img/terry_hoodie_luxury.jpg'})" class="w-11 h-11 rounded-xl bg-white/10 border border-white/15 text-rose-400 flex items-center justify-center flex-shrink-0 active:scale-90 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-xl">favorite</span>
+    </button>
+
+    <!-- Quick Add to Bag -->
+    <button type="button" onclick="addToCart({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./img/cashmere_cocoon_coat.jpg'}, 1)" class="w-11 h-11 rounded-xl bg-white/15 border border-white/20 text-white flex items-center justify-center flex-shrink-0 active:scale-90 transition-all cursor-pointer" title="Add to Bag">
+      <span class="material-symbols-outlined text-xl">shopping_bag</span>
+    </button>
+
+    <!-- Primary 1-Click Instant Acquisition Button -->
+    <button type="button" onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, '/img/terry_hoodie_luxury.jpg', 1);" class="flex-1 py-3 px-3 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 text-stone-950 font-mono font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-base">bolt</span>
+      <span>1-Click Buy</span>
+    </button>
+
+  </div>
+</div>
+
 </main>
 
 
@@ -1531,7 +3093,7 @@ function togglePasswordVisibility(inputId, btn) {
         <div id="sfWheelPointer" class="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none transition-transform origin-top" style="filter: drop-shadow(0 4px 10px rgba(0,0,0,0.9));">
           <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- Outer Golden Arrow Bevel -->
-            <path d="M17 42L4 12C2.5 8.5 5.5 2 10.5 2H23.5C28.5 2 32 7.5 30 12L17 42Z" fill="url(#ptrGoldOuter)" stroke="#ffd700" stroke-width="1.5"/>
+            <path d="M17 42L4 12C2 7.5 5.5 2 10.5 2H23.5C28.5 2 32 7.5 30 12L17 42Z" fill="url(#ptrGoldOuter)" stroke="#ffd700" stroke-width="1.5"/>
             <!-- Inner Faceted Body -->
             <path d="M17 37L7 12C5.5 8.5 8 4.5 12 4.5H22C26 4.5 28.5 8.5 27 12L17 37Z" fill="url(#ptrGoldInner)"/>
             <!-- Center Facet Ridge -->
@@ -2214,7 +3776,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-amber-300">₹799</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Atelier Silver Mystery Blind Box (3 Pieces)', 799, './img/cashmere_turtleneck_knit.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-amber-300 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, '/img/terry_hoodie_luxury.jpg', 1);" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-amber-300 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -2233,7 +3795,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-amber-300">₹1,299</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Lumina Gold Capsule Mystery Drop (5 Pieces)', 1299, './img/cashmere_cocoon_coat.jpg');" class="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:opacity-90 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, '/img/terry_hoodie_luxury.jpg', 1);" class="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:opacity-90 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -2251,7 +3813,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-purple-300">₹2,099</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Platinum Atelier Luxury Mystery Box (7 Pieces)', 2099, './img/wool_blazer_luxury.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-purple-300 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, '/img/terry_hoodie_luxury.jpg', 1);" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-purple-300 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -2269,7 +3831,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-white">₹3,999</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Black Diamond Vault Complete Wardrobe (10 Pieces)', 3999, './img/melton_wool_peacoat.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-stone-200 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, '/img/terry_hoodie_luxury.jpg', 1);" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-stone-200 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -4457,7 +6019,7 @@ function getCsrfToken() {
   if (match) return decodeURIComponent(match[2]);
   var csrfInput = document.querySelector('input[name="csrf_novadrop"]');
   if (csrfInput) return csrfInput.value;
-  return '39b898f8fabec6dc42e2871caa3cae57';
+  return 'c16556a0853424e6282275a4b9170b5c';
 }
 
 function loadQuickBagItems() {
