@@ -64,7 +64,7 @@
               <img src="<?= htmlspecialchars($img) ?>" alt="<?= htmlspecialchars($p['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
               
               <div class="absolute top-2.5 right-2.5 z-10" onclick="event.stopPropagation()">
-                <div class="heart-container w-7 h-7 rounded-full bg-white/95 hover:bg-white border border-stone-200 shadow-xs transition-all hover:scale-110 active:scale-90 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
+                <label class="heart-container w-7 h-7 rounded-full bg-white/95 hover:bg-white border border-stone-200 shadow-xs transition-all hover:scale-110 active:scale-90 flex items-center justify-center cursor-pointer" title="Save to Wardrobe" onclick="event.stopPropagation()">
                   <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$p['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= $price ?>, image:'<?= addslashes($img) ?>'}, event)">
                   <div class="svg-container">
                     <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">

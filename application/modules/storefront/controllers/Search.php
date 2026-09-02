@@ -28,6 +28,33 @@ class Search extends MY_Controller
             $total   = $results_data['total'];
         }
 
+        // Return instant JSON for live in-modal search without page reload
+        if ($this->input->is_ajax_request() || $this->input->get('json') == 1 || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
+            $clean_items = [];
+            foreach ($results as $p) {
+                $img = !empty($p['primary_image']) ? $p['primary_image'] : (!empty($p['image_url']) ? $p['image_url'] : base_url('assets/images/placeholder.jpg'));
+                $price = !empty($p['min_price']) ? (float)$p['min_price'] : (!empty($p['base_price']) ? (float)$p['base_price'] : 0);
+                $clean_items[] = [
+                    'id'            => (int)$p['id'],
+                    'title'         => $p['title'],
+                    'slug'          => $p['slug'] ?? '',
+                    'price'         => $price,
+                    'compare_price' => !empty($p['compare_at_price']) ? (float)$p['compare_at_price'] : 0,
+                    'image'         => $img,
+                    'vendor'        => $p['vendor'] ?? 'NOVADROP',
+                    'url'           => base_url('products/' . ($p['slug'] ?? $p['id'])),
+                ];
+            }
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'success'  => true,
+                    'query'    => $query,
+                    'total'    => $total,
+                    'products' => $clean_items,
+                ]));
+        }
+
         $collections = $this->db->where('store_id', $this->store_id)->where('is_active', 1)->get('collections')->result_array();
 
         $hs_row = $this->db->where('store_id', $this->store_id)->limit(1)->get('home_settings')->row_array();

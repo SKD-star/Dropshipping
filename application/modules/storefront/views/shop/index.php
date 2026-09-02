@@ -283,7 +283,7 @@ $col_title = !empty($collection['title']) ? $collection['title'] : 'All Products
 
               <!-- Top-Right Wishlist Heart Button -->
               <div class="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 flex flex-col gap-1.5 z-10" onclick="event.stopPropagation()">
-                <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 hover:bg-white border border-stone-200 shadow-2xs transition-all hover:scale-110 active:scale-90 flex items-center justify-center cursor-pointer" title="Save to Wishlist">
+                <label class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 hover:bg-white border border-stone-200 shadow-2xs transition-all hover:scale-110 active:scale-90 flex items-center justify-center cursor-pointer" title="Save to Wishlist" onclick="event.stopPropagation()">
                   <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$p['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= $b_price ?>, image:'<?= addslashes($img1) ?>'}, event)">
                   <div class="svg-container">
                     <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
