@@ -1,32 +1,6 @@
 <!-- ══════════════════════════════════════════════════════
-     SEARCH RESULTS — NOVADROP CURATED ATELIER ARCHIVE
-     HAUTE COUTURE LUXURY CARDS · ANIMATED BUTTONS · 3D TILT
+     SEARCH RESULTS — NOVADROP CURATED ARCHIVE
 ══════════════════════════════════════════════════════ -->
-<style>
-.tilt-card, .store-product-card {
-  transform-style: preserve-3d;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
-  will-change: transform, box-shadow;
-  position: relative;
-}
-
-.tilt-glare {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.22), transparent 65%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 15;
-}
-
-.tilt-card:hover .tilt-glare,
-.store-product-card:hover .tilt-glare {
-  opacity: 1;
-}
-</style>
-
 <main class="min-h-screen bg-[#FAF8F5] text-stone-900 pt-20 sm:pt-24 pb-28">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
     
@@ -51,8 +25,8 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="<?= base_url('shop') ?>" class="px-5 py-2.5 bg-white border border-stone-200 text-stone-800 text-xs font-mono uppercase tracking-wider rounded-xl hover:border-stone-900 hover:bg-stone-50 transition-all shadow-2xs">
-          View Full Boutique →
+        <a href="<?= base_url('collections') ?>" class="px-5 py-2.5 bg-white border border-stone-200 text-stone-800 text-xs font-mono uppercase tracking-wider rounded-xl hover:border-stone-900 hover:bg-stone-50 transition-all shadow-2xs">
+          Explore Capsules →
         </a>
       </div>
     </div>
@@ -81,28 +55,16 @@
         <?php 
           $price = (float)($p['min_price'] ?? $p['base_price'] ?? 0); 
           $img = !empty($p['primary_image']) ? $p['primary_image'] : base_url('img/cashmere_cocoon_coat.jpg');
-          $vendor = $p['vendor'] ?? 'Lumina Haute Couture';
-          $card_pts = !empty($p['reward_points']) ? (int)$p['reward_points'] : max(1, round($price * 0.06));
+          $vendor = $p['vendor'] ?? 'NovaDrop Atelier';
         ?>
-        <div class="store-product-card tilt-card group bg-white rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-xl p-2.5 sm:p-3 cursor-pointer" onclick="window.location.href='<?= base_url('products/' . $p['slug']) ?>'">
+        <div class="group bg-white rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-xl p-3 cursor-pointer" onclick="window.location.href='<?= base_url('products/' . $p['slug']) ?>'">
           
-          <div class="tilt-glare"></div>
-
           <div>
-            <div class="relative aspect-[3/4] bg-stone-100 rounded-lg sm:rounded-xl overflow-hidden mb-2.5">
+            <div class="relative aspect-[3/4] bg-stone-100 rounded-xl overflow-hidden mb-3">
               <img src="<?= htmlspecialchars($img) ?>" alt="<?= htmlspecialchars($p['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
               
-              <!-- Badges -->
-              <div class="absolute top-2 left-2 z-10">
-                <span class="px-2 py-0.5 rounded-full bg-black/85 backdrop-blur-md text-[#e9c176] text-[8.5px] font-mono font-bold uppercase tracking-wider border border-white/10 flex items-center gap-1 shadow-md">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176]"></span>
-                  <span>Atelier Cut</span>
-                </span>
-              </div>
-
-              <!-- Top-Right Wishlist -->
-              <div class="absolute top-2 right-2 z-10" onclick="event.stopPropagation()">
-                <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 hover:bg-white border border-stone-200 shadow-xs transition-all hover:scale-110 active:scale-90 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
+              <div class="absolute top-2.5 right-2.5 z-10" onclick="event.stopPropagation()">
+                <div class="heart-container w-7 h-7 rounded-full bg-white/95 hover:bg-white border border-stone-200 shadow-xs transition-all hover:scale-110 active:scale-90 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
                   <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$p['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= $price ?>, image:'<?= addslashes($img) ?>'}, event)">
                   <div class="svg-container">
                     <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
@@ -124,56 +86,54 @@
               </div>
             </div>
 
-            <span class="text-[8.5px] sm:text-[9px] font-mono text-[#a16207] uppercase tracking-widest block mb-1 font-bold truncate">
+            <span class="text-[9px] font-mono text-[#a16207] uppercase tracking-widest block mb-1 font-bold truncate">
               <?= htmlspecialchars($vendor) ?>
             </span>
 
-            <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 line-clamp-1 group-hover:text-[#a16207] transition-colors">
+            <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-2 line-clamp-1 group-hover:text-[#a16207] transition-colors">
               <?= htmlspecialchars($p['title']) ?>
             </h3>
-
-            <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-2">
-              <span class="font-serif font-bold text-sm sm:text-base text-stone-950" data-price-inr="<?= $price ?>">₹<?= number_format($price, 0) ?></span>
-              <span class="inline-flex items-center gap-1 text-[8.5px] font-mono font-bold text-amber-900 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
-                <span>🪙</span>
-                <span>+<?= number_format($card_pts) ?> pts</span>
-              </span>
-            </div>
           </div>
 
-          <!-- Animated Action Buttons -->
-          <div class="pt-2 border-t border-stone-100 grid grid-cols-2 gap-1.5" onclick="event.stopPropagation()">
-            <button type="button" 
-                    data-tooltip="Acquire" 
-                    onclick="addToCart({id:<?= $p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= (float)$price ?>, image:'<?= addslashes($img) ?>'}, 1)" 
-                    class="uiverse-action-btn uiverse-acquire-btn active:scale-95">
-              <div class="uiverse-btn-wrapper">
-                <div class="uiverse-btn-text">
-                  <span class="material-symbols-outlined text-[12px] sm:text-[13px] text-[#a16207]">shopping_bag</span>
-                  <span>Acquire</span>
+          <div class="pt-2 border-t border-stone-100 mt-1">
+            <div class="flex items-baseline justify-between mb-2">
+              <span class="font-serif font-bold text-sm sm:text-base text-stone-950" data-price-inr="<?= $price ?>">₹<?= number_format($price, 0) ?></span>
+              <span class="text-[9px] font-mono text-stone-400">Atelier Stock</span>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-1.5" onclick="event.stopPropagation()">
+              <button type="button" 
+                      data-tooltip="Add to Bag" 
+                      onclick="event.stopPropagation(); addToCart({id:<?= $p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= (float)$price ?>, image:'<?= addslashes($img) ?>'}, 1)" 
+                      class="uiverse-action-btn uiverse-acquire-btn active:scale-95">
+                <div class="uiverse-btn-wrapper">
+                  <div class="uiverse-btn-text">
+                    <span class="material-symbols-outlined text-[12px] text-[#a16207]">shopping_bag</span>
+                    <span>Bag</span>
+                  </div>
+                  <span class="uiverse-btn-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <span>Quick Add</span>
+                  </span>
                 </div>
-                <span class="uiverse-btn-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                  <span>Add to Bag</span>
-                </span>
-              </div>
-            </button>
+              </button>
 
-            <button type="button" 
-                    data-tooltip="Instant: ₹<?= number_format($price, 0) ?>" 
-                    onclick="openExpressCheckout(<?= $p['id'] ?>, '<?= addslashes($p['title']) ?>', <?= $price ?>, '<?= addslashes($img) ?>', <?= $p['id'] ?>);" 
-                    class="uiverse-action-btn uiverse-buy-btn active:scale-95">
-              <div class="uiverse-btn-wrapper">
-                <div class="uiverse-btn-text">
-                  <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                  <span>Buy</span>
+              <button type="button" 
+                      data-tooltip="Instant: ₹<?= number_format($price, 0) ?>" 
+                      onclick="event.stopPropagation(); if(typeof openExpressCheckout==='function'){openExpressCheckout(<?= $p['id'] ?>, '<?= addslashes(htmlspecialchars($p['title'])) ?>', <?= (float)$price ?>, '<?= addslashes($img) ?>', <?= $p['id'] ?>);}else{addToCart({id:<?= $p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= (float)$price ?>, image:'<?= addslashes($img) ?>'}, 1);}" 
+                      class="uiverse-action-btn uiverse-buy-btn active:scale-95">
+                <div class="uiverse-btn-wrapper">
+                  <div class="uiverse-btn-text">
+                    <svg class="w-3 h-3 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                    <span>Buy</span>
+                  </div>
+                  <span class="uiverse-btn-icon">
+                    <svg viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 text-[#e9c176]"><path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>
+                    <span>1-Click</span>
+                  </span>
                 </div>
-                <span class="uiverse-btn-icon">
-                  <svg viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 text-[#e9c176]"><path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>
-                  <span>1-Click</span>
-                </span>
-              </div>
-            </button>
+              </button>
+            </div>
           </div>
 
         </div>
