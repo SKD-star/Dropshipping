@@ -33,44 +33,69 @@ $col_title = !empty($collection['title']) ? $collection['title'] : 'All Products
 
 <main class="min-h-screen bg-white text-black pt-16 sm:pt-20 pb-28 font-sans selection:bg-black selection:text-white">
 
-  <!-- ── 1. WESTSIDE SUB-NAVIGATION RIBBON (MOBILE CAPSULE SCROLL & DESKTOP SUBNAV) ── -->
-  <nav class="bg-white border-b border-stone-200 sticky top-14 sm:top-20 z-30 transition-all shadow-xs" id="westsideSubnav">
-    <div class="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
+  <!-- ── 1. LUXURY ATELIER SUB-NAVIGATION CAPSULE RIBBON ── -->
+  <nav class="bg-white/95 backdrop-blur-md border-b border-stone-200/90 sticky top-14 sm:top-20 z-30 transition-all shadow-xs" id="westsideSubnav">
+    <div class="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10 relative">
       
-      <!-- Smooth Horizontal Inertia Scrollable Bar -->
-      <div class="flex items-center justify-between gap-3 sm:gap-6 py-2.5 sm:py-3.5 overflow-x-auto no-scrollbar scroll-smooth" style="scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;">
+      <!-- Smooth Inertia Horizontal Scroll Strip with Ambient Edge Fade -->
+      <div class="relative flex items-center justify-between gap-3 py-3">
         
-        <!-- Category Navigation Links (Mobile Pills / Desktop Tabs) -->
-        <div class="flex items-center gap-2 sm:gap-8 whitespace-nowrap text-xs font-sans tracking-wide">
+        <!-- Left & Right Gradient Scroll Indicator Cues for Clean Look on Mobile -->
+        <div class="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-white to-transparent pointer-events-none z-10 sm:hidden"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-5 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 sm:hidden"></div>
+
+        <!-- Category Capsule Links -->
+        <div class="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar scroll-smooth w-full py-0.5" style="scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;">
           
           <!-- All Creations -->
-          <a href="<?= base_url('shop') ?>" class="flex-shrink-0 transition-all flex items-center gap-1.5 <?= empty($active_collection) ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none shadow-2xs sm:shadow-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+          <?php $isAllActive = empty($active_collection) && empty($active_fabric); ?>
+          <a href="<?= base_url('shop') ?>" 
+             class="flex-shrink-0 transition-all duration-200 flex items-center gap-1.5 <?= $isAllActive ? 'bg-stone-950 text-white font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider px-4 py-2 rounded-full shadow-sm' : 'bg-stone-100/90 hover:bg-stone-200 text-stone-700 hover:text-stone-950 font-mono font-medium text-[11px] sm:text-xs uppercase tracking-wider px-3.5 py-2 rounded-full border border-stone-200/80 hover:border-stone-300' ?>">
+            <?php if ($isAllActive): ?>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176] animate-pulse"></span>
+            <?php endif; ?>
             <span>All (<?= $total_products_count ?>)</span>
           </a>
 
+          <!-- Dynamic Collections -->
           <?php foreach ($collections as $cNav): ?>
           <?php $isColActive = ($active_collection === $cNav['slug']); ?>
-          <a href="<?= base_url('shop/' . $cNav['slug']) ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= $isColActive ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none shadow-2xs sm:shadow-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+          <a href="<?= base_url('shop/' . $cNav['slug']) ?>" 
+             class="flex-shrink-0 transition-all duration-200 flex items-center gap-1.5 <?= $isColActive ? 'bg-stone-950 text-white font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider px-4 py-2 rounded-full shadow-sm' : 'bg-stone-100/90 hover:bg-stone-200 text-stone-700 hover:text-stone-950 font-mono font-medium text-[11px] sm:text-xs uppercase tracking-wider px-3.5 py-2 rounded-full border border-stone-200/80 hover:border-stone-300' ?>">
+            <?php if ($isColActive): ?>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176] animate-pulse"></span>
+            <?php endif; ?>
             <span><?= htmlspecialchars($cNav['title']) ?></span>
-            <span class="hidden sm:inline material-symbols-outlined text-[13px] text-stone-400">expand_more</span>
           </a>
           <?php endforeach; ?>
 
-          <!-- Curated Materials -->
-          <a href="<?= build_filter_url('fabric', 'Cashmere') ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= ($active_fabric === 'Cashmere') ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+          <!-- Curated Fabric Divider -->
+          <div class="h-4 w-[1px] bg-stone-300 flex-shrink-0 mx-1"></div>
+
+          <!-- Curated Fabric Capsules -->
+          <a href="<?= build_filter_url('fabric', 'Cashmere') ?>" 
+             class="flex-shrink-0 transition-all duration-200 flex items-center gap-1.5 <?= ($active_fabric === 'Cashmere') ? 'bg-stone-950 text-white font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider px-4 py-2 rounded-full shadow-sm' : 'bg-stone-100/90 hover:bg-stone-200 text-stone-700 hover:text-stone-950 font-mono font-medium text-[11px] sm:text-xs uppercase tracking-wider px-3.5 py-2 rounded-full border border-stone-200/80 hover:border-stone-300' ?>">
+            <span>🧶</span>
             <span>Cashmere</span>
           </a>
-          <a href="<?= build_filter_url('fabric', 'Denim') ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= ($active_fabric === 'Denim') ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+
+          <a href="<?= build_filter_url('fabric', 'Denim') ?>" 
+             class="flex-shrink-0 transition-all duration-200 flex items-center gap-1.5 <?= ($active_fabric === 'Denim') ? 'bg-stone-950 text-white font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider px-4 py-2 rounded-full shadow-sm' : 'bg-stone-100/90 hover:bg-stone-200 text-stone-700 hover:text-stone-950 font-mono font-medium text-[11px] sm:text-xs uppercase tracking-wider px-3.5 py-2 rounded-full border border-stone-200/80 hover:border-stone-300' ?>">
+            <span>👖</span>
             <span>Selvedge Denim</span>
           </a>
-          <a href="<?= build_filter_url('fabric', 'Silk') ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= ($active_fabric === 'Silk') ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+
+          <a href="<?= build_filter_url('fabric', 'Silk') ?>" 
+             class="flex-shrink-0 transition-all duration-200 flex items-center gap-1.5 <?= ($active_fabric === 'Silk') ? 'bg-stone-950 text-white font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider px-4 py-2 rounded-full shadow-sm' : 'bg-stone-100/90 hover:bg-stone-200 text-stone-700 hover:text-stone-950 font-mono font-medium text-[11px] sm:text-xs uppercase tracking-wider px-3.5 py-2 rounded-full border border-stone-200/80 hover:border-stone-300' ?>">
+            <span>✨</span>
             <span>Mulberry Silk</span>
           </a>
+
         </div>
 
         <!-- Search Trigger (Desktop) -->
-        <a href="<?= base_url('search') ?>" class="hidden xl:flex items-center gap-2 text-stone-600 hover:text-black text-xs font-mono pl-6 border-l border-stone-200 flex-shrink-0 cursor-pointer">
-          <span class="material-symbols-outlined text-base">search</span>
+        <a href="<?= base_url('search') ?>" class="hidden xl:flex items-center gap-1.5 px-3 py-1.5 bg-stone-50 hover:bg-stone-100 text-stone-700 hover:text-stone-950 text-xs font-mono rounded-full border border-stone-200 flex-shrink-0 cursor-pointer transition-all shadow-2xs">
+          <span class="material-symbols-outlined text-[15px]">search</span>
           <span>Search</span>
         </a>
 
@@ -85,7 +110,10 @@ $col_title = !empty($collection['title']) ? $collection['title'] : 'All Products
     <!-- Top Breadcrumb & Live Count (Desktop Only) -->
     <div class="hidden sm:flex items-center justify-between gap-2 text-xs font-mono text-stone-500 mb-2">
       <div class="flex items-center gap-2">
-        <a href="<?= base_url() ?>" class="hover:text-black transition-colors">Home</a>
+        <a href="<?= base_url() ?>" class="hover:text-black transition-colors flex items-center gap-1">
+          <span class="material-symbols-outlined text-xs">home</span>
+          <span>Home</span>
+        </a>
         <span>/</span>
         <a href="<?= base_url('shop') ?>" class="hover:text-black transition-colors">Shop</a>
         <?php if (!empty($collection)): ?>
@@ -96,7 +124,7 @@ $col_title = !empty($collection['title']) ? $collection['title'] : 'All Products
           <span class="text-black font-semibold uppercase">Catalog</span>
         <?php endif; ?>
       </div>
-      <div class="text-stone-700 font-bold tracking-wider uppercase text-[11px]">
+      <div class="text-stone-700 font-bold tracking-wider uppercase text-[11px] bg-stone-100 px-2.5 py-1 rounded-full border border-stone-200">
         <?= $total_products_count ?> <?= $total_products_count === 1 ? 'Design' : 'Designs' ?>
       </div>
     </div>
