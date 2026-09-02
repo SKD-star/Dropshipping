@@ -14,19 +14,25 @@
       <table class="table table-hover mb-0">
         <thead><tr><th>Drop Title</th><th>Blind Box Price</th><th>Reveal Date/Time</th><th>Stock Cap</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
-        <?php foreach ($drops as $d): ?>
+        <?php foreach ($drops as $d):
+          $d_title    = $d['title'] ?? ($d['name'] ?? ($d['drop_name'] ?? 'Mystery Drop'));
+          $d_price    = (float)($d['price'] ?? ($d['amount'] ?? 0));
+          $d_reveal   = $d['reveal_at'] ?? ($d['reveal_date'] ?? null);
+          $d_stock    = $d['stock_limit'] ?? ($d['max_stock'] ?? null);
+          $d_active   = (int)($d['is_active'] ?? ($d['active'] ?? 1));
+        ?>
         <tr>
-          <td class="fw-bold"><?= htmlspecialchars($d['title']) ?></td>
-          <td>₹<?= number_format($d['price'], 2) ?></td>
-          <td><small><?= $d['reveal_at'] ? date('d M Y, h:i A', strtotime($d['reveal_at'])) : 'No date set' ?></small></td>
-          <td><?= $d['stock_limit'] ? number_format($d['stock_limit']) : 'Unlimited' ?></td>
-          <td><span class="badge badge-<?= $d['is_active'] ? 'success' : 'secondary' ?>"><?= $d['is_active'] ? 'Active' : 'Disabled' ?></span></td>
+          <td class="fw-bold"><?= htmlspecialchars($d_title) ?></td>
+          <td>₹<?= number_format($d_price, 2) ?></td>
+          <td><small><?= $d_reveal ? date('d M Y, h:i A', strtotime($d_reveal)) : 'No date set' ?></small></td>
+          <td><?= $d_stock ? number_format($d_stock) : 'Unlimited' ?></td>
+          <td><span class="badge badge-<?= $d_active ? 'success' : 'secondary' ?>"><?= $d_active ? 'Active' : 'Disabled' ?></span></td>
           <td>
             <form method="post" action="<?= base_url('admin/promotions/mystery_drops') ?>" class="d-inline">
               <?= csrf_field() ?>
               <input type="hidden" name="mystery_action" value="toggle">
               <input type="hidden" name="id" value="<?= $d['id'] ?>">
-              <button class="btn btn-sm btn-outline-<?= $d['is_active'] ? 'warning' : 'success' ?>"><?= $d['is_active'] ? 'Disable' : 'Enable' ?></button>
+              <button class="btn btn-sm btn-outline-<?= $d_active ? 'warning' : 'success' ?>"><?= $d_active ? 'Disable' : 'Enable' ?></button>
             </form>
             <form method="post" action="<?= base_url('admin/promotions/mystery_drops') ?>" class="d-inline" onsubmit="return confirm('Delete this mystery drop?')">
               <?= csrf_field() ?>

@@ -15,6 +15,7 @@ cloudflared.exe
 /assets/uploads/
 
 # ─── CI framework cache & logs ───────────────────────────────
+/application/logs/log-*.php
 /application/logs/*.log
 /application/cache/*
 !/application/cache/.htaccess

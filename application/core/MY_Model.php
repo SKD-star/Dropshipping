@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Base model with scoped queries (always by store_id),
  * parameterized query enforcement, and soft-delete support.
  */
+#[AllowDynamicProperties]
 class MY_Model extends CI_Model {
 
     /** @var string Table name — override in child */

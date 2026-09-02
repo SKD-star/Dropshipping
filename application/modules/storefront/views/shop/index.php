@@ -1,6 +1,7 @@
 <!-- ══════════════════════════════════════════════════════
-     BOUTIQUE CATALOG HUB (LUMINA ATELIER)
-     BLACK HERO STAGE + CRISP EDITORIAL WHITE BODY & ENHANCED FILTERS
+     HAUTE COUTURE BOUTIQUE CATALOG (WESTSIDE MINIMALIST LUXURY)
+     BLACK & WHITE EDITORIAL ARCHITECTURE · FULL-WIDTH FLUID GRID
+     ULTRA-SMOOTH MOBILE EXPERIENCE · DUAL-IMAGE HOVER · QUICK-BAG ENGINE
 ══════════════════════════════════════════════════════ -->
 <?php
 // Helper to build URL with preserved query parameters
@@ -15,587 +16,626 @@ function build_filter_url($param_key, $param_val) {
     return base_url('shop' . (!empty($params) ? '?' . http_build_query($params) : ''));
 }
 
-$active_collection = $_GET['collection'] ?? '';
+$active_collection = $_GET['collection'] ?? ($collection['slug'] ?? '');
 $active_size = $_GET['size'] ?? '';
 $active_price = $_GET['price'] ?? '';
 $active_fabric = $_GET['fabric'] ?? '';
 $active_fit = $_GET['fit'] ?? '';
 $active_avail = $_GET['availability'] ?? '';
 $active_sort = $_GET['sort'] ?? 'new';
+$active_min = $_GET['min'] ?? '';
+$active_max = $_GET['max'] ?? '';
 
-$has_active_filters = !empty($active_collection) || !empty($active_size) || !empty($active_price) || !empty($active_fabric) || !empty($active_fit) || !empty($active_avail);
+$has_active_filters = !empty($active_collection) || !empty($active_size) || !empty($active_price) || !empty($active_fabric) || !empty($active_fit) || !empty($active_avail) || !empty($active_min) || !empty($active_max);
+$total_products_count = $total ?? count($products ?? []);
+$col_title = !empty($collection['title']) ? $collection['title'] : 'All Products';
 ?>
 
-<main class="min-h-screen bg-[#faf9f6] text-stone-900 pt-20 sm:pt-24 pb-24">
+<main class="min-h-screen bg-white text-black pt-16 sm:pt-20 pb-28 font-sans selection:bg-black selection:text-white">
 
-  <!-- ── 1. HAUTE COUTURE BOUTIQUE HERO (OBSIDIAN NOIR CANVAS) ── -->
-  <section class="relative py-14 sm:py-20 bg-[#07080b] text-white border-b border-white/10 overflow-hidden">
-    <!-- Ambient Radial Starlight & Subtle Golden Flares -->
-    <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#e9c176_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none"></div>
-    <div class="absolute w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-amber-500/10 via-[#e9c176]/5 to-transparent blur-[140px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+  <!-- ── 1. WESTSIDE SUB-NAVIGATION RIBBON (MOBILE CAPSULE SCROLL & DESKTOP SUBNAV) ── -->
+  <nav class="bg-white border-b border-stone-200 sticky top-14 sm:top-20 z-30 transition-all shadow-xs" id="westsideSubnav">
+    <div class="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
       
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pb-6 border-b border-white/10">
-        <div>
-          <!-- Scarcity Badge -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-[#e9c176]/40 text-[10px] sm:text-xs font-mono text-[#e9c176] uppercase tracking-[0.25em] mb-4 shadow-xl backdrop-blur-md">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>LUMINA Curated Boutique · Archival Couture &amp; Ready-to-Wear</span>
-          </div>
-
-          <h1 class="font-serif text-3xl sm:text-5xl font-normal text-white uppercase tracking-tight leading-tight">
-            The Boutique Catalog<span class="text-[#e9c176] font-bold">.</span>
-          </h1>
-
-          <p class="text-white/60 text-xs sm:text-sm max-w-xl mt-2 font-light font-sans leading-relaxed">
-            Discover hand-finished garments tailored from Grade-A Mongolian cashmere, Japanese selvedge denim, 22-momme silks, and virgin wool.
-          </p>
-        </div>
-
-        <!-- View Controls, Filter Button & Sorter -->
-        <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
+      <!-- Smooth Horizontal Inertia Scrollable Bar -->
+      <div class="flex items-center justify-between gap-3 sm:gap-6 py-2.5 sm:py-3.5 overflow-x-auto no-scrollbar scroll-smooth" style="scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;">
+        
+        <!-- Category Navigation Links (Mobile Pills / Desktop Tabs) -->
+        <div class="flex items-center gap-2 sm:gap-8 whitespace-nowrap text-xs font-sans tracking-wide">
           
-          <!-- Mobile Filter Drawer Trigger Button -->
-          <button type="button" onclick="toggleMobileFilterDrawer()" class="md:hidden flex items-center gap-1.5 px-3.5 py-2.5 bg-stone-900 border border-white/25 hover:border-[#e9c176] text-white text-xs font-mono uppercase tracking-wider rounded-xl cursor-pointer shadow-md active:scale-95 transition-all">
-            <span class="material-symbols-outlined text-sm text-[#e9c176]">tune</span>
-            <span>Filters</span>
-            <?php if ($has_active_filters): ?>
-              <span class="w-2 h-2 rounded-full bg-[#e9c176] animate-pulse"></span>
-            <?php endif; ?>
-          </button>
+          <!-- All Creations -->
+          <a href="<?= base_url('shop') ?>" class="flex-shrink-0 transition-all flex items-center gap-1.5 <?= empty($active_collection) ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none shadow-2xs sm:shadow-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+            <span>All (<?= $total_products_count ?>)</span>
+          </a>
 
-          <!-- Grid Mode Switcher (2-Grid vs 1-Column List) -->
-          <div class="flex items-center border border-white/20 rounded-xl overflow-hidden bg-black/60 p-1 backdrop-blur-md shadow-md">
-            <button type="button" onclick="setViewMode('bento')" id="btnViewBento" class="p-2 bg-stone-900 text-[#e9c176] border border-[#e9c176]/50 rounded-lg text-xs cursor-pointer transition-all shadow-xs" title="2-Column Mobile Grid View">
-              <span class="material-symbols-outlined text-base">grid_view</span>
-            </button>
-            <button type="button" onclick="setViewMode('editorial')" id="btnViewEditorial" class="p-2 text-white/60 hover:text-white rounded-lg text-xs cursor-pointer transition-all" title="1-Column List / Single Feed View">
-              <span class="material-symbols-outlined text-base">view_day</span>
-            </button>
-          </div>
+          <?php foreach ($collections as $cNav): ?>
+          <?php $isColActive = ($active_collection === $cNav['slug']); ?>
+          <a href="<?= base_url('shop/' . $cNav['slug']) ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= $isColActive ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none shadow-2xs sm:shadow-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+            <span><?= htmlspecialchars($cNav['title']) ?></span>
+            <span class="hidden sm:inline material-symbols-outlined text-[13px] text-stone-400">expand_more</span>
+          </a>
+          <?php endforeach; ?>
 
-          <!-- Sorting Dropdown -->
-          <form method="get" action="<?= base_url('shop') ?>" id="sortForm">
-            <?php foreach ($_GET as $k => $v): ?>
-              <?php if ($k !== 'sort'): ?>
-                <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
-              <?php endif; ?>
-            <?php endforeach; ?>
-            <select name="sort" onchange="document.getElementById('sortForm').submit()" class="bg-black/80 border border-white/25 px-3.5 py-2.5 text-xs font-mono uppercase tracking-wider text-white cursor-pointer outline-none rounded-xl hover:border-[#e9c176] transition-colors shadow-lg">
-              <option value="new" <?= ($active_sort === 'new' || $active_sort === 'created_at_desc') ? 'selected' : '' ?> class="bg-stone-900">Sort: New Arrivals</option>
-              <option value="price_asc" <?= ($active_sort === 'price_asc') ? 'selected' : '' ?> class="bg-stone-900">Price: Low to High</option>
-              <option value="price_desc" <?= ($active_sort === 'price_desc') ? 'selected' : '' ?> class="bg-stone-900">Price: High to Low</option>
-              <option value="views_desc" <?= ($active_sort === 'views_desc') ? 'selected' : '' ?> class="bg-stone-900">Most Curated</option>
-            </select>
-          </form>
+          <!-- Curated Materials -->
+          <a href="<?= build_filter_url('fabric', 'Cashmere') ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= ($active_fabric === 'Cashmere') ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+            <span>Cashmere</span>
+          </a>
+          <a href="<?= build_filter_url('fabric', 'Denim') ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= ($active_fabric === 'Denim') ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+            <span>Selvedge Denim</span>
+          </a>
+          <a href="<?= build_filter_url('fabric', 'Silk') ?>" class="flex-shrink-0 transition-all flex items-center gap-1 <?= ($active_fabric === 'Silk') ? 'bg-black text-white font-bold px-3 py-1.5 sm:px-0 sm:py-1 sm:bg-transparent sm:text-black sm:border-b-2 sm:border-black rounded-full sm:rounded-none' : 'bg-stone-100 sm:bg-transparent text-stone-700 hover:text-black font-medium px-3 py-1.5 sm:px-0 sm:py-1 rounded-full sm:rounded-none' ?>">
+            <span>Mulberry Silk</span>
+          </a>
         </div>
+
+        <!-- Search Trigger (Desktop) -->
+        <a href="<?= base_url('search') ?>" class="hidden xl:flex items-center gap-2 text-stone-600 hover:text-black text-xs font-mono pl-6 border-l border-stone-200 flex-shrink-0 cursor-pointer">
+          <span class="material-symbols-outlined text-base">search</span>
+          <span>Search</span>
+        </a>
+
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ── 2. WESTSIDE EDITORIAL CONTROL & HEADER BAR (COMPACT & SEAMLESS ON MOBILE) ── -->
+  <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pt-4 sm:pt-6 pb-3">
+    
+    <!-- Top Breadcrumb & Live Count (Desktop Only) -->
+    <div class="hidden sm:flex items-center justify-between gap-2 text-xs font-mono text-stone-500 mb-2">
+      <div class="flex items-center gap-2">
+        <a href="<?= base_url() ?>" class="hover:text-black transition-colors">Home</a>
+        <span>/</span>
+        <a href="<?= base_url('shop') ?>" class="hover:text-black transition-colors">Shop</a>
+        <?php if (!empty($collection)): ?>
+          <span>/</span>
+          <span class="text-black font-semibold uppercase"><?= htmlspecialchars($collection['title']) ?></span>
+        <?php else: ?>
+          <span>/</span>
+          <span class="text-black font-semibold uppercase">Catalog</span>
+        <?php endif; ?>
+      </div>
+      <div class="text-stone-700 font-bold tracking-wider uppercase text-[11px]">
+        <?= $total_products_count ?> <?= $total_products_count === 1 ? 'Design' : 'Designs' ?>
+      </div>
+    </div>
+
+    <!-- Main Title & Controls in One Seamless Row -->
+    <div class="flex items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-stone-200">
+      
+      <!-- Title & Mobile Count -->
+      <div class="flex items-baseline gap-2">
+        <h1 class="font-serif text-xl sm:text-3xl md:text-4xl font-normal text-black uppercase tracking-tight truncate">
+          <?= htmlspecialchars($col_title) ?>
+        </h1>
+        <span class="sm:hidden text-xs font-mono text-stone-500 font-semibold">(<?= $total_products_count ?>)</span>
       </div>
 
-      <!-- Quick Capsule Filter Tabs (Horizontal Scrollable) -->
-      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-5" style="scrollbar-width:none;-ms-overflow-style:none;">
-        <a href="<?= build_filter_url('collection', null) ?>" class="px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider flex-shrink-0 transition-all cursor-pointer <?= empty($active_collection) ? 'bg-stone-950 text-white font-bold shadow-md border border-stone-950' : 'bg-white/10 border border-white/15 text-white/80 hover:border-white/40 hover:text-white' ?>">
-          ✦ All Creations (<?= count($products ?? []) ?>)
-        </a>
-        <?php foreach ($collections as $col): ?>
-        <?php $isActive = ($active_collection === $col['slug']); ?>
-        <a href="<?= build_filter_url('collection', $col['slug']) ?>" class="px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider flex-shrink-0 transition-all cursor-pointer <?= $isActive ? 'bg-stone-950 text-white font-bold shadow-md border border-stone-950' : 'bg-white/10 border border-white/15 text-white/80 hover:border-white/40 hover:text-white' ?>">
-          <?= htmlspecialchars($col['title']) ?>
-        </a>
-        <?php endforeach; ?>
+      <!-- Right Controls: Sort + Grid Switchers + FILTER BUTTON -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        
+        <!-- Grid View Switchers (Desktop) -->
+        <div class="hidden sm:flex items-center border border-stone-200 rounded-lg overflow-hidden bg-stone-50 p-0.5">
+          <!-- 4-Col Grid -->
+          <button type="button" onclick="setCatalogLayout('grid-4')" id="btnGrid4" class="p-1.5 bg-black text-white rounded transition-all cursor-pointer" title="4-Column Grid">
+            <span class="material-symbols-outlined text-[18px]">grid_on</span>
+          </button>
+          <!-- 3-Col Grid -->
+          <button type="button" onclick="setCatalogLayout('grid-3')" id="btnGrid3" class="p-1.5 text-stone-500 hover:text-black rounded transition-all cursor-pointer" title="3-Column Grid">
+            <span class="material-symbols-outlined text-[18px]">grid_view</span>
+          </button>
+          <!-- 2-Col Grid -->
+          <button type="button" onclick="setCatalogLayout('grid-2')" id="btnGrid2" class="p-1.5 text-stone-500 hover:text-black rounded transition-all cursor-pointer" title="2-Column Grid">
+            <span class="material-symbols-outlined text-[18px]">view_agenda</span>
+          </button>
+        </div>
+
+        <!-- Sorter Dropdown (Compact on Mobile) -->
+        <form method="get" action="<?= base_url('shop') ?>" id="catalogSortForm" class="m-0">
+          <?php foreach ($_GET as $k => $v): ?>
+            <?php if ($k !== 'sort'): ?>
+              <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
+            <?php endif; ?>
+          <?php endforeach; ?>
+          <select name="sort" onchange="document.getElementById('catalogSortForm').submit()" class="bg-white border border-stone-300 hover:border-black text-black text-[11px] sm:text-xs font-mono uppercase tracking-wider py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg outline-none cursor-pointer transition-colors shadow-2xs font-semibold">
+            <option value="new" <?= ($active_sort === 'new' || $active_sort === 'created_at_desc') ? 'selected' : '' ?>>Sort: New</option>
+            <option value="price_asc" <?= ($active_sort === 'price_asc') ? 'selected' : '' ?>>Price: Low → High</option>
+            <option value="price_desc" <?= ($active_sort === 'price_desc') ? 'selected' : '' ?>>Price: High → Low</option>
+            <option value="views_desc" <?= ($active_sort === 'views_desc') ? 'selected' : '' ?>>Popular</option>
+            <option value="title_asc" <?= ($active_sort === 'title_asc') ? 'selected' : '' ?>>A–Z</option>
+          </select>
+        </form>
+
+        <!-- Westside-Style FILTER Button -->
+        <button type="button" onclick="toggleFilterDrawer()" class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2 bg-black hover:bg-stone-800 text-white text-[11px] sm:text-xs font-mono uppercase tracking-widest font-bold rounded-lg cursor-pointer shadow-xs active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-[15px] sm:text-sm">tune</span>
+          <span>FILTER</span>
+          <?php if ($has_active_filters): ?>
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+          <?php endif; ?>
+        </button>
+
       </div>
 
     </div>
+
+    <!-- Active Criteria Removable Tags -->
+    <?php if ($has_active_filters): ?>
+    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2.5 pt-1 text-xs">
+      <span class="font-mono text-[10px] sm:text-[11px] uppercase text-stone-500 font-bold mr-1">Active:</span>
+
+      <?php if (!empty($active_collection)): ?>
+      <a href="<?= base_url('shop') ?>" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-100 border border-stone-300 text-black hover:bg-black hover:text-white transition-colors text-[11px] font-medium">
+        <span><?= htmlspecialchars($active_collection) ?></span>
+        <span class="text-xs font-bold">✕</span>
+      </a>
+      <?php endif; ?>
+
+      <?php if (!empty($active_size)): ?>
+      <a href="<?= build_filter_url('size', null) ?>" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-100 border border-stone-300 text-black hover:bg-black hover:text-white transition-colors text-[11px] font-medium">
+        <span>Size: <?= htmlspecialchars($active_size) ?></span>
+        <span class="text-xs font-bold">✕</span>
+      </a>
+      <?php endif; ?>
+
+      <?php if (!empty($active_fabric)): ?>
+      <a href="<?= build_filter_url('fabric', null) ?>" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-100 border border-stone-300 text-black hover:bg-black hover:text-white transition-colors text-[11px] font-medium">
+        <span><?= htmlspecialchars($active_fabric) ?></span>
+        <span class="text-xs font-bold">✕</span>
+      </a>
+      <?php endif; ?>
+
+      <?php if (!empty($active_price)): ?>
+      <a href="<?= build_filter_url('price', null) ?>" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-100 border border-stone-300 text-black hover:bg-black hover:text-white transition-colors text-[11px] font-medium">
+        <span><?= htmlspecialchars(str_replace('_', ' ', $active_price)) ?></span>
+        <span class="text-xs font-bold">✕</span>
+      </a>
+      <?php endif; ?>
+
+      <a href="<?= base_url('shop') ?>" class="ml-1 text-[11px] font-mono text-stone-600 hover:text-black font-bold underline">
+        <span>Reset</span>
+      </a>
+    </div>
+    <?php endif; ?>
+
   </section>
 
 
-  <!-- ── 2. CATALOG PRODUCT SHOWCASE (CRISP EDITORIAL WHITE BODY) ── -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+  <!-- ── 3. FULL-WIDTH PRODUCT SHOWCASE (4-COL / 3-COL / 2-COL) ── -->
+  <section class="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10 py-3 sm:py-4">
     
-    <div class="flex flex-col md:flex-row gap-8 lg:gap-10 items-start">
-      
-      <!-- ── ENHANCED LUXURY SIDEBAR FILTERS (SMOOTH NO-CLIPPING SCROLL) ── -->
-      <aside class="w-full md:w-72 flex-shrink-0 bg-white p-5 sm:p-6 rounded-3xl border border-stone-200 shadow-md hidden md:block sticky top-[95px] max-h-[calc(100vh-115px)] overflow-y-auto custom-scrollbar space-y-6">
+    <?php if (empty($products)): ?>
+      <!-- Empty State -->
+      <div class="py-24 text-center flex flex-col items-center justify-center bg-stone-50 border border-stone-200 rounded-2xl p-8">
+        <span class="material-symbols-outlined text-4xl text-stone-400 mb-3">inventory_2</span>
+        <h3 class="font-serif text-2xl text-black mb-2 font-normal">No Creations Found</h3>
+        <p class="text-stone-500 text-xs max-w-sm mb-6 leading-relaxed">No garments match the selected filters. Please adjust your criteria or reset to view all archives.</p>
+        <a href="<?= base_url('shop') ?>" class="px-7 py-3 bg-black text-white font-mono text-xs uppercase font-bold tracking-wider rounded-lg shadow-xs hover:bg-stone-800 transition-all">
+          Reset All Filters
+        </a>
+      </div>
+    <?php else: ?>
+
+      <!-- Dynamic Full-Width Product Grid -->
+      <div id="productGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-7 transition-all duration-300">
         
-        <!-- Sidebar Header with Active Count & Reset -->
-        <div class="flex justify-between items-center pb-3 border-b border-stone-200">
-          <div class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-base text-[#a16207]">tune</span>
-            <span class="font-mono text-xs uppercase tracking-widest text-stone-900 font-bold">Atelier Filters</span>
+        <?php foreach ($products as $idx => $p): ?>
+        <?php
+          $img1 = !empty($p['primary_image']) ? $p['primary_image'] : base_url('img/cashmere_cocoon_coat.jpg');
+          $img2 = !empty($p['secondary_image']) ? $p['secondary_image'] : (!empty($p['gallery'][1]) ? $p['gallery'][1] : $img1);
+          $vendor_label = !empty($p['vendor']) ? $p['vendor'] : 'NovaDrop';
+          $b_price = (float)$p['base_price'];
+          $c_price = (float)($p['compare_at_price'] ?? 0);
+          $disc_pct = ($c_price > $b_price) ? round((($c_price - $b_price) / $c_price) * 100) : 0;
+          $p_json = htmlspecialchars(json_encode([
+            'id' => (int)$p['id'],
+            'title' => $p['title'],
+            'slug' => $p['slug'] ?? '',
+            'price' => $b_price,
+            'compare_price' => $c_price,
+            'discount' => $disc_pct,
+            'image' => $img1,
+            'secondary_image' => $img2,
+            'vendor' => $vendor_label,
+            'description' => $p['short_description'] ?? ($p['description'] ?? 'Tailored with intention in the atelier.')
+          ]), ENT_QUOTES, 'UTF-8');
+        ?>
+
+        <!-- Westside-Style Clean Product Card -->
+        <div class="product-card group relative flex flex-col justify-between bg-white rounded-lg border border-stone-200 hover:border-black overflow-hidden p-2 sm:p-2.5 transition-all duration-300 hover:shadow-md"
+             data-product-id="<?= (int)$p['id'] ?>"
+             data-selected-size="M">
+          
+          <div>
+            <!-- Image Stage with Dual Angle Flip / Zoom & Direct Product Link -->
+            <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden rounded mb-2 select-none">
+              
+              <a href="<?= base_url('products/' . $p['slug']) ?>" class="block w-full h-full">
+                <!-- Primary Image -->
+                <img src="<?= htmlspecialchars($img1) ?>" 
+                     alt="<?= htmlspecialchars($p['title']) ?>" 
+                     class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 <?= ($img2 !== $img1) ? 'group-hover:opacity-0' : '' ?>"
+                     loading="lazy"/>
+                
+                <!-- Secondary Hover Image (Westside Alternate Angle) -->
+                <?php if ($img2 !== $img1): ?>
+                <img src="<?= htmlspecialchars($img2) ?>" 
+                     alt="<?= htmlspecialchars($p['title']) ?> alternate view" 
+                     class="w-full h-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-105 pointer-events-none"
+                     loading="lazy"/>
+                <?php endif; ?>
+              </a>
+
+              <!-- Top-Left Westside Black "New" Badge -->
+              <div class="absolute top-1.5 sm:top-2 left-1.5 sm:left-2 flex flex-col gap-1 z-10 pointer-events-none">
+                <?php if (!empty($p['created_at']) && strtotime($p['created_at']) > strtotime('-30 days')): ?>
+                <span class="px-1.5 sm:px-2 py-0.5 rounded bg-black text-white text-[8.5px] sm:text-[9px] font-mono font-bold uppercase tracking-wider shadow-2xs w-fit">
+                  NEW
+                </span>
+                <?php endif; ?>
+                <?php if ($disc_pct > 0): ?>
+                <span class="px-1.5 sm:px-2 py-0.5 rounded bg-stone-800 text-white text-[8px] sm:text-[8.5px] font-mono font-bold uppercase tracking-wider w-fit">
+                  <?= $disc_pct ?>% OFF
+                </span>
+                <?php endif; ?>
+              </div>
+
+              <!-- Top-Right Wishlist Heart Button -->
+              <div class="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 flex flex-col gap-1.5 z-10" onclick="event.stopPropagation()">
+                <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 hover:bg-white border border-stone-200 shadow-2xs transition-all hover:scale-110 active:scale-90 flex items-center justify-center cursor-pointer" title="Save to Wishlist">
+                  <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$p['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= $b_price ?>, image:'<?= addslashes($img1) ?>'}, event)">
+                  <div class="svg-container">
+                    <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+                    </svg>
+                    <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+                    </svg>
+                    <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="10,10 20,20"></polygon>
+                      <polygon points="10,50 20,50"></polygon>
+                      <polygon points="20,80 30,70"></polygon>
+                      <polygon points="90,10 80,20"></polygon>
+                      <polygon points="90,50 80,50"></polygon>
+                      <polygon points="80,80 70,70"></polygon>
+                    </svg>
+                  </div>
+                </div>
+
+                <button type="button" 
+                        onclick="openProductQuickView(<?= $p_json ?>)" 
+                        class="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-stone-800 hover:text-black border border-stone-200 flex items-center justify-center shadow-2xs transition-all hover:scale-110 active:scale-90 cursor-pointer hidden sm:flex" 
+                        title="Quick View"
+                        aria-label="Quick View">
+                  <span class="material-symbols-outlined text-[17px]">visibility</span>
+                </button>
+              </div>
+
+              <!-- Interactive Quick Size Selector Drawer (Category Accurate) -->
+              <?php
+                $p_title_lower = strtolower(($p['title'] ?? '') . ' ' . ($p['category_name'] ?? ''));
+                if (preg_match('/(shoe|boot|sneaker|loafer|chelsea|footwear|heel|mule|oxford|sandal|derby|slide)/i', $p_title_lower)) {
+                  $card_sizes = ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'];
+                  $default_card_sz = 'UK 8';
+                } elseif (preg_match('/(jean|denim|trouser|pant|chino|bottom|selvedge|slacks|cargo|waist)/i', $p_title_lower)) {
+                  $card_sizes = ['28', '30', '32', '34', '36', '38'];
+                  $default_card_sz = '32';
+                } elseif (preg_match('/(bag|tote|purse|wallet|belt|scarf|hat|sunglass|watch|ring|necklace|bracelet|fragrance)/i', $p_title_lower)) {
+                  $card_sizes = ['One Size'];
+                  $default_card_sz = 'One Size';
+                } else {
+                  $card_sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+                  $default_card_sz = 'M';
+                }
+                $grid_cols_num = count($card_sizes);
+                $grid_cls = $grid_cols_num === 6 ? 'grid-cols-6' : ($grid_cols_num === 5 ? 'grid-cols-5' : ($grid_cols_num === 1 ? 'grid-cols-1' : 'grid-cols-4'));
+              ?>
+              <div class="absolute inset-x-2 bottom-2 bg-white/95 backdrop-blur-md p-2 rounded border border-stone-300 shadow-md translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10 hidden sm:block">
+                <div class="flex items-center justify-between text-[9px] font-mono text-stone-600 uppercase tracking-wider mb-1 px-0.5">
+                  <span class="card-size-status flex items-center gap-1 font-bold text-black">
+                    <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+                    <span>Select Size</span>
+                  </span>
+                </div>
+                <div class="grid <?= $grid_cls ?> gap-1">
+                  <?php foreach ($card_sizes as $szChip): ?>
+                  <button type="button" 
+                          onclick="selectCardSize(this, <?= $p['id'] ?>, '<?= addslashes(htmlspecialchars($p['title'])) ?>', <?= $b_price ?>, '<?= addslashes($img1) ?>', '<?= $szChip ?>', event)" 
+                          class="card-size-btn py-1 text-[10px] sm:text-[10.5px] font-mono font-bold text-stone-800 bg-stone-50 hover:bg-black hover:text-white border border-stone-200 rounded transition-all text-center cursor-pointer <?= ($szChip === $default_card_sz) ? 'active-size' : '' ?>">
+                    <?= $szChip ?>
+                  </button>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Product Meta Info -->
+            <div class="space-y-0.5 px-0.5">
+              <div class="text-[9px] font-mono text-stone-500 uppercase tracking-widest truncate">
+                <?= htmlspecialchars($vendor_label) ?>
+              </div>
+
+              <h3 class="font-sans text-xs sm:text-sm font-semibold text-black hover:underline transition-colors line-clamp-1">
+                <a href="<?= base_url('products/' . $p['slug']) ?>"><?= htmlspecialchars($p['title']) ?></a>
+              </h3>
+
+              <div class="flex items-baseline gap-2 pt-0.5">
+                <span class="font-serif font-bold text-sm sm:text-base text-black" data-price-inr="<?= $b_price ?>">₹<?= number_format($b_price, 0) ?></span>
+                <?php if ($disc_pct > 0): ?>
+                <span class="text-[10px] sm:text-xs text-stone-400 line-through font-mono" data-price-inr="<?= $c_price ?>">₹<?= number_format($c_price, 0) ?></span>
+                <?php endif; ?>
+              </div>
+
+              <!-- Points Earning Pill -->
+              <?php 
+                $shop_pts = !empty($p['reward_points']) ? (int)$p['reward_points'] : max(1, round($b_price * 0.06)); 
+              ?>
+              <div class="flex items-center justify-between gap-1 mt-1">
+                <span class="inline-flex items-center gap-1 text-[8.5px] sm:text-[9px] font-mono font-bold text-amber-900 bg-[#fef3c7] border border-[#fde68a] px-1.5 py-0.5 rounded" title="Earn <?= number_format($shop_pts) ?> Atelier Points with this piece">
+                  <span>🪙</span>
+                  <span>+<?= number_format($shop_pts) ?> pts</span>
+                  <span class="text-amber-800/70 font-normal">(₹<?= number_format($shop_pts) ?>)</span>
+                </span>
+                <span class="text-[8px] font-mono text-stone-400">1.5× for Gold</span>
+              </div>
+            </div>
           </div>
-          <?php if ($has_active_filters): ?>
-            <a href="<?= base_url('shop') ?>" class="text-[10px] uppercase font-mono text-rose-600 hover:text-rose-700 font-bold bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200 transition-colors">
-              Reset All ✕
+
+          <!-- Action Buttons with Dynamic Selected Size -->
+          <div class="pt-2 mt-2 border-t border-stone-100 grid grid-cols-2 gap-1.5 px-0.5">
+            <button type="button" 
+                    onclick="handleCardBagClick(this, <?= $p['id'] ?>, '<?= addslashes(htmlspecialchars($p['title'])) ?>', <?= $b_price ?>, '<?= addslashes($img1) ?>', event)" 
+                    class="card-bag-btn w-full py-1.5 sm:py-2 bg-stone-100 hover:bg-stone-200 text-black font-mono text-[9px] sm:text-[10.5px] uppercase tracking-wider font-bold rounded transition-all flex items-center justify-center gap-1 cursor-pointer border border-stone-200 active:scale-95">
+              <span class="material-symbols-outlined text-[13px]">shopping_bag</span>
+              <span>Bag</span>
+            </button>
+
+            <button type="button" 
+                    onclick="handleCardBuyClick(this, <?= $p['id'] ?>, '<?= addslashes($p['title']) ?>', <?= $b_price ?>, '<?= addslashes($img1) ?>', event)" 
+                    class="card-buy-btn w-full py-1.5 sm:py-2 bg-black hover:bg-stone-800 text-white font-mono text-[9px] sm:text-[10.5px] uppercase tracking-wider font-bold rounded transition-all flex items-center justify-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+              <span>Buy Now</span>
+            </button>
+          </div>
+
+        </div>
+        <?php endforeach; ?>
+
+      </div>
+
+      <!-- Pagination -->
+      <?php if (!empty($total_pages) && $total_pages > 1): ?>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 pt-6 border-t border-stone-200">
+        <div class="text-xs font-mono text-stone-500">
+          Page <span class="font-bold text-black"><?= $page ?></span> of <span class="font-bold text-black"><?= $total_pages ?></span> (<?= $total_products_count ?> Total Pieces)
+        </div>
+        <div class="flex items-center gap-1.5">
+          <?php if ($page > 1): ?>
+            <a href="<?= build_filter_url('page', $page - 1) ?>" class="px-3.5 py-1.5 rounded bg-white border border-stone-300 text-black hover:border-black text-xs font-mono font-bold transition-all">← Prev</a>
+          <?php endif; ?>
+          
+          <?php for ($pg = 1; $pg <= min(5, $total_pages); $pg++): ?>
+            <a href="<?= build_filter_url('page', $pg) ?>" class="w-8 h-8 rounded flex items-center justify-center text-xs font-mono font-bold transition-all <?= ($pg === (int)$page) ? 'bg-black text-white shadow-xs' : 'bg-white border border-stone-200 text-stone-700 hover:border-black' ?>">
+              <?= $pg ?>
             </a>
+          <?php endfor; ?>
+
+          <?php if ($page < $total_pages): ?>
+            <a href="<?= build_filter_url('page', $page + 1) ?>" class="px-3.5 py-1.5 rounded bg-white border border-stone-300 text-black hover:border-black text-xs font-mono font-bold transition-all">Next →</a>
           <?php endif; ?>
         </div>
+      </div>
+      <?php endif; ?>
 
-        <!-- 1. SIZE FILTER (TAILORED CHIP SELECTOR) -->
+    <?php endif; ?>
+
+  </section>
+
+
+  <!-- ── 4. WESTSIDE-STYLE SLIDE-OVER FILTER DRAWER (CLEAN BLACK & WHITE WITH ISOLATED SCROLL) ── -->
+  <div id="filterDrawerOverlay" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" style="touch-action: none;">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300 opacity-0" id="filterDrawerBackdrop" onclick="toggleFilterDrawer()"></div>
+
+    <!-- Drawer Panel (Max Screen Height, Fixed Flex Layout) -->
+    <div class="fixed inset-y-0 right-0 w-96 max-w-[90vw] h-full max-h-screen bg-white shadow-2xl border-l border-stone-200 flex flex-col transform translate-x-full transition-transform duration-300 ease-out z-10 overflow-hidden" id="filterDrawerPanel" style="touch-action: auto;">
+      
+      <!-- Drawer Header (Fixed at top of drawer) -->
+      <div class="p-5 sm:p-6 border-b border-stone-200 flex justify-between items-center bg-white flex-shrink-0">
+        <div class="flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-xl">tune</span>
+          <h3 class="font-serif text-lg font-bold text-black uppercase tracking-wider">Filters</h3>
+          <span class="text-xs font-mono text-stone-500">(<?= $total_products_count ?>)</span>
+        </div>
+        <button type="button" onclick="toggleFilterDrawer()" class="w-8 h-8 rounded-full flex items-center justify-center text-stone-500 hover:text-black hover:bg-stone-100 transition-colors cursor-pointer" aria-label="Close">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </div>
+
+      <!-- Drawer Scrollable Body (Smooth isolated scrolling) -->
+      <div class="p-5 sm:p-6 space-y-6 overflow-y-auto custom-scrollbar flex-1 min-h-0 overscroll-contain" style="overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
+        
+        <?php if ($has_active_filters): ?>
+        <div class="flex justify-between items-center bg-stone-100 rounded-lg p-3">
+          <span class="text-xs font-mono font-bold text-black uppercase">Active Criteria</span>
+          <a href="<?= base_url('shop') ?>" class="text-[11px] uppercase font-mono text-stone-600 hover:text-black font-bold underline">
+            Reset All
+          </a>
+        </div>
+        <?php endif; ?>
+
+        <!-- 1. Size Filter (Black/White Grid) -->
         <div>
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-3 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">straighten</span>
-              <span>Tailoring Size</span>
-            </span>
-            <?php if (!empty($active_size)): ?>
-              <a href="<?= build_filter_url('size', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
+          <h4 class="font-mono text-xs text-black uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
+            <span>Size Matrix</span>
+            <?php if (!empty($active_size)): ?><a href="<?= build_filter_url('size', null) ?>" class="text-[10px] text-stone-400 hover:text-black font-mono">Clear</a><?php endif; ?>
           </h4>
-          <div class="grid grid-cols-3 gap-1.5">
+          <div class="grid grid-cols-3 gap-2">
             <?php foreach (['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $sz): ?>
             <?php $isSz = ($active_size === $sz); ?>
-            <a href="<?= build_filter_url('size', $sz) ?>" class="py-2 text-center text-xs font-mono font-bold rounded-xl border transition-all cursor-pointer <?= $isSz ? 'bg-stone-950 text-[#e9c176] border-stone-950 shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-900 hover:bg-stone-100' ?>">
+            <a href="<?= build_filter_url('size', $sz) ?>" class="py-2 text-center text-xs font-mono font-bold rounded border transition-all <?= $isSz ? 'bg-black text-white border-black shadow-xs' : 'bg-stone-50 border-stone-200 text-stone-800 hover:border-black' ?>">
               <?= $sz ?>
             </a>
             <?php endforeach; ?>
           </div>
         </div>
 
-        <!-- 2. COLLECTIONS & CAPSULES -->
+        <!-- 2. Categories / Collections -->
         <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">category</span>
-              <span>Capsule World</span>
-            </span>
-            <?php if (!empty($active_collection)): ?>
-              <a href="<?= build_filter_url('collection', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
+          <h4 class="font-mono text-xs text-black uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
+            <span>Category</span>
+            <?php if (!empty($active_collection)): ?><a href="<?= base_url('shop') ?>" class="text-[10px] text-stone-400 hover:text-black font-mono">Clear</a><?php endif; ?>
           </h4>
           <div class="flex flex-col gap-1 text-xs">
-            <a href="<?= build_filter_url('collection', null) ?>" class="flex justify-between items-center py-2 px-3 rounded-xl transition-all <?= empty($active_collection) ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:text-stone-950 hover:bg-stone-50' ?>">
-              <span>All Masterpieces</span>
-              <span class="text-[10px] font-mono text-stone-400"><?= count($products ?? []) ?></span>
+            <a href="<?= base_url('shop') ?>" class="py-2 px-3 rounded flex justify-between items-center <?= empty($active_collection) ? 'font-bold text-black bg-stone-100' : 'text-stone-700 hover:bg-stone-50' ?>">
+              <span>All Creations</span>
+              <span class="font-mono text-stone-400"><?= $total_products_count ?></span>
             </a>
             <?php foreach ($collections as $col): ?>
             <?php $isCol = ($active_collection === $col['slug']); ?>
-            <a href="<?= build_filter_url('collection', $col['slug']) ?>" class="flex justify-between items-center py-2 px-3 rounded-xl transition-all <?= $isCol ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:text-stone-950 hover:bg-stone-50' ?>">
-              <span class="line-clamp-1"><?= htmlspecialchars($col['title']) ?></span>
+            <a href="<?= base_url('shop/' . $col['slug']) ?>" class="py-2 px-3 rounded flex justify-between items-center <?= $isCol ? 'font-bold text-black bg-stone-100' : 'text-stone-700 hover:bg-stone-50' ?>">
+              <span><?= htmlspecialchars($col['title']) ?></span>
+              <span class="material-symbols-outlined text-xs text-stone-400">arrow_forward</span>
             </a>
             <?php endforeach; ?>
           </div>
         </div>
 
-        <!-- 3. FABRIC & RAW MATERIALS -->
+        <!-- 3. Raw Materials & Fabric -->
         <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">texture</span>
-              <span>Raw Material</span>
-            </span>
-            <?php if (!empty($active_fabric)): ?>
-              <a href="<?= build_filter_url('fabric', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
+          <h4 class="font-mono text-xs text-black uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
+            <span>Fabric &amp; Material</span>
+            <?php if (!empty($active_fabric)): ?><a href="<?= build_filter_url('fabric', null) ?>" class="text-[10px] text-stone-400 hover:text-black font-mono">Clear</a><?php endif; ?>
           </h4>
           <div class="flex flex-col gap-1 text-xs">
             <?php 
               $fabrics = [
-                'Cashmere' => '100% Mongolian Cashmere',
-                'Denim' => '14.5oz Okayama Selvedge',
-                'Silk' => '22-Momme Mulberry Silk',
-                'Wool' => 'Super 150s Virgin Wool',
-                'Terry' => '500 GSM French Terry'
+                'Cashmere' => 'Mongolian Cashmere',
+                'Denim'    => 'Okayama Selvedge Denim',
+                'Silk'     => 'Mulberry Silk',
+                'Wool'     => 'Virgin Wool',
+                'Terry'    => 'French Terry Cotton'
               ];
               foreach ($fabrics as $fKey => $fLabel):
               $isFab = ($active_fabric === $fKey);
             ?>
-            <a href="<?= build_filter_url('fabric', $fKey) ?>" class="flex justify-between items-center py-1.5 px-3 rounded-xl transition-all <?= $isFab ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
+            <a href="<?= build_filter_url('fabric', $fKey) ?>" class="py-2 px-3 rounded flex justify-between items-center <?= $isFab ? 'font-bold text-black bg-stone-100' : 'text-stone-700 hover:bg-stone-50' ?>">
               <span><?= $fLabel ?></span>
-              <?php if ($isFab): ?><span class="text-[#a16207] font-bold">✓</span><?php endif; ?>
+              <?php if ($isFab): ?><span class="font-bold">✓</span><?php endif; ?>
             </a>
             <?php endforeach; ?>
           </div>
         </div>
 
-        <!-- 4. BUDGET TIERS -->
+        <!-- 4. Price Tiers -->
         <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">payments</span>
-              <span>Budget Tiers</span>
-            </span>
-            <?php if (!empty($active_price)): ?>
-              <a href="<?= build_filter_url('price', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
+          <h4 class="font-mono text-xs text-black uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
+            <span>Price Range</span>
+            <?php if (!empty($active_price)): ?><a href="<?= build_filter_url('price', null) ?>" class="text-[10px] text-stone-400 hover:text-black font-mono">Clear</a><?php endif; ?>
           </h4>
           <div class="flex flex-col gap-1 text-xs">
-            <a href="<?= build_filter_url('price', 'under_2000') ?>" class="py-2 px-3 rounded-xl transition-all flex justify-between <?= ($active_price === 'under_2000') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
+            <a href="<?= build_filter_url('price', 'under_2000') ?>" class="py-2 px-3 rounded flex justify-between <?= ($active_price === 'under_2000') ? 'font-bold text-black bg-stone-100' : 'text-stone-700 hover:bg-stone-50' ?>">
               <span>Under ₹2,000</span>
-              <span class="text-[10px] font-mono text-stone-400">Entry</span>
+              <span class="text-stone-400 font-mono">Entry</span>
             </a>
-            <a href="<?= build_filter_url('price', '2000_5000') ?>" class="py-2 px-3 rounded-xl transition-all flex justify-between <?= ($active_price === '2000_5000') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
+            <a href="<?= build_filter_url('price', '2000_5000') ?>" class="py-2 px-3 rounded flex justify-between <?= ($active_price === '2000_5000') ? 'font-bold text-black bg-stone-100' : 'text-stone-700 hover:bg-stone-50' ?>">
               <span>₹2,000 – ₹5,000</span>
-              <span class="text-[10px] font-mono text-[#a16207]">Core</span>
+              <span class="text-stone-400 font-mono">Core</span>
             </a>
-            <a href="<?= build_filter_url('price', 'above_5000') ?>" class="py-2 px-3 rounded-xl transition-all flex justify-between <?= ($active_price === 'above_5000') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
+            <a href="<?= build_filter_url('price', 'above_5000') ?>" class="py-2 px-3 rounded flex justify-between <?= ($active_price === 'above_5000') ? 'font-bold text-black bg-stone-100' : 'text-stone-700 hover:bg-stone-50' ?>">
               <span>Above ₹5,000</span>
-              <span class="text-[10px] font-mono text-amber-600 font-bold">Master</span>
+              <span class="text-stone-400 font-mono">Master</span>
             </a>
           </div>
         </div>
 
-        <!-- 5. SILHOUETTE FIT -->
+        <!-- 5. Silhouette Fit -->
         <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">checkroom</span>
-              <span>Silhouette Fit</span>
-            </span>
-            <?php if (!empty($active_fit)): ?>
-              <a href="<?= build_filter_url('fit', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
+          <h4 class="font-mono text-xs text-black uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
+            <span>Fit</span>
+            <?php if (!empty($active_fit)): ?><a href="<?= build_filter_url('fit', null) ?>" class="text-[10px] text-stone-400 hover:text-black font-mono">Clear</a><?php endif; ?>
           </h4>
           <div class="flex flex-wrap gap-1.5 text-xs">
-            <?php foreach (['Oversized' => 'Relaxed Oversized', 'Structured' => 'Structured', 'Slim' => 'Tailored Slim'] as $fitKey => $fitLbl): ?>
+            <?php foreach (['Oversized' => 'Relaxed', 'Structured' => 'Structured', 'Slim' => 'Tailored Slim'] as $fitKey => $fitLbl): ?>
             <?php $isFit = ($active_fit === $fitKey); ?>
-            <a href="<?= build_filter_url('fit', $fitKey) ?>" class="px-3 py-1.5 rounded-xl border text-[11px] font-mono transition-all <?= $isFit ? 'bg-stone-950 text-[#e9c176] border-stone-950 font-bold' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400' ?>">
+            <a href="<?= build_filter_url('fit', $fitKey) ?>" class="px-3 py-1.5 rounded border text-[11px] font-mono transition-all <?= $isFit ? 'bg-black text-white border-black font-bold' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-black' ?>">
               <?= $fitLbl ?>
             </a>
             <?php endforeach; ?>
           </div>
         </div>
 
-        <!-- 6. AVAILABILITY & SCARCITY -->
-        <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">verified</span>
-              <span>Stock Status</span>
-            </span>
-            <?php if (!empty($active_avail)): ?>
-              <a href="<?= build_filter_url('availability', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
-          </h4>
-          <div class="flex flex-col gap-1 text-xs">
-            <a href="<?= build_filter_url('availability', 'in_stock') ?>" class="py-1.5 px-3 rounded-xl transition-all flex items-center justify-between <?= ($active_avail === 'in_stock') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
-              <span class="flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span>Priority Express Ready</span>
-              </span>
-              <?php if ($active_avail === 'in_stock'): ?><span class="text-[#a16207]">✓</span><?php endif; ?>
-            </a>
-            <a href="<?= build_filter_url('availability', 'low_stock') ?>" class="py-1.5 px-3 rounded-xl transition-all flex items-center justify-between <?= ($active_avail === 'low_stock') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
-              <span class="flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
-                <span>Under 5 Pieces Left</span>
-              </span>
-              <?php if ($active_avail === 'low_stock'): ?><span class="text-[#a16207]">✓</span><?php endif; ?>
-            </a>
-          </div>
-        </div>
+      </div>
 
-        <!-- Trust Note at Bottom of Sidebar (Fully visible with ample bottom padding) -->
-        <div class="border-t border-stone-200 pt-5 pb-2 text-[10px] text-stone-500 flex flex-col gap-2">
-          <div class="flex items-center gap-1.5 text-emerald-600 font-bold">
-            <span class="material-symbols-outlined text-sm">verified_user</span>
-            <span>100% Certified Provenance</span>
-          </div>
-          <p class="leading-relaxed">Complimentary white-glove BlueDart Express delivery &amp; 7-day doorstep exchange on all boutique acquisitions.</p>
-        </div>
-
-      </aside>
-
-      <!-- ── MAIN PRODUCTS GRID AREA ── -->
-      <div class="flex-grow w-full">
-        
-        <!-- Active Filter Badges Bar -->
-        <?php if ($has_active_filters): ?>
-        <div class="flex flex-wrap items-center gap-2 mb-6 p-4 rounded-2xl bg-white border border-stone-200 shadow-sm text-xs">
-          <span class="font-mono text-[10px] uppercase text-stone-400 font-bold mr-1">Active Criteria:</span>
-          
-          <?php if (!empty($active_collection)): ?>
-          <a href="<?= build_filter_url('collection', null) ?>" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-stone-100 border border-stone-300 text-stone-800 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors">
-            <span>Capsule: <?= htmlspecialchars($active_collection) ?></span>
-            <span class="text-xs">✕</span>
-          </a>
-          <?php endif; ?>
-
-          <?php if (!empty($active_size)): ?>
-          <a href="<?= build_filter_url('size', null) ?>" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-stone-100 border border-stone-300 text-stone-800 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors">
-            <span>Size: <?= htmlspecialchars($active_size) ?></span>
-            <span class="text-xs">✕</span>
-          </a>
-          <?php endif; ?>
-
-          <?php if (!empty($active_fabric)): ?>
-          <a href="<?= build_filter_url('fabric', null) ?>" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-stone-100 border border-stone-300 text-stone-800 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors">
-            <span>Fabric: <?= htmlspecialchars($active_fabric) ?></span>
-            <span class="text-xs">✕</span>
-          </a>
-          <?php endif; ?>
-
-          <?php if (!empty($active_price)): ?>
-          <a href="<?= build_filter_url('price', null) ?>" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-stone-100 border border-stone-300 text-stone-800 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors">
-            <span>Price: <?= htmlspecialchars(str_replace('_', ' ', $active_price)) ?></span>
-            <span class="text-xs">✕</span>
-          </a>
-          <?php endif; ?>
-
-          <?php if (!empty($active_fit)): ?>
-          <a href="<?= build_filter_url('fit', null) ?>" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-stone-100 border border-stone-300 text-stone-800 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors">
-            <span>Fit: <?= htmlspecialchars($active_fit) ?></span>
-            <span class="text-xs">✕</span>
-          </a>
-          <?php endif; ?>
-
-          <?php if (!empty($active_avail)): ?>
-          <a href="<?= build_filter_url('availability', null) ?>" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-stone-100 border border-stone-300 text-stone-800 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors">
-            <span>Availability: <?= htmlspecialchars(str_replace('_', ' ', $active_avail)) ?></span>
-            <span class="text-xs">✕</span>
-          </a>
-          <?php endif; ?>
-
-          <a href="<?= base_url('shop') ?>" class="ml-auto text-[10px] font-mono text-rose-600 hover:underline font-bold">
-            Clear All
-          </a>
-        </div>
-        <?php endif; ?>
-
-        <!-- Product Grid (2-Column Mobile, 3-Column Desktop) -->
-        <div id="productGridWrapper" class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 transition-all duration-300">
-          
-          <?php if (empty($products)): ?>
-            <div class="col-span-full py-20 text-center flex flex-col items-center justify-center bg-white border border-stone-200 rounded-3xl p-8 shadow-sm">
-              <div class="w-16 h-16 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center mb-4 text-[#a16207]">
-                <span class="material-symbols-outlined text-3xl">inventory_2</span>
-              </div>
-              <h3 class="font-serif text-2xl text-stone-900 mb-2 font-bold">No Atelier Pieces Found</h3>
-              <p class="text-stone-500 text-xs max-w-sm mb-6 leading-relaxed">No creations match the selected criteria. Please adjust your filters or reset to view all archives.</p>
-              <a href="<?= base_url('shop') ?>" class="px-7 py-3.5 bg-stone-950 text-white font-button text-xs uppercase font-bold tracking-wider rounded-xl shadow-md hover:bg-stone-800 transition-all">
-                Reset All Filters
-              </a>
-            </div>
-          <?php else: ?>
-            
-            <?php foreach ($products as $idx => $p): ?>
-            <?php
-              $img = !empty($p['primary_image']) ? $p['primary_image'] : base_url('img/cashmere_cocoon_coat.jpg');
-              $vendor_label = !empty($p['vendor']) ? $p['vendor'] : 'LUMINA Atelier';
-              $b_price = (float)$p['base_price'];
-              $c_price = (float)($p['compare_at_price'] ?? 0);
-              $disc_pct = ($c_price > $b_price) ? round((($c_price - $b_price) / $c_price) * 100) : 0;
-              $stock_left = 2 + ($idx % 4);
-            ?>
-            <div class="tilt-card product-item-card group cursor-pointer flex flex-col justify-between h-full bg-white border border-stone-200 hover:border-stone-400 rounded-xl sm:rounded-2xl overflow-hidden p-2.5 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl relative" onclick="window.location.href='<?= base_url('products/' . $p['slug']) ?>'">
-              
-              <div>
-                <!-- Image Box -->
-                <div class="relative aspect-[3/4] bg-stone-100 mb-2 sm:mb-3.5 overflow-hidden rounded-lg sm:rounded-xl">
-                  <img class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106" src="<?= htmlspecialchars($img) ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy"/>
-                  
-                  <!-- Top Badges -->
-                  <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
-                    <span class="text-[8px] sm:text-[9px] font-mono font-bold uppercase tracking-wider bg-black/85 backdrop-blur-md text-[#e9c176] px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-white/10 flex items-center gap-1 shadow-md">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                      <span>Only <?= $stock_left ?> Left</span>
-                    </span>
-                    <?php if ($disc_pct > 0): ?>
-                    <span class="px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full bg-black/85 border border-amber-400/40 text-[7.5px] sm:text-[9px] font-mono font-bold text-amber-300 backdrop-blur-md shadow-md w-fit">
-                      <?= $disc_pct ?>% OFF
-                    </span>
-                    <?php endif; ?>
-                  </div>
-
-                  <!-- Top-Right Actions -->
-                  <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
-                    <button type="button" onclick="toggleWishlistItem({id:<?= (int)$p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= $b_price ?>, image:'<?= addslashes($img) ?>'})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black text-rose-400 border border-white/20 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer shadow-md" title="Save to Wardrobe">
-                      <span class="material-symbols-outlined text-[11px] sm:text-sm">favorite</span>
-                    </button>
-                    <button type="button" onclick="openExpressCheckout(<?= $p['id'] ?>, '<?= addslashes($p['title']) ?>', <?= $b_price ?>, '<?= htmlspecialchars($img) ?>', <?= $p['id'] ?>);" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] border border-white/20 flex items-center justify-center shadow-md transition-all hover:scale-110 active:scale-95 cursor-pointer" title="1-Click Instant Acquisition">
-                      <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Product Meta Info -->
-                <div class="space-y-1">
-                  <div class="flex items-center justify-between text-[8px] sm:text-[10px] font-mono text-stone-500 uppercase tracking-wider">
-                    <span class="truncate"><?= htmlspecialchars($vendor_label) ?></span>
-                    <span class="text-amber-600 font-bold flex items-center gap-0.5 flex-shrink-0">
-                      ★ 4.9
-                    </span>
-                  </div>
-
-                  <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                    <a href="<?= base_url('products/' . $p['slug']) ?>"><?= htmlspecialchars($p['title']) ?></a>
-                  </h3>
-
-                  <div class="flex items-baseline gap-1.5 sm:gap-2">
-                    <span class="font-serif font-bold text-xs sm:text-base text-stone-900" data-price-inr="<?= $b_price ?>">₹<?= number_format($b_price, 0) ?></span>
-                    <?php if ($disc_pct > 0): ?>
-                    <span class="text-[10px] sm:text-[11px] text-stone-400 line-through font-mono" data-price-inr="<?= $c_price ?>">₹<?= number_format($c_price, 0) ?></span>
-                    <?php endif; ?>
-                    <span class="hidden sm:inline text-[10px] text-emerald-600 font-semibold font-mono ml-auto">Free Express</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Dual Direct Action Buttons -->
-              <div class="pt-2 sm:pt-3 border-t border-stone-100 grid grid-cols-2 gap-1.5 sm:gap-2 mt-2" onclick="event.stopPropagation()">
-                <button type="button" onclick="addToCart({id:<?= $p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= $b_price ?>, image:'<?= addslashes($img) ?>'}, 1)" class="w-full py-1.5 sm:py-2.5 bg-stone-100 border border-stone-200 text-stone-900 font-button text-[8.5px] sm:text-[11px] uppercase tracking-wider hover:bg-stone-200 transition-all flex items-center justify-center gap-1 cursor-pointer rounded-lg sm:rounded-xl font-semibold">
-                  <span class="material-symbols-outlined text-[11px] sm:text-[13px]">shopping_bag</span>
-                  <span>Acquire</span>
-                </button>
-                <button type="button" onclick="openExpressCheckout(<?= $p['id'] ?>, '<?= addslashes($p['title']) ?>', <?= $b_price ?>, '<?= addslashes($img) ?>', <?= $p['id'] ?>);" 
-                   class="w-full py-1.5 sm:py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-button font-bold text-[8.5px] sm:text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-1 cursor-pointer shadow-sm rounded-lg sm:rounded-xl active:scale-95 border border-stone-900">
-                  <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                  <span>Buy</span>
-                </button>
-              </div>
-
-            </div>
-            <?php endforeach; ?>
-            
-          <?php endif; ?>
-        </div>
-
+      <!-- Drawer Bottom Action Button (Fixed at bottom of drawer) -->
+      <div class="p-5 border-t border-stone-200 bg-stone-50 flex-shrink-0">
+        <button type="button" onclick="toggleFilterDrawer()" class="w-full py-3 bg-black text-white font-mono text-xs uppercase font-bold tracking-widest rounded transition-all shadow-xs cursor-pointer hover:bg-stone-800">
+          Apply &amp; Show <?= $total_products_count ?> Creations
+        </button>
       </div>
 
     </div>
+  </div>
 
-  </section>
 
-  <!-- ── Mobile Filter Slide-Over Drawer (UI/UX Pro Max) ── -->
-  <div id="mobileFilterDrawer" class="fixed inset-0 z-50 hidden md:hidden" role="dialog" aria-modal="true">
-    <!-- Backdrop -->
-    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 opacity-0" id="mobileFilterBackdrop" onclick="toggleMobileFilterDrawer()"></div>
+  <!-- ── 5. RUNWAY QUICK-VIEW MODAL ── -->
+  <div id="productQuickViewModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" style="touch-action: none;">
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 opacity-0" id="qvBackdrop" onclick="closeProductQuickView()"></div>
 
-    <!-- Slide Panel -->
-    <div class="fixed inset-y-0 right-0 max-w-[85vw] w-80 bg-white shadow-2xl border-l border-stone-200 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out z-10 overflow-y-auto custom-scrollbar" id="mobileFilterPanel">
-      <div class="p-5 sm:p-6 space-y-6">
-        
-        <!-- Drawer Header -->
-        <div class="flex justify-between items-center pb-4 border-b border-stone-200">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#a16207]">tune</span>
-            <h3 class="font-serif text-lg font-bold text-stone-900">Atelier Filters</h3>
-          </div>
-          <button type="button" onclick="toggleMobileFilterDrawer()" class="w-8 h-8 rounded-full flex items-center justify-center text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer" aria-label="Close Filters">
-            <span class="material-symbols-outlined text-xl">close</span>
-          </button>
+    <div class="relative bg-white w-full max-w-3xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl border border-stone-200 z-10 transform scale-95 opacity-0 transition-all duration-300 flex flex-col md:flex-row overflow-y-auto custom-scrollbar overscroll-contain" id="qvPanel" style="touch-action: auto; overscroll-behavior: contain;">
+      <button type="button" onclick="closeProductQuickView()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-black flex items-center justify-center z-20 cursor-pointer shadow-2xs" aria-label="Close">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-0 w-full">
+        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden">
+          <img id="qvPrimaryImg" src="" alt="Product View" class="w-full h-full object-cover transition-all duration-500"/>
+          <div class="absolute bottom-3 left-3 right-3 flex items-center gap-2 bg-black/70 backdrop-blur-md p-1.5 rounded" id="qvThumbsStrip"></div>
         </div>
 
-        <!-- Reset Option -->
-        <?php if ($has_active_filters): ?>
-          <div class="flex justify-between items-center bg-amber-50 border border-amber-200 rounded-xl p-3">
-            <span class="text-xs font-mono font-bold text-amber-900">Active Filters Applied</span>
-            <a href="<?= base_url('shop') ?>" class="text-[10px] uppercase font-mono text-rose-600 font-bold bg-white px-2.5 py-1 rounded-lg border border-rose-200 hover:bg-rose-50 transition-colors">
-              Reset All ✕
-            </a>
-          </div>
-        <?php endif; ?>
+        <div class="p-6 sm:p-8 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="text-[10px] font-mono text-stone-500 uppercase tracking-widest mb-1" id="qvVendor">
+              LUMINA
+            </div>
 
-        <!-- 1. SIZE FILTER -->
-        <div>
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">straighten</span>
-              <span>Tailoring Size</span>
-            </span>
-            <?php if (!empty($active_size)): ?>
-              <a href="<?= build_filter_url('size', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
-          </h4>
-          <div class="grid grid-cols-3 gap-1.5">
-            <?php foreach (['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $sz): ?>
-            <?php $isSz = ($active_size === $sz); ?>
-            <a href="<?= build_filter_url('size', $sz) ?>" class="py-2 text-center text-xs font-mono font-bold rounded-xl border transition-all cursor-pointer <?= $isSz ? 'bg-stone-950 text-[#e9c176] border-stone-950 shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-900 hover:bg-stone-100' ?>">
-              <?= $sz ?>
-            </a>
-            <?php endforeach; ?>
+            <h2 class="font-serif text-2xl font-bold text-black uppercase" id="qvTitle">Product Title</h2>
+            
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="font-serif text-2xl font-bold text-black" id="qvPrice">₹0</span>
+              <span class="text-xs text-stone-400 line-through font-mono" id="qvComparePrice"></span>
+              <span class="text-[10px] font-mono font-bold text-black bg-stone-100 px-2 py-0.5 rounded" id="qvDiscount"></span>
+            </div>
+
+            <p class="text-xs text-stone-600 mt-3 leading-relaxed font-sans" id="qvDescription"></p>
+
+            <!-- Size Selector in Modal -->
+            <div class="mt-5">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-stone-600 font-bold block mb-2">Select Size:</span>
+              <div class="grid grid-cols-5 gap-1.5" id="qvSizeMatrix">
+                <button type="button" onclick="selectQvSize('XS', this)" class="qv-size-btn py-2 text-xs font-mono font-bold rounded border border-stone-200 text-stone-800 hover:border-black transition-all text-center cursor-pointer">XS</button>
+                <button type="button" onclick="selectQvSize('S', this)" class="qv-size-btn py-2 text-xs font-mono font-bold rounded border border-stone-200 text-stone-800 hover:border-black transition-all text-center cursor-pointer">S</button>
+                <button type="button" onclick="selectQvSize('M', this)" class="qv-size-btn active py-2 text-xs font-mono font-bold rounded border border-black bg-black text-white shadow-2xs transition-all text-center cursor-pointer">M</button>
+                <button type="button" onclick="selectQvSize('L', this)" class="qv-size-btn py-2 text-xs font-mono font-bold rounded border border-stone-200 text-stone-800 hover:border-black transition-all text-center cursor-pointer">L</button>
+                <button type="button" onclick="selectQvSize('XL', this)" class="qv-size-btn py-2 text-xs font-mono font-bold rounded border border-stone-200 text-stone-800 hover:border-black transition-all text-center cursor-pointer">XL</button>
+              </div>
+            </div>
           </div>
+
+          <!-- Bottom Actions -->
+          <div class="grid grid-cols-2 gap-2 pt-4 border-t border-stone-200">
+            <button type="button" id="qvAddBagBtn" class="py-3 bg-stone-100 hover:bg-stone-200 text-black font-mono text-xs uppercase font-bold tracking-wider rounded transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-stone-300">
+              <span class="material-symbols-outlined text-base">shopping_bag</span>
+              <span>Add to Bag</span>
+            </button>
+            <button type="button" id="qvBuyNowBtn" class="py-3 bg-black hover:bg-stone-800 text-white font-mono text-xs uppercase font-bold tracking-wider rounded transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs">
+              <span>Buy Now</span>
+            </button>
+          </div>
+
         </div>
 
-        <!-- 2. COLLECTIONS & CAPSULES -->
-        <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">category</span>
-              <span>Capsule World</span>
-            </span>
-            <?php if (!empty($active_collection)): ?>
-              <a href="<?= build_filter_url('collection', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
-          </h4>
-          <div class="flex flex-col gap-1 text-xs">
-            <a href="<?= build_filter_url('collection', null) ?>" class="flex justify-between items-center py-2 px-3 rounded-xl transition-all <?= empty($active_collection) ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:text-stone-950 hover:bg-stone-50' ?>">
-              <span>All Masterpieces</span>
-              <span class="text-[10px] font-mono text-stone-400"><?= count($products ?? []) ?></span>
-            </a>
-            <?php foreach ($collections as $col): ?>
-            <?php $isCol = ($active_collection === $col['slug']); ?>
-            <a href="<?= build_filter_url('collection', $col['slug']) ?>" class="flex justify-between items-center py-2 px-3 rounded-xl transition-all <?= $isCol ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:text-stone-950 hover:bg-stone-50' ?>">
-              <span class="line-clamp-1"><?= htmlspecialchars($col['title']) ?></span>
-            </a>
-            <?php endforeach; ?>
-          </div>
-        </div>
-
-        <!-- 3. FABRIC & RAW MATERIALS -->
-        <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">texture</span>
-              <span>Raw Material</span>
-            </span>
-            <?php if (!empty($active_fabric)): ?>
-              <a href="<?= build_filter_url('fabric', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
-          </h4>
-          <div class="flex flex-col gap-1 text-xs">
-            <?php 
-              $fabrics = [
-                'Cashmere' => '100% Mongolian Cashmere',
-                'Denim' => '14.5oz Okayama Selvedge',
-                'Silk' => '22-Momme Mulberry Silk',
-                'Wool' => 'Super 150s Virgin Wool',
-                'Terry' => '500 GSM French Terry'
-              ];
-              foreach ($fabrics as $fKey => $fLabel):
-              $isFab = ($active_fabric === $fKey);
-            ?>
-            <a href="<?= build_filter_url('fabric', $fKey) ?>" class="flex justify-between items-center py-1.5 px-3 rounded-xl transition-all <?= $isFab ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
-              <span><?= $fLabel ?></span>
-              <?php if ($isFab): ?><span class="text-[#a16207] font-bold">✓</span><?php endif; ?>
-            </a>
-            <?php endforeach; ?>
-          </div>
-        </div>
-
-        <!-- 4. BUDGET TIERS -->
-        <div class="border-t border-stone-200 pt-5">
-          <h4 class="font-label-caps text-xs text-stone-900 uppercase tracking-wider mb-2.5 font-bold flex items-center justify-between">
-            <span class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-[#a16207]">payments</span>
-              <span>Budget Tiers</span>
-            </span>
-            <?php if (!empty($active_price)): ?>
-              <a href="<?= build_filter_url('price', null) ?>" class="text-[10px] text-stone-400 hover:text-rose-500 font-mono">Clear</a>
-            <?php endif; ?>
-          </h4>
-          <div class="flex flex-col gap-1 text-xs">
-            <a href="<?= build_filter_url('price', 'under_2000') ?>" class="py-2 px-3 rounded-xl transition-all flex justify-between <?= ($active_price === 'under_2000') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
-              <span>Under ₹2,000</span>
-              <span class="text-[10px] font-mono text-stone-400">Entry</span>
-            </a>
-            <a href="<?= build_filter_url('price', '2000_5000') ?>" class="py-2 px-3 rounded-xl transition-all flex justify-between <?= ($active_price === '2000_5000') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
-              <span>₹2,000 – ₹5,000</span>
-              <span class="text-[10px] font-mono text-[#a16207]">Core</span>
-            </a>
-            <a href="<?= build_filter_url('price', 'above_5000') ?>" class="py-2 px-3 rounded-xl transition-all flex justify-between <?= ($active_price === 'above_5000') ? 'font-bold text-[#a16207] bg-amber-50 border border-amber-200' : 'text-stone-700 hover:bg-stone-50' ?>">
-              <span>Above ₹5,000</span>
-              <span class="text-[10px] font-mono text-amber-600 font-bold">Master</span>
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Drawer Footer -->
-      <div class="p-5 border-t border-stone-200 bg-stone-50 flex-shrink-0">
-        <button type="button" onclick="toggleMobileFilterDrawer()" class="w-full py-3 bg-stone-950 hover:bg-stone-800 text-white font-mono text-xs uppercase font-bold tracking-widest rounded-xl transition-all shadow-md cursor-pointer">
-          View <?= count($products ?? []) ?> Pieces
-        </button>
       </div>
 
     </div>
@@ -603,44 +643,174 @@ $has_active_filters = !empty($active_collection) || !empty($active_size) || !emp
 
 </main>
 
-<script>
-function setViewMode(mode) {
-  var grid = document.getElementById('productGridWrapper');
-  var bentoBtn = document.getElementById('btnViewBento');
-  var edBtn = document.getElementById('btnViewEditorial');
-  if (!grid || !bentoBtn || !edBtn) return;
 
-  if (mode === 'editorial') {
-    // 1-Column Single Large Feed View
-    grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-all duration-300';
-    edBtn.className = 'p-2 bg-stone-900 text-[#e9c176] border border-[#e9c176]/50 rounded-lg text-xs cursor-pointer transition-all shadow-xs';
-    bentoBtn.className = 'p-2 text-white/60 hover:text-white rounded-lg text-xs cursor-pointer transition-all border border-transparent';
-  } else {
-    // 2-Column Side-by-Side Mobile Grid View
-    grid.className = 'grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 transition-all duration-300';
-    bentoBtn.className = 'p-2 bg-stone-900 text-[#e9c176] border border-[#e9c176]/50 rounded-lg text-xs cursor-pointer transition-all shadow-xs';
-    edBtn.className = 'p-2 text-white/60 hover:text-white rounded-lg text-xs cursor-pointer transition-all border border-transparent';
+<!-- ── 6. JAVASCRIPT CONTROLLERS & INTERACTIVE SIZE & BAG ENGINE ── -->
+<script>
+window.cardSelectedSizes = window.cardSelectedSizes || {};
+var currentQvProduct = null;
+var currentQvSelectedSize = 'M';
+
+// ── Open Bag Drawer Safely ──
+window.openBagDrawer = function() {
+  if (typeof window.toggleQuickBagDrawer === 'function') {
+    window.toggleQuickBagDrawer(true);
+  }
+  if (typeof window.loadQuickBagItems === 'function') {
+    window.loadQuickBagItems();
+  }
+};
+
+// ── Interactive Size Selector Engine for Product Cards ──
+function selectCardSize(btn, prodId, title, price, img, sizeChip, event) {
+  if (event) {
+    if (typeof event.stopPropagation === 'function') event.stopPropagation();
+    if (typeof event.preventDefault === 'function') event.preventDefault();
+  }
+  
+  var card = btn.closest('.product-card');
+  if (!card) return;
+
+  // 1. Store size state for this card
+  window.cardSelectedSizes[prodId] = sizeChip;
+  card.setAttribute('data-selected-size', sizeChip);
+
+  // 2. Visually activate the clicked size in SOLID BLACK & reset siblings
+  var sizeButtons = card.querySelectorAll('.card-size-btn');
+  sizeButtons.forEach(function(b) {
+    b.className = 'card-size-btn py-1 text-[11px] font-mono font-bold text-stone-800 bg-stone-50 hover:bg-black hover:text-white border border-stone-200 rounded transition-all text-center cursor-pointer';
+  });
+  btn.className = 'card-size-btn py-1 text-[11px] font-mono font-bold text-white bg-black border border-black rounded shadow-xs scale-105 transition-all text-center cursor-pointer';
+
+  // 3. Update Status Indicator in Size Drawer
+  var statusEl = card.querySelector('.card-size-status');
+  if (statusEl) {
+    statusEl.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span class="text-black font-bold">Size ' + sizeChip + ' Selected</span>';
   }
 
-  setTimeout(() => {
-    if (window.lenisInstance && typeof window.lenisInstance.resize === 'function') {
-      window.lenisInstance.resize();
-    }
-  }, 60);
+  // 4. Update the Bag and Buy Now action buttons on this card
+  var bagBtn = card.querySelector('.card-bag-btn');
+  if (bagBtn) {
+    bagBtn.innerHTML = '<span class="material-symbols-outlined text-[13px]">shopping_bag</span><span>Bag (' + sizeChip + ')</span>';
+  }
+  var buyBtn = card.querySelector('.card-buy-btn');
+  if (buyBtn) {
+    buyBtn.innerHTML = '<span>Buy Now (' + sizeChip + ')</span>';
+  }
+
+  // 5. Instantly Add to Bag & Slide open the Bag Drawer
+  var itemObj = {
+    id: prodId,
+    variant_id: prodId,
+    product_id: prodId,
+    title: title,
+    price: price,
+    image: img,
+    size: sizeChip
+  };
+
+  if (typeof window.addToCart === 'function') {
+    window.addToCart(itemObj, 1, '✦ Added ' + title + ' (Size ' + sizeChip + ') to Bag!', function() {
+      window.openBagDrawer();
+    });
+    // Ensure bag drawer opens
+    setTimeout(function() {
+      window.openBagDrawer();
+    }, 450);
+  } else {
+    window.openBagDrawer();
+  }
 }
 
-// ── Mobile Filter Drawer Toggle ──
-function toggleMobileFilterDrawer() {
-  var drawer = document.getElementById('mobileFilterDrawer');
-  var backdrop = document.getElementById('mobileFilterBackdrop');
-  var panel = document.getElementById('mobileFilterPanel');
+// ── Card Bag Button Handler ──
+function handleCardBagClick(btn, prodId, title, price, img, event) {
+  if (event) {
+    if (typeof event.stopPropagation === 'function') event.stopPropagation();
+    if (typeof event.preventDefault === 'function') event.preventDefault();
+  }
+  var card = btn ? btn.closest('.product-card') : null;
+  var chosenSize = (card ? card.getAttribute('data-selected-size') : null) || window.cardSelectedSizes[prodId] || 'M';
+
+  var itemObj = {
+    id: prodId,
+    variant_id: prodId,
+    product_id: prodId,
+    title: title,
+    price: price,
+    image: img,
+    size: chosenSize
+  };
+
+  if (typeof window.addToCart === 'function') {
+    window.addToCart(itemObj, 1, '✦ Added ' + title + ' (Size ' + chosenSize + ') to Bag!', function() {
+      window.openBagDrawer();
+    });
+    setTimeout(function() {
+      window.openBagDrawer();
+    }, 450);
+  } else {
+    window.openBagDrawer();
+  }
+}
+
+// ── Card Buy Now Button Handler ──
+function handleCardBuyClick(btn, prodId, title, price, img, event) {
+  if (event) {
+    if (typeof event.stopPropagation === 'function') event.stopPropagation();
+    if (typeof event.preventDefault === 'function') event.preventDefault();
+  }
+  var card = btn ? btn.closest('.product-card') : null;
+  var chosenSize = (card ? card.getAttribute('data-selected-size') : null) || window.cardSelectedSizes[prodId] || 'M';
+
+  if (typeof window.openExpressCheckout === 'function') {
+    window.openExpressCheckout(prodId, title + ' (' + chosenSize + ')', price, img, prodId);
+  } else {
+    handleCardBagClick(btn, prodId, title, price, img, event);
+  }
+}
+
+// ── Grid Layout Switcher ──
+function setCatalogLayout(layout) {
+  var grid = document.getElementById('productGridContainer');
+  if (!grid) return;
+
+  var b4 = document.getElementById('btnGrid4');
+  var b3 = document.getElementById('btnGrid3');
+  var b2 = document.getElementById('btnGrid2');
+
+  var allBtns = [b4, b3, b2];
+  allBtns.forEach(function(b) {
+    if (b) b.className = 'p-1.5 text-stone-500 hover:text-black transition-all rounded cursor-pointer';
+  });
+
+  if (layout === 'grid-3') {
+    grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 lg:gap-7 transition-all duration-300';
+    if (b3) b3.className = 'p-1.5 bg-black text-white rounded shadow-2xs transition-all cursor-pointer';
+  } else if (layout === 'grid-2') {
+    grid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 lg:gap-8 transition-all duration-300';
+    if (b2) b2.className = 'p-1.5 bg-black text-white rounded shadow-2xs transition-all cursor-pointer';
+  } else {
+    // grid-4 default
+    grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-7 transition-all duration-300';
+    if (b4) b4.className = 'p-1.5 bg-black text-white rounded shadow-2xs transition-all cursor-pointer';
+  }
+}
+
+// ── Slide-Over Filter Drawer ──
+function toggleFilterDrawer() {
+  var drawer = document.getElementById('filterDrawerOverlay');
+  var backdrop = document.getElementById('filterDrawerBackdrop');
+  var panel = document.getElementById('filterDrawerPanel');
   if (!drawer || !backdrop || !panel) return;
 
   if (drawer.classList.contains('hidden')) {
     drawer.classList.remove('hidden');
     drawer.classList.add('flex');
+    
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
-    setTimeout(() => {
+    document.body.style.touchAction = 'none';
+
+    setTimeout(function() {
       backdrop.classList.remove('opacity-0');
       backdrop.classList.add('opacity-100');
       panel.classList.remove('translate-x-full');
@@ -651,11 +821,134 @@ function toggleMobileFilterDrawer() {
     backdrop.classList.add('opacity-0');
     panel.classList.remove('translate-x-0');
     panel.classList.add('translate-x-full');
+
+    document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
-    setTimeout(() => {
+    document.body.style.touchAction = '';
+
+    setTimeout(function() {
       drawer.classList.add('hidden');
       drawer.classList.remove('flex');
     }, 300);
   }
+}
+
+// ── Quick-View Modal Engine ──
+function openProductQuickView(prod) {
+  currentQvProduct = prod;
+  currentQvSelectedSize = 'M';
+
+  var modal = document.getElementById('productQuickViewModal');
+  var backdrop = document.getElementById('qvBackdrop');
+  var panel = document.getElementById('qvPanel');
+
+  document.getElementById('qvTitle').innerText = prod.title;
+  document.getElementById('qvVendor').innerText = prod.vendor || 'NovaDrop';
+  document.getElementById('qvPrice').innerText = '₹' + Number(prod.price).toLocaleString();
+  document.getElementById('qvDescription').innerText = prod.description || 'Tailored with intention in the atelier.';
+
+  if (prod.compare_price && prod.compare_price > prod.price) {
+    document.getElementById('qvComparePrice').innerText = '₹' + Number(prod.compare_price).toLocaleString();
+    document.getElementById('qvDiscount').innerText = prod.discount + '% OFF';
+    document.getElementById('qvDiscount').style.display = 'inline-block';
+  } else {
+    document.getElementById('qvComparePrice').innerText = '';
+    document.getElementById('qvDiscount').style.display = 'none';
+  }
+
+  var mainImg = document.getElementById('qvPrimaryImg');
+  mainImg.src = prod.image;
+
+  var thumbStrip = document.getElementById('qvThumbsStrip');
+  thumbStrip.innerHTML = '';
+  var images = [prod.image];
+  if (prod.secondary_image && prod.secondary_image !== prod.image) {
+    images.push(prod.secondary_image);
+  }
+  images.forEach(function(imgUrl, idx) {
+    var tb = document.createElement('button');
+    tb.type = 'button';
+    tb.className = 'w-9 h-9 rounded overflow-hidden border-2 transition-all cursor-pointer ' + (idx === 0 ? 'border-white' : 'border-transparent opacity-60 hover:opacity-100');
+    tb.innerHTML = '<img src="' + imgUrl + '" class="w-full h-full object-cover">';
+    tb.onclick = function() {
+      mainImg.src = imgUrl;
+      Array.from(thumbStrip.children).forEach(function(c) { c.className = 'w-9 h-9 rounded overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all cursor-pointer'; });
+      tb.className = 'w-9 h-9 rounded overflow-hidden border-2 border-white transition-all cursor-pointer opacity-100';
+    };
+    thumbStrip.appendChild(tb);
+  });
+
+  // Reset modal size chips
+  var modalSizeBtns = document.querySelectorAll('.qv-size-btn');
+  modalSizeBtns.forEach(function(btn) {
+    if (btn.innerText.trim() === 'M') {
+      btn.className = 'qv-size-btn active py-2 text-xs font-mono font-bold rounded border border-black bg-black text-white shadow-2xs transition-all text-center cursor-pointer';
+    } else {
+      btn.className = 'qv-size-btn py-2 text-xs font-mono font-bold rounded border border-stone-200 text-stone-800 hover:border-black transition-all text-center cursor-pointer';
+    }
+  });
+
+  document.getElementById('qvAddBagBtn').onclick = function() {
+    if (typeof window.addToCart === 'function') {
+      window.addToCart({
+        id: prod.id,
+        variant_id: prod.id,
+        product_id: prod.id,
+        title: prod.title,
+        price: prod.price,
+        image: prod.image,
+        size: currentQvSelectedSize
+      }, 1, '✦ Added ' + prod.title + ' (Size ' + currentQvSelectedSize + ') to Bag!', function() {
+        window.openBagDrawer();
+      });
+      setTimeout(function() { window.openBagDrawer(); }, 450);
+    }
+    closeProductQuickView();
+  };
+
+  document.getElementById('qvBuyNowBtn').onclick = function() {
+    closeProductQuickView();
+    if (typeof window.openExpressCheckout === 'function') {
+      window.openExpressCheckout(prod.id, prod.title + ' (' + currentQvSelectedSize + ')', prod.price, prod.image, prod.id);
+    }
+  };
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() {
+    backdrop.classList.remove('opacity-0');
+    backdrop.classList.add('opacity-100');
+    panel.classList.remove('scale-95', 'opacity-0');
+    panel.classList.add('scale-100', 'opacity-100');
+  }, 20);
+}
+
+function selectQvSize(size, btn) {
+  currentQvSelectedSize = size;
+  var btns = document.querySelectorAll('.qv-size-btn');
+  btns.forEach(function(b) {
+    b.className = 'qv-size-btn py-2 text-xs font-mono font-bold rounded border border-stone-200 text-stone-800 hover:border-black transition-all text-center cursor-pointer';
+  });
+  btn.className = 'qv-size-btn active py-2 text-xs font-mono font-bold rounded border border-black bg-black text-white shadow-2xs transition-all text-center cursor-pointer';
+}
+
+function closeProductQuickView() {
+  var modal = document.getElementById('productQuickViewModal');
+  var backdrop = document.getElementById('qvBackdrop');
+  var panel = document.getElementById('qvPanel');
+  if (!modal || !backdrop || !panel) return;
+
+  backdrop.classList.remove('opacity-100');
+  backdrop.classList.add('opacity-0');
+  panel.classList.remove('scale-100', 'opacity-100');
+  panel.classList.add('scale-95', 'opacity-0');
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+  setTimeout(function() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }, 250);
 }
 </script>

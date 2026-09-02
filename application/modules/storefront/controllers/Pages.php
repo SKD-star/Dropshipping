@@ -23,7 +23,7 @@ class Pages extends MY_Controller
     public function shipping()
     {
         $data = [
-            'title'            => 'Shipping, Logistics & White-Glove Transit — ' . env('APP_NAME', 'LUMINA'),
+            'title'            => 'Shipping, Logistics & White-Glove Transit — ' . env('APP_NAME', 'NovaDrop'),
             'meta_description' => 'Learn about LUMINA white-glove insured transit, 18-hour dispatch SLA, and humidity-controlled garment packaging.',
             'home_settings'    => $this->_get_home_settings(),
             'cart_count'       => $this->_get_cart_count(),
@@ -36,7 +36,7 @@ class Pages extends MY_Controller
     public function provenance()
     {
         $data = [
-            'title'            => 'Certified Provenance & Master Craftsmanship — ' . env('APP_NAME', 'LUMINA'),
+            'title'            => 'Certified Provenance & Master Craftsmanship — ' . env('APP_NAME', 'NovaDrop'),
             'meta_description' => 'Explore the heritage of Grade-A Mongolian Cashmere, Okayama Selvedge Denim, and 22-Momme Mulberry Silk.',
             'home_settings'    => $this->_get_home_settings(),
             'cart_count'       => $this->_get_cart_count(),
@@ -49,7 +49,7 @@ class Pages extends MY_Controller
     public function terms()
     {
         $data = [
-            'title'            => 'Terms of Service & Atelier Privileges — ' . env('APP_NAME', 'LUMINA'),
+            'title'            => 'Terms of Service & Atelier Privileges — ' . env('APP_NAME', 'NovaDrop'),
             'meta_description' => 'LUMINA client terms of service, bespoke exchange policy, and 256-bit encrypted settlement protocol.',
             'home_settings'    => $this->_get_home_settings(),
             'cart_count'       => $this->_get_cart_count(),
@@ -62,7 +62,7 @@ class Pages extends MY_Controller
     public function manifesto()
     {
         $data = [
-            'title'            => 'Zero-Waste & Sustainability Manifesto — ' . env('APP_NAME', 'LUMINA'),
+            'title'            => 'Zero-Waste & Sustainability Manifesto — ' . env('APP_NAME', 'NovaDrop'),
             'meta_description' => 'Our commitment to zero-waste small-batch production, organic textiles, and generational craftsmanship.',
             'home_settings'    => $this->_get_home_settings(),
             'cart_count'       => $this->_get_cart_count(),
@@ -100,8 +100,8 @@ class Pages extends MY_Controller
         }
 
         $data = [
-            'title'            => 'Live Order & Shipment Tracking — ' . env('APP_NAME', 'LUMINA'),
-            'meta_description' => 'Real-time GPS parcel tracking and delivery timeline for your LUMINA order.',
+            'title'            => 'Live Order & Shipment Tracking — ' . env('APP_NAME', 'NovaDrop'),
+            'meta_description' => 'Real-time GPS parcel tracking and delivery timeline for your NovaDrop order.',
             'order_number'     => $order_number,
             'phone_email'      => $phone_email,
             'order'            => $order,
@@ -123,8 +123,8 @@ class Pages extends MY_Controller
                              ->get()->result_array();
 
         $data = [
-            'title'            => 'AI Stylist Concierge & Silhouette Architect — ' . env('APP_NAME', 'LUMINA'),
-            'meta_description' => 'Get bespoke sizing, styling advice, and curated lookbook ensembles from the LUMINA AI Stylist.',
+            'title'            => 'AI Stylist Concierge & Silhouette Architect — ' . env('APP_NAME', 'NovaDrop'),
+            'meta_description' => 'Get bespoke sizing, styling advice, and curated lookbook ensembles from the NovaDrop AI Stylist.',
             'featured'         => $featured,
             'home_settings'    => $this->_get_home_settings(),
             'cart_count'       => $this->_get_cart_count(),

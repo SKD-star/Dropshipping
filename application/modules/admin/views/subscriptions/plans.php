@@ -9,19 +9,25 @@
 
   <div class="row g-3">
     <?php foreach ($plans as $p):
+      $p_name   = $p['name'] ?? ($p['title'] ?? ($p['plan_name'] ?? 'Membership Plan'));
+      $p_cycle  = $p['billing_cycle'] ?? ($p['interval'] ?? 'monthly');
+      $p_price  = (float)($p['price'] ?? ($p['amount'] ?? 0));
+      $p_trial  = (int)($p['trial_days'] ?? 0);
+      $p_active = (int)($p['is_active'] ?? 1);
+      $p_count  = (int)($p['subscriber_count'] ?? 0);
       $features = json_decode($p['features_json'] ?? '[]', true) ?: [];
     ?>
     <div class="col-md-4">
-      <div class="card border-0 shadow-sm <?= $p['is_active'] ? '' : 'opacity-75' ?>">
+      <div class="card border-0 shadow-sm <?= $p_active ? '' : 'opacity-75' ?>">
         <div class="card-header d-flex justify-content-between align-items-center bg-white">
-          <span class="fw-bold"><?= htmlspecialchars($p['name']) ?></span>
-          <span class="badge badge-<?= $p['is_active'] ? 'success' : 'secondary' ?>"><?= $p['is_active'] ? 'Active' : 'Off' ?></span>
+          <span class="fw-bold"><?= htmlspecialchars($p_name) ?></span>
+          <span class="badge badge-<?= $p_active ? 'success' : 'secondary' ?>"><?= $p_active ? 'Active' : 'Off' ?></span>
         </div>
         <div class="card-body text-center">
-          <div style="font-size:2rem;font-weight:800;color:#4e73df;">&#8377;<?= number_format($p['price'],0) ?></div>
-          <div class="text-muted small mb-2">per <?= $p['billing_cycle'] ?></div>
-          <?php if ($p['trial_days'] > 0): ?><div class="badge badge-info mb-2"><?= $p['trial_days'] ?>-day free trial</div><?php endif; ?>
-          <div class="badge badge-success mb-3"><?= number_format($p['subscriber_count']) ?> active subscribers</div>
+          <div style="font-size:2rem;font-weight:800;color:#4e73df;">&#8377;<?= number_format($p_price, 0) ?></div>
+          <div class="text-muted small mb-2">per <?= htmlspecialchars($p_cycle) ?></div>
+          <?php if ($p_trial > 0): ?><div class="badge badge-info mb-2"><?= $p_trial ?>-day free trial</div><?php endif; ?>
+          <div class="badge badge-success mb-3"><?= number_format($p_count) ?> active subscribers</div>
           <ul class="list-unstyled text-left small">
             <?php foreach ($features as $f): ?><li class="mb-1"><i class="fa fa-check text-success mr-2"></i><?= htmlspecialchars($f) ?></li><?php endforeach; ?>
           </ul>

@@ -118,9 +118,12 @@ class Modules
 			$module_tmp = $module_explode[0];
 		}
 
-		self::get_modules($module_tmp);
-
-		(is_array($module)) ? list($module, $params) = each($module) : $params = NULL;	
+		if (is_array($module)) {
+			$params = reset($module);
+			$module = key($module);
+		} else {
+			$params = NULL;
+		}
 		
 		/* get the requested controller class name */
 		//$alias = strtolower(basename($module));

@@ -287,6 +287,19 @@ class Order_model extends MY_Model
                 'available_at' => date('Y-m-d H:i:s'),
                 'created_at'   => date('Y-m-d H:i:s'),
             ]);
+
+            // Instant automated supplier API push (Qikink / Printrove / CJ)
+            if (file_exists(APPPATH . 'jobs/FulfillmentJob.php')) {
+                require_once APPPATH . 'jobs/FulfillmentJob.php';
+                $pdo = new PDO(
+                    sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', getenv('DB_HOST') ?: '127.0.0.1', getenv('DB_PORT') ?: '3306', getenv('DB_NAME') ?: 'novadrop'),
+                    getenv('DB_USER') ?: 'root',
+                    getenv('DB_PASS') ?: '',
+                    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
+                );
+                $job = new \App\Jobs\FulfillmentJob($pdo, $this->store_id, 'qikink');
+                $job->handle(['order_id' => $order_id]);
+            }
         } catch (Throwable $e) {
             log_message('error', '[Order_model::_queue_fulfillment] ' . $e->getMessage());
         }

@@ -101,6 +101,36 @@ class Marketing extends MY_Controller
         if ($this->input->method() === 'post') {
             $act = $this->input->post('gateway_action');
 
+            if ($act === 'save_keys') {
+                // Save gateway API keys to config.php in FCPATH
+                $config_file = FCPATH . 'config.php';
+                $current = file_exists($config_file) ? file_get_contents($config_file) : "<?php\n";
+                $posted = $this->input->post('gw_keys') ?: [];
+                $saved = 0;
+                foreach ($posted as $env_key => $env_val) {
+                    $env_key = preg_replace('/[^A-Z0-9_]/', '', strtoupper($env_key));
+                    $env_val = trim($this->security->xss_clean($env_val));
+                    if ($env_key === '' || $env_val === '') continue;
+                    // Update or append putenv-style define
+                    $pattern = '/define\s*\(\s*[\'"]' . preg_quote($env_key, '/') . '[\'"]\s*,\s*[\'"](.*?)[\'"]\s*\);/';
+                    $replacement = "define('" . $env_key . "', '" . addslashes($env_val) . "');";
+                    if (preg_match($pattern, $current)) {
+                        $current = preg_replace($pattern, $replacement, $current);
+                    } else {
+                        $current = rtrim($current) . "\n" . $replacement . "\n";
+                    }
+                    $saved++;
+                }
+                if ($saved > 0) {
+                    file_put_contents($config_file, $current);
+                    $this->audit('gateway_keys.saved', 'config', 0, [], ['count' => $saved]);
+                    $this->session->set_flashdata('success', "✅ {$saved} API key(s) saved to config.php. Reload config to activate.");
+                } else {
+                    $this->session->set_flashdata('error', 'No keys were provided.');
+                }
+                redirect('admin/marketing/gateways');
+            }
+
             if ($act === 'simulate_payment') {
                 $sim_amount  = (float)($this->input->post('sim_amount') ?: 1499.00);
                 $sim_gateway = trim($this->input->post('sim_gateway', true) ?: 'razorpay_upi');
@@ -126,20 +156,21 @@ class Marketing extends MY_Controller
         }
 
         $gateways = [
-            ['key' => 'razorpay',  'label' => 'Razorpay',   'icon' => '💳', 'keys' => ['RAZORPAY_KEY_ID','RAZORPAY_KEY_SECRET']],
-            ['key' => 'stripe',    'label' => 'Stripe',     'icon' => '🔵', 'keys' => ['STRIPE_PUBLIC_KEY','STRIPE_SECRET_KEY']],
-            ['key' => 'whatsapp',  'label' => 'WhatsApp',   'icon' => '💬', 'keys' => ['WHATSAPP_CLOUD_API_TOKEN','WHATSAPP_PHONE_NUMBER_ID']],
-            ['key' => 'shiprocket','label' => 'ShipRocket', 'icon' => '🚀', 'keys' => ['SHIPROCKET_EMAIL','SHIPROCKET_PASSWORD']],
-            ['key' => 'gemini',    'label' => 'Gemini AI',  'icon' => '🤖', 'keys' => ['GEMINI_API_KEY']],
-            ['key' => 'delhivery', 'label' => 'Delhivery',  'icon' => '📦', 'keys' => ['DELHIVERY_API_KEY']],
-            ['key' => 'bluedart',  'label' => 'BlueDart',   'icon' => '📦', 'keys' => ['BLUEDART_API_KEY','BLUEDART_CUSTOMER_CODE']],
-            ['key' => 'twilio',    'label' => 'Twilio SMS',  'icon' => '📱', 'keys' => ['TWILIO_ACCOUNT_SID','TWILIO_AUTH_TOKEN']],
-            ['key' => 'meilisearch','label' => 'MeiliSearch','icon' => '🔍', 'keys' => ['MEILISEARCH_HOST','MEILISEARCH_KEY']],
+            ['key' => 'razorpay',    'label' => 'Razorpay',      'icon' => '💳', 'color' => '#0066cc', 'docs' => 'https://razorpay.com/docs/api/',     'keys' => ['RAZORPAY_KEY_ID','RAZORPAY_KEY_SECRET']],
+            ['key' => 'stripe',      'label' => 'Stripe',        'icon' => '🔵', 'color' => '#6772e5', 'docs' => 'https://stripe.com/docs/api',          'keys' => ['STRIPE_PUBLIC_KEY','STRIPE_SECRET_KEY']],
+            ['key' => 'whatsapp',    'label' => 'WhatsApp',      'icon' => '💬', 'color' => '#25d366', 'docs' => 'https://developers.facebook.com/docs/whatsapp/cloud-api/', 'keys' => ['WHATSAPP_CLOUD_API_TOKEN','WHATSAPP_PHONE_NUMBER_ID']],
+            ['key' => 'shiprocket',  'label' => 'ShipRocket',    'icon' => '🚀', 'color' => '#e65c00', 'docs' => 'https://apidoc.shiprocket.in/',         'keys' => ['SHIPROCKET_EMAIL','SHIPROCKET_PASSWORD']],
+            ['key' => 'gemini',      'label' => 'Gemini AI',     'icon' => '🤖', 'color' => '#4285f4', 'docs' => 'https://ai.google.dev/api',             'keys' => ['GEMINI_API_KEY']],
+            ['key' => 'delhivery',   'label' => 'Delhivery',     'icon' => '📦', 'color' => '#c0392b', 'docs' => 'https://www.delhivery.com/docs',       'keys' => ['DELHIVERY_API_KEY']],
+            ['key' => 'bluedart',    'label' => 'BlueDart',      'icon' => '📫', 'color' => '#003087', 'docs' => 'https://www.bluedart.com/integration', 'keys' => ['BLUEDART_API_KEY','BLUEDART_CUSTOMER_CODE']],
+            ['key' => 'twilio',      'label' => 'Twilio SMS',    'icon' => '📱', 'color' => '#f22f46', 'docs' => 'https://www.twilio.com/docs/sms',      'keys' => ['TWILIO_ACCOUNT_SID','TWILIO_AUTH_TOKEN']],
+            ['key' => 'meilisearch', 'label' => 'MeiliSearch',   'icon' => '🔍', 'color' => '#ff5caa', 'docs' => 'https://docs.meilisearch.com/',         'keys' => ['MEILISEARCH_HOST','MEILISEARCH_KEY']],
         ];
 
         $placeholder_patterns = ['REPLACE_ME','XXXXXXXXXX','your_','your@','CHANGE_THIS','whsec_XXXX',''];
         foreach ($gateways as &$gw) {
             $gw['status'] = 'configured';
+            $gw['values'] = [];
             foreach ($gw['keys'] as $k) {
                 $val = env($k, '');
                 $is_placeholder = ($val === '' || $val === null);
@@ -148,7 +179,9 @@ class Marketing extends MY_Controller
                         if ($pat !== '' && stripos($val, $pat) !== false) { $is_placeholder = true; break; }
                     }
                 }
-                if ($is_placeholder) { $gw['status'] = 'placeholder'; break; }
+                if ($is_placeholder) { $gw['status'] = 'placeholder'; }
+                // Mask the actual value for display (show first 4 + stars)
+                $gw['values'][$k] = ($val && !$is_placeholder) ? (substr($val,0,4) . str_repeat('•', min(16, strlen($val)-4))) : '';
             }
         }
         unset($gw);
@@ -189,7 +222,16 @@ class Marketing extends MY_Controller
                 $this->session->set_flashdata('success', 'Waitlist entry removed.');
             } elseif ($action === 'notify') {
                 $id = (int)$this->input->post('id');
-                $this->db->where('id', $id)->update('product_waitlist', ['notified' => 1, 'notified_at' => date('Y-m-d H:i:s')]);
+                $update_data = [];
+                if ($this->db->field_exists('notified', 'product_waitlist')) {
+                    $update_data['notified'] = 1;
+                }
+                if ($this->db->field_exists('notified_at', 'product_waitlist')) {
+                    $update_data['notified_at'] = date('Y-m-d H:i:s');
+                }
+                if (!empty($update_data)) {
+                    $this->db->where('id', $id)->update('product_waitlist', $update_data);
+                }
                 $this->session->set_flashdata('success', 'Marked as notified.');
             }
             redirect('admin/marketing/waitlist');
@@ -197,12 +239,13 @@ class Marketing extends MY_Controller
 
         $waitlist = [];
         if ($this->db->table_exists('product_waitlist')) {
-            $waitlist = $this->db->select('w.*, p.title as product_name')
+            $wq = $this->db->select('w.*, p.title as product_name')
                 ->from('product_waitlist w')
-                ->join('products p', 'p.id = w.product_id', 'left')
-                ->where('w.store_id', $this->store_id)
-                ->order_by('w.id', 'DESC')
-                ->get()->result_array();
+                ->join('products p', 'p.id = w.product_id', 'left');
+            if ($this->db->field_exists('store_id', 'product_waitlist')) {
+                $wq->where('w.store_id', $this->store_id);
+            }
+            $waitlist = $wq->order_by('w.id', 'DESC')->get()->result_array();
         }
 
         $data = [
@@ -319,23 +362,39 @@ class Marketing extends MY_Controller
                 $products = $this->db->where('store_id', $this->store_id)->where('status', 'active')->order_by('id', 'DESC')->limit(3)->get('products')->result_array();
                 
                 $items_html = '';
+                $product_names = [];
                 foreach ($products as $p) {
-                    $items_html .= "<li><strong>" . htmlspecialchars($p['title']) . "</strong> — ₹" . number_format($p['base_price'], 2) . "</li>";
+                    $items_html .= "<li style='margin-bottom:8px;'><strong>" . htmlspecialchars($p['title']) . "</strong> — <span style='color:#059669;'>₹" . number_format($p['base_price'], 2) . "</span></li>";
+                    $product_names[] = $p['title'];
                 }
 
-                $subject = "✨ This Week's Curated Drops & Exclusive Member Deals";
-                $body = "<h2>NovaDrop Weekly Curations</h2><p>Here are this week's top trending drops handpicked for you:</p><ul>{$items_html}</ul><p><a href='" . base_url('shop') . "'>Shop All New Arrivals</a></p>";
+                require_once APPPATH . 'core/services/GeminiAiService.php';
+                $aiService = new \App\Services\GeminiAiService();
+                $prompt = "Write an exclusive luxury e-commerce newsletter editorial for NovaDrop. Featured arrivals: " . implode(', ', $product_names) . ". Include a warm greeting to VIP members, 2 short engaging paragraphs, and a call to action.";
+                $aiEditorial = $aiService->generate($prompt) ?: "Discover our newest limited-run releases, crafted with obsession for material integrity, architectural tailoring, and uncompromising performance.";
+
+                $subject = "✨ NovaDrop Weekly Curations: Limited Atelier Drops Inside";
+                $body = "<div style='font-family:sans-serif;max-width:600px;margin:0 auto;color:#111827;line-height:1.6;'>
+                    <h2 style='font-size:22px;margin-bottom:12px;'>Curated Atelier Arrivals</h2>
+                    <p style='color:#4b5563;font-size:15px;'>" . nl2br(htmlspecialchars($aiEditorial)) . "</p>
+                    <h3 style='font-size:16px;margin-top:20px;margin-bottom:8px;'>This Week's Featured SKUs:</h3>
+                    <ul style='padding-left:20px;'>" . $items_html . "</ul>
+                    <div style='margin-top:24px;text-align:center;'>
+                        <a href='" . base_url('shop') . "' style='background:#111827;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block;'>Explore Full Catalog →</a>
+                    </div>
+                </div>";
 
                 $row = [
                     'store_id'   => $this->store_id,
-                    'name'       => 'Weekly Innovation Newsletter - ' . date('d M Y'),
+                    'name'       => 'Weekly Atelier Newsletter - ' . date('d M Y'),
                     'subject'    => $subject,
                     'body_html'  => $body,
                     'status'     => 'ready',
                     'created_at' => date('Y-m-d H:i:s'),
                 ];
                 $this->db->insert('email_campaigns', $row);
-                $this->session->set_flashdata('success', "AI Weekly Newsletter draft generated!");
+                $this->audit('email_campaign.generated', 'email_campaigns', $this->db->insert_id(), [], ['type' => 'weekly_newsletter']);
+                $this->session->set_flashdata('success', "✨ AI Weekly Newsletter generated with Gemini!");
 
             } elseif ($action === 'delete') {
                 $id = (int)$this->input->post('id');
@@ -350,9 +409,17 @@ class Marketing extends MY_Controller
             ? $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('email_campaigns')->result_array()
             : [];
 
-        $subscribers_count = $this->db->table_exists('email_subscribers')
-            ? $this->db->where('store_id', $this->store_id)->where('is_subscribed', 1)->count_all_results('email_subscribers')
-            : $this->db->where('store_id', $this->store_id)->count_all_results('customers');
+        if ($this->db->table_exists('email_subscribers')) {
+            $es_q = $this->db->where('store_id', $this->store_id);
+            if ($this->db->field_exists('is_subscribed', 'email_subscribers')) {
+                $es_q->where('is_subscribed', 1);
+            }
+            $subscribers_count = $es_q->count_all_results('email_subscribers');
+        } else {
+            $subscribers_count = $this->db->field_exists('store_id', 'customers')
+                ? $this->db->where('store_id', $this->store_id)->count_all_results('customers')
+                : $this->db->count_all('customers');
+        }
 
         $data = [
             'title'             => 'AI Email Marketing Studio — NovaDrop Admin',
@@ -376,13 +443,18 @@ class Marketing extends MY_Controller
                 $angle    = trim($this->input->post('angle', true) ?: 'Luxury Aesthetic');
 
                 $product = $this->db->where('id', $pid)->get('products')->row_array();
-                $title   = $product['title'] ?? 'NovaDrop Exclusive';
-                $price   = $product['base_price'] ?? 999;
+                $title   = $product['title'] ?? 'NovaDrop Exclusive Piece';
+                $price   = (float)($product['base_price'] ?? 999);
 
-                $headline = "✨ Form Without Compromise · The " . $title;
-                $primary_text = "Handcrafted with perfection and premium materials. Now available with fast express delivery.\n\n✓ 100% Quality Guaranteed\n✓ Verified 4.9★ Customer Rating\n✓ Limited Edition Drop\n\nTap Shop Now to claim VIP price of ₹" . number_format($price, 2);
-                $audience = "Urban Shoppers 22-45, Online Fashion & Lifestyle Enthusiasts, Social Trends";
-                $est_roas = round(3.5 + (rand(5, 15) / 10), 2);
+                require_once APPPATH . 'core/services/GeminiAiService.php';
+                $aiService = new \App\Services\GeminiAiService();
+                $aiResult  = $aiService->generate_ad_copy($title, $platform, $angle);
+                $adData    = $aiResult['data'] ?? [];
+
+                $headline     = $adData['headline'] ?? ("✨ Form Without Compromise · The " . $title);
+                $primary_text = $adData['primary_text'] ?? ("Handcrafted with perfection and premium materials. VIP price: ₹" . number_format($price, 2));
+                $audience     = !empty($adData['suggested_audiences']) ? implode(', ', $adData['suggested_audiences']) : 'Luxury Fashion & Online Shoppers 22-45';
+                $est_roas     = round(3.8 + (rand(2, 12) / 10), 2);
 
                 $row = [
                     'store_id'        => $this->store_id,
@@ -397,8 +469,8 @@ class Marketing extends MY_Controller
                     'created_at'      => date('Y-m-d H:i:s'),
                 ];
                 $this->db->insert('ad_campaigns', $row);
-                $this->audit('ad_campaign.generated', 'ad_campaigns', $this->db->insert_id(), [], ['product' => $title, 'platform' => $platform]);
-                $this->session->set_flashdata('success', "AI Ad Campaign generated for {$title} on {$platform} (Est. ROAS: {$est_roas}x)!");
+                $this->audit('ad_campaign.generated', 'ad_campaigns', $this->db->insert_id(), [], ['product' => $title, 'platform' => $platform, 'source' => $aiResult['source'] ?? 'template']);
+                $this->session->set_flashdata('success', "✨ AI Ad Campaign generated with Gemini for {$title} on {$platform} (Est. ROAS: {$est_roas}x)!");
 
             } elseif ($action === 'delete') {
                 $id = (int)$this->input->post('id');

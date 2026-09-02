@@ -5,6 +5,7 @@
 
   <div class="row g-3">
     <?php $modules = [
+      ['Coordinated Ensemble Packs', 'Active (15% & 10% Tiers)', 'fa-tshirt', '#d97706', 'admin/promotions/ensembles', 'Tiered 3-piece and 2-piece wardrobe pack discounts & lookbook'],
       ['Flash Sales', $flash_count.' active', 'fa-bolt', '#f59e0b', 'admin/promotions/flash_sales', 'Launch time-limited deals with countdown timers'],
       ['Product Bundles', $bundle_count.' active', 'fa-layer-group', '#3b82f6', 'admin/promotions/bundles', 'Create buy-together bundle offers'],
       ['Pre-Orders', $preorder_count.' campaigns', 'fa-clock', '#10b981', 'admin/promotions/pre_orders', 'Accept orders before stock arrives'],

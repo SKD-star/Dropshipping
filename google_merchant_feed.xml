@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
 <channel>
-<title>NovaDrop Atelier Luxury Collective</title>
+<title>NovaDrop Product Catalog</title>
 <link>http://localhost/Dropshipping/</link>
-<description>Autonomous Luxury Commerce & Curated Garments</description>
+<description>Autonomous Luxury Commerce & Curated Products</description>
   <item>
     <g:id>1</g:id>
     <g:title><![CDATA[The Atelier Cashmere Cocoon Coat]]></g:title>
@@ -113,6 +113,61 @@
     <g:availability>in stock</g:availability>
     <g:price>3499.00 INR</g:price>
     <g:brand>Lumina Sartoria</g:brand>
+  </item>
+  <item>
+    <g:id>101</g:id>
+    <g:title><![CDATA[Test Atelier Trench Coat #101]]></g:title>
+    <g:description><![CDATA[Test description]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/test-atelier-trench-coat-101</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/placeholder.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>5499.00 INR</g:price>
+    <g:brand>NovaDrop</g:brand>
+  </item>
+  <item>
+    <g:id>102</g:id>
+    <g:title><![CDATA[Test Selvedge Indigo Denim #102]]></g:title>
+    <g:description><![CDATA[Test description]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/test-selvedge-indigo-denim-102</g:link>
+    <g:image_link>http://localhost/Dropshipping/img/placeholder.jpg</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>4299.00 INR</g:price>
+    <g:brand>NovaDrop</g:brand>
+  </item>
+  <item>
+    <g:id>104</g:id>
+    <g:title><![CDATA[Italian Melton Wool Dropped-Shoulder Overcoat]]></g:title>
+    <g:description><![CDATA[Double-faced Melton wool coat with structured lapels, horn buttons, and cupro lining.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/italian-melton-wool-dropped-shoulder-overcoat</g:link>
+    <g:image_link>https://images.unsplash.com/photo-1544923246-77307dd654cb?w=600&amp;auto=format&amp;fit=crop&amp;q=80</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>4199.00 INR</g:price>
+    <g:brand>Alibaba Luxury Outerwear Hub</g:brand>
+  </item>
+  <item>
+    <g:id>105</g:id>
+    <g:title><![CDATA[Italian Melton Wool Dropped-Shoulder Overcoat]]></g:title>
+    <g:description><![CDATA[Double-faced Melton wool coat with structured lapels, horn buttons, and cupro lining.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/italian-melton-wool-dropped-shoulder-overcoat-281</g:link>
+    <g:image_link>https://images.unsplash.com/photo-1544923246-77307dd654cb?w=600&amp;auto=format&amp;fit=crop&amp;q=80</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>4199.00 INR</g:price>
+    <g:brand>Alibaba Luxury Outerwear Hub</g:brand>
+  </item>
+  <item>
+    <g:id>106</g:id>
+    <g:title><![CDATA[Men's mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style]]></g:title>
+    <g:description><![CDATA[Men's mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style. Crafted with premium ultra-soft breathable combed cotton fabric with high-definition geometric mountain graphic print, ribbed crewneck collar, and durable double-needle stitching. Ideal for outdoor adventures, hiking, casual streetwear, and summer comfort.]]></g:description>
+    <g:link>http://localhost/Dropshipping/product/mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea</g:link>
+    <g:image_link>https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&amp;auto=format&amp;fit=crop&amp;q=80</g:image_link>
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <g:price>1586.00 INR</g:price>
+    <g:brand>AliExpress Direct VIP Factory</g:brand>
   </item>
 </channel>
 </rss>

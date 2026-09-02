@@ -54,6 +54,53 @@ class Shop extends MY_Controller
         ];
 
         $listing = $this->Product_model->get_listing($filters, $page, $per_page);
+        
+        // Eager-load secondary images & variants for each product
+        if (!empty($listing['items'])) {
+            $p_ids = array_column($listing['items'], 'id');
+            $all_imgs = $this->db->where_in('product_id', $p_ids)->order_by('position', 'ASC')->get('product_images')->result_array();
+            $imgs_by_p = [];
+            foreach ($all_imgs as $im) {
+                $imgs_by_p[$im['product_id']][] = $im['url'];
+            }
+
+            $all_variants = $this->db->where_in('product_id', $p_ids)->where('is_active', 1)->get('product_variants')->result_array();
+            $variants_by_p = [];
+            foreach ($all_variants as $v) {
+                $variants_by_p[$v['product_id']][] = $v;
+            }
+
+            foreach ($listing['items'] as &$item) {
+                $item['gallery'] = $imgs_by_p[$item['id']] ?? [];
+                $item['variants'] = $variants_by_p[$item['id']] ?? [];
+                // If only 1 image, pick an aesthetic secondary model look
+                if (count($item['gallery']) <= 1) {
+                    $fallback_alts = [
+                        'cashmere' => base_url('img/model_look_classic.jpg'),
+                        'denim'    => base_url('img/mannequin_look_street.jpg'),
+                        'terry'    => base_url('img/model_look_street.jpg'),
+                        'silk'     => base_url('img/model_look_executive.jpg'),
+                        'wool'     => base_url('img/mannequin_look_executive.jpg'),
+                        'peacoat'  => base_url('img/mannequin_look_classic.jpg'),
+                        'loafer'   => base_url('img/chelsea_leather_boots.jpg'),
+                        'boot'     => base_url('img/calfskin_penny_loafers.jpg'),
+                    ];
+                    $found_alt = null;
+                    $t_lower = strtolower($item['title'] . ' ' . ($item['slug'] ?? ''));
+                    foreach ($fallback_alts as $k => $alt_url) {
+                        if (strpos($t_lower, $k) !== false) {
+                            $found_alt = $alt_url;
+                            break;
+                        }
+                    }
+                    $item['secondary_image'] = $found_alt ?: base_url('img/model_look_classic.jpg');
+                } else {
+                    $item['secondary_image'] = $item['gallery'][1] ?? $item['primary_image'];
+                }
+            }
+            unset($item);
+        }
+
         $collections = $this->db->where('store_id', $this->store_id)->where('is_active', 1)->get('collections')->result_array();
 
         $hs_row = $this->db->where('store_id', $this->store_id)->limit(1)->get('home_settings')->row_array();
@@ -74,7 +121,6 @@ class Shop extends MY_Controller
             'home_settings'    => $home_settings,
             'cart_count'       => $this->_get_cart_count(),
         ];
-
 
         $this->load->view('storefront/layout/header', $data);
         $this->load->view('storefront/shop/index', $data);

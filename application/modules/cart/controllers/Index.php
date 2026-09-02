@@ -32,7 +32,7 @@ class Index extends MY_Controller
         $home_settings = !empty($hs_row) ? $hs_row : [];
 
         $data = [
-            'title'           => 'Curated Bag — ' . env('APP_NAME', 'LUMINA'),
+            'title'           => 'Curated Bag — ' . env('APP_NAME', 'NovaDrop'),
             'cart'            => $cart,
             'items'           => $items,
             'subtotal'        => $subtotal,
@@ -112,6 +112,32 @@ class Index extends MY_Controller
             $subtotal = $this->Cart_model->get_subtotal($cart_id);
             $count = $this->Cart_model->count_items($cart_id);
             $this->json_success($result['message'], ['subtotal' => $subtotal, 'cart_count' => $count]);
+        } else {
+            $this->json_error($result['message']);
+        }
+    }
+
+    public function update_size()
+    {
+        $variant_id = (int)$this->input->post('variant_id');
+        $new_size   = trim($this->input->post('size', true) ?? '');
+
+        $cart_id = $this->_get_or_create_cart_id();
+        if (!$cart_id || !$variant_id || !$new_size) {
+            $this->json_error('Invalid item or size specified');
+            return;
+        }
+
+        $result = $this->Cart_model->update_item_size($cart_id, $variant_id, $new_size);
+        if ($result['success']) {
+            $items = $this->Cart_model->get_items($cart_id);
+            $subtotal = $this->Cart_model->get_subtotal($cart_id);
+            $count = $this->Cart_model->count_items($cart_id);
+            $this->json_success($result['message'], [
+                'items'      => $items,
+                'subtotal'   => $subtotal,
+                'cart_count' => $count
+            ]);
         } else {
             $this->json_error($result['message']);
         }

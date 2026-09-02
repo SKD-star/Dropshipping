@@ -71,6 +71,60 @@ class Products extends MY_Controller
         $this->load->view('storefront/layout/footer', $data);
     }
 
+    public function ajax_notify_restock(): void
+    {
+        if ($this->input->method() !== 'post') {
+            $this->output->set_status_header(405)->set_content_type('application/json')
+                ->set_output(json_encode(['success' => false, 'message' => 'Method not allowed']));
+            return;
+        }
+
+        $product_id = (int)$this->input->post('product_id');
+        $variant_id = (int)$this->input->post('variant_id');
+        $contact    = trim((string)$this->input->post('contact'));
+
+        if (!$product_id || empty($contact)) {
+            $this->output->set_status_header(400)->set_content_type('application/json')
+                ->set_output(json_encode(['success' => false, 'message' => 'Please provide a valid email or WhatsApp contact.']));
+            return;
+        }
+
+        try {
+            // Ensure waitlist table exists
+            $this->db->query("
+                CREATE TABLE IF NOT EXISTS `product_restock_waitlist` (
+                    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                    `product_id` INT UNSIGNED NOT NULL,
+                    `variant_id` INT UNSIGNED DEFAULT NULL,
+                    `contact` VARCHAR(255) NOT NULL,
+                    `is_notified` TINYINT(1) DEFAULT 0,
+                    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    INDEX `idx_prod_wait` (`product_id`, `is_notified`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            ");
+
+            $this->db->insert('product_restock_waitlist', [
+                'product_id' => $product_id,
+                'variant_id' => $variant_id ?: null,
+                'contact'    => $contact,
+                'is_notified'=> 0,
+            ]);
+
+            $this->output->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'success' => true,
+                    'message' => '✨ You are on the priority atelier list. We will notify you immediately once this piece is restocked.'
+                ]));
+        } catch (Throwable $e) {
+            log_message('error', 'Restock notify error: ' . $e->getMessage());
+            $this->output->set_status_header(500)->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'success' => false,
+                    'message' => 'Could not save waitlist request. Please try again.'
+                ]));
+        }
+    }
+
     private function _get_cart_count(): int
     {
         $cart_id = $this->session->userdata('cart_id');

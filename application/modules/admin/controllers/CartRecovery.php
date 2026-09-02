@@ -87,9 +87,14 @@ class CartRecovery extends MY_Controller
             redirect('admin/cart_recovery/sequences');
         }
 
-        $sequences = $this->db->table_exists('abandoned_cart_sequences')
-            ? $this->db->where('store_id', $this->store_id)->order_by('id', 'ASC')->get('abandoned_cart_sequences')->result_array()
-            : [];
+        $sequences = [];
+        if ($this->db->table_exists('abandoned_cart_sequences')) {
+            $seq_q = $this->db->order_by('id', 'ASC');
+            if ($this->db->field_exists('store_id', 'abandoned_cart_sequences')) {
+                $seq_q->where('store_id', $this->store_id);
+            }
+            $sequences = $seq_q->get('abandoned_cart_sequences')->result_array();
+        }
 
         // Load steps for each sequence
         foreach ($sequences as &$seq) {

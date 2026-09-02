@@ -197,7 +197,7 @@ class Collections extends MY_Controller
         $home_settings = !empty($hs_row) ? $hs_row : [];
 
         $data = [
-            'title'            => 'Editorial Collections & Capsules — ' . env('APP_NAME', 'LUMINA'),
+            'title'            => 'Editorial Collections & Capsules — ' . env('APP_NAME', 'NovaDrop'),
             'meta_description' => 'Explore LUMINA thematic haute-couture capsules and limited archival drops.',
             'db_collections'   => $db_collections,
             'curated_capsules' => $curated_capsules,

@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Base controller for all modules. Loads .env, bootstraps composer autoloader,
  * sets up audit logging, CSRF, and rate limiting.
  */
+#[AllowDynamicProperties]
 class MY_Controller extends CI_Controller {
 
     /** @var int Always set — every data query scoped to this */

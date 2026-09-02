@@ -18,14 +18,26 @@ class AiEngine extends MY_Controller
     // ─── Dashboard / Overview ─────────────────────────────────
     public function index()
     {
-        $recent_tasks = $this->db->where('store_id', $this->store_id)
-                                  ->order_by('id', 'DESC')
-                                  ->limit(30)
-                                  ->get('ai_agent_tasks')->result_array();
+        $recent_tasks = [];
+        if ($this->db->table_exists('ai_agent_tasks')) {
+            $rt_q = $this->db->order_by('id', 'DESC')->limit(30);
+            if ($this->db->field_exists('store_id', 'ai_agent_tasks')) {
+                $rt_q->where('store_id', $this->store_id);
+            }
+            $recent_tasks = $rt_q->get('ai_agent_tasks')->result_array();
+        }
 
         $status_counts = [];
         foreach (['pending','running','done','failed','awaiting_approval'] as $s) {
-            $status_counts[$s] = $this->db->where('store_id', $this->store_id)->where('status', $s)->count_all_results('ai_agent_tasks');
+            if ($this->db->table_exists('ai_agent_tasks')) {
+                $sc_q = $this->db->where('status', $s);
+                if ($this->db->field_exists('store_id', 'ai_agent_tasks')) {
+                    $sc_q->where('store_id', $this->store_id);
+                }
+                $status_counts[$s] = $sc_q->count_all_results('ai_agent_tasks');
+            } else {
+                $status_counts[$s] = 0;
+            }
         }
 
         $orchestrator_runs = $this->db->table_exists('ai_orchestrator_runs')
@@ -52,15 +64,20 @@ class AiEngine extends MY_Controller
 
             // Log task as queued
             $task_id = null;
-            $this->db->insert('ai_agent_tasks', [
-                'store_id'   => $this->store_id,
-                'agent'      => $action_type,
-                'input_json' => json_encode(['triggered_by' => $this->admin_user['id'] ?? 'admin', 'time' => date('Y-m-d H:i:s')]),
-                'status'     => 'running',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-            $task_id = $this->db->insert_id();
+            if ($this->db->table_exists('ai_agent_tasks')) {
+                $t_cols = $this->db->list_fields('ai_agent_tasks');
+                $t_data = [
+                    'store_id'   => $this->store_id,
+                    'agent'      => $action_type,
+                    'input_json' => json_encode(['triggered_by' => $this->admin_user['id'] ?? 'admin', 'time' => date('Y-m-d H:i:s')]),
+                    'status'     => 'running',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ];
+                $clean_t = array_intersect_key($t_data, array_flip($t_cols));
+                $this->db->insert('ai_agent_tasks', $clean_t);
+                $task_id = $this->db->insert_id();
+            }
 
             try {
                 // Load agent classes if available
@@ -166,7 +183,15 @@ class AiEngine extends MY_Controller
             redirect('admin/ai_engine/swarm');
         }
 
-        $tasks = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->limit(50)->get('ai_agent_tasks')->result_array();
+        $tasks = [];
+        if ($this->db->table_exists('ai_agent_tasks')) {
+            $t_q = $this->db->order_by('id', 'DESC')->limit(50);
+            if ($this->db->field_exists('store_id', 'ai_agent_tasks')) {
+                $t_q->where('store_id', $this->store_id);
+            }
+            $tasks = $t_q->get('ai_agent_tasks')->result_array();
+        }
+
         $telemetry = $this->db->table_exists('ai_swarm_telemetry')
             ? $this->db->order_by('id', 'DESC')->limit(20)->get('ai_swarm_telemetry')->result_array()
             : [];
@@ -197,13 +222,24 @@ class AiEngine extends MY_Controller
                     'run_interval_hours'    => (int)($this->input->post('interval_hours') ?: 24),
                     'updated_at'            => date('Y-m-d H:i:s'),
                 ];
-                // Upsert
-                $existing = $this->db->where('store_id', $this->store_id)->get('ai_autopilot_configs')->row_array();
-                if ($existing) {
-                    $this->db->where('store_id', $this->store_id)->update('ai_autopilot_configs', $config_data);
-                } else {
-                    $config_data['created_at'] = date('Y-m-d H:i:s');
-                    $this->db->insert('ai_autopilot_configs', $config_data);
+                if ($this->db->table_exists('ai_autopilot_configs')) {
+                    $ap_cols = $this->db->list_fields('ai_autopilot_configs');
+                    $clean_ap = array_intersect_key($config_data, array_flip($ap_cols));
+                    
+                    $has_store = $this->db->field_exists('store_id', 'ai_autopilot_configs');
+                    $existing = $has_store ? $this->db->where('store_id', $this->store_id)->get('ai_autopilot_configs')->row_array() : $this->db->get('ai_autopilot_configs')->row_array();
+                    if ($existing) {
+                        if ($has_store) {
+                            $this->db->where('store_id', $this->store_id)->update('ai_autopilot_configs', $clean_ap);
+                        } else {
+                            $this->db->where('id', $existing['id'])->update('ai_autopilot_configs', $clean_ap);
+                        }
+                    } else {
+                        if (in_array('created_at', $ap_cols)) {
+                            $clean_ap['created_at'] = date('Y-m-d H:i:s');
+                        }
+                        $this->db->insert('ai_autopilot_configs', $clean_ap);
+                    }
                 }
                 $this->audit('autopilot.config_saved', 'ai_autopilot_configs', 0, [], $config_data);
                 $this->session->set_flashdata('success', 'Autopilot configuration saved.');
@@ -211,7 +247,13 @@ class AiEngine extends MY_Controller
             redirect('admin/ai_engine/autopilot');
         }
 
-        $config = $this->db->where('store_id', $this->store_id)->get('ai_autopilot_configs')->row_array() ?: [];
+        $config = [];
+        if ($this->db->table_exists('ai_autopilot_configs')) {
+            $ap_q = $this->db->field_exists('store_id', 'ai_autopilot_configs')
+                ? $this->db->where('store_id', $this->store_id)
+                : $this->db;
+            $config = $ap_q->get('ai_autopilot_configs')->row_array() ?: [];
+        }
         $data = ['title' => 'Autopilot — NovaDrop Admin', 'config' => $config];
         $this->load->view('admin/layout/header', $data);
         $this->load->view('admin/ai_engine/autopilot', $data);
@@ -221,6 +263,12 @@ class AiEngine extends MY_Controller
     // ─── Repricer ─────────────────────────────────────────────
     public function repricer()
     {
+        $has_p_comp   = $this->db->table_exists('products') && $this->db->field_exists('compare_at_price', 'products');
+        $has_p_store  = $this->db->table_exists('products') && $this->db->field_exists('store_id', 'products');
+        $has_p_upd    = $this->db->table_exists('products') && $this->db->field_exists('updated_at', 'products');
+        $has_pv       = $this->db->table_exists('product_variants');
+        $has_pv_comp  = $has_pv && $this->db->field_exists('compare_at_price', 'product_variants');
+
         if ($this->input->method() === 'post') {
             $act = $this->input->post('repricer_action');
 
@@ -228,19 +276,69 @@ class AiEngine extends MY_Controller
                 $strategy = $this->input->post('pricing_strategy');
                 if ($strategy === 'boost_profit') {
                     $multiplier = 1.12; // +12%
-                    $this->db->query("UPDATE `products` SET `base_price` = ROUND(`base_price` * {$multiplier}, -1), `compare_at_price` = ROUND(`compare_at_price` * 1.15, -1), `updated_at` = NOW() WHERE `store_id` = " . (int)$this->store_id);
-                    $this->db->query("UPDATE `product_variants` pv JOIN `products` p ON p.id = pv.product_id SET pv.price = ROUND(pv.price * {$multiplier}, -1), pv.compare_at_price = ROUND(pv.compare_at_price * 1.15, -1) WHERE p.store_id = " . (int)$this->store_id);
+                    $upd_set = "`base_price` = ROUND(`base_price` * ?, -1)";
+                    if ($has_p_comp) {
+                        $upd_set .= ", `compare_at_price` = ROUND(GREATEST(COALESCE(`compare_at_price`, `base_price` * 1.35) * 1.15, `base_price` * 1.25), -1)";
+                    }
+                    if ($has_p_upd) {
+                        $upd_set .= ", `updated_at` = NOW()";
+                    }
+                    $p_sql = "UPDATE `products` SET {$upd_set}" . ($has_p_store ? " WHERE `store_id` = ?" : "");
+                    $params = $has_p_store ? [$multiplier, (int)$this->store_id] : [$multiplier];
+                    $this->db->query($p_sql, $params);
+
+                    if ($has_pv) {
+                        $pv_set = $has_pv_comp
+                            ? "SET pv.price = ROUND(pv.price * ?, -1), pv.compare_at_price = ROUND(COALESCE(pv.compare_at_price, pv.price * 1.35) * 1.15, -1)"
+                            : "SET pv.price = ROUND(pv.price * ?, -1)";
+                        $pv_sql = "UPDATE `product_variants` pv JOIN `products` p ON p.id = pv.product_id {$pv_set}" . ($has_p_store ? " WHERE p.store_id = ?" : "");
+                        $pv_params = $has_p_store ? [$multiplier, (int)$this->store_id] : [$multiplier];
+                        $this->db->query($pv_sql, $pv_params);
+                    }
+
                     $this->audit('catalog.repriced.boost_profit', 'products', 0, [], ['multiplier' => 1.12]);
                     $this->session->set_flashdata('success', "⚡ Profit Maximizer Applied! Catalog prices adjusted by +12% with smart charm pricing.");
+
                 } elseif ($strategy === 'clearance_velocity') {
                     $multiplier = 0.90; // -10%
-                    $this->db->query("UPDATE `products` SET `base_price` = ROUND(`base_price` * {$multiplier}, -1), `updated_at` = NOW() WHERE `store_id` = " . (int)$this->store_id);
-                    $this->db->query("UPDATE `product_variants` pv JOIN `products` p ON p.id = pv.product_id SET pv.price = ROUND(pv.price * {$multiplier}, -1) WHERE p.store_id = " . (int)$this->store_id);
+                    $upd_set = "`base_price` = ROUND(`base_price` * ?, -1)";
+                    if ($has_p_upd) {
+                        $upd_set .= ", `updated_at` = NOW()";
+                    }
+                    $p_sql = "UPDATE `products` SET {$upd_set}" . ($has_p_store ? " WHERE `store_id` = ?" : "");
+                    $params = $has_p_store ? [$multiplier, (int)$this->store_id] : [$multiplier];
+                    $this->db->query($p_sql, $params);
+
+                    if ($has_pv) {
+                        $pv_sql = "UPDATE `product_variants` pv JOIN `products` p ON p.id = pv.product_id SET pv.price = ROUND(pv.price * ?, -1)" . ($has_p_store ? " WHERE p.store_id = ?" : "");
+                        $pv_params = $has_p_store ? [$multiplier, (int)$this->store_id] : [$multiplier];
+                        $this->db->query($pv_sql, $pv_params);
+                    }
+
                     $this->audit('catalog.repriced.clearance', 'products', 0, [], ['multiplier' => 0.90]);
                     $this->session->set_flashdata('success', "⚡ Velocity Discount Applied! Catalog prices reduced by -10% to accelerate checkouts.");
+
                 } elseif ($strategy === 'enforce_markup') {
-                    $this->db->query("UPDATE `products` SET `base_price` = ROUND(GREATEST(`base_price` * 1.10, 499), -1), `compare_at_price` = ROUND(GREATEST(`base_price` * 1.35, 699), -1), `updated_at` = NOW() WHERE `store_id` = " . (int)$this->store_id);
-                    $this->db->query("UPDATE `product_variants` pv JOIN `products` p ON p.id = pv.product_id SET pv.price = p.base_price, pv.compare_at_price = p.compare_at_price WHERE p.store_id = " . (int)$this->store_id);
+                    $upd_set = "`base_price` = ROUND(GREATEST(`base_price` * 1.10, 499), -1)";
+                    if ($has_p_comp) {
+                        $upd_set .= ", `compare_at_price` = ROUND(GREATEST(`base_price` * 1.35, 699), -1)";
+                    }
+                    if ($has_p_upd) {
+                        $upd_set .= ", `updated_at` = NOW()";
+                    }
+                    $p_sql = "UPDATE `products` SET {$upd_set}" . ($has_p_store ? " WHERE `store_id` = ?" : "");
+                    $params = $has_p_store ? [(int)$this->store_id] : [];
+                    $this->db->query($p_sql, $params);
+
+                    if ($has_pv) {
+                        $pv_set = $has_pv_comp
+                            ? "SET pv.price = p.base_price, pv.compare_at_price = " . ($has_p_comp ? "p.compare_at_price" : "ROUND(p.base_price * 1.35, -1)")
+                            : "SET pv.price = p.base_price";
+                        $pv_sql = "UPDATE `product_variants` pv JOIN `products` p ON p.id = pv.product_id {$pv_set}" . ($has_p_store ? " WHERE p.store_id = ?" : "");
+                        $pv_params = $has_p_store ? [(int)$this->store_id] : [];
+                        $this->db->query($pv_sql, $pv_params);
+                    }
+
                     $this->audit('catalog.repriced.enforce_markup', 'products', 0, [], ['markup' => '2.8x']);
                     $this->session->set_flashdata('success', "⚡ Wholesale Gross Margin Multiplier Enforced across entire catalog!");
                 }
@@ -251,13 +349,29 @@ class AiEngine extends MY_Controller
                 $new_comp  = (float)($this->input->post('new_compare_price') ?: ($new_price * 1.35));
 
                 if ($pid > 0 && $new_price > 0) {
-                    $this->db->where('id', $pid)->update('products', ['base_price' => $new_price, 'compare_at_price' => $new_comp, 'updated_at' => date('Y-m-d H:i:s')]);
-                    $this->db->where('product_id', $pid)->update('product_variants', ['price' => $new_price, 'compare_at_price' => $new_comp]);
+                    $p_update = ['base_price' => $new_price];
+                    if ($has_p_comp) {
+                        $p_update['compare_at_price'] = $new_comp;
+                    }
+                    if ($has_p_upd) {
+                        $p_update['updated_at'] = date('Y-m-d H:i:s');
+                    }
+                    $this->db->where('id', $pid)->update('products', $p_update);
+
+                    if ($has_pv) {
+                        $pv_cols = $this->db->list_fields('product_variants');
+                        $pv_data = ['price' => $new_price, 'compare_at_price' => $new_comp];
+                        $clean_pv = array_intersect_key($pv_data, array_flip($pv_cols));
+                        if (!empty($clean_pv)) {
+                            $this->db->where('product_id', $pid)->update('product_variants', $clean_pv);
+                        }
+                    }
                     $this->audit('product.price_adjusted', 'products', $pid, [], ['new_price' => $new_price]);
                     $this->session->set_flashdata('success', "Product #{$pid} price updated to ₹" . number_format($new_price, 2));
                 }
 
             } elseif ($act === 'create_rule') {
+                $cols = $this->db->table_exists('pricing_rules') ? $this->db->list_fields('pricing_rules') : [];
                 $row = [
                     'store_id'      => $this->store_id,
                     'name'          => trim($this->input->post('name', true)),
@@ -268,30 +382,60 @@ class AiEngine extends MY_Controller
                     'is_active'     => 1,
                     'created_at'    => date('Y-m-d H:i:s'),
                 ];
-                $this->db->insert('pricing_rules', $row);
+                $clean_row = array_intersect_key($row, array_flip($cols));
+                if (!empty($clean_row)) {
+                    $this->db->insert('pricing_rules', $clean_row);
+                }
                 $this->session->set_flashdata('success', 'Pricing rule created.');
 
             } elseif ($act === 'delete_rule') {
                 $id = (int)$this->input->post('rule_id');
-                $this->db->where('id', $id)->delete('pricing_rules');
+                if ($this->db->table_exists('pricing_rules')) {
+                    $this->db->where('id', $id)->delete('pricing_rules');
+                }
                 $this->session->set_flashdata('success', 'Rule deleted.');
 
             } elseif ($act === 'toggle_rule') {
                 $id  = (int)$this->input->post('rule_id');
-                $cur = $this->db->where('id', $id)->get('pricing_rules')->row_array();
-                if ($cur) { $this->db->where('id', $id)->update('pricing_rules', ['is_active' => $cur['is_active'] ? 0 : 1]); }
+                if ($this->db->table_exists('pricing_rules')) {
+                    $cur = $this->db->where('id', $id)->get('pricing_rules')->row_array();
+                    if ($cur) { $this->db->where('id', $id)->update('pricing_rules', ['is_active' => $cur['is_active'] ? 0 : 1]); }
+                }
                 $this->session->set_flashdata('success', 'Rule toggled.');
             }
             redirect('admin/ai_engine/repricer');
         }
 
-        $rules    = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('pricing_rules')->result_array();
+        $rules = [];
+        if ($this->db->table_exists('pricing_rules')) {
+            $rq = $this->db->order_by('id', 'DESC');
+            if ($this->db->field_exists('store_id', 'pricing_rules')) {
+                $rq->where('store_id', $this->store_id);
+            }
+            $rules = $rq->get('pricing_rules')->result_array();
+        }
+
         $audit_log = $this->db->table_exists('pricing_audit_log')
             ? $this->db->order_by('id', 'DESC')->limit(30)->get('pricing_audit_log')->result_array()
             : [];
 
-        $catalog_products = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->limit(15)->get('products')->result_array();
-        $total_catalog_val = (float)($this->db->select_sum('base_price')->where('store_id', $this->store_id)->get('products')->row_array()['base_price'] ?? 0);
+        $catalog_products = [];
+        if ($this->db->table_exists('products')) {
+            $cp_q = $this->db->order_by('id', 'DESC')->limit(15);
+            if ($has_p_store) {
+                $cp_q->where('store_id', $this->store_id);
+            }
+            $catalog_products = $cp_q->get('products')->result_array();
+        }
+
+        $total_catalog_val = 0;
+        if ($this->db->table_exists('products')) {
+            $tot_q = $this->db->select_sum('base_price');
+            if ($has_p_store) {
+                $tot_q->where('store_id', $this->store_id);
+            }
+            $total_catalog_val = (float)($tot_q->get('products')->row_array()['base_price'] ?? 0);
+        }
 
         $data = [
             'title'             => 'AI Dynamic Repricer & Profit Maximizer — NovaDrop Admin',

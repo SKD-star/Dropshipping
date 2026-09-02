@@ -39,24 +39,44 @@ class SwarmCoordinator
         ];
 
         // 1. Sourcing Swarm Agent
-        $sourcing_act = $this->run_sourcing_agent();
-        if ($sourcing_act) $results['actions_taken'][] = $sourcing_act;
+        try {
+            $sourcing_act = $this->run_sourcing_agent();
+            if ($sourcing_act) $results['actions_taken'][] = $sourcing_act;
+        } catch (\Throwable $e) {
+            log_message('error', 'Swarm SourcingAgent error: ' . $e->getMessage());
+        }
 
         // 2. Dynamic Pricing Agent
-        $pricing_act = $this->run_pricing_agent();
-        if ($pricing_act) $results['actions_taken'][] = $pricing_act;
+        try {
+            $pricing_act = $this->run_pricing_agent();
+            if ($pricing_act) $results['actions_taken'][] = $pricing_act;
+        } catch (\Throwable $e) {
+            log_message('error', 'Swarm PricingAgent error: ' . $e->getMessage());
+        }
 
         // 3. Marketing & SEO Agent
-        $seo_act = $this->run_seo_agent();
-        if ($seo_act) $results['actions_taken'][] = $seo_act;
+        try {
+            $seo_act = $this->run_seo_agent();
+            if ($seo_act) $results['actions_taken'][] = $seo_act;
+        } catch (\Throwable $e) {
+            log_message('error', 'Swarm MarketingSEOAgent error: ' . $e->getMessage());
+        }
 
         // 4. Fraud Risk Agent
-        $fraud_act = $this->run_fraud_agent();
-        if ($fraud_act) $results['actions_taken'][] = $fraud_act;
+        try {
+            $fraud_act = $this->run_fraud_agent();
+            if ($fraud_act) $results['actions_taken'][] = $fraud_act;
+        } catch (\Throwable $e) {
+            log_message('error', 'Swarm FraudRiskAgent error: ' . $e->getMessage());
+        }
 
         // 5. Inventory & Cart Recovery Agent
-        $cart_act = $this->run_inventory_recovery_agent();
-        if ($cart_act) $results['actions_taken'][] = $cart_act;
+        try {
+            $cart_act = $this->run_inventory_recovery_agent();
+            if ($cart_act) $results['actions_taken'][] = $cart_act;
+        } catch (\Throwable $e) {
+            log_message('error', 'Swarm InventoryRecoveryAgent error: ' . $e->getMessage());
+        }
 
         $results['agents_executed'] = count($results['actions_taken']);
 

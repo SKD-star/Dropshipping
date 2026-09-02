@@ -542,19 +542,7 @@ body.sticky-active #socialProofFeed {
 
 
 
-<?php 
-  $_wa_enabled = isset($home_settings['whatsapp_enabled']) ? (int)$home_settings['whatsapp_enabled'] : 1;
-  $_wa_num = !empty($home_settings['whatsapp_number']) ? preg_replace('/[^0-9]/', '', $home_settings['whatsapp_number']) : '919999999999';
-  $_wa_msg = !empty($home_settings['whatsapp_message']) ? urlencode($home_settings['whatsapp_message']) : urlencode('Hi! I found your Lumina Atelier store and need styling help.');
-?>
-<?php if ($_wa_enabled): ?>
-<!-- ══ WHATSAPP LIVE CONCIERGE BUTTON ══ -->
-<a id="whatsappBtn" href="https://wa.me/<?= $_wa_num ?>?text=<?= $_wa_msg ?>" target="_blank" rel="noopener" class="fixed bottom-5 sm:bottom-6 right-4 sm:right-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer" style="background: linear-gradient(135deg, #25d366, #128c7e);" title="Chat on WhatsApp">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="26" height="26">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
-</a>
-<?php endif; ?>
+
 
 
 <!-- ── Mobile Editorial Story Reel (Flawless Round Geometry & Luxury Ring) ── -->
@@ -714,8 +702,8 @@ body.sticky-active #socialProofFeed {
             </div>
             
             <div class="liquid-glass-dark px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-[#e9c176]/30 text-[#e9c176] font-mono text-[9px] sm:text-[10px] flex items-center gap-1 flex-shrink-0">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <span id="heroCountdownTimer">04h : 38m : 12s</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>✦ ATELIER LAUNCH</span>
             </div>
           </div>
 
@@ -747,8 +735,8 @@ body.sticky-active #socialProofFeed {
                 <span>VIP: <strong class="text-stone-950 bg-[#e9c176] px-1 py-0.5 rounded font-bold">LUMINA50</strong></span>
               </span>
               <span class="text-[9px] sm:text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs">check_circle</span>
-                <span>Only 3 Left</span>
+                <span class="material-symbols-outlined text-xs">verified</span>
+                <span>Signature Piece</span>
               </span>
             </div>
             
@@ -763,7 +751,14 @@ body.sticky-active #socialProofFeed {
                   <span class="text-xs text-white/50 line-through" data-price-inr="<?= $regular_price ?>">₹<?= number_format($regular_price, 0) ?></span>
                   <span class="text-[9px] sm:text-[10px] font-bold text-amber-300 bg-amber-500/20 px-1 py-0.5 rounded border border-amber-500/30"><?= $discount_pct ?>%</span>
                 </div>
-                <span class="text-[10px] sm:text-[11px] text-emerald-400 font-bold block sm:mt-0.5">Save <span data-price-inr="<?= $save_amount ?>">₹<?= number_format($save_amount, 0) ?></span></span>
+                <?php $hero_pts = !empty($hero_p['reward_points']) ? (int)$hero_p['reward_points'] : max(1, round($hero_price * 0.06)); ?>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <span class="text-[10px] sm:text-[11px] text-emerald-400 font-bold block">Save <span data-price-inr="<?= $save_amount ?>">₹<?= number_format($save_amount, 0) ?></span></span>
+                  <span class="text-[9.5px] font-mono text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30 flex items-center gap-1" title="Earn <?= number_format($hero_pts) ?> Atelier Points">
+                    <span>🪙 +<?= number_format($hero_pts) ?> pts</span>
+                    <span class="text-white/70 font-light">(₹<?= number_format($hero_pts) ?>)</span>
+                  </span>
+                </div>
               </div>
               
               <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
@@ -1007,16 +1002,41 @@ body.sticky-active #socialProofFeed {
           
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
-          <!-- Interactive Motion Stage Badge -->
-          <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 flex justify-between items-end gap-2">
-            <div>
-              <span class="font-label-caps text-[9px] sm:text-[10px] uppercase tracking-widest text-[#e9c176] block mb-1" id="motionStageTag">Category 01 · Outerwear</span>
-              <h3 class="font-headline-sm text-base sm:text-xl text-white font-serif truncate" id="motionStageTitle">The Atelier Cashmere Cocoon Coat</h3>
-              <p class="text-[11px] sm:text-xs text-white/70 font-light mt-0.5 line-clamp-1" id="motionStageDesc">Relaxed drop shoulder with double-faced insulation.</p>
+          <!-- Interactive Motion Stage Bottom Luxury Glass Bar -->
+          <div class="absolute inset-x-3 sm:inset-x-5 bottom-3 sm:bottom-5 bg-stone-950/90 backdrop-blur-lg border border-white/20 rounded-2xl p-3.5 sm:p-4.5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xl z-10">
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-[#e9c176] font-bold" id="motionStageTag">Category 01 · Outerwear</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              </div>
+              <h3 class="font-serif text-sm sm:text-lg text-white font-bold truncate" id="motionStageTitle">The Atelier Cashmere Cocoon Coat</h3>
+              <p class="text-[11px] sm:text-xs text-stone-300 font-light mt-0.5 line-clamp-1" id="motionStageDesc">100% Double-faced Mongolian cashmere with hand-stitched horn buttons.</p>
             </div>
-            <button id="motionStageBtn" onclick="event.stopPropagation(); addToCart(1, 1)" data-cursor="ACQUIRE" class="px-3.5 sm:px-5 py-2 sm:py-2.5 bg-white text-black font-button text-[10px] sm:text-xs uppercase tracking-wider hover:bg-[#e9c176] transition-colors rounded-none shadow-lg cursor-pointer flex-shrink-0">
-              Acquire +
-            </button>
+            
+            <!-- Right Controls: Size Selector Box & Acquire CTA -->
+            <div class="flex items-center gap-2.5 flex-shrink-0 pt-2 md:pt-0 border-t border-white/10 md:border-t-0" onclick="event.stopPropagation()">
+              <!-- Size Selector Box -->
+              <div class="inline-flex items-center gap-2 bg-stone-900 border border-amber-400/80 hover:border-amber-400 rounded-xl px-3 py-2 shadow-inner transition-all">
+                <span class="text-[9px] font-mono uppercase text-[#e9c176] font-extrabold tracking-wider">SIZE</span>
+                <div class="relative flex items-center">
+                  <select id="motionStageSizeSelect" onchange="window.selectedMotionStageSize = this.value" class="text-xs font-mono font-extrabold bg-transparent text-white cursor-pointer focus:outline-hidden pr-4 appearance-none leading-none py-0">
+                    <option value="XS" class="bg-stone-900 text-white">XS</option>
+                    <option value="S" class="bg-stone-900 text-white">S</option>
+                    <option value="M" selected class="bg-stone-900 text-white">M</option>
+                    <option value="L" class="bg-stone-900 text-white">L</option>
+                    <option value="XL" class="bg-stone-900 text-white">XL</option>
+                    <option value="XXL" class="bg-stone-900 text-white">XXL</option>
+                  </select>
+                  <span class="material-symbols-outlined text-xs text-[#e9c176] pointer-events-none absolute right-0">expand_more</span>
+                </div>
+              </div>
+
+              <!-- Acquire Button -->
+              <button id="motionStageBtn" onclick="event.stopPropagation(); acquireMotionStageGarment()" data-cursor="ACQUIRE" class="px-5 py-2.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button text-xs uppercase font-extrabold tracking-wider rounded-xl shadow-lg cursor-pointer flex items-center gap-1.5 active:scale-95 transition-all flex-shrink-0">
+                <span class="material-symbols-outlined text-sm">shopping_bag</span>
+                <span>Acquire +</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1102,8 +1122,6 @@ body.sticky-active #socialProofFeed {
           } else {
             $cat_tag = 'suiting';
           }
-
-          $stock_left = 3 + ($idx % 5);
         ?>
         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="<?= $cat_tag ?>">
           
@@ -1114,18 +1132,32 @@ body.sticky-active #socialProofFeed {
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
               <span class="text-[8px] sm:text-[9px] font-mono font-bold uppercase tracking-wider bg-black/80 backdrop-blur-md text-[#e9c176] px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-white/10 flex items-center gap-1 shadow-md">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>Only <?= $stock_left ?> Left</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176]"></span>
+                <span>Atelier Cut</span>
               </span>
             </div>
 
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
-              <button type="button" onclick="toggleWishlistItem({id:<?= (int)$prod['id'] ?>, title:'<?= addslashes(htmlspecialchars($prod['title'])) ?>', price:<?= $prod_price ?>, image:'<?= addslashes($prod_img) ?>'})" 
-                 class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black text-rose-400 flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer group/fav"
-                 title="Save to Wardrobe">
-                <span class="material-symbols-outlined text-[11px] sm:text-[13px] group-hover/fav:scale-110 transition-transform">favorite</span>
-              </button>
+              <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
+                <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$prod['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$prod['id'] ?>, title:'<?= addslashes(htmlspecialchars($prod['title'])) ?>', price:<?= $prod_price ?>, image:'<?= addslashes($prod_img) ?>'}, event)">
+                <div class="svg-container">
+                  <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+                  </svg>
+                  <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+                  </svg>
+                  <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="10,10 20,20"></polygon>
+                    <polygon points="10,50 20,50"></polygon>
+                    <polygon points="20,80 30,70"></polygon>
+                    <polygon points="90,10 80,20"></polygon>
+                    <polygon points="90,50 80,50"></polygon>
+                    <polygon points="80,80 70,70"></polygon>
+                  </svg>
+                </div>
+              </div>
               <button onclick="openExpressCheckout(<?= $prod['id'] ?>, '<?= addslashes($prod['title']) ?>', <?= $prod_price ?>, '<?= htmlspecialchars($prod_img) ?>', <?= $prod['id'] ?>);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
@@ -1160,36 +1192,84 @@ body.sticky-active #socialProofFeed {
           <div class="p-2.5 sm:p-5 flex flex-col justify-between flex-1 bg-white">
             <div>
               <div class="flex items-center justify-between gap-1 mb-1">
-                <span class="text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-[#a16207] font-bold truncate">Atelier</span>
+                <span class="text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-[#a16207] font-bold truncate"><?= htmlspecialchars($prod['vendor'] ?? 'Atelier') ?></span>
+                <?php if (!empty($prod['rating_avg']) && $prod['rating_avg'] > 0): ?>
                 <span class="inline-flex items-center gap-0.5 text-[9px] sm:text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded-full border border-amber-200">
-                  <span class="text-amber-500 text-[10px]">★</span> 4.9
+                  <span class="text-amber-500 text-[10px]">★</span> <?= number_format($prod['rating_avg'], 1) ?>
                 </span>
+                <?php endif; ?>
               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
                 <a href="<?= base_url('products/' . $prod['slug']) ?>"><?= htmlspecialchars($prod['title']) ?></a>
               </h3>
 
-              <div class="flex items-baseline justify-between gap-1 mb-2 sm:mb-4">
+              <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
                 <span class="font-serif font-bold text-xs sm:text-base text-stone-950" data-price-inr="<?= $prod_price ?>">₹<?= number_format($prod_price, 0) ?></span>
                 <span class="hidden sm:flex text-[9px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-mono font-bold items-center gap-1 border border-emerald-200">
                   <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
                   <span>Free Air</span>
                 </span>
               </div>
+
+              <!-- Points Earning Pill -->
+              <?php $card_pts = !empty($prod['reward_points']) ? (int)$prod['reward_points'] : max(1, round($prod_price * 0.06)); ?>
+              <div class="flex items-center justify-between gap-1 mb-2 sm:mb-3">
+                <span class="inline-flex items-center gap-1 text-[9px] sm:text-[9.5px] font-mono font-bold text-amber-900 bg-[#fef3c7] border border-[#fde68a] px-1.5 sm:px-2 py-0.5 rounded-md" title="Earn <?= number_format($card_pts) ?> Atelier Reward Points on purchase">
+                  <span>🪙</span>
+                  <span>+<?= number_format($card_pts) ?> pts</span>
+                  <span class="text-amber-800/70 font-normal">(₹<?= number_format($card_pts) ?>)</span>
+                </span>
+                <span class="text-[8px] sm:text-[8.5px] font-mono text-stone-400">1.5× for Gold</span>
+              </div>
             </div>
 
             <!-- Direct In-Site Buy Action Buttons -->
             <div class="pt-2 sm:pt-3 border-t border-stone-100">
               <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
-                <button onclick="openAtelierFitModal({id: <?= $prod['id'] ?>, title: '<?= addslashes($prod['title']) ?>', price: <?= $prod_price ?>, compare_price: 0, image: '<?= htmlspecialchars($prod_img) ?>', vendor: '<?= addslashes($prod['vendor'] ?? 'Lumina Atelier') ?>', category: '<?= $cat_tag ?>'});" class="w-full py-1.5 sm:py-2.5 bg-stone-50 border border-stone-200 hover:border-stone-400 text-stone-900 font-mono text-[8.5px] sm:text-[10px] uppercase font-bold tracking-wider hover:bg-stone-100 transition-all flex items-center justify-center gap-1 cursor-pointer shadow-2xs rounded-lg sm:rounded-xl active:scale-95">
-                  <span class="material-symbols-outlined text-[11px] sm:text-[13px] text-[#a16207]">shopping_bag</span>
-                  <span>Acquire</span>
+                <?php
+                  $acquire_prod_data = [
+                    'id' => (int)$prod['id'],
+                    'title' => $prod['title'],
+                    'price' => (float)$prod_price,
+                    'compare_price' => (float)($prod['compare_at_price'] ?? 0),
+                    'reward_points' => $card_pts,
+                    'image' => $prod_img,
+                    'vendor' => $prod['vendor'] ?? 'Lumina Atelier Milano',
+                    'category' => $cat_tag,
+                    'description' => strip_tags($prod['short_description'] ?? 'Bespoke tailoring piece.')
+                  ];
+                ?>
+                <button type="button" 
+                        data-tooltip="Fit &amp; Sizing" 
+                        data-product="<?= htmlspecialchars(json_encode($acquire_prod_data), ENT_QUOTES, 'UTF-8') ?>" 
+                        onclick="openAtelierFitModal(this.dataset.product || this.getAttribute('data-product'))" 
+                        class="uiverse-action-btn uiverse-acquire-btn active:scale-95">
+                  <div class="uiverse-btn-wrapper">
+                    <div class="uiverse-btn-text">
+                      <span class="material-symbols-outlined text-[12px] sm:text-[13px] text-[#a16207]">shopping_bag</span>
+                      <span>Acquire</span>
+                    </div>
+                    <span class="uiverse-btn-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                      <span>AI Fit</span>
+                    </span>
+                  </div>
                 </button>
-                <button onclick="openExpressCheckout(<?= $prod['id'] ?>, '<?= addslashes($prod['title']) ?>', <?= $prod_price ?>, '<?= htmlspecialchars($prod_img) ?>', <?= $prod['id'] ?>);" 
-                   class="w-full py-1.5 sm:py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-mono font-extrabold text-[8.5px] sm:text-[10.5px] uppercase tracking-wider transition-all flex items-center justify-center gap-1 cursor-pointer shadow-sm rounded-lg sm:rounded-xl active:scale-95 border border-stone-900">
-                  <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                  <span>Buy</span>
+                <button type="button" 
+                        data-tooltip="Instant: ₹<?= number_format($prod_price, 0) ?>" 
+                        onclick="openExpressCheckout(<?= $prod['id'] ?>, '<?= addslashes($prod['title']) ?>', <?= $prod_price ?>, '<?= htmlspecialchars($prod_img) ?>', <?= $prod['id'] ?>);" 
+                        class="uiverse-action-btn uiverse-buy-btn active:scale-95">
+                  <div class="uiverse-btn-wrapper">
+                    <div class="uiverse-btn-text">
+                      <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                      <span>Buy</span>
+                    </div>
+                    <span class="uiverse-btn-icon">
+                      <svg viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 text-[#e9c176]"><path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>
+                      <span>1-Click</span>
+                    </span>
+                  </div>
                 </button>
               </div>
             </div>
@@ -1245,18 +1325,32 @@ body.sticky-active #socialProofFeed {
           <!-- Top Scarcity Badge -->
           <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
             <span class="text-[8px] sm:text-[9px] font-mono font-bold uppercase tracking-wider bg-black/80 backdrop-blur-md text-[#e9c176] px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-white/10 flex items-center gap-1 shadow-md">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <span>Only <?= (2 + ($idx % 4)) ?> Left</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>New Drop</span>
             </span>
           </div>
 
           <!-- Top-Right Actions -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
-            <button type="button" onclick="toggleWishlistItem({id:<?= (int)$nprod['id'] ?>, title:'<?= addslashes(htmlspecialchars($nprod['title'])) ?>', price:<?= $n_price ?>, image:'<?= addslashes($n_img) ?>'})" 
-               class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black text-rose-400 flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer group/fav"
-               title="Save to Wardrobe">
-              <span class="material-symbols-outlined text-[11px] sm:text-[13px] group-hover/fav:scale-110 transition-transform">favorite</span>
-            </button>
+            <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
+              <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$nprod['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$nprod['id'] ?>, title:'<?= addslashes(htmlspecialchars($nprod['title'])) ?>', price:<?= $n_price ?>, image:'<?= addslashes($n_img) ?>'}, event)">
+              <div class="svg-container">
+                <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+                </svg>
+                <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+                </svg>
+                <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="10,10 20,20"></polygon>
+                  <polygon points="10,50 20,50"></polygon>
+                  <polygon points="20,80 30,70"></polygon>
+                  <polygon points="90,10 80,20"></polygon>
+                  <polygon points="90,50 80,50"></polygon>
+                  <polygon points="80,80 70,70"></polygon>
+                </svg>
+              </div>
+            </div>
             <button onclick="openExpressCheckout(<?= $nprod['id'] ?>, '<?= addslashes($nprod['title']) ?>', <?= $n_price ?>, '<?= htmlspecialchars($n_img) ?>', <?= $nprod['id'] ?>);" 
                class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                title="1-Click Instant Acquisition">
@@ -1290,35 +1384,83 @@ body.sticky-active #socialProofFeed {
         <div class="p-2.5 sm:p-5 flex flex-col justify-between flex-1 bg-white">
           <div>
             <div class="flex items-center justify-between gap-1 mb-1">
-              <span class="text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-[#a16207] font-bold truncate">Atelier</span>
+              <span class="text-[8px] sm:text-[9px] font-mono uppercase tracking-widest text-[#a16207] font-bold truncate"><?= htmlspecialchars($nprod['vendor'] ?? 'Atelier') ?></span>
+              <?php if (!empty($nprod['rating_avg']) && $nprod['rating_avg'] > 0): ?>
               <span class="inline-flex items-center gap-0.5 text-[9px] sm:text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded-full border border-amber-200">
-                <span class="text-amber-500 text-[10px]">★</span> 4.9
+                <span class="text-amber-500 text-[10px]">★</span> <?= number_format($nprod['rating_avg'], 1) ?>
               </span>
+              <?php endif; ?>
             </div>
 
             <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
               <a href="<?= base_url('products/' . $nprod['slug']) ?>"><?= htmlspecialchars($nprod['title']) ?></a>
             </h3>
 
-            <div class="flex items-baseline justify-between gap-1 mb-2 sm:mb-4">
+            <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
               <span class="font-serif font-bold text-xs sm:text-base text-stone-950" data-price-inr="<?= $n_price ?>">₹<?= number_format($n_price, 0) ?></span>
               <span class="hidden sm:flex text-[9px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-mono font-bold items-center gap-1 border border-emerald-200">
                 <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Free Air</span>
               </span>
             </div>
+
+            <!-- Points Earning Pill -->
+            <?php $ncard_pts = !empty($nprod['reward_points']) ? (int)$nprod['reward_points'] : max(1, round($n_price * 0.06)); ?>
+            <div class="flex items-center justify-between gap-1 mb-2 sm:mb-3">
+              <span class="inline-flex items-center gap-1 text-[9px] sm:text-[9.5px] font-mono font-bold text-amber-900 bg-[#fef3c7] border border-[#fde68a] px-1.5 sm:px-2 py-0.5 rounded-md" title="Earn <?= number_format($ncard_pts) ?> Atelier Reward Points on purchase">
+                <span>🪙</span>
+                <span>+<?= number_format($ncard_pts) ?> pts</span>
+                <span class="text-amber-800/70 font-normal">(₹<?= number_format($ncard_pts) ?>)</span>
+              </span>
+              <span class="text-[8px] sm:text-[8.5px] font-mono text-stone-400">1.5× for Gold</span>
+            </div>
           </div>
 
           <div class="pt-2 sm:pt-3 border-t border-stone-100">
             <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
-              <button onclick="openAtelierFitModal({id: <?= $nprod['id'] ?>, title: '<?= addslashes($nprod['title']) ?>', price: <?= $n_price ?>, compare_price: 0, image: '<?= htmlspecialchars($n_img) ?>', vendor: '<?= addslashes($nprod['vendor'] ?? 'Lumina Atelier') ?>', category: 'new'});" class="w-full py-1.5 sm:py-2.5 bg-stone-50 border border-stone-200 hover:border-stone-400 text-stone-900 font-mono text-[8.5px] sm:text-[10px] uppercase font-bold tracking-wider hover:bg-stone-100 transition-all flex items-center justify-center gap-1 cursor-pointer shadow-2xs rounded-lg sm:rounded-xl active:scale-95">
-                <span class="material-symbols-outlined text-[11px] sm:text-[13px] text-[#a16207]">shopping_bag</span>
-                <span>Acquire</span>
+              <?php
+                $acquire_nprod_data = [
+                  'id' => (int)$nprod['id'],
+                  'title' => $nprod['title'],
+                  'price' => (float)$n_price,
+                  'compare_price' => (float)($nprod['compare_at_price'] ?? 0),
+                  'reward_points' => $ncard_pts,
+                  'image' => $n_img,
+                  'vendor' => $nprod['vendor'] ?? 'Lumina Atelier Milano',
+                  'category' => 'new',
+                  'description' => strip_tags($nprod['short_description'] ?? 'Bespoke tailoring piece.')
+                ];
+              ?>
+              <button type="button" 
+                      data-tooltip="Fit &amp; Sizing" 
+                      data-product="<?= htmlspecialchars(json_encode($acquire_nprod_data), ENT_QUOTES, 'UTF-8') ?>" 
+                      onclick="openAtelierFitModal(this.dataset.product || this.getAttribute('data-product'))" 
+                      class="uiverse-action-btn uiverse-acquire-btn active:scale-95">
+                <div class="uiverse-btn-wrapper">
+                  <div class="uiverse-btn-text">
+                    <span class="material-symbols-outlined text-[12px] sm:text-[13px] text-[#a16207]">shopping_bag</span>
+                    <span>Acquire</span>
+                  </div>
+                  <span class="uiverse-btn-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <span>AI Fit</span>
+                  </span>
+                </div>
               </button>
-              <button onclick="openExpressCheckout(<?= $nprod['id'] ?>, '<?= addslashes($nprod['title']) ?>', <?= $n_price ?>, '<?= htmlspecialchars($n_img) ?>', <?= $nprod['id'] ?>);" 
-                 class="w-full py-1.5 sm:py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-mono font-extrabold text-[8.5px] sm:text-[10.5px] uppercase tracking-wider transition-all flex items-center justify-center gap-1 cursor-pointer shadow-sm rounded-lg sm:rounded-xl active:scale-95 border border-stone-900">
-                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                <span>Buy</span>
+              <button type="button" 
+                      data-tooltip="Instant: ₹<?= number_format($n_price, 0) ?>" 
+                      onclick="openExpressCheckout(<?= $nprod['id'] ?>, '<?= addslashes($nprod['title']) ?>', <?= $n_price ?>, '<?= htmlspecialchars($n_img) ?>', <?= $nprod['id'] ?>);" 
+                      class="uiverse-action-btn uiverse-buy-btn active:scale-95">
+                <div class="uiverse-btn-wrapper">
+                  <div class="uiverse-btn-text">
+                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                    <span>Buy</span>
+                  </div>
+                  <span class="uiverse-btn-icon">
+                    <svg viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 text-[#e9c176]"><path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>
+                    <span>1-Click</span>
+                  </span>
+                </div>
               </button>
             </div>
           </div>
@@ -1708,59 +1850,69 @@ if (splitBox && splitAfterLayer && splitDivider) {
 }
 
 // ── Framer Motion Tiles Engine ──
+var activeMotionTileIndex = 0;
+
 var motionTilesData = [
   {
     tag: "Category 01 · Outerwear",
     title: "The Atelier Cashmere Cocoon Coat",
     desc: "100% Double-faced Mongolian cashmere with hand-stitched horn buttons.",
     img: "<?= base_url('img/cashmere_cocoon_coat.jpg') ?>",
-    id: 6
+    id: 1,
+    price: 4999
   },
   {
     tag: "Category 02 · Denim",
     title: "13.5oz Okayama Selvedge Trousers",
     desc: "Woven on vintage shuttle looms in Japan with custom brass hardware.",
     img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1000&q=85",
-    id: 3
+    id: 3,
+    price: 4899
   },
   {
     tag: "Category 03 · Essentials",
     title: "Sculpted Heavyweight Terry Hoodie",
     desc: "480GSM organic cotton French terry with pre-shrunk density.",
     img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1000&q=85",
-    id: 2
+    id: 2,
+    price: 3299
   },
   {
     tag: "Category 04 · Eveningwear",
     title: "Mulberry Silk Bias-Cut Slip Dress",
     desc: "22-Momme Grade 6A mulberry silk with sandwashed liquid drape.",
     img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1000&q=85",
-    id: 4
+    id: 4,
+    price: 5699
   },
   {
     tag: "Category 05 · Suiting",
     title: "Super 150s Italian Wool Blazer",
     desc: "Vitale Barberis Canonico virgin wool with floating horsehair canvas.",
     img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=1000&q=85",
-    id: 5
+    id: 5,
+    price: 7999
   },
   {
     tag: "Category 06 · Tailoring",
-    title: "Architectural Linen & Wool Blazers",
+    title: "Italian Pleated Wool Trousers",
     desc: "Unstructured drape designed for multi-seasonal layering.",
     img: "<?= base_url('img/italian_pleated_trousers.jpg') ?>",
-    id: 1
+    id: 7,
+    price: 3999
   },
   {
     tag: "Category 07 · Limited Edition",
     title: "Hand-Numbered Atelier Capsule 08",
     desc: "Only 50 pieces crafted worldwide per seasonal release.",
     img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1000&q=85",
-    id: 4
+    id: 8,
+    price: 6499
   }
 ];
 
 function activateMotionTile(index) {
+  activeMotionTileIndex = index;
   var items = document.querySelectorAll('.motion-tile-item');
   items.forEach((el, idx) => {
     if (idx === index) {
@@ -1776,19 +1928,62 @@ function activateMotionTile(index) {
   if (!data) return;
 
   var img = document.getElementById('motionStageImage');
-  img.style.opacity = '0.3';
-  img.style.transform = 'scale(0.97)';
+  if (img) {
+    img.style.opacity = '0.3';
+    img.style.transform = 'scale(0.97)';
 
-  setTimeout(() => {
-    img.src = data.img;
-    document.getElementById('motionStageTag').textContent = data.tag;
-    document.getElementById('motionStageTitle').textContent = data.title;
-    document.getElementById('motionStageDesc').textContent = data.desc;
-    document.getElementById('motionStageBtn').setAttribute('onclick', 'addToCart(' + data.id + ', 1)');
-    img.style.opacity = '1';
-    img.style.transform = 'scale(1)';
-  }, 180);
+    setTimeout(() => {
+      img.src = data.img;
+      document.getElementById('motionStageTag').textContent = data.tag;
+      document.getElementById('motionStageTitle').textContent = data.title;
+      document.getElementById('motionStageDesc').textContent = data.desc;
+
+      // Update sizes in the motion stage size select dropdown
+      const sizeSelect = document.getElementById('motionStageSizeSelect');
+      if (sizeSelect) {
+        const sizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(data) : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+        const defaultSize = sizes[Math.min(2, sizes.length - 1)];
+        window.selectedMotionStageSize = defaultSize;
+        sizeSelect.innerHTML = sizes.map(s => `<option value="${s}" ${s === defaultSize ? 'selected' : ''} class="bg-stone-900 text-white">${s}</option>`).join('');
+      }
+
+      img.style.opacity = '1';
+      img.style.transform = 'scale(1)';
+    }, 180);
+  }
 }
+
+window.acquireMotionStageGarment = function() {
+  var data = motionTilesData[activeMotionTileIndex || 0];
+  if (!data) return;
+
+  var sizeSelect = document.getElementById('motionStageSizeSelect');
+  var chosenSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : (window.selectedMotionStageSize || 'M');
+
+  // Add to cart with chosen category size!
+  if (typeof addToCart === 'function') {
+    addToCart({
+      id: data.id || 1,
+      variant_id: data.id || 1,
+      product_id: data.id || 1,
+      title: data.title,
+      price: data.price || 4999,
+      image: data.img,
+      size: chosenSize,
+      color: 'Original'
+    }, 1, `✦ Added ${data.title} (Size ${chosenSize}) to Curated Bag!`);
+  }
+
+  // Open Quick Bag Drawer to show item and chosen size in cart!
+  setTimeout(() => {
+    if (typeof toggleQuickBagDrawer === 'function') {
+      var overlay = document.getElementById('quickBagOverlay');
+      if (overlay && overlay.classList.contains('hidden')) {
+        toggleQuickBagDrawer();
+      }
+    }
+  }, 250);
+};
 
 // ── Ensemble Builder Calculation ──
 var ensembleItems = {
@@ -2717,10 +2912,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
           </div>
 
-          <!-- Try On CTA -->
-          <button onclick="openVirtualTryOn()" class="w-full py-3 rounded-xl border border-stone-300 bg-white text-[#a16207] text-xs font-button uppercase tracking-wider hover:bg-amber-50 transition-all flex items-center justify-center gap-2 group cursor-pointer shadow-2xs font-semibold">
-            <span class="material-symbols-outlined text-sm group-hover:animate-bounce">camera_alt</span>
-            <span>Try On Look (Virtual Mirror) →</span>
+          <!-- Customize Look in Bespoke Ensemble Studio Modal -->
+          <button onclick="openEnsembleStudio('all')" class="w-full py-3 sm:py-3.5 rounded-xl border border-stone-900 bg-white hover:bg-stone-950 hover:text-white text-stone-950 text-xs font-button uppercase tracking-wider transition-all flex items-center justify-center gap-2 group cursor-pointer shadow-md font-bold hover:shadow-lg">
+            <span class="material-symbols-outlined text-base text-[#a16207] group-hover:text-[#e9c176] transition-colors">tune</span>
+            <span>Customize Ensemble &amp; Sizes →</span>
           </button>
         </div>
 
@@ -2731,197 +2926,119 @@ document.addEventListener('DOMContentLoaded', () => {
 </section>
 
 <!-- ══════════════════════════════════════════════════════
-     AI BLOCK 2: VIRTUAL FITTING ROOM (CAMERA / UPLOAD / SIZING)
+     BESPOKE ATELIER ENSEMBLE STUDIO & MULTI-PIECE CUSTOMIZER MODAL
 ══════════════════════════════════════════════════════ -->
-<section class="py-16 bg-black border-y border-white/10 relative overflow-hidden scroll-unfold-section" id="vtrSection">
-  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(233,193,118,0.06), transparent);"></div>
-
-  <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-
-      <!-- Left: Text -->
-      <div>
-        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#e9c176]/10 border border-[#e9c176]/25 text-[#e9c176] text-xs font-mono uppercase tracking-widest mb-5">
-          <span class="material-symbols-outlined text-sm">camera_front</span>
-          Virtual Fitting Room · AI Try-On
-        </div>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">
-          See It On <span class="italic text-[#e9c176]">Your Body.</span><br>Before You Buy.
-        </h2>
-        <p class="text-white/60 text-sm leading-relaxed mb-6 max-w-md font-light">
-          Upload your photo or take a live camera shot. Choose your body type and exact size (XS–3XL). Our AI models how garments drape on your silhouette with real-time sizing advice.
-        </p>
-
-        <!-- Feature Pills -->
-        <div class="flex flex-wrap gap-2.5 mb-8">
-          <span class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-[11px] text-white/70"><span class="text-emerald-400">✓</span> Processed locally & safely</span>
-          <span class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-[11px] text-white/70"><span class="text-emerald-400">✓</span> Precision sizes XS to 3XL</span>
-          <span class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-[11px] text-white/70"><span class="text-emerald-400">✓</span> 4 body silhouettes</span>
-          <span class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-[11px] text-white/70"><span class="text-emerald-400">✓</span> AI Fit Score & drape</span>
-        </div>
-
-        <button onclick="openVirtualTryOn()" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#a16207] to-[#e9c176] text-black font-button text-sm uppercase tracking-wider font-extrabold rounded-2xl hover:opacity-90 hover:scale-105 transition-all shadow-xl shadow-amber-900/30 cursor-pointer">
-          <span class="material-symbols-outlined">camera_alt</span>
-          Launch Virtual Fitting Room
-        </button>
-      </div>
-
-      <!-- Right: Preview Phone Card -->
-      <div class="relative">
-        <div class="relative mx-auto" style="max-width:320px;">
-          <div class="bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] rounded-[40px] p-3 shadow-2xl border border-white/10" style="box-shadow: 0 40px 80px rgba(0,0,0,0.8);">
-            <!-- Phone Notch -->
-            <div class="w-24 h-5 bg-black rounded-full mx-auto mb-2 flex items-center justify-center">
-              <div class="w-2.5 h-2.5 rounded-full bg-[#222] border border-white/10"></div>
-            </div>
-            <!-- Screen content -->
-            <div class="bg-black rounded-[28px] overflow-hidden" style="aspect-ratio:9/16;max-height:460px;position:relative;">
-              <div class="absolute inset-0 flex items-center justify-center" style="background:linear-gradient(180deg,#141414 0%,#090909 100%);">
-
-                <!-- Vector Model Simulation -->
-                <svg viewBox="0 0 120 220" style="width:62%;height:82%;opacity:0.95;" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Head -->
-                  <circle cx="60" cy="24" r="16" fill="#fcd34d" fill-opacity="0.2" stroke="#e9c176" stroke-width="1.2"/>
-                  <!-- Torso / Garment -->
-                  <path d="M24 50 Q36 45 48 47 L54 47 L60 45 L66 47 L72 47 Q84 45 96 50 L100 90 Q86 95 72 96 L48 96 Q34 95 20 90 Z" fill="#1e1e1e" stroke="#e9c176" stroke-width="1.5"/>
-                  <!-- Collar -->
-                  <path d="M54 47 L60 55 L66 47" stroke="#e9c176" stroke-width="1.5" fill="none"/>
-                  <!-- Arms -->
-                  <path d="M24 50 L12 88 Q12 92 18 92 L24 70 L30 90 Q34 94 38 91 L32 50" fill="#1e1e1e" stroke="rgba(233,193,118,0.5)" stroke-width="1"/>
-                  <path d="M96 50 L108 88 Q108 92 102 92 L96 70 L90 90 Q86 94 82 91 L88 50" fill="#1e1e1e" stroke="rgba(233,193,118,0.5)" stroke-width="1"/>
-                  <!-- Belt -->
-                  <rect x="46" y="96" width="28" height="4" rx="2" fill="#e9c176"/>
-                  <!-- Trousers -->
-                  <path d="M46 100 L40 170 Q39 175 46 176 L52 176 L57 112 L57 100 Z" fill="#16181d" stroke="rgba(100,100,160,0.5)" stroke-width="1"/>
-                  <path d="M74 100 L80 170 Q81 175 74 176 L68 176 L63 112 L63 100 Z" fill="#16181d" stroke="rgba(100,100,160,0.5)" stroke-width="1"/>
-                  <!-- Shoes -->
-                  <ellipse cx="43" cy="178" rx="8" ry="3.5" fill="#332211"/>
-                  <ellipse cx="77" cy="178" rx="8" ry="3.5" fill="#332211"/>
-                </svg>
-
-                <!-- Size Badge in Mockup -->
-                <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.85);border:1px solid #e9c176;border-radius:20px;padding:3px 10px;color:#e9c176;font-size:9px;font-family:monospace;font-weight:700;">SIZE M · 96% FIT</div>
-
-                <!-- AI Analysis Mockup -->
-                <div style="position:absolute;bottom:12px;left:12px;right:12px;background:rgba(0,0,0,0.88);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px 10px;">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                    <span style="font-size:9px;font-family:monospace;color:rgba(255,255,255,0.5);text-transform:uppercase;">AI Drape Analysis</span>
-                    <span style="font-size:10px;color:#10b981;font-weight:700;">Optimal</span>
-                  </div>
-                  <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;">
-                    <div style="height:100%;width:96%;background:linear-gradient(90deg,#a16207,#e9c176);border-radius:2px;"></div>
-                  </div>
-                  <div style="font-size:9px;color:rgba(255,255,255,0.6);margin-top:4px;">Shoulders &amp; waist aligned seamlessly.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════
-     ATELIER SIZE & STYLE CONCIERGE MODAL (PURE WHITE · COMPLETE LOOKS)
-══════════════════════════════════════════════════════ -->
-<div id="atelierFitModal" data-lenis-prevent="true" data-lenis-prevent-wheel="true" data-lenis-prevent-touch="true" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[120] hidden items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto" style="overscroll-behavior: contain;" onclick="if(event.target===this)closeAtelierFitModal()">
-  <div id="atelierFitModalInner" data-lenis-prevent="true" data-lenis-prevent-wheel="true" data-lenis-prevent-touch="true" class="bg-white text-stone-900 p-5 sm:p-7 md:p-8 rounded-3xl max-w-4xl w-full border border-stone-200 shadow-2xl relative my-auto overflow-y-auto max-h-[92vh] custom-scrollbar" style="overscroll-behavior: contain; -webkit-overflow-scrolling: touch;">
+<div id="ensembleStudioModal" data-lenis-prevent="true" class="fixed inset-0 bg-black/75 backdrop-blur-md z-[130] hidden items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto" onclick="if(event.target===this)closeEnsembleStudio()">
+  <div id="ensembleStudioInner" class="bg-white text-stone-900 rounded-3xl max-w-5xl w-full border border-stone-200 shadow-2xl relative my-auto overflow-hidden flex flex-col max-h-[94vh] animate-fade-in">
     
     <!-- Modal Header -->
-    <div class="flex items-center justify-between pb-4 border-b border-stone-200 mb-6">
+    <div class="p-4 sm:p-6 border-b border-stone-200 flex items-center justify-between bg-stone-50/80 flex-shrink-0">
       <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-[#a16207] text-[10px] font-mono font-bold uppercase tracking-wider mb-1.5 border border-amber-200">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-[#a16207] text-[10px] sm:text-[10.5px] font-mono font-bold uppercase tracking-wider mb-1 border border-amber-200">
           <span class="w-1.5 h-1.5 rounded-full bg-[#a16207] animate-ping"></span>
-          <span>Atelier Fit &amp; Ensemble Styling</span>
+          <span>✦ Atelier Ensemble Studio ✦</span>
         </div>
-        <h3 class="font-serif text-xl sm:text-2xl text-stone-900 font-bold" id="afmModalHeading">Select Fit &amp; Complete The Look</h3>
+        <h3 class="font-serif text-xl sm:text-2xl text-stone-950 font-bold">Build Your Custom 3-Piece Look</h3>
+        <p class="text-xs text-stone-500 font-light mt-0.5">Select clothes, pants, and footwear from the catalog below. Choose individual sizes to build your personalized ensemble.</p>
       </div>
-      <button type="button" onclick="closeAtelierFitModal()" class="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center cursor-pointer transition-all hover:scale-105" aria-label="Close Modal">
-        <span class="material-symbols-outlined text-lg">close</span>
+      <button type="button" onclick="closeEnsembleStudio()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white hover:bg-stone-200 border border-stone-200 text-stone-700 flex items-center justify-center cursor-pointer transition-all hover:scale-105 shadow-2xs" aria-label="Close">
+        <span class="material-symbols-outlined text-lg sm:text-xl">close</span>
       </button>
     </div>
 
-    <!-- ── 1. SELECTED PRODUCT FIT & SIZE SELECTION (PRIMARY) ── -->
-    <div class="bg-stone-50 border border-stone-200 rounded-2xl p-4 sm:p-5 mb-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4 pb-4 border-b border-stone-200">
-        <img id="afmProductImg" src="<?= base_url('img/cashmere_cocoon_coat.jpg') ?>" class="w-20 h-24 sm:w-24 sm:h-28 object-cover rounded-xl border border-stone-200 shadow-sm flex-shrink-0 bg-stone-100 cursor-pointer hover:opacity-90 transition-opacity" onclick="openProductQuickViewModal(currentAfmProduct)" alt="Product Image">
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-[10px] uppercase font-mono tracking-widest text-[#a16207] font-semibold" id="afmVendor">LUMINA ATELIER</span>
-            <span class="text-[10px] bg-emerald-50 text-emerald-700 font-mono px-2 py-0.5 rounded-full border border-emerald-200 font-medium">★ 4.9 · In Stock (Only 3 Left)</span>
+    <!-- Scrollable Modal Body -->
+    <div class="overflow-y-auto p-4 sm:p-6 space-y-6 flex-1 custom-scrollbar">
+
+      <!-- ── 1. ACTIVE 3-SLOT ENSEMBLE STAGE ── -->
+      <div class="bg-[#0c0d14] text-white rounded-2xl p-4 sm:p-5 shadow-xl border border-amber-500/30 relative overflow-hidden">
+        <div class="absolute -top-16 -right-16 w-48 h-48 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-3 border-b border-white/10 gap-2 relative z-10">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#e9c176] text-lg">view_carousel</span>
+            <span class="font-mono text-xs uppercase tracking-wider text-[#e9c176] font-bold">Active 3-Piece Ensemble Stage:</span>
           </div>
-          <h4 id="afmProductTitle" class="font-serif text-base sm:text-lg text-stone-900 font-bold truncate cursor-pointer hover:text-[#a16207] transition-colors" onclick="openProductQuickViewModal(currentAfmProduct)">The Atelier Cashmere Cocoon Coat</h4>
-          <div class="flex items-baseline gap-2 mt-1">
-            <span id="afmProductPrice" class="font-serif font-bold text-lg sm:text-xl text-stone-900" data-price-inr="4999">₹4,999</span>
-            <span id="afmProductComparePrice" class="text-xs text-stone-400 line-through" data-price-inr="8999">₹8,999</span>
-            <span class="text-[10px] text-emerald-600 font-semibold font-mono">Complimentary Insured Express Delivery</span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-mono text-amber-300 font-bold bg-amber-500/15 px-2.5 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+              <span>15% Pack Privilege Applied</span>
+            </span>
           </div>
+        </div>
+
+        <!-- 3 Slots Grid (Tops, Bottoms, Footwear) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10" id="studioStageSlots">
+          <!-- Dynamically Rendered by JS -->
         </div>
       </div>
 
-      <!-- Size Selection Row -->
+      <!-- ── 2. WARDROBE CATEGORY FILTER TABS ── -->
       <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-xs font-mono uppercase tracking-wider text-stone-700 font-bold">1. Select Your Size / Fit:</label>
-          <span class="text-[11px] text-[#a16207] font-mono font-semibold" id="afmActiveSizeLabel">Selected: Size M (Regular Tailored)</span>
-        </div>
-        <div class="flex gap-2 flex-wrap mb-3" id="afmSizePills">
-          <button type="button" onclick="selectAfmSize('XS', this)" class="afm-size-pill px-4 py-2 rounded-xl border border-stone-300 bg-white text-stone-800 hover:border-amber-500 text-xs font-mono font-bold transition-all cursor-pointer shadow-sm">XS</button>
-          <button type="button" onclick="selectAfmSize('S', this)" class="afm-size-pill px-4 py-2 rounded-xl border border-stone-300 bg-white text-stone-800 hover:border-amber-500 text-xs font-mono font-bold transition-all cursor-pointer shadow-sm">S</button>
-          <button type="button" onclick="selectAfmSize('M', this)" class="afm-size-pill px-4 py-2 rounded-xl border-2 border-amber-500 bg-amber-50 text-amber-900 text-xs font-mono font-bold transition-all cursor-pointer shadow-md">M</button>
-          <button type="button" onclick="selectAfmSize('L', this)" class="afm-size-pill px-4 py-2 rounded-xl border border-stone-300 bg-white text-stone-800 hover:border-amber-500 text-xs font-mono font-bold transition-all cursor-pointer shadow-sm">L</button>
-          <button type="button" onclick="selectAfmSize('XL', this)" class="afm-size-pill px-4 py-2 rounded-xl border border-stone-300 bg-white text-stone-800 hover:border-amber-500 text-xs font-mono font-bold transition-all cursor-pointer shadow-sm">XL</button>
-          <button type="button" onclick="selectAfmSize('XXL', this)" class="afm-size-pill px-4 py-2 rounded-xl border border-stone-300 bg-white text-stone-800 hover:border-amber-500 text-xs font-mono font-bold transition-all cursor-pointer shadow-sm">XXL</button>
-          <button type="button" onclick="selectAfmSize('3XL', this)" class="afm-size-pill px-4 py-2 rounded-xl border border-stone-300 bg-white text-stone-800 hover:border-amber-500 text-xs font-mono font-bold transition-all cursor-pointer shadow-sm">3XL</button>
-        </div>
-        <div class="text-[11px] text-stone-500 font-mono flex items-center gap-1.5" id="afmSizeGuideDesc">
-          <span class="material-symbols-outlined text-sm text-[#a16207]">straighten</span>
-          <span>Chest: 38–40" · Waist: 30–32" · Hip: 40–42" · True to bespoke size</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── 2. MATCHING ENSEMBLE GROUPS (COMPLETE LOOKS · HORIZONTAL SCROLL WITH INLINE TRY-ON TO RIGHT) ── -->
-    <div class="mb-6">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-3 pb-3 border-b border-stone-200 gap-2">
-        <div>
-          <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#a16207] font-mono mb-1">
-            <span class="material-symbols-outlined text-base">styler</span>
-            <span>2. Complete The Look · Coordinated Ensembles</span>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#a16207] text-lg">checkroom</span>
+            <span class="font-mono text-xs uppercase tracking-wider text-stone-900 font-bold">Browse &amp; Choose Garments by Category:</span>
           </div>
-          <p class="text-xs text-stone-600 font-light" id="afmEnsembleSubtitle">
-            Curated pairings tailored to match this piece. Click any product to inspect details or preview all 3 on the standing model.
-          </p>
+          <span class="text-xs font-mono text-stone-500" id="studioCategoryCount">8 styles available</span>
         </div>
-        <div class="flex items-center gap-2 text-[11px] font-mono text-stone-500">
-          <span class="hidden sm:inline">← Scroll Ensembles →</span>
-          <button type="button" onclick="scrollAfmEnsembles(-1)" class="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center cursor-pointer transition-all" aria-label="Scroll Left">
-            <span class="material-symbols-outlined text-sm">chevron_left</span>
+
+        <!-- Category Tabs -->
+        <div class="flex flex-wrap gap-2 pb-1 border-b border-stone-200" id="studioCategoryTabs">
+          <button type="button" onclick="selectStudioCategory('tops')" class="studio-cat-tab active-tab px-4 py-2.5 rounded-xl border-2 border-stone-950 bg-stone-950 text-white text-xs font-mono uppercase tracking-wider font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer" data-cat="tops">
+            <span>🧥</span>
+            <span>All Clothes &amp; Tops</span>
+            <span class="px-1.5 py-0.2 bg-white/20 rounded text-[10px]" id="studioCount_tops">8</span>
           </button>
-          <button type="button" onclick="scrollAfmEnsembles(1)" class="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center cursor-pointer transition-all" aria-label="Scroll Right">
-            <span class="material-symbols-outlined text-sm">chevron_right</span>
+          <button type="button" onclick="selectStudioCategory('bottoms')" class="studio-cat-tab px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-mono uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 cursor-pointer" data-cat="bottoms">
+            <span>👖</span>
+            <span>All Pants &amp; Trousers</span>
+            <span class="px-1.5 py-0.2 bg-stone-200 rounded text-[10px]" id="studioCount_bottoms">5</span>
+          </button>
+          <button type="button" onclick="selectStudioCategory('footwear')" class="studio-cat-tab px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-mono uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 cursor-pointer" data-cat="footwear">
+            <span>👞</span>
+            <span>All Shoes &amp; Footwear</span>
+            <span class="px-1.5 py-0.2 bg-stone-200 rounded text-[10px]" id="studioCount_footwear">5</span>
+          </button>
+          <button type="button" onclick="selectStudioCategory('accessories')" class="studio-cat-tab px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-mono uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 cursor-pointer" data-cat="accessories">
+            <span>✦</span>
+            <span>Accessories &amp; Accents</span>
+            <span class="px-1.5 py-0.2 bg-stone-200 rounded text-[10px]" id="studioCount_accessories">3</span>
           </button>
         </div>
       </div>
 
-      <!-- Horizontal Scrollable Container for Look Cards (with inline Try-On to the right) -->
-      <div class="flex flex-nowrap overflow-x-auto gap-4 sm:gap-5 pb-3 pt-1 snap-x custom-scrollbar" id="afmEnsembleContainer" style="-webkit-overflow-scrolling: touch;">
-        <!-- Rendered dynamically by JavaScript -->
+      <!-- ── 3. WARDROBE CATALOG ITEMS GRID ── -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="studioCatalogGrid">
+        <!-- Rendered dynamically by JavaScript with size pills & selection buttons -->
       </div>
+
     </div>
 
-    <!-- ── 3. FINAL ACTION CTAS (ADD TO BAG & INSTANT BUY) ── -->
-    <div class="pt-4 border-t border-stone-200">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <button type="button" onclick="confirmAfmAddToCart()" class="w-full py-3.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer hover:opacity-95">
-          <span class="material-symbols-outlined text-base">shopping_bag</span>
-          <span id="afmAddToCartBtnText">Acquire Size M</span>
+    <!-- ── 4. FIXED BOTTOM ORDER SUMMARY & CTAS ── -->
+    <div class="p-4 sm:p-5 bg-stone-950 text-white border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 flex-shrink-0 shadow-2xl">
+      <div class="w-full sm:w-auto">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-stone-400 mb-0.5">Custom 3-Piece Total (15% Privilege Off):</div>
+        <div class="flex items-baseline gap-2 flex-wrap">
+          <span class="font-serif text-2xl sm:text-3xl font-extrabold text-[#e9c176]" id="studioTotalPrice">₹12,662</span>
+          <span class="line-through text-xs font-mono text-stone-500" id="studioTotalCompare">₹19,997</span>
+          <span class="text-xs font-mono text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30" id="studioTotalSavings">Save ₹7,335</span>
+        </div>
+        <div class="text-[11px] font-mono text-stone-300 truncate max-w-md mt-1" id="studioSelectionSummary">
+          Top: Coat (M) · Pants: Trousers (32) · Shoes: Loafers (UK 8)
+        </div>
+      </div>
+
+      <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 w-full sm:w-auto">
+        <button type="button" onclick="shuffleStudioEnsemble()" class="px-3.5 py-3 rounded-xl border border-white/20 hover:bg-white/10 text-white font-mono text-xs uppercase tracking-wider font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm flex-1 sm:flex-initial" title="Generate Random Chic Mix">
+          <span class="material-symbols-outlined text-sm text-amber-400">shuffle</span>
+          <span>Shuffle</span>
         </button>
-        <button type="button" onclick="confirmAfmInstantBuy()" class="w-full py-3.5 bg-stone-900 hover:bg-black text-white font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm">
-          <span class="material-symbols-outlined text-base text-amber-400">bolt</span>
-          <span>Instant Buy (1-Click)</span>
+        <button type="button" onclick="applyStudioEnsembleToPage()" class="px-4 py-3 rounded-xl border border-amber-500/40 hover:border-amber-400 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 font-mono text-xs uppercase tracking-wider font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm flex-1 sm:flex-initial">
+          <span class="material-symbols-outlined text-sm">sync</span>
+          <span>Apply to Look</span>
+        </button>
+        <button type="button" onclick="shopStudioEnsemble()" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:opacity-95 text-stone-950 font-button text-xs uppercase tracking-wider font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-98 w-full sm:w-auto">
+          <span class="material-symbols-outlined text-base">shopping_bag</span>
+          <span id="studioShopBtnText">Shop Custom Ensemble</span>
         </button>
       </div>
     </div>
@@ -2932,7 +3049,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- ══════════════════════════════════════════════════════
      PRODUCT QUICK VIEW POPUP (INSPECT INDIVIDUAL PIECE)
 ══════════════════════════════════════════════════════ -->
-<div id="atelierProductQuickViewModal" data-lenis-prevent="true" class="fixed inset-0 bg-black/65 backdrop-blur-md z-[130] hidden items-center justify-center p-3 sm:p-6 overflow-y-auto" onclick="if(event.target===this)closeProductQuickViewModal()">
+<div id="atelierProductQuickViewModal" data-lenis-prevent="true" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[140] hidden items-center justify-center p-3 sm:p-6 overflow-y-auto" onclick="if(event.target===this)closeProductQuickViewModal()">
   <div class="bg-white text-stone-900 p-6 sm:p-7 rounded-3xl max-w-lg w-full border border-stone-200 shadow-2xl relative my-auto animate-fade-in">
     <div class="flex items-center justify-between pb-3 mb-4 border-b border-stone-200">
       <div class="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#a16207]">
@@ -2944,18 +3061,18 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center mb-4">
-      <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 relative group">
-        <img id="apqvImage" src="" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-        <span class="absolute top-2 left-2 bg-stone-900/80 text-white text-[8px] font-mono px-2 py-0.5 rounded uppercase" id="apqvBadge">Atelier Piece</span>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start mb-4">
+      <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 relative group shadow-sm">
+        <img id="apqvImage" src="" alt="Product" class="w-full h-full object-cover transition-all duration-300">
+        <span class="absolute top-2 left-2 bg-stone-900/85 text-white text-[8px] font-mono px-2 py-0.5 rounded uppercase font-bold tracking-wider" id="apqvBadge">Atelier Piece</span>
       </div>
       <div class="flex flex-col justify-between space-y-3">
         <div>
           <span class="text-[9px] uppercase font-mono tracking-widest text-[#a16207] font-bold block mb-1">Lumina Atelier</span>
           <h4 id="apqvTitle" class="font-serif font-bold text-base sm:text-lg text-stone-900 leading-snug">Product Title</h4>
-          <div class="flex items-baseline gap-2 mt-2">
+          <div class="flex items-baseline gap-2 mt-1.5">
             <span id="apqvPrice" class="font-serif font-bold text-lg text-stone-900">₹0</span>
-            <span class="text-[10px] text-emerald-600 font-mono font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">★ 4.9 · In Stock</span>
+            <span class="text-[10px] text-emerald-700 font-mono font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">★ 4.9 · In Stock</span>
           </div>
         </div>
 
@@ -2963,157 +3080,70 @@ document.addEventListener('DOMContentLoaded', () => {
           Crafted with sartorial precision in Japan and Italy using natural double-faced fibers.
         </p>
 
-        <!-- Color Palette -->
+        <!-- Color Palette (Clickable with Live Image Swapping) -->
         <div>
-          <label class="text-[10px] font-mono uppercase font-bold text-stone-600 block mb-1">Atelier Colors:</label>
-          <div class="flex gap-2 items-center flex-wrap" id="apqvColorSwatches">
+          <div class="flex justify-between items-center mb-1.5">
+            <label class="text-[10px] font-mono uppercase font-bold text-stone-600">Atelier Colorway:</label>
+            <span id="apqvSelectedColorLabel" class="text-[10px] font-mono font-bold text-[#a16207]">Default</span>
+          </div>
+          <div class="flex gap-1.5 items-center flex-wrap" id="apqvColorSwatches">
             <!-- Dynamic Colors -->
           </div>
         </div>
 
-        <!-- Available Sizes -->
+        <!-- Available Sizes (Interactive & Validated) -->
         <div>
-          <label class="text-[10px] font-mono uppercase font-bold text-stone-600 block mb-1">Available Sizes:</label>
+          <div class="flex justify-between items-center mb-1.5">
+            <label class="text-[10px] font-mono uppercase font-bold text-stone-600">Select Fit / Size:</label>
+            <span id="apqvSelectedSizeLabel" class="text-[10px] font-mono font-bold text-[#a16207]">Size M</span>
+          </div>
           <div class="flex gap-1.5 flex-wrap" id="apqvSizePills">
-            <!-- Dynamic sizes -->
+            <!-- Dynamic Category Sizes -->
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════
-     INTERACTIVE ATELIER MODEL FITTING STUDIO (FULL LOOK CUSTOMIZER)
-══════════════════════════════════════════════════════ -->
-<div id="atelierModelFittingStudioModal" data-lenis-prevent="true" data-lenis-prevent-wheel="true" data-lenis-prevent-touch="true" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[130] hidden items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto" onclick="if(event.target===this)closeModelFittingStudioModal()">
-  <div class="relative my-auto max-w-5xl w-full">
-    
-    <!-- Left Round Arrow Button (No Text) -->
-    <button type="button" onclick="navigateStudioLook(-1)" class="fixed sm:absolute left-2 sm:-left-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-stone-900/90 hover:bg-black text-white backdrop-blur-md border border-stone-600/80 shadow-2xl flex items-center justify-center cursor-pointer transition-all hover:scale-110 active:scale-95 z-50 group" id="amfsPrevLookBtn" aria-label="Previous Curated Look" title="Previous Look">
-      <span class="material-symbols-outlined text-lg sm:text-xl text-stone-200 group-hover:text-amber-400 transition-colors">chevron_left</span>
-    </button>
-
-    <!-- Right Round Arrow Button (No Text) -->
-    <button type="button" onclick="navigateStudioLook(1)" class="fixed sm:absolute right-2 sm:-right-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-stone-900/90 hover:bg-black text-white backdrop-blur-md border border-stone-600/80 shadow-2xl flex items-center justify-center cursor-pointer transition-all hover:scale-110 active:scale-95 z-50 group" id="amfsNextLookBtn" aria-label="Next Curated Look" title="Next Look">
-      <span class="material-symbols-outlined text-lg sm:text-xl text-stone-200 group-hover:text-amber-400 transition-colors">chevron_right</span>
-    </button>
-
-    <!-- Modal Content Card -->
-    <div class="bg-white text-stone-900 p-5 sm:p-7 md:p-8 rounded-3xl w-full border border-stone-200 shadow-2xl overflow-y-auto max-h-[94vh] custom-scrollbar">
-      
-      <!-- Modal Header (Clean with Subtle Look Counter) -->
-      <div class="flex items-center justify-between pb-4 border-b border-stone-200 mb-5">
-        <div>
-          <div class="flex items-center gap-2 mb-1">
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-[#a16207] text-[10px] font-mono font-bold uppercase tracking-wider border border-amber-200">
-              <span class="material-symbols-outlined text-xs">accessibility_new</span>
-              <span>Interactive Model Fitting Studio</span>
-            </div>
-            <span class="text-[10px] font-mono font-bold text-stone-600 bg-stone-100 px-2.5 py-0.5 rounded-full border border-stone-200" id="amfsLookCounter">01 / 03</span>
-          </div>
-          <h3 class="font-serif text-lg sm:text-2xl text-stone-900 font-bold" id="amfsHeading">The Milan Executive · Complete 3-Piece Fitting</h3>
+          <div id="apqvSizeError" class="text-[10px] text-rose-600 font-mono hidden mt-1">Please select an atelier size first.</div>
         </div>
 
-        <button type="button" onclick="closeModelFittingStudioModal()" class="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center cursor-pointer transition-all hover:scale-105 ml-2" aria-label="Close Studio">
-          <span class="material-symbols-outlined text-lg">close</span>
-        </button>
-      </div>
-
-      <!-- Studio Grid: Model Stand on Left + Interactive 3-Piece Customizer on Right -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-2">
-        
-        <!-- LEFT: Standing Model Preview Frame -->
-        <div class="lg:col-span-5 bg-stone-50 border border-stone-200 rounded-2xl p-3 shadow-xs">
-          <div class="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-stone-100 shadow-inner group" id="amfsModelFrameContainer">
-            <img id="amfsModelImage" src="<?= base_url('img/model_look_executive.jpg') ?>" alt="Model Wearing Ensemble" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700">
-            
-            <div class="absolute top-2.5 left-2.5 bg-stone-900/85 backdrop-blur-sm text-white px-2.5 py-1 rounded-full text-[9px] font-mono flex items-center gap-1.5 shadow">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>Live Editorial Model Drape</span>
-            </div>
-
-            <!-- Active Colors & 3D Spatial Drape Tag -->
-            <div class="absolute top-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-stone-900 px-2 py-1 rounded-lg text-[9px] font-mono font-bold shadow flex items-center gap-1.5" id="amfsActiveColorsBadge">
-              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-              <span id="amfsActiveColorsText">3D Spatial Drape</span>
-            </div>
-
-            <!-- Omitted Layer Indicator Warning Overlay (if any layer unchecked) -->
-            <div id="amfsOmitWarningBadge" class="hidden absolute bottom-14 left-2.5 right-2.5 bg-amber-950/85 backdrop-blur-md text-amber-200 p-2 rounded-xl text-[10px] font-mono flex items-center justify-between border border-amber-500/50 shadow-lg">
-              <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm text-amber-400">layers_clear</span>
-                <span id="amfsOmitWarningText">Layer Omitted from Fitted Silhouette</span>
-              </div>
-              <span class="text-[9px] uppercase font-bold text-amber-300">Customized Drape</span>
-            </div>
-
-            <div class="absolute bottom-2.5 left-2.5 right-2.5 bg-white/95 backdrop-blur-xs p-2.5 rounded-xl border border-stone-200 shadow-sm text-stone-800 text-[10px] font-mono flex items-center justify-between">
-              <div>
-                <span class="block font-bold text-stone-900">Model: 6'1" · 185cm</span>
-                <span class="text-stone-500">Wearing Size M / 32 / 9 UK</span>
-              </div>
-              <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold uppercase text-[9px]">Bespoke Drape</span>
-            </div>
-          </div>
-
-          <p class="text-[11px] text-stone-600 font-light mt-3 leading-relaxed px-1" id="amfsFitDescription">
-            All 3 pieces harmonize with exact drape proportions. Customize colors, sizes, or toggle any layer below.
-          </p>
-        </div>
-
-        <!-- RIGHT: Interactive 3-Piece Garment Customizer & Sizer -->
-        <div class="lg:col-span-7 space-y-4 flex flex-col justify-between">
-          
-          <div class="flex items-center justify-between pb-2 border-b border-stone-200">
-            <span class="text-xs font-mono uppercase tracking-wider font-bold text-stone-800">Customize Layers, Colors &amp; Sizes:</span>
-            <span class="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold" id="amfsBundleBadge">12% Ensemble Discount Applied</span>
-          </div>
-
-          <!-- 3 Layers Container -->
-          <div class="space-y-3" id="amfsLayersContainer">
-            <!-- Rendered dynamically by JavaScript -->
-          </div>
-
-          <!-- Dynamic Live Pricing Summary & Add All To Bag CTA -->
-          <div class="bg-stone-50 border-2 border-stone-200 rounded-2xl p-4 sm:p-5 mt-4">
-            <div class="flex items-baseline justify-between mb-3 pb-3 border-b border-stone-200">
-              <div>
-                <span class="text-xs text-stone-500 font-mono block" id="amfsSelectedCountLabel">Ensemble Total (3 Pieces):</span>
-                <div class="flex items-baseline gap-2 mt-0.5">
-                  <span class="font-serif font-bold text-xl sm:text-2xl text-stone-900" id="amfsFinalPrice">₹12,141</span>
-                  <span class="text-xs text-stone-400 line-through" id="amfsOriginalPrice">₹13,797</span>
-                  <span class="text-[11px] text-emerald-600 font-mono font-bold" id="amfsSavingsLabel">Save ₹1,656</span>
-                </div>
-              </div>
-              <div class="text-right">
-                <span class="text-[10px] font-mono text-stone-500 block">Insured White-Glove Express</span>
-                <span class="text-[10px] font-mono text-[#a16207] font-bold">100% Cashmere &amp; Selvedge Guarantee</span>
-              </div>
-            </div>
-
-            <!-- Acquire Button -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <button type="button" onclick="confirmStudioEnsembleAddToCart()" id="amfsAddToCartBtn" class="w-full py-3.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer hover:scale-101">
-                <span class="material-symbols-outlined text-base">shopping_bag</span>
-                <span id="amfsAddToCartBtnText">Acquire Fitted Ensemble (3 Items)</span>
-              </button>
-              <button type="button" onclick="confirmStudioEnsembleInstantBuy()" class="w-full py-3.5 bg-stone-900 hover:bg-black text-white font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm">
-                <span class="material-symbols-outlined text-base text-amber-400">bolt</span>
-                <span>Instant Buy Look (1-Click)</span>
-              </button>
-            </div>
-          </div>
-
+        <!-- Direct Acquire Piece Button -->
+        <div class="pt-2">
+          <button type="button" onclick="acquireQuickViewItem()" id="apqvAddToCartBtn" class="w-full py-2.5 bg-stone-950 hover:bg-stone-900 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95">
+            <span class="material-symbols-outlined text-sm text-[#e9c176]">shopping_bag</span>
+            <span id="apqvAddToCartBtnText">Acquire Piece</span>
+          </button>
         </div>
 
       </div>
-
     </div>
   </div>
 </div>
 
 <script>
+// ── Global Initializations & State Containers ──
+window.BUNDLE_DISCOUNT_TIERS = {
+  2: <?= json_encode((float)($home_settings['bundle_discount_2'] ?? 10)) ?>,
+  3: <?= json_encode((float)($home_settings['bundle_discount_3'] ?? 15)) ?>
+};
+
+window.resolveProductSizes = window.resolveProductSizes || function(item) {
+  if (!item) return ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  const title = (item.title || item.name || '').toLowerCase();
+  const cat = (item.category || item.tag || '').toLowerCase();
+  
+  if (/shoe|boot|sneaker|derby|loafer|footwear|oxford|chelsea/i.test(title) || /footwear|shoe/i.test(cat)) {
+    return ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'];
+  }
+  if (/denim|pant|jean|trouser|chino|short|selvedge|bottom/i.test(title) || /denim|pant|bottom/i.test(cat)) {
+    return ['28', '30', '32', '34', '36', '38'];
+  }
+  return ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+};
+
+let currentAfmProduct = null;
+let currentAfmSelectedSize = 'M';
+let currentActiveLooks = [];
+let currentQuickViewItem = null;
+let currentQuickViewSize = 'M';
+let currentQuickViewColor = '';
+
 // ════════════════════════════════════════════════════════════
 // 1. AI STYLE IDENTITY ARCHETYPES & COMBO ENGINE
 // ════════════════════════════════════════════════════════════
@@ -3266,16 +3296,151 @@ window.renderOutfitCombo = function(arch) {
       <li class="flex gap-2"><span class="text-[#a16207] font-bold mt-0.5">✦</span> <span>${line}</span></li>
     `).join('');
   }
+};
+
+// State for AI Style Identity Outfit Archetype
+window.outfitItemsState = { 0: true, 1: true, 2: true };
+window.outfitItemsSizes = {};
+
+window.toggleOutfitItem = function(idx) {
+  window.outfitItemsState[idx] = !window.outfitItemsState[idx];
+  updateOutfitComboPricing();
+};
+
+window.addSingleOutfitItemToCart = function(idx) {
+  const arch = AI_STYLE_ARCHETYPES[currentActiveMoodKey] || AI_STYLE_ARCHETYPES['business'];
+  if (!arch || !arch.items || !arch.items[idx]) return;
+  const item = arch.items[idx];
+  const size = window.outfitItemsSizes[idx] || 'M';
+
+  if (typeof addToCart === 'function') {
+    addToCart({
+      id: item.id,
+      variant_id: item.id,
+      product_id: item.id,
+      title: item.title,
+      price: item.price,
+      image: item.img,
+      size: size
+    }, 1, `✦ Added "${item.title}" (Size ${size}) to Curated Bag!`);
+  }
+};
+
+window.updateOutfitComboPricing = function() {
+  const arch = AI_STYLE_ARCHETYPES[currentActiveMoodKey] || AI_STYLE_ARCHETYPES['business'];
+  if (!arch || !arch.items) return;
+
+  let activeCount = 0;
+  let subtotal = 0;
+  let totalOrig = 0;
+
+  arch.items.forEach((item, idx) => {
+    const isInc = !!window.outfitItemsState[idx];
+    const cardEl = document.getElementById('outfitItemCard_' + idx);
+    const btnEl = document.getElementById('outfitItemToggleBtn_' + idx);
+    
+    if (cardEl) {
+      if (isInc) {
+        cardEl.classList.remove('opacity-40', 'grayscale', 'bg-stone-100/60');
+        cardEl.classList.add('bg-white');
+      } else {
+        cardEl.classList.add('opacity-40', 'grayscale', 'bg-stone-100/60');
+        cardEl.classList.remove('bg-white');
+      }
+    }
+    if (btnEl) {
+      if (isInc) {
+        btnEl.className = 'px-1.5 py-0.5 bg-stone-100 hover:bg-rose-50 text-stone-600 hover:text-rose-700 rounded text-[8px] font-mono font-bold flex items-center gap-0.5 border border-stone-200 transition-all cursor-pointer';
+        btnEl.innerHTML = '<span class="material-symbols-outlined text-[10px]">close</span><span>Remove</span>';
+      } else {
+        btnEl.className = 'px-1.5 py-0.5 bg-stone-900 hover:bg-black text-[#e9c176] rounded text-[8px] font-mono font-bold flex items-center gap-0.5 transition-all cursor-pointer shadow-2xs';
+        btnEl.innerHTML = '<span class="material-symbols-outlined text-[10px]">add</span><span>Include</span>';
+      }
+    }
+
+    if (isInc) {
+      activeCount++;
+      subtotal += item.price;
+      totalOrig += (item.compare_price || (item.price * 1.35));
+    }
+  });
+
+  const discPct = activeCount === 3 ? (window.BUNDLE_DISCOUNT_TIERS[3] || 15) : (activeCount === 2 ? (window.BUNDLE_DISCOUNT_TIERS[2] || 10) : 0);
+  const finalPrice = Math.round(subtotal * (1 - discPct / 100));
+  const savings = Math.max(0, Math.round(totalOrig - finalPrice));
+
+  const priceEl = document.getElementById('comboTotalPrice');
+  const saveEl = document.getElementById('comboTotalSave');
+  const ctaBtn = document.querySelector('#comboContainer button[onclick="addComboToCart()"]');
+
+  if (priceEl) {
+    priceEl.setAttribute('data-price-inr', finalPrice);
+    priceEl.textContent = '₹' + Number(finalPrice).toLocaleString('en-IN');
+  }
+  if (saveEl) {
+    saveEl.innerHTML = `₹${Number(savings).toLocaleString('en-IN')} <span class="text-xs font-mono">(${discPct > 0 ? discPct + '% Pack Privilege' : 'vs. individual retail'})</span>`;
+  }
+  if (ctaBtn) {
+    if (activeCount > 0) {
+      ctaBtn.disabled = false;
+      ctaBtn.className = 'w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 text-stone-950 text-xs font-button uppercase tracking-wider font-extrabold rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md';
+      ctaBtn.innerHTML = `
+        <span class="material-symbols-outlined text-sm">shopping_bag</span>
+        <span>Shop Pack (${activeCount} ${activeCount === 1 ? 'Piece' : 'Pieces'} · ₹${Number(finalPrice).toLocaleString('en-IN')})</span>
+      `;
+    } else {
+      ctaBtn.disabled = true;
+      ctaBtn.className = 'w-full py-2.5 sm:py-3 bg-stone-800 text-stone-500 text-xs font-button uppercase tracking-wider font-bold rounded-xl cursor-not-allowed flex items-center justify-center gap-2';
+      ctaBtn.innerHTML = `<span>Select Pieces Above</span>`;
+    }
+  }
+};
+
+window.renderOutfitCombo = function(arch) {
+  if (!arch) return;
+
+  // Title & description
+  const tEl = document.getElementById('styleTitle');
+  if (tEl) tEl.textContent = arch.title;
+
+  const dEl = document.getElementById('styleDesc');
+  if (dEl) dEl.textContent = arch.desc;
+
+  // Progress scores
+  ['formality', 'versatility', 'trend', 'luxury'].forEach(k => {
+    const val = arch.scores[k] || 85;
+    const sEl = document.getElementById('score_' + k);
+    const bEl = document.getElementById('bar_' + k);
+    if (sEl) sEl.textContent = val + '%';
+    if (bEl) bEl.style.width = val + '%';
+  });
+
+  // Occasion tags
+  const occEl = document.getElementById('occasionTags');
+  if (occEl && arch.bestFor) {
+    occEl.innerHTML = arch.bestFor.map(tag => `
+      <span class="px-2.5 py-1 bg-white/10 text-white/80 text-[10px] rounded-full font-mono border border-white/10">${tag}</span>
+    `).join('');
+  }
+
+  // Dressing advice
+  const howEl = document.getElementById('howToWear');
+  if (howEl && arch.howToWear) {
+    howEl.innerHTML = arch.howToWear.map(line => `
+      <li class="flex gap-2"><span class="text-[#a16207] font-bold mt-0.5">✦</span> <span>${line}</span></li>
+    `).join('');
+  }
 
   // Center Outfit Grid
   const gridEl = document.getElementById('outfitItemsGrid');
-  let totalOrig = 0;
-  let totalCombo = 0;
+  window.outfitItemsState = { 0: true, 1: true, 2: true };
+  window.outfitItemsSizes = {};
+
+  const catKeys = ['tops', 'bottoms', 'footwear'];
+  const catLabels = ['Top Wear', 'Bottom Wear', 'Footwear'];
 
   if (gridEl && arch.items) {
-    gridEl.innerHTML = arch.items.map(item => {
-      totalOrig += (item.compare_price || (item.price * 1.35));
-      totalCombo += item.price;
+    gridEl.innerHTML = arch.items.map((item, idx) => {
       const qvData = JSON.stringify({
         id: item.id,
         title: item.title,
@@ -3286,27 +3451,61 @@ window.renderOutfitCombo = function(arch) {
         description: item.tag || 'Bespoke tailoring piece.'
       }).replace(/"/g, '&quot;');
 
+      const possibleSizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(item) : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+      const defaultSize = window.outfitItemsSizes[idx] || possibleSizes[Math.min(2, possibleSizes.length - 1)];
+      window.outfitItemsSizes[idx] = defaultSize;
+      const curCatKey = catKeys[idx] || 'tops';
+      const curCatLabel = catLabels[idx] || 'Piece';
+
       return `
-        <div class="bg-white border border-stone-200 hover:border-[#a16207]/60 rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group">
+        <div id="outfitItemCard_${idx}" class="bg-white border border-stone-200 hover:border-amber-500/70 rounded-xl sm:rounded-2xl p-2.5 sm:p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group relative">
           <div>
             <div class="relative aspect-[3/4] rounded-lg sm:rounded-xl overflow-hidden bg-stone-100 mb-2">
               <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <span class="absolute top-1.5 left-1.5 px-1.5 sm:px-2 py-0.5 rounded bg-black/85 text-[#e9c176] font-mono text-[7.5px] sm:text-[8px] font-bold uppercase backdrop-blur-sm shadow-xs">
-                ${item.tag}
+                ${item.tag || curCatLabel}
               </span>
               <button type="button" onclick="openQuickView(${qvData})" class="absolute bottom-1.5 right-1.5 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/95 text-stone-900 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow cursor-pointer" title="Quick View">
                 <span class="material-symbols-outlined text-[10px] sm:text-xs">visibility</span>
               </button>
             </div>
-            <span class="text-[8px] sm:text-[9px] font-mono uppercase text-[#a16207] font-bold block mb-0.5">${item.vendor || 'Lumina Atelier'}</span>
+            
+            <div class="flex items-center justify-between gap-1 mb-0.5">
+              <span class="text-[8px] sm:text-[9px] font-mono uppercase text-[#a16207] font-bold block truncate">${item.vendor || 'Lumina Atelier'}</span>
+              <button type="button" id="outfitItemToggleBtn_${idx}" onclick="toggleOutfitItem(${idx})" class="px-1.5 py-0.5 bg-stone-100 hover:bg-rose-50 text-stone-600 hover:text-rose-700 rounded text-[8px] font-mono font-bold flex items-center gap-0.5 border border-stone-200 transition-all cursor-pointer" title="Toggle item in outfit">
+                <span class="material-symbols-outlined text-[10px]">close</span>
+                <span>Remove</span>
+              </button>
+            </div>
+
             <h4 class="font-serif text-xs sm:text-sm font-bold text-stone-900 truncate mb-1" title="${item.title}">${item.title}</h4>
+            
             <div class="flex items-baseline gap-1.5">
               <span class="font-serif font-bold text-xs sm:text-sm text-stone-900" data-price-inr="${item.price}">₹${Number(item.price).toLocaleString('en-IN')}</span>
               ${item.compare_price ? `<span class="font-mono text-[9px] sm:text-[10px] text-stone-400 line-through">₹${Number(item.compare_price).toLocaleString('en-IN')}</span>` : ''}
             </div>
+
+            <!-- Size Selector for this specific item -->
+            <div class="flex items-center gap-1 mt-1.5" onclick="event.stopPropagation()">
+              <span class="text-[8px] font-mono uppercase text-stone-500 font-bold">Size:</span>
+              <div class="relative inline-flex items-center flex-1">
+                <select onchange="window.outfitItemsSizes[${idx}] = this.value; if(window.studioEnsembleState && window.studioEnsembleState['${curCatKey}']) window.studioEnsembleState['${curCatKey}'].size = this.value;" class="w-full text-[9.5px] font-mono font-bold bg-stone-100 hover:bg-stone-200 text-stone-900 border border-stone-300 rounded px-1.5 py-0.5 cursor-pointer appearance-none pr-3.5 focus:outline-hidden">
+                  ${possibleSizes.map(s => `<option value="${s}" ${s === defaultSize ? 'selected' : ''}>${s}</option>`).join('')}
+                </select>
+                <span class="material-symbols-outlined text-[10px] text-stone-500 pointer-events-none absolute right-1">expand_more</span>
+              </div>
+            </div>
+
+            <!-- Swap Piece Button that opens Studio Modal focused on this category -->
+            <button type="button" onclick="openEnsembleStudio('${curCatKey}')" class="w-full mt-1.5 py-1 px-1.5 rounded-lg border border-amber-300 bg-amber-50/70 hover:bg-amber-100 text-amber-900 text-[8.5px] sm:text-[9px] font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[11px] text-amber-700">swap_horiz</span>
+              <span>Swap ${curCatLabel}</span>
+            </button>
+
           </div>
+
           <div class="pt-2 sm:pt-2.5 mt-1.5 sm:mt-2 border-t border-stone-100">
-            <button type="button" onclick="addToCart({id:${item.id}, title:'${item.title.replace(/'/g, "\\'")}', price:${item.price}, image:'${item.img}'}, 1)" class="w-full py-1.5 sm:py-2 bg-stone-950 hover:bg-stone-800 text-white font-mono text-[8.5px] sm:text-[9px] uppercase font-bold rounded-lg transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <button type="button" onclick="addSingleOutfitItemToCart(${idx})" class="w-full py-1.5 sm:py-2 bg-stone-950 hover:bg-stone-800 text-white font-mono text-[8.5px] sm:text-[9px] uppercase font-bold rounded-lg transition-all flex items-center justify-center gap-1 cursor-pointer">
               <span class="material-symbols-outlined text-[10px] sm:text-[11px]">shopping_bag</span>
               <span>Add Piece</span>
             </button>
@@ -3316,18 +3515,7 @@ window.renderOutfitCombo = function(arch) {
     }).join('');
   }
 
-  // Pricing totals
-  const priceEl = document.getElementById('comboTotalPrice');
-  const saveEl = document.getElementById('comboTotalSave');
-  const savings = Math.max(0, Math.round(totalOrig - totalCombo));
-
-  if (priceEl) {
-    priceEl.setAttribute('data-price-inr', totalCombo);
-    priceEl.textContent = '₹' + Number(totalCombo).toLocaleString('en-IN');
-  }
-  if (saveEl) {
-    saveEl.textContent = '₹' + Number(savings).toLocaleString('en-IN');
-  }
+  updateOutfitComboPricing();
 };
 
 window.shuffleOutfit = function() {
@@ -3340,20 +3528,45 @@ window.addComboToCart = function() {
   const arch = AI_STYLE_ARCHETYPES[currentActiveMoodKey] || AI_STYLE_ARCHETYPES['business'];
   if (!arch || !arch.items) return;
 
+  const activeItems = [];
   arch.items.forEach((it, idx) => {
-    setTimeout(() => {
-      addToCart({
+    if (window.outfitItemsState[idx]) {
+      const chosenSize = window.outfitItemsSizes[idx] || 'M';
+      activeItems.push({
         id: it.id,
+        variant_id: it.id,
+        product_id: it.id,
         title: it.title,
         price: it.price,
-        image: it.img
-      }, 1);
-    }, idx * 100);
+        image: it.img,
+        size: chosenSize,
+        color: ''
+      });
+    }
   });
 
-  if (typeof showStashToast === 'function') {
-    showStashToast('Added Full Outfit (' + arch.title + ') to Bag! 🛍️');
+  if (!activeItems.length) {
+    if (typeof ndToast === 'function') ndToast('Please include at least 1 item in the outfit.', 'error');
+    return;
   }
+
+  const count = activeItems.length;
+  const discPct = count === 3 ? (window.BUNDLE_DISCOUNT_TIERS[3] || 15) : (count === 2 ? (window.BUNDLE_DISCOUNT_TIERS[2] || 10) : 0);
+
+  activeItems.forEach((it, idx) => {
+    setTimeout(() => {
+      addToCart(it, 1, idx === activeItems.length - 1 ? `✦ Added ${count}-Piece Pack (${arch.title}) to Bag with ${discPct}% Privilege!` : false);
+    }, idx * 120);
+  });
+
+  setTimeout(() => {
+    if (typeof toggleQuickBagDrawer === 'function') {
+      const overlay = document.getElementById('quickBagOverlay');
+      if (overlay && overlay.classList.contains('hidden')) {
+        toggleQuickBagDrawer();
+      }
+    }
+  }, (activeItems.length * 120) + 300);
 };
 
 // Auto-run initial mood curation immediately
@@ -3364,256 +3577,326 @@ if (document.readyState === 'loading') {
 }
 
 // ════════════════════════════════════════════════════════════
-// 2. LUMINA ATELIER FIT & ENSEMBLE STYLING ENGINE
+// 2. BESPOKE ATELIER ENSEMBLE STUDIO & MULTI-PIECE WARDROBE ENGINE
 // ════════════════════════════════════════════════════════════
 
-const SIZE_GUIDE_MAP = {
-  XS: 'Chest: 32–34" · Waist: 24–26" · Hip: 34–36" · Tailored slim ease',
-  S:  'Chest: 34–36" · Waist: 26–28" · Hip: 36–38" · Structured drape',
-  M:  'Chest: 38–40" · Waist: 30–32" · Hip: 40–42" · True to bespoke size',
-  L:  'Chest: 40–42" · Waist: 32–34" · Hip: 42–44" · Relaxed luxury contour',
-  XL: 'Chest: 42–44" · Waist: 34–36" · Hip: 44–46" · Extended chest ease',
-  XXL:'Chest: 44–46" · Waist: 36–38" · Hip: 46–48" · Generous atelier cut',
-  '3XL':'Chest: 46–50" · Waist: 38–42" · Hip: 48–52" · Full comfort fit'
-};
-
-// Complete Wardrobe Catalog for Ensembles with Editorial Mannequin & Model Images, Descriptions & Colors
-const ENSEMBLE_CATALOG = {
+// Complete Multi-Piece Catalog with Realistic Luxury Apparel, Pants, Shoes, and Accessories
+const ATELIER_STUDIO_CATALOG = {
   tops: [
     {
       id: 1,
       title: 'The Atelier Cashmere Cocoon Coat',
-      price: 4999,
+      price: 4399,
+      compare_price: 5999,
       img: '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>',
-      tag: 'Coat',
-      category: 'top',
-      desc: '100% double-faced Mongolian cashmere unlined for featherweight draping with raw horn buttons.',
-      colors: [
-        { name: 'Camel Hair', hex: '#c19a6b' },
-        { name: 'Onyx Black', hex: '#18181b' },
-        { name: 'Flannel Grey', hex: '#64748b' }
-      ]
+      tag: '700 GSM Mongolian Cashmere',
+      vendor: 'Lumina Atelier',
+      category: 'tops',
+      desc: 'Double-faced 700 GSM Mongolian cashmere unlined for featherweight drape with horn buttons.'
+    },
+    {
+      id: 6,
+      title: 'Sculpted 500 GSM Terry Hoodie',
+      price: 2899,
+      compare_price: 3999,
+      img: '<?= base_url("img/sculpted_terry_hoodie.jpg") ?>',
+      tag: '500 GSM Loopback French Terry',
+      vendor: 'Lumina Atelier',
+      category: 'tops',
+      desc: 'Architectural dropped shoulder drape engineered in ultra-dense combed cotton.'
     },
     {
       id: 5,
-      title: 'Super 150s Merino Wool Blazer',
-      price: 8999,
-      img: '<?= base_url("img/wool_blazer_luxury.jpg") ?>',
-      tag: 'Tailored Blazer',
-      category: 'top',
-      desc: 'Woven in Biella, Italy with floating canvas chest piece and hand-stitched pick lapels.',
-      colors: [
-        { name: 'Midnight Navy', hex: '#1e293b' },
-        { name: 'Charcoal Wool', hex: '#334155' },
-        { name: 'Deep Espresso', hex: '#3f2e27' }
-      ]
+      title: 'Mulberry Silk Eveningwear Shirt',
+      price: 3899,
+      compare_price: 5499,
+      img: '<?= base_url("img/mulberry_silk_dress.jpg") ?>',
+      tag: 'Grade-6A Pure Mulberry Silk',
+      vendor: 'Lumina Atelier',
+      category: 'tops',
+      desc: 'Continuous filament silk with concealed mother-of-pearl placket and liquid sheen.'
     },
     {
       id: 8,
       title: 'Cashmere Turtleneck Knit',
-      price: 4299,
+      price: 2999,
+      compare_price: 4299,
       img: '<?= base_url("img/cashmere_turtleneck_knit.jpg") ?>',
-      tag: 'Knitwear',
-      category: 'top',
-      desc: 'Seamless 12-gauge Scottish cashmere ribbed neck with tailored cuff contour.',
-      colors: [
-        { name: 'Ecru Sand', hex: '#e2d9cc' },
-        { name: 'Pitch Black', hex: '#18181b' },
-        { name: 'Sage Stone', hex: '#78866b' }
-      ]
+      tag: '100% Cashmere Knitwear',
+      vendor: 'Lumina Atelier',
+      category: 'tops',
+      desc: 'Seamless 12-gauge knit with ribbed neck contour and natural thermo-regulation.'
     },
     {
-      id: 6,
-      title: '480GSM French Terry Hoodie',
-      price: 3499,
-      img: '<?= base_url("img/terry_hoodie_luxury.jpg") ?>',
-      tag: 'Heavyweight Hoodie',
-      category: 'top',
-      desc: 'Ultra-dense combed cotton with double-layer hood and drop-shoulder architectural cut.',
-      colors: [
-        { name: 'Washed Charcoal', hex: '#27272a' },
-        { name: 'Chalk Bone', hex: '#f4f4f5' },
-        { name: 'Forest Moss', hex: '#2d3b2d' }
-      ]
+      id: 4,
+      title: 'Tailored Melton Wool Peacoat',
+      price: 4799,
+      compare_price: 6499,
+      img: '<?= base_url("img/melton_wool_peacoat.jpg") ?>',
+      tag: '850 GSM Melton Wool',
+      vendor: 'Lumina Sartoria',
+      category: 'tops',
+      desc: 'Structured double-breasted naval peacoat woven in Biella with pick lapel stitch.'
+    },
+    {
+      id: 7,
+      title: 'Oversized Heavyweight Atelier Tee',
+      price: 1499,
+      compare_price: 2299,
+      img: '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>',
+      tag: '240 GSM Combed Jersey',
+      vendor: 'Lumina Street',
+      category: 'tops',
+      desc: 'Pre-shrunk vintage combed cotton with relaxed rib collar and boxy cut.'
+    },
+    {
+      id: 14,
+      title: 'Double-Breasted Sartorial Blazer',
+      price: 5299,
+      compare_price: 7499,
+      img: '<?= base_url("img/melton_wool_peacoat.jpg") ?>',
+      tag: 'Italian Super 130s Wool',
+      vendor: 'Lumina Sartoria',
+      category: 'tops',
+      desc: 'Full canvas floating chest construction with hand-finished peak lapels.'
+    },
+    {
+      id: 15,
+      title: 'Giza Cotton Poplin Overshirt',
+      price: 2599,
+      compare_price: 3699,
+      img: '<?= base_url("img/mulberry_silk_dress.jpg") ?>',
+      tag: '120/2 Long-Staple Giza',
+      vendor: 'Lumina Sartoria',
+      category: 'tops',
+      desc: 'Silky smooth Egyptian Giza cotton with tailored square hem and chest pockets.'
     }
   ],
   bottoms: [
     {
-      id: 2,
-      title: 'Okayama 14.5oz Selvedge',
-      price: 4499,
-      img: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>',
-      tag: 'Raw Denim',
-      category: 'bottom',
-      desc: 'Shuttle-loom woven with pink selvedge ID, rope-dyed indigo, and custom brass rivets.',
-      colors: [
-        { name: 'Raw Indigo', hex: '#172554' },
-        { name: 'Faded Stone', hex: '#475569' },
-        { name: 'Washed Black', hex: '#262626' }
-      ]
-    },
-    {
       id: 9,
       title: 'Italian Pleated Wool Trousers',
       price: 4999,
+      compare_price: 6499,
       img: '<?= base_url("img/italian_pleated_trousers.jpg") ?>',
-      tag: 'Pleated Trousers',
-      category: 'bottom',
-      desc: 'High-rise forward pleats with side adjusters and a gentle sartorial taper.',
-      colors: [
-        { name: 'Olive Bronze', hex: '#5b533f' },
-        { name: 'Charcoal Grey', hex: '#334155' },
-        { name: 'Cream Chalk', hex: '#e7e5e4' }
-      ]
+      tag: 'Virgin Wool · Double Pleat',
+      vendor: 'Lumina Sartoria',
+      category: 'bottoms',
+      desc: 'High-rise forward double pleats with brass side adjusters and 2-inch cuffs.'
+    },
+    {
+      id: 2,
+      title: 'Okayama 14.5oz Raw Selvedge Denim',
+      price: 4499,
+      compare_price: 5999,
+      img: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>',
+      tag: '14.5oz Shuttle Loom Denim',
+      vendor: 'Kojima Shuttle',
+      category: 'bottoms',
+      desc: 'Rope-dyed botanical indigo with pink line ID ticker and custom copper rivets.'
     },
     {
       id: 10,
       title: 'Tailored Cashmere Relaxed Pant',
       price: 4199,
+      compare_price: 5899,
+      img: '<?= base_url("img/italian_pleated_trousers.jpg") ?>',
+      tag: 'Cashmere Blend · Drawstring',
+      vendor: 'Lumina Sartoria',
+      category: 'bottoms',
+      desc: 'Concealed inner drawstring waistband tailored in brushed cashmere blend.'
+    },
+    {
+      id: 16,
+      title: 'Wide-Leg Gurkha Sartorial Trousers',
+      price: 4799,
+      compare_price: 6299,
+      img: '<?= base_url("img/italian_pleated_trousers.jpg") ?>',
+      tag: 'High-Rise Gurkha Wool',
+      vendor: 'Lumina Sartoria',
+      category: 'bottoms',
+      desc: 'Traditional double-buckle crossover waistband in heavyweight wool gabardine.'
+    },
+    {
+      id: 17,
+      title: 'Heavy Cotton Carpenter Trousers',
+      price: 3799,
+      compare_price: 4999,
       img: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>',
-      tag: 'Relaxed Trousers',
-      category: 'bottom',
-      desc: 'Drawstring elasticated waistband tailored in brushed cashmere blend for loungewear luxury.',
-      colors: [
-        { name: 'Heather Charcoal', hex: '#3f3f46' },
-        { name: 'Sand Taupe', hex: '#a8a29e' },
-        { name: 'Pure Black', hex: '#18181b' }
-      ]
+      tag: '380 GSM Duck Canvas',
+      vendor: 'Lumina Street',
+      category: 'bottoms',
+      desc: 'Triple-stitched utility seams with brass hardware and relaxed straight break.'
     }
   ],
-  shoes: [
-    {
-      id: 11,
-      title: 'Handcrafted Italian Chelsea Boots',
-      price: 5999,
-      img: '<?= base_url("img/chelsea_leather_boots.jpg") ?>',
-      tag: 'Chelsea Boots',
-      category: 'shoes',
-      desc: 'Tuscan box calfskin with Goodyear-welted leather soles and tonal elastic side gussets.',
-      colors: [
-        { name: 'Burnished Espresso', hex: '#3b2219' },
-        { name: 'Onyx Black', hex: '#18181b' },
-        { name: 'Tobacco Suede', hex: '#7c5335' }
-      ]
-    },
+  footwear: [
     {
       id: 12,
       title: 'Burnished Calfskin Penny Loafers',
       price: 5499,
+      compare_price: 7499,
       img: '<?= base_url("img/calfskin_penny_loafers.jpg") ?>',
-      tag: 'Penny Loafers',
-      category: 'shoes',
-      desc: 'Hand-burnished apron stitch with soft leather lining and stacked leather heel.',
-      colors: [
-        { name: 'Classic Black', hex: '#0f172a' },
-        { name: 'Rich Burgundy', hex: '#451a03' },
-        { name: 'Chestnut Brown', hex: '#713f12' }
-      ]
+      tag: 'Tuscan Full-Grain Calf',
+      vendor: 'Lumina Calzature',
+      category: 'footwear',
+      desc: 'Hand-burnished apron stitch with Goodyear-welted leather soles and leather lining.'
+    },
+    {
+      id: 11,
+      title: 'Handcrafted Italian Chelsea Boots',
+      price: 5999,
+      compare_price: 7999,
+      img: '<?= base_url("img/chelsea_leather_boots.jpg") ?>',
+      tag: 'Box Calf Leather',
+      vendor: 'Lumina Calzature',
+      category: 'footwear',
+      desc: 'Full box calf leather with tonal elasticated side gussets and beveled waist.'
     },
     {
       id: 13,
-      title: 'Minimalist Sand Suede Derby Shoes',
+      title: 'Minimalist Suede Derby Shoes',
       price: 4899,
+      compare_price: 6499,
       img: '<?= base_url("img/minimalist_suede_derby.jpg") ?>',
-      tag: 'Suede Derby',
-      category: 'shoes',
-      desc: 'Velvety Italian split suede on a lightweight natural crepe rubber sole.',
-      colors: [
-        { name: 'Sand Taupe', hex: '#d6c7b2' },
-        { name: 'Slate Grey', hex: '#64748b' },
-        { name: 'Dark Chocolate', hex: '#292524' }
-      ]
+      tag: 'Italian Velour Suede',
+      vendor: 'Lumina Calzature',
+      category: 'footwear',
+      desc: 'Ultra-soft Italian split suede on lightweight natural crepe rubber outsoles.'
+    },
+    {
+      id: 18,
+      title: 'Polished Noir Double Monkstraps',
+      price: 5799,
+      compare_price: 7899,
+      img: '<?= base_url("img/calfskin_penny_loafers.jpg") ?>',
+      tag: 'French Box Calf',
+      vendor: 'Lumina Calzature',
+      category: 'footwear',
+      desc: 'Hand-patinated mirror shine with brushed antique nickel buckles.'
+    },
+    {
+      id: 19,
+      title: 'Vibram Low Court Leather Sneakers',
+      price: 4699,
+      compare_price: 6199,
+      img: '<?= base_url("img/minimalist_suede_derby.jpg") ?>',
+      tag: 'Nappa Leather · Vibram Sole',
+      vendor: 'Lumina Calzature',
+      category: 'footwear',
+      desc: 'Italian full-grain Nappa leather upper on a durable Vibram cupsole.'
+    }
+  ],
+  accessories: [
+    {
+      id: 20,
+      title: 'Full-Grain Bridle Leather Dress Belt',
+      price: 1899,
+      compare_price: 2699,
+      img: '<?= base_url("img/calfskin_penny_loafers.jpg") ?>',
+      tag: 'English Bridle Leather',
+      vendor: 'Lumina Pelletteria',
+      category: 'accessories',
+      desc: 'Vegetable-tanned English bridle leather with solid brass buckle.'
+    },
+    {
+      id: 21,
+      title: 'Mulberry Silk Pocket Square & Scarf',
+      price: 1499,
+      compare_price: 2199,
+      img: '<?= base_url("img/mulberry_silk_dress.jpg") ?>',
+      tag: '100% Mulberry Silk',
+      vendor: 'Lumina Atelier',
+      category: 'accessories',
+      desc: 'Hand-rolled edges with geometric atelier monogram print.'
+    },
+    {
+      id: 22,
+      title: 'Saffiano Leather Weekender Bag',
+      price: 6499,
+      compare_price: 8999,
+      img: '<?= base_url("img/chelsea_leather_boots.jpg") ?>',
+      tag: 'Textured Saffiano Leather',
+      vendor: 'Lumina Pelletteria',
+      category: 'accessories',
+      desc: 'Scratch and water-resistant textured leather with dual interior compartments.'
     }
   ]
 };
 
-let currentAfmProduct = null;
-let currentAfmSelectedSize = 'M';
-let currentActiveLooks = [];
-
-// Studio State for Interactive Model Fitting Popup
-let activeStudioLookIndex = 0;
-let studioState = {
-  lookName: 'The Milan Executive Look',
-  modelImg: '<?= base_url("img/model_look_executive.jpg") ?>',
-  top: { item: null, included: true, size: 'M', color: 'Camel Hair' },
-  bottom: { item: null, included: true, size: '32', color: 'Raw Indigo' },
-  shoes: { item: null, included: true, size: '9 UK', color: 'Burnished Espresso' }
+// Active Custom Ensemble State (3 Slots)
+window.studioEnsembleState = {
+  tops: {
+    item: ATELIER_STUDIO_CATALOG.tops[0],
+    size: 'M'
+  },
+  bottoms: {
+    item: ATELIER_STUDIO_CATALOG.bottoms[0],
+    size: '32'
+  },
+  footwear: {
+    item: ATELIER_STUDIO_CATALOG.footwear[0],
+    size: 'UK 8'
+  }
 };
 
-// Quick View State
-let currentQuickViewItem = null;
-let currentQuickViewSize = 'M';
-let currentQuickViewColor = '';
+// Item-specific sizes chosen by client across the entire catalog
+window.studioSelectedSizes = {};
 
-// Helper to determine product category
-function detectGarmentType(prod) {
-  const text = ((prod.category || '') + ' ' + (prod.title || '') + ' ' + (prod.slug || '')).toLowerCase();
-  if (text.includes('denim') || text.includes('trouser') || text.includes('pant') || text.includes('jogger') || text.includes('bottom') || prod.id === 2) {
-    return 'bottom';
-  }
-  if (text.includes('boot') || text.includes('loafer') || text.includes('derby') || text.includes('shoe') || text.includes('footwear') || text.includes('sneaker')) {
-    return 'shoes';
-  }
-  return 'top';
-}
+// Active Category Tab in Studio ('tops', 'bottoms', 'footwear', 'accessories')
+window.currentStudioCategory = 'tops';
 
-// ── Open Atelier Fit & Styling Modal ──
-window.openAtelierFitModal = function(prodData) {
-  currentAfmProduct = typeof prodData === 'string' ? JSON.parse(prodData) : (prodData || {});
-  
-  // Set Product Info
-  const titleEl = document.getElementById('afmProductTitle');
-  if (titleEl) titleEl.textContent = currentAfmProduct.title || 'The Atelier Masterpiece';
-  
-  const imgEl = document.getElementById('afmProductImg');
-  const prodImg = currentAfmProduct.image || currentAfmProduct.img || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>';
-  if (imgEl) imgEl.src = prodImg;
-  
-  const vendorEl = document.getElementById('afmVendor');
-  if (vendorEl) vendorEl.textContent = (currentAfmProduct.vendor || 'LUMINA ATELIER').toUpperCase();
-  
-  const price = currentAfmProduct.price || 4999;
-  const pEl = document.getElementById('afmProductPrice');
-  if (pEl) {
-    pEl.setAttribute('data-price-inr', price);
-    pEl.textContent = typeof window.formatPrice === 'function' ? window.formatPrice(price) : '₹' + Number(price).toLocaleString('en-IN');
-  }
-  
-  const cpEl = document.getElementById('afmProductComparePrice');
-  if (cpEl) {
-    if (currentAfmProduct.compare_price && currentAfmProduct.compare_price > price) {
-      cpEl.setAttribute('data-price-inr', currentAfmProduct.compare_price);
-      cpEl.textContent = typeof window.formatPrice === 'function' ? window.formatPrice(currentAfmProduct.compare_price) : '₹' + Number(currentAfmProduct.compare_price).toLocaleString('en-IN');
-      cpEl.classList.remove('hidden');
-    } else {
-      cpEl.classList.add('hidden');
+// ── Open the Bespoke Ensemble Studio Modal ──
+window.openEnsembleStudio = function(focusCategory) {
+  // Sync state from active homepage archetype if available
+  const arch = AI_STYLE_ARCHETYPES[currentActiveMoodKey] || AI_STYLE_ARCHETYPES['business'];
+  if (arch && arch.items && arch.items.length >= 3) {
+    if (!window.studioEnsembleState.tops.item || window.studioEnsembleState.tops.item.id !== arch.items[0].id) {
+      window.studioEnsembleState.tops.item = arch.items[0];
+      window.studioEnsembleState.tops.size = window.outfitItemsSizes[0] || 'M';
+    }
+    if (!window.studioEnsembleState.bottoms.item || window.studioEnsembleState.bottoms.item.id !== arch.items[1].id) {
+      window.studioEnsembleState.bottoms.item = arch.items[1];
+      window.studioEnsembleState.bottoms.size = window.outfitItemsSizes[1] || '32';
+    }
+    if (!window.studioEnsembleState.footwear.item || window.studioEnsembleState.footwear.item.id !== arch.items[2].id) {
+      window.studioEnsembleState.footwear.item = arch.items[2];
+      window.studioEnsembleState.footwear.size = window.outfitItemsSizes[2] || 'UK 8';
     }
   }
 
-  // Open modal
-  const modal = document.getElementById('atelierFitModal');
+  // Set active category tab
+  const validCats = ['tops', 'bottoms', 'footwear', 'accessories'];
+  const targetCat = (validCats.includes(focusCategory)) ? focusCategory : 'tops';
+
+  // Render top stage slots
+  renderStudioStageSlots();
+
+  // Switch to target category & render items
+  selectStudioCategory(targetCat);
+
+  // Update live pricing HUD
+  updateStudioPricing();
+
+  // Show modal smoothly
+  const modal = document.getElementById('ensembleStudioModal');
   if (modal) {
     modal.classList.remove('hidden');
     modal.classList.add('flex');
+    modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     if (window.lenisInstance && typeof window.lenisInstance.stop === 'function') {
       window.lenisInstance.stop();
     }
   }
-
-  // Default to Size M
-  selectAfmSize('M');
-
-  // Render Dynamic Ensemble Groups
-  renderEnsembleGroups(currentAfmProduct);
 };
 
-window.closeAtelierFitModal = function() {
-  const modal = document.getElementById('atelierFitModal');
+// ── Close Ensemble Studio Modal ──
+window.closeEnsembleStudio = function() {
+  const modal = document.getElementById('ensembleStudioModal');
   if (modal) {
     modal.classList.add('hidden');
     modal.classList.remove('flex');
+    modal.style.display = 'none';
     document.body.style.overflow = '';
     if (window.lenisInstance && typeof window.lenisInstance.start === 'function') {
       window.lenisInstance.start();
@@ -3621,101 +3904,433 @@ window.closeAtelierFitModal = function() {
   }
 };
 
-// ── Size Selection ──
-window.selectAfmSize = function(size, btn) {
-  currentAfmSelectedSize = size;
-  document.querySelectorAll('.afm-size-pill').forEach(b => {
-    b.className = 'afm-size-pill px-4 py-2 rounded-xl border border-stone-300 bg-white text-stone-800 hover:border-amber-500 text-xs font-mono font-bold transition-all cursor-pointer shadow-sm';
-  });
-  
-  if (btn) {
-    btn.className = 'afm-size-pill px-4 py-2 rounded-xl border-2 border-amber-500 bg-amber-50 text-amber-900 text-xs font-mono font-bold transition-all cursor-pointer shadow-md';
-  } else {
-    document.querySelectorAll('.afm-size-pill').forEach(b => {
-      if (b.textContent.trim() === size) {
-        b.className = 'afm-size-pill px-4 py-2 rounded-xl border-2 border-amber-500 bg-amber-50 text-amber-900 text-xs font-mono font-bold transition-all cursor-pointer shadow-md';
-      }
-    });
-  }
+// ── Render 3 Active Stage Slots at Top of Studio ──
+window.renderStudioStageSlots = function() {
+  const container = document.getElementById('studioStageSlots');
+  if (!container) return;
 
-  const labelEl = document.getElementById('afmActiveSizeLabel');
-  if (labelEl) labelEl.textContent = `Selected: Size ${size} (Regular Tailored)`;
+  const slots = [
+    { key: 'tops', label: '1. Top Wear / Clothes', icon: 'checkroom' },
+    { key: 'bottoms', label: '2. Bottom Wear / Pants', icon: 'styler' },
+    { key: 'footwear', label: '3. Footwear / Shoes', icon: 'steps' }
+  ];
 
-  const guideEl = document.getElementById('afmSizeGuideDesc');
-  if (guideEl) guideEl.innerHTML = `<span class="material-symbols-outlined text-sm text-[#a16207]">straighten</span><span>${SIZE_GUIDE_MAP[size] || ''}</span>`;
+  container.innerHTML = slots.map(slot => {
+    const data = window.studioEnsembleState[slot.key];
+    const item = data ? data.item : null;
+    const size = data ? data.size : 'M';
+    if (!item) return '';
 
-  const ctaBtnText = document.getElementById('afmAddToCartBtnText');
-  if (ctaBtnText) ctaBtnText.textContent = `Acquire Size ${size}`;
+    const possibleSizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(item) : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+    return `
+      <div class="bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl p-3 flex flex-col justify-between transition-all group/slot shadow-sm">
+        <div>
+          <div class="flex items-center justify-between gap-1 mb-1.5 pb-1.5 border-b border-white/10">
+            <span class="text-[9px] font-mono uppercase tracking-widest text-[#e9c176] font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">${slot.icon}</span>
+              <span>${slot.label}</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-amber-400 text-stone-950 font-mono text-[9px] font-extrabold shadow-xs">
+              Size ${size}
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <img src="${item.img || item.image}" alt="${item.title}" class="w-14 h-16 sm:w-16 sm:h-20 object-cover rounded-lg border border-white/20 bg-stone-900 flex-shrink-0">
+            <div class="min-w-0 flex-1">
+              <span class="text-[8px] font-mono uppercase text-white/60 block truncate">${item.vendor || 'Lumina Atelier'}</span>
+              <h4 class="font-serif text-xs sm:text-sm font-bold text-white truncate" title="${item.title}">${item.title}</h4>
+              <div class="flex items-baseline gap-1.5 mt-0.5">
+                <span class="font-serif font-bold text-xs sm:text-sm text-[#e9c176]">₹${Number(item.price).toLocaleString('en-IN')}</span>
+                ${item.compare_price ? `<span class="text-[9px] font-mono text-white/40 line-through">₹${Number(item.compare_price).toLocaleString('en-IN')}</span>` : ''}
+              </div>
+
+              <!-- Quick Size Switcher inside Slot Card -->
+              <div class="flex items-center gap-1 mt-1.5">
+                <span class="text-[8px] font-mono uppercase text-white/60 font-bold">Fit:</span>
+                <select onchange="setStudioSlotSize('${slot.key}', this.value)" class="text-[9px] font-mono font-bold bg-white/10 text-white border border-white/20 rounded px-1.5 py-0.5 cursor-pointer appearance-none focus:outline-hidden">
+                  ${possibleSizes.map(s => `<option value="${s}" ${s === size ? 'selected' : ''} class="bg-stone-900 text-white">${s}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2 pt-2 border-t border-white/10">
+          <button type="button" onclick="selectStudioCategory('${slot.key}')" class="w-full py-1 bg-white/10 hover:bg-amber-400 hover:text-stone-950 text-white font-mono text-[9px] uppercase font-bold rounded-lg transition-all flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-[11px]">swap_horiz</span>
+            <span>Change Piece</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 };
 
-// ── Confirm Add To Bag with Size ──
-window.confirmAfmAddToCart = function() {
-  if (!currentAfmProduct) return;
-  const prodId = currentAfmProduct.id || 1;
-  const title = currentAfmProduct.title || 'Curated Piece';
-  const price = currentAfmProduct.price || 4999;
-  const img = currentAfmProduct.image || currentAfmProduct.img || '';
-  const size = currentAfmSelectedSize || 'M';
-  const sizeMsg = `Size ${size} "${title}" added to bag! 🛍️`;
-  
-  if (typeof addToCart === 'function') {
-    addToCart({
-      id: prodId,
-      title: title,
-      price: price,
-      image: img,
-      size: size
-    }, 1, sizeMsg);
-  } else if (typeof ndToast === 'function') {
-    ndToast(sizeMsg, 'success');
-  }
-  
-  closeAtelierFitModal();
-};
+// ── Select Category Tab in Studio Modal ──
+window.selectStudioCategory = function(catKey) {
+  window.currentStudioCategory = catKey;
 
-// ── Confirm Instant Buy with Size ──
-window.confirmAfmInstantBuy = function() {
-  if (!currentAfmProduct) return;
-  const prodId = currentAfmProduct.id || 1;
-  const title = currentAfmProduct.title || 'Curated Piece';
-  const price = currentAfmProduct.price || 4999;
-  const img = currentAfmProduct.image || currentAfmProduct.img || '';
-
-  closeAtelierFitModal();
-  if (typeof openExpressCheckout === 'function') {
-    openExpressCheckout(prodId, title + ` (Size ${currentAfmSelectedSize})`, price, img, prodId);
-  } else {
-    window.location.href = '<?= base_url('checkout') ?>';
-  }
-};
-
-// ── Add Full 3-Piece Ensemble to Bag ──
-window.addEnsembleLookToCart = function(items) {
-  if (!items || !items.length) return;
-  items.forEach(it => {
-    if (typeof addToCart === 'function') {
-      addToCart({
-        id: it.id,
-        title: it.title,
-        price: it.price,
-        image: it.img || it.image,
-        size: it.size || 'M',
-        color: it.color || ''
-      }, 1, false);
+  // Update tab buttons styling
+  document.querySelectorAll('.studio-cat-tab').forEach(tab => {
+    if (tab.getAttribute('data-cat') === catKey) {
+      tab.className = 'studio-cat-tab active-tab px-4 py-2.5 rounded-xl border-2 border-stone-950 bg-stone-950 text-white text-xs font-mono uppercase tracking-wider font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer';
+    } else {
+      tab.className = 'studio-cat-tab px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-mono uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 cursor-pointer';
     }
   });
-  if (typeof ndToast === 'function') {
-    ndToast(`Complete ${items.length}-Piece Ensemble added to Bag! 🛍️`, 'success');
+
+  const items = ATELIER_STUDIO_CATALOG[catKey] || [];
+  const countEl = document.getElementById('studioCategoryCount');
+  if (countEl) countEl.textContent = `${items.length} styles available`;
+
+  // Render wardrobe grid for this category
+  const grid = document.getElementById('studioCatalogGrid');
+  if (!grid) return;
+
+  const activeSlotItem = window.studioEnsembleState[catKey] ? window.studioEnsembleState[catKey].item : null;
+
+  grid.innerHTML = items.map(item => {
+    const isSelected = activeSlotItem && activeSlotItem.id === item.id;
+    const possibleSizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(item) : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    
+    // Check if client selected a custom size for this item
+    const savedSize = window.studioSelectedSizes[item.id] || (isSelected && window.studioEnsembleState[catKey] ? window.studioEnsembleState[catKey].size : possibleSizes[Math.min(2, possibleSizes.length - 1)]);
+    window.studioSelectedSizes[item.id] = savedSize;
+
+    const slotLabel = catKey === 'tops' ? 'Top Wear' : (catKey === 'bottoms' ? 'Bottom Wear' : (catKey === 'footwear' ? 'Footwear' : 'Ensemble'));
+
+    return `
+      <div id="studioCard_${item.id}" class="bg-white border ${isSelected ? 'border-2 border-amber-500 ring-2 ring-amber-400/20 shadow-md' : 'border-stone-200 hover:border-amber-400/70 shadow-xs'} rounded-2xl p-3.5 flex flex-col justify-between transition-all group">
+        <div>
+          <div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-stone-100 mb-2.5">
+            <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/85 text-[#e9c176] font-mono text-[8px] font-bold uppercase backdrop-blur-sm shadow-xs">
+              ${item.tag}
+            </span>
+            ${isSelected ? `
+              <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-amber-400 text-stone-950 font-mono text-[8px] font-extrabold uppercase shadow flex items-center gap-1">
+                <span class="material-symbols-outlined text-[10px]">check</span>
+                <span>Active</span>
+              </span>
+            ` : ''}
+          </div>
+
+          <div class="flex items-center justify-between gap-1 mb-1">
+            <span class="text-[9px] font-mono uppercase text-[#a16207] font-bold block truncate">${item.vendor || 'Lumina Atelier'}</span>
+            <span class="text-[9px] font-mono text-stone-400">★ 4.9</span>
+          </div>
+
+          <h4 class="font-serif text-sm font-bold text-stone-900 leading-snug mb-1" title="${item.title}">${item.title}</h4>
+          
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="font-serif font-bold text-base text-stone-950">₹${Number(item.price).toLocaleString('en-IN')}</span>
+            ${item.compare_price ? `<span class="font-mono text-xs text-stone-400 line-through">₹${Number(item.compare_price).toLocaleString('en-IN')}</span>` : ''}
+          </div>
+
+          <p class="text-[11px] text-stone-500 font-light leading-relaxed mb-3 line-clamp-2">${item.desc}</p>
+
+          <!-- Interactive Size Selector Pills on Every Piece -->
+          <div class="mb-3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[9px] font-mono uppercase text-stone-600 font-bold">Select Size:</span>
+              <span class="text-[9.5px] font-mono font-bold text-[#a16207]" id="studioSizeLabel_${item.id}">Size ${savedSize}</span>
+            </div>
+            <div class="flex gap-1 flex-wrap">
+              ${possibleSizes.map(sz => {
+                const isActive = (sz === savedSize);
+                return `
+                  <button type="button" onclick="setStudioItemSize('${catKey}', ${item.id}, '${sz}')" class="px-2 py-1 rounded-md text-[9px] font-mono font-bold transition-all cursor-pointer ${isActive ? 'border border-amber-500 bg-amber-50 text-amber-900 shadow-2xs font-extrabold' : 'border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-700'}">
+                    ${sz}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-stone-100">
+          ${isSelected ? `
+            <button type="button" class="w-full py-2.5 rounded-xl bg-amber-500/15 border border-amber-400 text-amber-900 font-mono text-xs uppercase font-extrabold transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-default">
+              <span class="material-symbols-outlined text-sm text-amber-600">check_circle</span>
+              <span>✓ Selected for ${slotLabel}</span>
+            </button>
+          ` : `
+            <button type="button" onclick="selectStudioPiece('${catKey}', ${item.id})" class="w-full py-2.5 rounded-xl bg-stone-950 hover:bg-stone-800 text-white font-mono text-xs uppercase font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-98">
+              <span class="material-symbols-outlined text-sm text-[#e9c176]">add_circle</span>
+              <span>Select as ${slotLabel}</span>
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+};
+
+// ── Select an Item for the Active Slot in the Ensemble ──
+window.selectStudioPiece = function(catKey, itemId) {
+  const items = ATELIER_STUDIO_CATALOG[catKey] || [];
+  const item = items.find(it => it.id === itemId);
+  if (!item) return;
+
+  const chosenSize = window.studioSelectedSizes[itemId] || 'M';
+
+  if (catKey === 'accessories') {
+    // If accessory, add directly to bag or inform client
+    if (typeof addToCart === 'function') {
+      addToCart({
+        id: item.id,
+        variant_id: item.id,
+        product_id: item.id,
+        title: item.title,
+        price: item.price,
+        image: item.img,
+        size: chosenSize
+      }, 1, `✦ Added Accessory "${item.title}" to Bag!`);
+    }
+    return;
   }
-  closeAtelierFitModal();
+
+  // Set this item as the active garment in this slot
+  window.studioEnsembleState[catKey] = {
+    item: item,
+    size: chosenSize
+  };
+
+  // Re-render stage slots at the top
+  renderStudioStageSlots();
+
+  // Re-render catalog cards to update active button states
+  selectStudioCategory(catKey);
+
+  // Update total pricing HUD
+  updateStudioPricing();
+
+  if (typeof ndToast === 'function') {
+    ndToast(`✦ Swapped ${catKey === 'tops' ? 'Top' : (catKey === 'bottoms' ? 'Bottom' : 'Footwear')} to "${item.title}" (Size ${chosenSize})!`, 'success');
+  }
+};
+
+// ── Update Item Size from Card ──
+window.setStudioItemSize = function(catKey, itemId, size) {
+  window.studioSelectedSizes[itemId] = size;
+
+  // Update label on card
+  const labelEl = document.getElementById(`studioSizeLabel_${itemId}`);
+  if (labelEl) labelEl.textContent = `Size ${size}`;
+
+  // If this item is currently active in the slot, update slot size too
+  if (window.studioEnsembleState[catKey] && window.studioEnsembleState[catKey].item && window.studioEnsembleState[catKey].item.id === itemId) {
+    window.studioEnsembleState[catKey].size = size;
+    renderStudioStageSlots();
+    updateStudioPricing();
+  }
+
+  // Refresh active size pill highlights on that card
+  const card = document.getElementById(`studioCard_${itemId}`);
+  if (card) {
+    selectStudioCategory(catKey);
+  }
+};
+
+// ── Update Slot Size from Stage Dropdown ──
+window.setStudioSlotSize = function(catKey, size) {
+  if (window.studioEnsembleState[catKey]) {
+    window.studioEnsembleState[catKey].size = size;
+    const item = window.studioEnsembleState[catKey].item;
+    if (item) {
+      window.studioSelectedSizes[item.id] = size;
+    }
+    renderStudioStageSlots();
+    selectStudioCategory(window.currentStudioCategory || 'tops');
+    updateStudioPricing();
+  }
+};
+
+// ── Update Studio Live Pricing HUD ──
+window.updateStudioPricing = function() {
+  const top = window.studioEnsembleState.tops ? window.studioEnsembleState.tops.item : null;
+  const bottom = window.studioEnsembleState.bottoms ? window.studioEnsembleState.bottoms.item : null;
+  const footwear = window.studioEnsembleState.footwear ? window.studioEnsembleState.footwear.item : null;
+
+  let subtotal = 0;
+  let totalCompare = 0;
+  let count = 0;
+
+  if (top) {
+    subtotal += top.price;
+    totalCompare += (top.compare_price || (top.price * 1.35));
+    count++;
+  }
+  if (bottom) {
+    subtotal += bottom.price;
+    totalCompare += (bottom.compare_price || (bottom.price * 1.35));
+    count++;
+  }
+  if (footwear) {
+    subtotal += footwear.price;
+    totalCompare += (footwear.compare_price || (footwear.price * 1.35));
+    count++;
+  }
+
+  const discPct = count === 3 ? (window.BUNDLE_DISCOUNT_TIERS[3] || 15) : (count === 2 ? (window.BUNDLE_DISCOUNT_TIERS[2] || 10) : 0);
+  const finalPrice = Math.round(subtotal * (1 - discPct / 100));
+  const savings = Math.max(0, Math.round(totalCompare - finalPrice));
+
+  const priceEl = document.getElementById('studioTotalPrice');
+  const compEl = document.getElementById('studioTotalCompare');
+  const saveEl = document.getElementById('studioTotalSavings');
+  const summaryEl = document.getElementById('studioSelectionSummary');
+  const btnTextEl = document.getElementById('studioShopBtnText');
+
+  if (priceEl) priceEl.textContent = `₹${Number(finalPrice).toLocaleString('en-IN')}`;
+  if (compEl) compEl.textContent = `₹${Number(totalCompare).toLocaleString('en-IN')}`;
+  if (saveEl) saveEl.textContent = `Save ₹${Number(savings).toLocaleString('en-IN')} (${discPct}% Privilege)`;
+
+  if (summaryEl) {
+    const topSz = window.studioEnsembleState.tops ? window.studioEnsembleState.tops.size : 'M';
+    const btmSz = window.studioEnsembleState.bottoms ? window.studioEnsembleState.bottoms.size : '32';
+    const footSz = window.studioEnsembleState.footwear ? window.studioEnsembleState.footwear.size : 'UK 8';
+
+    summaryEl.textContent = `Top: ${top ? top.title.split(' ')[0] + '... (' + topSz + ')' : 'None'} · Pants: ${bottom ? bottom.title.split(' ')[0] + '... (' + btmSz + ')' : 'None'} · Shoes: ${footwear ? footwear.title.split(' ')[0] + '... (' + footSz + ')' : 'None'}`;
+  }
+
+  if (btnTextEl) {
+    btnTextEl.textContent = `Shop Custom Ensemble (${count} Pieces · ₹${Number(finalPrice).toLocaleString('en-IN')})`;
+  }
+};
+
+// ── Shop Custom Ensemble (Add All 3 Custom Pieces to Bag with Custom Sizes) ──
+window.shopStudioEnsemble = function() {
+  const itemsToAdd = [];
+
+  ['tops', 'bottoms', 'footwear'].forEach(k => {
+    const slot = window.studioEnsembleState[k];
+    if (slot && slot.item) {
+      itemsToAdd.push({
+        id: slot.item.id,
+        variant_id: slot.item.id,
+        product_id: slot.item.id,
+        title: slot.item.title,
+        price: slot.item.price,
+        image: slot.item.img || slot.item.image,
+        size: slot.size || 'M',
+        color: ''
+      });
+    }
+  });
+
+  if (!itemsToAdd.length) {
+    if (typeof ndToast === 'function') ndToast('Please select pieces for your ensemble.', 'error');
+    return;
+  }
+
+  const count = itemsToAdd.length;
+  const discPct = count === 3 ? (window.BUNDLE_DISCOUNT_TIERS[3] || 15) : (count === 2 ? (window.BUNDLE_DISCOUNT_TIERS[2] || 10) : 0);
+
+  itemsToAdd.forEach((it, idx) => {
+    setTimeout(() => {
+      addToCart(it, 1, idx === itemsToAdd.length - 1 ? `✦ Added Custom ${count}-Piece Ensemble to Bag with ${discPct}% Privilege!` : false);
+    }, idx * 120);
+  });
+
+  closeEnsembleStudio();
+
   setTimeout(() => {
     if (typeof toggleQuickBagDrawer === 'function') {
-      var overlay = document.getElementById('quickBagOverlay');
+      const overlay = document.getElementById('quickBagOverlay');
       if (overlay && overlay.classList.contains('hidden')) {
         toggleQuickBagDrawer();
       }
     }
-  }, 350);
+  }, (itemsToAdd.length * 120) + 300);
+};
+
+// ── Apply Custom Studio Ensemble to Homepage Look Cards ──
+window.applyStudioEnsembleToPage = function() {
+  const arch = AI_STYLE_ARCHETYPES[currentActiveMoodKey] || AI_STYLE_ARCHETYPES['business'];
+  if (!arch) return;
+
+  if (window.studioEnsembleState.tops && window.studioEnsembleState.tops.item) {
+    arch.items[0] = window.studioEnsembleState.tops.item;
+    window.outfitItemsSizes[0] = window.studioEnsembleState.tops.size || 'M';
+  }
+  if (window.studioEnsembleState.bottoms && window.studioEnsembleState.bottoms.item) {
+    arch.items[1] = window.studioEnsembleState.bottoms.item;
+    window.outfitItemsSizes[1] = window.studioEnsembleState.bottoms.size || '32';
+  }
+  if (window.studioEnsembleState.footwear && window.studioEnsembleState.footwear.item) {
+    arch.items[2] = window.studioEnsembleState.footwear.item;
+    window.outfitItemsSizes[2] = window.studioEnsembleState.footwear.size || 'UK 8';
+  }
+
+  closeEnsembleStudio();
+
+  // Re-render homepage grid
+  renderOutfitCombo(arch);
+
+  if (typeof ndToast === 'function') {
+    ndToast('✦ Custom 3-Piece Ensemble Applied to AI Look!', 'success');
+  }
+
+  // Smooth scroll to outfit builder section
+  const comboEl = document.getElementById('comboContainer');
+  if (comboEl) {
+    comboEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+};
+
+// ── Shuffle Studio Ensemble (AI-Curated Random Mix) ──
+window.shuffleStudioEnsemble = function() {
+  const tops = ATELIER_STUDIO_CATALOG.tops;
+  const bottoms = ATELIER_STUDIO_CATALOG.bottoms;
+  const footwear = ATELIER_STUDIO_CATALOG.footwear;
+
+  const randTop = tops[Math.floor(Math.random() * tops.length)];
+  const randBottom = bottoms[Math.floor(Math.random() * bottoms.length)];
+  const randFoot = footwear[Math.floor(Math.random() * footwear.length)];
+
+  window.studioEnsembleState.tops = { item: randTop, size: 'M' };
+  window.studioEnsembleState.bottoms = { item: randBottom, size: '32' };
+  window.studioEnsembleState.footwear = { item: randFoot, size: 'UK 8' };
+
+  renderStudioStageSlots();
+  selectStudioCategory(window.currentStudioCategory || 'tops');
+  updateStudioPricing();
+
+  if (typeof ndToast === 'function') {
+    ndToast('✦ Curated a fresh bespoke ensemble mix!', 'info');
+  }
+};
+
+// Legacy Compatibility Aliases
+window.openAtelierFitModal = function(prodData) {
+  openEnsembleStudio('tops');
+};
+window.closeAtelierFitModal = function() {
+  closeEnsembleStudio();
+};
+
+// ── Dynamic Bundle Discount Configuration Linked to Admin Settings ──
+window.BUNDLE_DISCOUNT_TIERS = {
+  2: <?= json_encode((float)($home_settings['bundle_discount_2'] ?? 10)) ?>,
+  3: <?= json_encode((float)($home_settings['bundle_discount_3'] ?? 15)) ?>
+};
+
+// ── Global Category-Accurate Size Resolver ──
+window.resolveProductSizes = function(item) {
+  if (!item) return ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  const title = (item.title || item.name || '').toLowerCase();
+  const cat = (item.category || item.tag || '').toLowerCase();
+  
+  if (/shoe|boot|sneaker|derby|loafer|footwear|oxford|chelsea/i.test(title) || /footwear|shoe/i.test(cat)) {
+    return ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'];
+  }
+  if (/denim|pant|jean|trouser|chino|short|selvedge|bottom/i.test(title) || /denim|pant|bottom/i.test(cat)) {
+    return ['28', '30', '32', '34', '36', '38'];
+  }
+  return ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 };
 
 // ── Horizontal Scroll Helper ──
@@ -3723,6 +4338,123 @@ window.scrollAfmEnsembles = function(dir) {
   const container = document.getElementById('afmEnsembleContainer');
   if (container) {
     container.scrollBy({ left: dir * 360, behavior: 'smooth' });
+  }
+};
+
+// ── Material Architecture & Fabric Provenance Studio Switcher ──
+const PROVENANCE_FABRICS = [
+  {
+    origin: 'Biella, Northern Italy',
+    name: 'Double-Faced Mongolian Cashmere',
+    desc: 'Micro-combed 14.5μ baby capra fibers unlined for weightless thermal insulation and fluid drape.',
+    img: '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>',
+    density: '700 GSM · Ultra-Heavy',
+    densityPct: 95,
+    drape: '99% Fluid Drape',
+    drapePct: 99,
+    breath: 'Optimal Thermo-Regulation',
+    breathPct: 92
+  },
+  {
+    origin: 'Kojima, Okayama, Japan',
+    name: 'Shuttle-Loom Okayama Selvedge Denim',
+    desc: '24-dip rope-dyed botanical indigo woven slowly on vintage Toyoda shuttle looms with pink ID ticker.',
+    img: '<?= base_url("img/vintage_okayama_14_5oz_selvedge_denim.jpg") ?>',
+    density: '14.5 OZ · Structural Rigid',
+    densityPct: 92,
+    drape: '84% Architectural Break',
+    drapePct: 84,
+    breath: 'Ring-Spun Long Staple',
+    breathPct: 88
+  },
+  {
+    origin: 'Lake Como, Lombardy, Italy',
+    name: 'Sand-Washed Mulberry Heavy Silk',
+    desc: 'Grade 6A continuous long-filament silk with a bias cut that clings to contours with liquid sheen.',
+    img: '<?= base_url("img/mulberry_silk_bias_slip_dress.jpg") ?>',
+    density: '22-Momme · Heavy Drape',
+    densityPct: 82,
+    drape: '100% Liquid Cascade',
+    drapePct: 100,
+    breath: '100% Natural Organic Sericin',
+    breathPct: 96
+  },
+  {
+    origin: 'Santa Croce, Florence, Italy',
+    name: 'Vegetable-Tanned Tuscan Calfskin',
+    desc: 'Naturally cured in chestnut & mimosa bark extract, hand-burnished for rich heirloom patina.',
+    img: '<?= base_url("img/burnished_calfskin_penny_loafers.jpg") ?>',
+    density: 'Full-Grain Box Calf',
+    densityPct: 98,
+    drape: 'Structured Contoured Hold',
+    drapePct: 78,
+    breath: 'Porous Aniline Breathable',
+    breathPct: 85
+  }
+];
+
+window.switchProvenanceFabric = function(idx) {
+  const f = PROVENANCE_FABRICS[idx];
+  if (!f) return;
+
+  // Update card buttons styling
+  for (let i = 0; i < PROVENANCE_FABRICS.length; i++) {
+    const btn = document.getElementById('provFabricBtn_' + i);
+    if (btn) {
+      if (i === idx) {
+        btn.className = 'prov-fabric-card p-4 rounded-2xl border-2 border-[#e9c176] bg-[#17171a] cursor-pointer transition-all duration-300 shadow-lg';
+      } else {
+        btn.className = 'prov-fabric-card p-4 rounded-2xl border border-white/10 bg-[#121214] hover:bg-[#17171a] cursor-pointer transition-all duration-300 hover:border-white/30 group';
+      }
+    }
+  }
+
+  // Update macro display with smooth fade
+  const imgEl = document.getElementById('provMacroImage');
+  if (imgEl) {
+    imgEl.style.opacity = '0.3';
+    setTimeout(() => {
+      imgEl.src = f.img;
+      imgEl.style.opacity = '1';
+    }, 150);
+  }
+
+  const originEl = document.getElementById('provOriginLabel');
+  if (originEl) originEl.textContent = f.origin;
+
+  const nameEl = document.getElementById('provFabricName');
+  if (nameEl) nameEl.textContent = f.name;
+
+  const descEl = document.getElementById('provFabricDesc');
+  if (descEl) descEl.textContent = f.desc;
+
+  const densityEl = document.getElementById('provGaugeDensity');
+  if (densityEl) densityEl.textContent = f.density;
+  const barDensity = document.getElementById('provBarDensity');
+  if (barDensity) barDensity.style.width = f.densityPct + '%';
+
+  const drapeEl = document.getElementById('provGaugeDrape');
+  if (drapeEl) drapeEl.textContent = f.drape;
+  const barDrape = document.getElementById('provBarDrape');
+  if (barDrape) barDrape.style.width = f.drapePct + '%';
+
+  const breathEl = document.getElementById('provGaugeBreath');
+  if (breathEl) breathEl.textContent = f.breath;
+  const barBreath = document.getElementById('provBarBreath');
+  if (barBreath) barBreath.style.width = f.breathPct + '%';
+};
+
+// ── State for Coordinated Ensemble Pack Cards & Sizing ──
+window.lookSlotsState = {};
+window.lookSlotsSizes = {};
+
+window.changeEnsembleSlotSize = function(lIdx, slotIdx, newSize) {
+  if (!window.lookSlotsSizes[lIdx]) {
+    window.lookSlotsSizes[lIdx] = {};
+  }
+  window.lookSlotsSizes[lIdx][slotIdx] = newSize;
+  if (typeof ndToast === 'function') {
+    ndToast(`Updated piece size to ${newSize}! ✦`, 'info');
   }
 };
 
@@ -3736,26 +4468,28 @@ function renderEnsembleGroups(selectedProd) {
   const selectedItem = {
     id: selectedProd.id || 1,
     title: selectedProd.title || 'Selected Garment',
-    price: selectedProd.price || 4999,
+    price: (typeof selectedProd.price === 'number') ? selectedProd.price : (parseFloat(selectedProd.price) || 4999),
     img: selectedProd.image || selectedProd.img || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>',
     tag: 'Selected Piece',
     category: garmentType,
     desc: 'Handcrafted masterwork designed for optimal layering ease and drape.',
     colors: [
-      { name: 'Original', hex: '#c19a6b' },
-      { name: 'Onyx Black', hex: '#18181b' },
-      { name: 'Slate Grey', hex: '#64748b' }
+      { name: 'Original', hex: '#c19a6b', img: selectedProd.image || selectedProd.img || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>' },
+      { name: 'Onyx Black', hex: '#18181b', img: '<?= base_url("img/sculpted_500_gsm_terry_hoodie.jpg") ?>' },
+      { name: 'Slate Grey', hex: '#64748b', img: '<?= base_url("img/heavyweight_linen_overshirt.jpg") ?>' }
     ]
   };
 
-  // Define 3 Curated Looks with Real Dressed Mannequin & Model Images
+  if (subtitleEl) {
+    subtitleEl.textContent = 'Curated coordinated looks. Choose your size for each piece & toggle [✕ Remove] to customize your pack (10% off 2 items · 15% off 3 items).';
+  }
+
+  // Define 3 Curated Looks
   if (garmentType === 'top') {
-    if (subtitleEl) subtitleEl.textContent = 'This is a topwear piece. Below are 3 curated looks. Click any box to inspect or open the Model Studio.';
     currentActiveLooks = [
       {
         name: 'The Milan Executive Look',
         vibe: 'Formal & Sharp Sartorial Cut',
-        modelImg: '<?= base_url("img/model_look_executive.jpg") ?>',
         top: selectedItem,
         bottom: ENSEMBLE_CATALOG.bottoms[0], // Okayama Selvedge Denim
         shoes: ENSEMBLE_CATALOG.shoes[0]     // Chelsea Leather Boots
@@ -3763,7 +4497,6 @@ function renderEnsembleGroups(selectedProd) {
       {
         name: 'The Tailored Atelier Classic',
         vibe: 'Refined Contemporary Drape',
-        modelImg: '<?= base_url("img/model_look_classic.jpg") ?>',
         top: selectedItem,
         bottom: ENSEMBLE_CATALOG.bottoms[1], // Italian Pleated Wool Trousers
         shoes: ENSEMBLE_CATALOG.shoes[1]     // Calfskin Penny Loafers
@@ -3771,19 +4504,16 @@ function renderEnsembleGroups(selectedProd) {
       {
         name: 'The Monochromatic Street Look',
         vibe: 'Heavyweight Minimalist Movement',
-        modelImg: '<?= base_url("img/model_look_street.jpg") ?>',
         top: selectedItem,
         bottom: ENSEMBLE_CATALOG.bottoms[0], // Okayama Selvedge Denim
         shoes: ENSEMBLE_CATALOG.shoes[2]     // Minimalist Sand Suede Derby
       }
     ];
   } else if (garmentType === 'bottom') {
-    if (subtitleEl) subtitleEl.textContent = 'This is a bottomwear piece. Matching topwear is on top, selected bottom in middle, and shoes below.';
     currentActiveLooks = [
       {
         name: 'The Executive Suiting Look',
         vibe: 'Formal & Sharp Silhouette',
-        modelImg: '<?= base_url("img/model_look_executive.jpg") ?>',
         top: ENSEMBLE_CATALOG.tops[0],       // Cashmere Cocoon Coat
         bottom: selectedItem,                // Selected Bottom
         shoes: ENSEMBLE_CATALOG.shoes[0]     // Chelsea Leather Boots
@@ -3791,7 +4521,6 @@ function renderEnsembleGroups(selectedProd) {
       {
         name: 'The Tailored Atelier Classic',
         vibe: 'Luxurious Autumnal Layering',
-        modelImg: '<?= base_url("img/model_look_classic.jpg") ?>',
         top: ENSEMBLE_CATALOG.tops[2],       // Cashmere Turtleneck
         bottom: selectedItem,                // Selected Bottom
         shoes: ENSEMBLE_CATALOG.shoes[1]     // Calfskin Penny Loafers
@@ -3799,19 +4528,16 @@ function renderEnsembleGroups(selectedProd) {
       {
         name: 'The Monochromatic Street Look',
         vibe: 'Heavyweight Architectural Casual',
-        modelImg: '<?= base_url("img/model_look_street.jpg") ?>',
         top: ENSEMBLE_CATALOG.tops[3],       // French Terry Hoodie
         bottom: selectedItem,                // Selected Bottom
         shoes: ENSEMBLE_CATALOG.shoes[2]     // Minimalist Sand Suede Derby
       }
     ];
   } else { // shoes
-    if (subtitleEl) subtitleEl.textContent = 'This is a footwear piece. Curated topwear and bottomwear stacked above your selected shoes.';
     currentActiveLooks = [
       {
         name: 'The Executive Suiting Look',
         vibe: 'Complete Formal Ensemble',
-        modelImg: '<?= base_url("img/model_look_executive.jpg") ?>',
         top: ENSEMBLE_CATALOG.tops[0],       // Cashmere Cocoon Coat
         bottom: ENSEMBLE_CATALOG.bottoms[0], // Okayama Denim
         shoes: selectedItem                  // Selected Shoes
@@ -3819,7 +4545,6 @@ function renderEnsembleGroups(selectedProd) {
       {
         name: 'The Tailored Atelier Classic',
         vibe: 'Effortless Milan Drape',
-        modelImg: '<?= base_url("img/model_look_classic.jpg") ?>',
         top: ENSEMBLE_CATALOG.tops[2],       // Cashmere Turtleneck
         bottom: ENSEMBLE_CATALOG.bottoms[1], // Pleated Trousers
         shoes: selectedItem                  // Selected Shoes
@@ -3827,7 +4552,6 @@ function renderEnsembleGroups(selectedProd) {
       {
         name: 'The Monochromatic Street Look',
         vibe: 'Relaxed Architectural Streetwear',
-        modelImg: '<?= base_url("img/model_look_street.jpg") ?>',
         top: ENSEMBLE_CATALOG.tops[3],       // French Terry Hoodie
         bottom: ENSEMBLE_CATALOG.bottoms[0], // Okayama Denim
         shoes: selectedItem                  // Selected Shoes
@@ -3835,129 +4559,373 @@ function renderEnsembleGroups(selectedProd) {
     ];
   }
 
-  // Render Horizontal Cards
+  // Initialize all slots as active with default sizes and quantity = 1
+  window.lookSlotsState = window.lookSlotsState || {};
+  window.lookSlotsSizes = window.lookSlotsSizes || {};
+  window.lookSlotsQuantities = window.lookSlotsQuantities || {};
+  currentActiveLooks.forEach((look, idx) => {
+    if (!window.lookSlotsState[idx]) {
+      window.lookSlotsState[idx] = { 0: true, 1: true, 2: true };
+    }
+    if (!window.lookSlotsSizes[idx]) {
+      window.lookSlotsSizes[idx] = {};
+    }
+    if (!window.lookSlotsQuantities[idx]) {
+      window.lookSlotsQuantities[idx] = { 0: 1, 1: 1, 2: 1 };
+    }
+  });
+
+  // Render Look Cards
   container.innerHTML = currentActiveLooks.map((look, lIdx) => {
-    const totalOriginal = look.top.price + look.bottom.price + look.shoes.price;
-    const ensemblePrice = Math.round(totalOriginal * 0.88); // 12% bundle privilege
-    const savings = totalOriginal - ensemblePrice;
-    const itemsJson = JSON.stringify([look.top, look.bottom, look.shoes]).replace(/"/g, '&quot;');
+    window.lookSlotsSizes[lIdx] = window.lookSlotsSizes[lIdx] || {};
+    window.lookSlotsQuantities[lIdx] = window.lookSlotsQuantities[lIdx] || { 0: 1, 1: 1, 2: 1 };
 
-    // Helper to render individual item row in vertical stack with Quick View click
-    const renderStackedSlot = (slotItem, slotType, slotStep, isSelected) => {
+    const renderSlotRow = (slotItem, slotType, slotStep, slotIdx) => {
       const slotItemJson = JSON.stringify(slotItem).replace(/"/g, '&quot;');
+      const isCurrentActiveGarment = (Number(slotItem.id) === Number(currentAfmProduct?.id)) || (slotItem.title === currentAfmProduct?.title);
+      const isIncluded = window.lookSlotsState[lIdx] ? (window.lookSlotsState[lIdx][slotIdx] !== false) : true;
+      
+      const itemSizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(slotItem) : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+      const defaultSize = itemSizes[Math.min(2, itemSizes.length - 1)];
+      const currentSelectedSize = (window.lookSlotsSizes[lIdx] && window.lookSlotsSizes[lIdx][slotIdx]) ? window.lookSlotsSizes[lIdx][slotIdx] : defaultSize;
+      const currentQty = (window.lookSlotsQuantities[lIdx] && window.lookSlotsQuantities[lIdx][slotIdx]) ? window.lookSlotsQuantities[lIdx][slotIdx] : 1;
+
       return `
-        <div class="bg-white border ${isSelected ? 'border-amber-400 bg-amber-50/25 ring-1 ring-amber-400/50' : 'border-stone-200'} rounded-2xl p-2.5 sm:p-3 flex items-center justify-between gap-2.5 shadow-xs hover:border-stone-400 transition-all group cursor-pointer" onclick="openProductQuickViewModal(${slotItemJson})">
-          
-          <!-- Left: Image & Step Badge -->
-          <div class="flex items-center gap-2.5 min-w-0">
-            <div class="relative w-12 h-14 sm:w-14 sm:h-16 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
-              <img src="${slotItem.img}" alt="${slotItem.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-1 left-1 bg-stone-900/85 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">${slotStep}</span>
-              <span class="absolute bottom-1 right-1 bg-white/90 text-stone-900 text-[8px] font-mono rounded p-0.5 opacity-0 group-hover:opacity-100 transition-opacity shadow" title="Quick View">
-                <span class="material-symbols-outlined text-[10px] block">visibility</span>
-              </span>
+        <div id="lookSlot_${lIdx}_${slotIdx}" class="${isIncluded ? (isCurrentActiveGarment ? 'border-2 border-amber-400 bg-amber-50/40 shadow-xs' : 'bg-white border border-stone-200 shadow-2xs') : 'bg-stone-100/70 border border-dashed border-stone-300 opacity-60 grayscale'} rounded-2xl p-3 transition-all group">
+          <!-- Top Row: Thumbnail + Details + Cancel/Add Button -->
+          <div class="flex items-center gap-3">
+            <div class="relative w-12 h-14 min-w-[48px] max-w-[48px] min-h-[56px] max-h-[56px] rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border ${isCurrentActiveGarment ? 'border-amber-300' : 'border-stone-200'} shadow-2xs cursor-pointer" style="width: 48px; height: 56px;" onclick="openProductQuickViewModal(${slotItemJson})">
+              <img src="${slotItem.img || slotItem.image}" alt="${slotItem.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="width: 100%; height: 100%; object-fit: cover;">
+              <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7.5px] font-mono px-1 py-0.5 rounded font-bold">${slotStep}</span>
             </div>
-
+            
             <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-1 mb-0.5">
-                <span class="text-[8px] font-mono uppercase font-bold tracking-wider ${isSelected ? 'text-[#a16207] bg-amber-100/80 px-1 rounded' : 'text-stone-500'}">
-                  ${isSelected ? '★ ' + slotType + ' (Active)' : slotType}
-                </span>
-              </div>
-
-              <h5 class="font-serif text-xs font-bold text-stone-900 truncate group-hover:text-[#a16207] transition-colors" title="${slotItem.title}">
+              <span class="text-[8px] font-mono uppercase font-bold tracking-wider ${isCurrentActiveGarment ? 'text-[#a16207]' : 'text-stone-500'} block mb-0.5">
+                ${isCurrentActiveGarment ? '★ ' + slotType + ' (SELECTED)' : slotType}
+              </span>
+              <h5 class="font-serif text-xs font-bold text-stone-900 truncate hover:text-[#a16207] transition-colors cursor-pointer mb-0.5" title="${slotItem.title}" onclick="openProductQuickViewModal(${slotItemJson})">
                 ${slotItem.title}
               </h5>
-
-              <div class="flex items-baseline gap-1 mt-0.5">
-                <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="${slotItem.price}">₹${Number(slotItem.price).toLocaleString('en-IN')}</span>
-                <span class="text-[9px] font-mono text-stone-400">· Click to inspect</span>
+              <div class="flex items-center gap-1.5 text-stone-900 font-serif font-bold text-xs">
+                <span>₹${Number(slotItem.price).toLocaleString('en-IN')}</span>
+                <span class="font-sans text-[8.5px] text-stone-400 font-normal">· Click to inspect</span>
               </div>
+            </div>
+
+            <!-- Cancel/Cross Remove vs Add Button -->
+            <div class="flex-shrink-0">
+              ${isIncluded ? `
+                <button type="button" onclick="event.stopPropagation(); toggleEnsembleSlot(${lIdx}, ${slotIdx})" class="px-2.5 py-1.5 bg-stone-100 hover:bg-rose-50 text-stone-600 hover:text-rose-700 border border-stone-300 hover:border-rose-300 rounded-xl text-[9px] font-mono font-bold flex items-center gap-1 transition-all cursor-pointer shadow-2xs active:scale-95" title="Remove piece from combo">
+                  <span class="material-symbols-outlined text-xs text-rose-500 font-bold">close</span>
+                  <span>Remove</span>
+                </button>
+              ` : `
+                <button type="button" onclick="event.stopPropagation(); toggleEnsembleSlot(${lIdx}, ${slotIdx})" class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-[#e9c176] rounded-xl text-[9px] font-mono font-bold flex items-center gap-1 transition-all cursor-pointer shadow-xs active:scale-95" title="Add piece back to combo">
+                  <span class="material-symbols-outlined text-xs">add</span>
+                  <span>Add</span>
+                </button>
+              `}
             </div>
           </div>
 
-          <!-- Right: Action Button -->
-          <div class="flex-shrink-0" onclick="event.stopPropagation()">
-            ${isSelected 
-              ? `<span class="inline-flex items-center gap-0.5 px-2 py-1 bg-amber-100 text-amber-900 rounded-lg text-[9px] font-mono font-bold border border-amber-300">
-                  <span class="material-symbols-outlined text-[11px]">check</span>
-                  <span>Active</span>
-                 </span>`
-              : `<button type="button" onclick="addToCart(${slotItem.id}, 1, 'Added ${slotItem.title.replace(/'/g, "\\'")} to Bag! 🛍️');" class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
-                  <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
-                  <span>Add</span>
-                 </button>`
-            }
-          </div>
+          <!-- Bottom Row: Individual Size Selector & Quantity Stepper (Visible when Included) -->
+          ${isIncluded ? `
+            <div class="mt-2.5 pt-2 border-t border-stone-200/80 flex items-center justify-between gap-2">
+              <!-- Size Selector -->
+              <div class="flex items-center gap-1.5">
+                <span class="text-[9px] font-mono font-bold text-stone-500 uppercase">Size:</span>
+                <select onchange="setEnsembleSlotSize(${lIdx}, ${slotIdx}, this.value)" class="text-[10px] font-mono font-bold bg-white border border-stone-300 rounded-lg px-2 py-0.5 text-stone-900 focus:border-amber-500 focus:outline-none cursor-pointer shadow-2xs">
+                  ${itemSizes.map(sz => `<option value="${sz}" ${sz === currentSelectedSize ? 'selected' : ''}>${sz}</option>`).join('')}
+                </select>
+              </div>
 
+              <!-- Quantity Stepper -->
+              <div class="flex items-center gap-1.5">
+                <span class="text-[9px] font-mono font-bold text-stone-500 uppercase">Qty:</span>
+                <div class="flex items-center border border-stone-300 rounded-lg bg-white shadow-2xs overflow-hidden">
+                  <button type="button" onclick="event.stopPropagation(); changeEnsembleSlotQty(${lIdx}, ${slotIdx}, -1)" class="w-5 h-5 bg-stone-50 hover:bg-stone-200 flex items-center justify-center text-xs font-bold text-stone-700 cursor-pointer active:scale-95">-</button>
+                  <span id="slotQty_${lIdx}_${slotIdx}" class="w-5 text-center font-mono font-bold text-[10px] text-stone-950">${currentQty}</span>
+                  <button type="button" onclick="event.stopPropagation(); changeEnsembleSlotQty(${lIdx}, ${slotIdx}, 1)" class="w-5 h-5 bg-stone-50 hover:bg-stone-200 flex items-center justify-center text-xs font-bold text-stone-700 cursor-pointer active:scale-95">+</button>
+                </div>
+              </div>
+            </div>
+          ` : ''}
         </div>
       `;
     };
 
     return `
-      <div class="w-[300px] sm:w-[330px] flex-shrink-0 snap-start bg-stone-50 border border-stone-200 hover:border-amber-300/80 rounded-3xl p-4 sm:p-5 flex flex-col justify-between shadow-sm transition-all duration-300" id="lookCard_${lIdx}">
+      <div class="w-[315px] sm:w-[345px] flex-shrink-0 snap-start bg-[#fafaf9] border border-stone-200 hover:border-amber-300/80 rounded-[28px] p-4 sm:p-5 flex flex-col justify-between shadow-sm transition-all duration-300" id="lookCard_${lIdx}">
         
         <div>
           <!-- Look Card Header -->
-          <div class="flex items-center justify-between pb-3 mb-3 border-b border-stone-200">
-            <div class="flex items-center gap-2">
+          <div class="flex items-center justify-between pb-3 mb-3.5 border-b border-stone-200">
+            <div class="flex items-center gap-2.5">
               <span class="w-6 h-6 rounded-full bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shadow-xs">0${lIdx + 1}</span>
               <div>
                 <h4 class="font-serif font-bold text-xs sm:text-sm text-stone-900 truncate max-w-[170px]">${look.name}</h4>
                 <span class="text-[10px] text-stone-500 font-light block">${look.vibe}</span>
               </div>
             </div>
-            <span class="text-[9px] font-mono uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">12% Off</span>
+            <span id="lookCardBadge_${lIdx}" class="text-[9px] font-mono uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+              15% OFF
+            </span>
           </div>
 
           <!-- Stacked Items (01 Top -> 02 Bottom -> 03 Shoes) -->
-          <div class="space-y-2 mb-4">
-            ${renderStackedSlot(look.top, 'Top Wear', '01', garmentType === 'top')}
+          <div class="space-y-1.5 mb-4">
+            ${renderSlotRow(look.top, 'Top Wear', '01', 0)}
             
-            <div class="flex items-center justify-center -my-0.5">
-              <div class="w-0.5 h-2 bg-stone-300"></div>
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-[1.5px] h-3 bg-stone-300"></div>
             </div>
 
-            ${renderStackedSlot(look.bottom, 'Bottom Wear', '02', garmentType === 'bottom')}
+            ${renderSlotRow(look.bottom, 'Bottom Wear', '02', 1)}
             
-            <div class="flex items-center justify-center -my-0.5">
-              <div class="w-0.5 h-2 bg-stone-300"></div>
+            <div class="flex items-center justify-center -my-1">
+              <div class="w-[1.5px] h-3 bg-stone-300"></div>
             </div>
 
-            ${renderStackedSlot(look.shoes, 'Footwear', '03', garmentType === 'shoes')}
+            ${renderSlotRow(look.shoes, 'Footwear', '03', 2)}
           </div>
         </div>
 
-        <!-- Look Actions & Model Studio Button -->
-        <div class="pt-3 border-t border-stone-200 space-y-2.5">
+        <!-- Look Actions & Dynamic Pack Pricing (Interactive Model Studio Removed) -->
+        <div class="pt-3.5 border-t border-stone-200 space-y-3">
           
-          <!-- Dedicated Model Studio Action Button -->
-          <button type="button" onclick="openModelFittingStudioModal(${lIdx})" class="w-full py-2.5 bg-stone-900 hover:bg-black text-white rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs">
-            <span class="material-symbols-outlined text-sm text-amber-400">accessibility_new</span>
-            <span>Interactive Model Studio</span>
-          </button>
-
-          <!-- Combo Pricing -->
-          <div class="flex items-baseline justify-between text-xs px-1">
-            <span class="text-stone-500 font-mono text-[11px]">Look Total:</span>
-            <div class="flex items-baseline gap-1.5">
-              <span class="font-serif font-bold text-sm text-stone-900" data-price-inr="${ensemblePrice}">₹${Number(ensemblePrice).toLocaleString('en-IN')}</span>
-              <span class="text-[10px] text-stone-400 line-through" data-price-inr="${totalOriginal}">₹${Number(totalOriginal).toLocaleString('en-IN')}</span>
-              <span class="text-[10px] text-emerald-600 font-mono font-bold">Save ₹${Number(savings).toLocaleString('en-IN')}</span>
-            </div>
+          <!-- Live Pack Pricing -->
+          <div class="flex items-baseline justify-between text-xs px-1" id="lookPriceRow_${lIdx}">
+            <!-- Dynamic Total Breakdown -->
           </div>
 
-          <!-- Acquire Complete 3-Piece Look Button -->
-          <button type="button" onclick="addEnsembleLookToCart(${itemsJson})" class="w-full py-2.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer hover:scale-101">
-            <span class="material-symbols-outlined text-sm">checkroom</span>
-            <span>Acquire Complete 3-Piece Look</span>
+          <!-- Acquire Coordinated Pack Button -->
+          <button type="button" id="lookCtaBtn_${lIdx}" onclick="acquireActiveEnsemblePack(${lIdx})" class="w-full py-3 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95">
+            <span class="material-symbols-outlined text-sm">shopping_bag</span>
+            <span>Acquire Complete 3-Piece Look (15% OFF)</span>
           </button>
         </div>
 
       </div>
     `;
   }).join('');
+
+  // Run initial pricing calculation for all cards
+  currentActiveLooks.forEach((look, idx) => {
+    updateLookCardPricing(idx);
+  });
 }
+
+// ── Scroll Ensembles Horizontally ──
+window.scrollAfmEnsembles = function(dir) {
+  const cont = document.getElementById('afmEnsembleContainer');
+  if (cont) {
+    cont.scrollBy({ left: dir * 350, behavior: 'smooth' });
+  }
+};
+
+// ── Set Size for a specific slot in a look ──
+window.setEnsembleSlotSize = function(lookIdx, slotIdx, size) {
+  window.lookSlotsSizes = window.lookSlotsSizes || {};
+  window.lookSlotsSizes[lookIdx] = window.lookSlotsSizes[lookIdx] || {};
+  window.lookSlotsSizes[lookIdx][slotIdx] = size;
+};
+
+// ── Change Quantity for a specific slot in a look ──
+window.changeEnsembleSlotQty = function(lookIdx, slotIdx, delta) {
+  window.lookSlotsQuantities = window.lookSlotsQuantities || {};
+  window.lookSlotsQuantities[lookIdx] = window.lookSlotsQuantities[lookIdx] || { 0: 1, 1: 1, 2: 1 };
+  window.lookSlotsQuantities[lookIdx][slotIdx] = Math.max(1, Math.min(10, (window.lookSlotsQuantities[lookIdx][slotIdx] || 1) + delta));
+  
+  const qtyEl = document.getElementById(`slotQty_${lookIdx}_${slotIdx}`);
+  if (qtyEl) {
+    qtyEl.textContent = window.lookSlotsQuantities[lookIdx][slotIdx];
+  }
+  
+  updateLookCardPricing(lookIdx);
+};
+
+// ── Slot Toggle Handler (Cancel/Remove vs Add) ──
+window.toggleEnsembleSlot = function(lookIdx, slotIdx) {
+  window.lookSlotsState = window.lookSlotsState || {};
+  if (!window.lookSlotsState[lookIdx]) {
+    window.lookSlotsState[lookIdx] = { 0: true, 1: true, 2: true };
+  }
+  window.lookSlotsState[lookIdx][slotIdx] = !window.lookSlotsState[lookIdx][slotIdx];
+  
+  if (typeof renderEnsembleGroups === 'function' && currentAfmProduct) {
+    renderEnsembleGroups(currentAfmProduct);
+  }
+};
+
+// ── Update Look Card Pricing with 2-item (10%) & 3-item (15%) Tiered Combo Discounts ──
+window.updateLookCardPricing = function(lookIdx) {
+  const look = currentActiveLooks[lookIdx];
+  if (!look) return;
+  
+  const state = (window.lookSlotsState && window.lookSlotsState[lookIdx]) || { 0: true, 1: true, 2: true };
+  const qtys = (window.lookSlotsQuantities && window.lookSlotsQuantities[lookIdx]) || { 0: 1, 1: 1, 2: 1 };
+  const slots = [look.top, look.bottom, look.shoes];
+  
+  let activeCount = 0;
+  let totalItemsQty = 0;
+  let sumOriginal = 0;
+
+  slots.forEach((item, sIdx) => {
+    if (state[sIdx] && item) {
+      activeCount++;
+      const q = qtys[sIdx] || 1;
+      totalItemsQty += q;
+      sumOriginal += (parseFloat(item.price) || 0) * q;
+    }
+  });
+
+  let discPct = 0;
+  if (activeCount === 3) {
+    discPct = window.BUNDLE_DISCOUNT_TIERS[3] || 15;
+  } else if (activeCount === 2) {
+    discPct = window.BUNDLE_DISCOUNT_TIERS[2] || 10;
+  } else {
+    discPct = 0;
+  }
+
+  const finalTotal = Math.round(sumOriginal * (1 - discPct / 100));
+  const savings = sumOriginal - finalTotal;
+
+  // Update Look Card Badge
+  const badgeEl = document.getElementById(`lookCardBadge_${lookIdx}`);
+  if (badgeEl) {
+    if (discPct > 0) {
+      badgeEl.className = 'text-[9px] font-mono uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold';
+      badgeEl.textContent = `${discPct}% OFF`;
+    } else if (activeCount === 1) {
+      badgeEl.className = 'text-[9px] font-mono uppercase bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full font-bold';
+      badgeEl.textContent = 'Individual';
+    } else {
+      badgeEl.className = 'text-[9px] font-mono uppercase bg-rose-50 text-rose-600 border border-rose-200 px-2 py-0.5 rounded-full font-bold';
+      badgeEl.textContent = 'Empty';
+    }
+  }
+
+  // Update Price Breakdown
+  const priceRowEl = document.getElementById(`lookPriceRow_${lookIdx}`);
+  if (priceRowEl) {
+    if (activeCount > 0) {
+      priceRowEl.innerHTML = `
+        <span class="text-stone-500 font-mono text-xs">Look Total:</span>
+        <div class="flex items-baseline gap-2">
+          <span class="font-serif font-bold text-sm text-stone-950" data-price-inr="${finalTotal}">₹${Number(finalTotal).toLocaleString('en-IN')}</span>
+          ${savings > 0 ? `<span class="text-[10px] text-stone-400 line-through" data-price-inr="${sumOriginal}">₹${Number(sumOriginal).toLocaleString('en-IN')}</span>` : ''}
+          ${savings > 0 ? `<span class="text-[10.5px] text-emerald-700 font-mono font-bold">Save ₹${Number(savings).toLocaleString('en-IN')}</span>` : ''}
+        </div>
+      `;
+    } else {
+      priceRowEl.innerHTML = `<span class="text-rose-600 text-[11px] font-mono font-bold">Please select at least 1 piece</span>`;
+    }
+  }
+
+  // Update CTA Button
+  const ctaBtn = document.getElementById(`lookCtaBtn_${lookIdx}`);
+  if (ctaBtn) {
+    if (activeCount === 3) {
+      ctaBtn.disabled = false;
+      ctaBtn.className = 'w-full py-3 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95';
+      ctaBtn.innerHTML = `
+        <span class="material-symbols-outlined text-sm">shopping_bag</span>
+        <span>Acquire Complete 3-Piece Look (15% OFF)</span>
+      `;
+    } else if (activeCount === 2) {
+      ctaBtn.disabled = false;
+      ctaBtn.className = 'w-full py-3 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95';
+      ctaBtn.innerHTML = `
+        <span class="material-symbols-outlined text-sm">shopping_bag</span>
+        <span>Acquire 2-Piece Combo (10% OFF · ₹${Number(finalTotal).toLocaleString('en-IN')})</span>
+      `;
+    } else if (activeCount === 1) {
+      ctaBtn.disabled = false;
+      ctaBtn.className = 'w-full py-3 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95';
+      ctaBtn.innerHTML = `
+        <span class="material-symbols-outlined text-sm">shopping_bag</span>
+        <span>Acquire 1 Piece (₹${Number(finalTotal).toLocaleString('en-IN')})</span>
+      `;
+    } else {
+      ctaBtn.disabled = true;
+      ctaBtn.className = 'w-full py-3 bg-stone-200 text-stone-400 font-button font-bold text-xs uppercase tracking-wider rounded-xl cursor-not-allowed flex items-center justify-center gap-1.5';
+      ctaBtn.innerHTML = `<span>Select Items Above</span>`;
+    }
+  }
+};
+
+// ── Acquire Ensemble Pack (Adds all active items with chosen category sizes to bag) ──
+window.acquireActiveEnsemblePack = function(lookIdx) {
+  const look = currentActiveLooks[lookIdx];
+  if (!look) return;
+  const state = (window.lookSlotsState && window.lookSlotsState[lookIdx]) || { 0: true, 1: true, 2: true };
+  const sizesState = (window.lookSlotsSizes && window.lookSlotsSizes[lookIdx]) || {};
+  const qtysState = (window.lookSlotsQuantities && window.lookSlotsQuantities[lookIdx]) || { 0: 1, 1: 1, 2: 1 };
+  const slots = [look.top, look.bottom, look.shoes];
+
+  const activeItems = [];
+  slots.forEach((item, sIdx) => {
+    if (state[sIdx] && item) {
+      const itemSizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(item) : ['M'];
+      const defaultSize = itemSizes[Math.min(2, itemSizes.length - 1)];
+      const chosenSize = sizesState[sIdx] || defaultSize;
+      const chosenQty = qtysState[sIdx] || 1;
+      
+      activeItems.push({
+        id: item.id || 1,
+        variant_id: item.id || 1,
+        product_id: item.id || 1,
+        title: item.title,
+        price: item.price,
+        image: item.img || item.image,
+        size: chosenSize,
+        quantity: chosenQty,
+        color: (item.colors && item.colors[0]) ? item.colors[0].name : ''
+      });
+    }
+  });
+
+  if (!activeItems.length) {
+    if (typeof ndToast === 'function') ndToast('Please include at least 1 item in the pack.', 'error');
+    return;
+  }
+
+  const count = activeItems.length;
+  const discPct = count === 3 ? (window.BUNDLE_DISCOUNT_TIERS[3] || 15) : (count === 2 ? (window.BUNDLE_DISCOUNT_TIERS[2] || 10) : 0);
+  const comboId = 'combo_' + Date.now();
+
+  // Save combo pack metadata to localStorage so Quick Bag separates combo from individual items
+  try {
+    const existingCombos = JSON.parse(localStorage.getItem('lumina_cart_combos') || '[]');
+    existingCombos.push({
+      comboId: comboId,
+      lookName: look.name || 'Curated Ensemble Pack',
+      itemIds: activeItems.map(it => Number(it.id)),
+      discount: discPct,
+      createdAt: Date.now()
+    });
+    localStorage.setItem('lumina_cart_combos', JSON.stringify(existingCombos));
+  } catch(e) {}
+
+  activeItems.forEach((item, i) => {
+    setTimeout(() => {
+      if (typeof window.addToCart === 'function') {
+        window.addToCart(item, item.quantity || 1, i === activeItems.length - 1 ? `✦ Added ${count}-Piece Pack to Curated Bag with ${discPct}% Bundle Privilege!` : null);
+      }
+    }, i * 140);
+  });
+
+  closeAtelierFitModal();
+  setTimeout(() => {
+    if (typeof toggleQuickBagDrawer === 'function') {
+      const overlay = document.getElementById('quickBagOverlay');
+      if (overlay && overlay.classList.contains('hidden')) {
+        toggleQuickBagDrawer();
+      }
+    }
+  }, (activeItems.length * 140) + 300);
+};
 
 // ════════════════════════════════════════════════════════════
 // 1. PRODUCT QUICK VIEW MODAL CONTROLLER (CLEAN INSPECT ONLY)
@@ -3972,53 +4940,149 @@ window.openProductQuickViewModal = function(item) {
   const titleEl = document.getElementById('apqvTitle');
   if (titleEl) titleEl.textContent = item.title || 'Curated Atelier Piece';
 
+  const baseImg = item.img || item.image || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>';
   const imgEl = document.getElementById('apqvImage');
-  if (imgEl) imgEl.src = item.img || item.image || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>';
+  if (imgEl) imgEl.src = baseImg;
 
   const priceEl = document.getElementById('apqvPrice');
-  if (priceEl) priceEl.textContent = '₹' + Number(item.price || 4999).toLocaleString('en-IN');
+  if (priceEl) priceEl.textContent = typeof window.formatPrice === 'function' ? window.formatPrice(item.price || 4999) : '₹' + Number(item.price || 4999).toLocaleString('en-IN');
 
   const tagEl = document.getElementById('apqvCategoryTag');
-  if (tagEl) tagEl.textContent = item.tag || 'Atelier Garment';
+  if (tagEl) tagEl.textContent = (item.tag || item.category || 'Atelier Garment').toUpperCase();
 
   const descEl = document.getElementById('apqvDesc');
   if (descEl) descEl.textContent = item.desc || 'Crafted with sartorial precision in Japan and Italy using natural double-faced fibers.';
 
-  // Color Swatches
+  // Color Swatches with Live Color-Specific Images
   const colorCont = document.getElementById('apqvColorSwatches');
-  const colors = item.colors || [
-    { name: 'Original', hex: '#c19a6b' },
-    { name: 'Onyx Black', hex: '#18181b' },
-    { name: 'Charcoal', hex: '#64748b' }
+  let defaultColors = [
+    { name: 'Raw Indigo', hex: '#1e3a8a', img: baseImg },
+    { name: 'Faded Stone', hex: '#64748b', img: '<?= base_url("img/italian_pleated_wool_trousers.jpg") ?>' },
+    { name: 'Washed Black', hex: '#18181b', img: '<?= base_url("img/burnished_calfskin_penny_loafers.jpg") ?>' }
   ];
+
+  if (/coat|jacket|cashmere/i.test(item.title || '')) {
+    defaultColors = [
+      { name: 'Signature Camel', hex: '#c19a6b', img: baseImg },
+      { name: 'Obsidian Black', hex: '#18181b', img: '<?= base_url("img/sculpted_500_gsm_terry_hoodie.jpg") ?>' },
+      { name: 'Oatmeal Melange', hex: '#dcd0c0', img: '<?= base_url("img/heavyweight_linen_overshirt.jpg") ?>' },
+      { name: 'Forest Emerald', hex: '#1b4332', img: '<?= base_url("img/mulberry_silk_bias_slip_dress.jpg") ?>' }
+    ];
+  } else if (/shoe|boot|loafer/i.test(item.title || '')) {
+    defaultColors = [
+      { name: 'Burnished Tan', hex: '#854d0e', img: baseImg },
+      { name: 'Obsidian Black', hex: '#18181b', img: '<?= base_url("img/burnished_calfskin_penny_loafers.jpg") ?>' },
+      { name: 'Espresso Suede', hex: '#451a03', img: '<?= base_url("img/handcrafted_italian_chelsea_boots.jpg") ?>' }
+    ];
+  }
+
+  const colors = (item.colors && item.colors.length) ? item.colors : defaultColors;
   currentQuickViewColor = colors[0].name;
+  const colorLbl = document.getElementById('apqvSelectedColorLabel');
+  if (colorLbl) colorLbl.textContent = currentQuickViewColor;
 
   if (colorCont) {
     colorCont.innerHTML = colors.map((c, idx) => `
-      <div class="flex items-center gap-1.5 bg-stone-100 px-2 py-1 rounded-lg border ${idx===0 ? 'border-amber-500' : 'border-stone-200'} text-[10px] font-mono">
-        <span class="w-3 h-3 rounded-full border border-stone-300" style="background-color: ${c.hex};"></span>
+      <button type="button" onclick="selectQuickViewColor('${c.name.replace(/'/g, "\\'")}', '${c.hex}', '${(c.img || baseImg).replace(/'/g, "\\'")}', this)" class="apqv-color-btn flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border ${idx===0 ? 'border-2 border-amber-500 bg-amber-50 font-bold shadow-xs text-stone-900' : 'border-stone-200 bg-white hover:border-stone-400 text-stone-700'} text-[11px] font-mono cursor-pointer transition-all">
+        <span class="w-3.5 h-3.5 rounded-full border border-stone-300 shadow-xs flex-shrink-0" style="background-color: ${c.hex};"></span>
         <span>${c.name}</span>
-      </div>
+      </button>
     `).join('');
   }
 
-  // Size pills based on category
+  // Sizing with Category Accuracy and Interactive Selection
   const sizeCont = document.getElementById('apqvSizePills');
-  const cat = detectGarmentType(item);
-  let sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-  if (cat === 'bottom') sizes = ['28', '30', '32', '34', '36', '38'];
-  if (cat === 'shoes') sizes = ['7 UK', '8 UK', '9 UK', '10 UK', '11 UK'];
+  const sizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(item) : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  currentQuickViewSize = sizes[Math.min(2, sizes.length - 1)]; // Default active size
+  
+  const sizeLbl = document.getElementById('apqvSelectedSizeLabel');
+  if (sizeLbl) sizeLbl.textContent = 'Size ' + currentQuickViewSize;
+
+  const errEl = document.getElementById('apqvSizeError');
+  if (errEl) errEl.classList.add('hidden');
 
   if (sizeCont) {
     sizeCont.innerHTML = sizes.map(s => `
-      <span class="px-2.5 py-1 rounded-lg border border-stone-200 bg-stone-50 text-stone-700 text-[10px] font-mono font-medium">
+      <button type="button" onclick="selectQuickViewSize('${s}', this)" class="apqv-size-btn px-3 py-1.5 rounded-lg border ${s === currentQuickViewSize ? 'border-2 border-stone-950 bg-stone-950 text-[#e9c176] font-bold shadow-xs' : 'border-stone-200 bg-stone-50 text-stone-700 hover:border-stone-400'} text-xs font-mono font-medium cursor-pointer transition-all">
         ${s}
-      </span>
+      </button>
     `).join('');
   }
 
+  const ctaText = document.getElementById('apqvAddToCartBtnText');
+  if (ctaText) ctaText.textContent = `Acquire Size ${currentQuickViewSize} · ₹${Number(item.price || 4999).toLocaleString('en-IN')}`;
+
   modal.classList.remove('hidden');
   modal.classList.add('flex');
+};
+
+window.selectQuickViewColor = function(colorName, hex, imgUrl, btn) {
+  currentQuickViewColor = colorName;
+  const colorLbl = document.getElementById('apqvSelectedColorLabel');
+  if (colorLbl) colorLbl.textContent = colorName;
+
+  document.querySelectorAll('.apqv-color-btn').forEach(b => {
+    b.className = 'apqv-color-btn flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-stone-200 bg-white hover:border-stone-400 text-stone-700 text-[11px] font-mono cursor-pointer transition-all';
+  });
+  if (btn) {
+    btn.className = 'apqv-color-btn flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border-2 border-amber-500 bg-amber-50 font-bold shadow-xs text-stone-900 text-[11px] font-mono cursor-pointer transition-all';
+  }
+
+  // Update modal image smoothly with fade
+  const imgEl = document.getElementById('apqvImage');
+  if (imgEl && imgUrl) {
+    imgEl.style.opacity = '0.3';
+    setTimeout(() => {
+      imgEl.src = imgUrl;
+      imgEl.style.opacity = '1';
+    }, 150);
+  }
+};
+
+window.selectQuickViewSize = function(size, btn) {
+  currentQuickViewSize = size;
+  const sizeLbl = document.getElementById('apqvSelectedSizeLabel');
+  if (sizeLbl) sizeLbl.textContent = 'Size ' + size;
+
+  const errEl = document.getElementById('apqvSizeError');
+  if (errEl) errEl.classList.add('hidden');
+
+  document.querySelectorAll('.apqv-size-btn').forEach(b => {
+    b.className = 'apqv-size-btn px-3 py-1.5 rounded-lg border border-stone-200 bg-stone-50 text-stone-700 hover:border-stone-400 text-xs font-mono font-medium cursor-pointer transition-all';
+  });
+  if (btn) {
+    btn.className = 'apqv-size-btn px-3 py-1.5 rounded-lg border-2 border-stone-950 bg-stone-950 text-[#e9c176] font-bold shadow-xs text-xs font-mono cursor-pointer transition-all';
+  }
+
+  const ctaText = document.getElementById('apqvAddToCartBtnText');
+  if (ctaText && currentQuickViewItem) {
+    ctaText.textContent = `Acquire Size ${size} · ₹${Number(currentQuickViewItem.price || 4999).toLocaleString('en-IN')}`;
+  }
+};
+
+window.acquireQuickViewItem = function() {
+  if (!currentQuickViewItem) return;
+  if (!currentQuickViewSize) {
+    const errEl = document.getElementById('apqvSizeError');
+    if (errEl) errEl.classList.remove('hidden');
+    if (typeof ndToast === 'function') ndToast('Please select a size first.', 'error');
+    return;
+  }
+
+  if (typeof addToCart === 'function') {
+    addToCart({
+      id: currentQuickViewItem.id || 1,
+      variant_id: currentQuickViewItem.id || 1,
+      product_id: currentQuickViewItem.id || 1,
+      title: currentQuickViewItem.title,
+      price: currentQuickViewItem.price,
+      image: currentQuickViewItem.img || currentQuickViewItem.image,
+      size: currentQuickViewSize,
+      color: currentQuickViewColor
+    }, 1, `✦ Added "${currentQuickViewItem.title}" (Size ${currentQuickViewSize} · ${currentQuickViewColor}) to Curated Bag!`);
+    
+    closeProductQuickViewModal();
+  }
 };
 
 window.closeProductQuickViewModal = function() {
@@ -4027,340 +5091,6 @@ window.closeProductQuickViewModal = function() {
     modal.classList.add('hidden');
     modal.classList.remove('flex');
   }
-};
-
-// ════════════════════════════════════════════════════════════
-// 2. INTERACTIVE MODEL FITTING STUDIO (FULL LOOK CUSTOMIZER)
-// ════════════════════════════════════════════════════════════
-window.openModelFittingStudioModal = function(lookIdx) {
-  activeStudioLookIndex = lookIdx || 0;
-  loadStudioLook(activeStudioLookIndex);
-
-  const modal = document.getElementById('atelierModelFittingStudioModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    document.body.style.overflow = 'hidden';
-  }
-};
-
-window.closeModelFittingStudioModal = function() {
-  const modal = document.getElementById('atelierModelFittingStudioModal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-};
-
-// ── Next / Previous Look Navigator ──
-window.navigateStudioLook = function(dir) {
-  if (!currentActiveLooks.length) return;
-  activeStudioLookIndex = (activeStudioLookIndex + dir + currentActiveLooks.length) % currentActiveLooks.length;
-  loadStudioLook(activeStudioLookIndex);
-  
-  if (typeof ndToast === 'function') {
-    ndToast(`Switched to "${studioState.lookName}"! 🪞`, 'info');
-  }
-};
-
-function loadStudioLook(idx) {
-  const look = currentActiveLooks[idx] || currentActiveLooks[0];
-  if (!look) return;
-
-  const topColors = (look.top && look.top.colors) || [{ name: 'Camel Hair', hex: '#c19a6b' }];
-  const bottomColors = (look.bottom && look.bottom.colors) || [{ name: 'Raw Indigo', hex: '#172554' }];
-  const shoeColors = (look.shoes && look.shoes.colors) || [{ name: 'Espresso', hex: '#3b2219' }];
-
-  studioState = {
-    lookName: look.name,
-    modelImg: look.modelImg || '<?= base_url("img/model_look_executive.jpg") ?>',
-    top: { item: Object.assign({}, look.top), included: true, size: 'M', color: topColors[0].name, hex: topColors[0].hex },
-    bottom: { item: Object.assign({}, look.bottom), included: true, size: '32', color: bottomColors[0].name, hex: bottomColors[0].hex },
-    shoes: { item: Object.assign({}, look.shoes), included: true, size: '9 UK', color: shoeColors[0].name, hex: shoeColors[0].hex }
-  };
-
-  renderStudioCustomizer();
-}
-
-// ── Render Studio Customizer Layers & Price ──
-function renderStudioCustomizer() {
-  const headingEl = document.getElementById('amfsHeading');
-  if (headingEl) headingEl.textContent = `${studioState.lookName} · Interactive Atelier Fitting`;
-
-  const modelImgEl = document.getElementById('amfsModelImage');
-  if (modelImgEl) modelImgEl.src = studioState.modelImg;
-
-  // Next / Prev Labels & Counter
-  const counterEl = document.getElementById('amfsLookCounter');
-  if (counterEl) counterEl.textContent = `0${activeStudioLookIndex + 1} / 0${currentActiveLooks.length}`;
-
-  const nextIdx = (activeStudioLookIndex + 1) % currentActiveLooks.length;
-  const prevIdx = (activeStudioLookIndex - 1 + currentActiveLooks.length) % currentActiveLooks.length;
-
-  const nextLabelEl = document.getElementById('amfsNextLookLabel');
-  if (nextLabelEl && currentActiveLooks[nextIdx]) {
-    nextLabelEl.textContent = `Next: ${currentActiveLooks[nextIdx].name}`;
-  }
-
-  const prevLabelEl = document.getElementById('amfsPrevLookLabel');
-  if (prevLabelEl && currentActiveLooks[prevIdx]) {
-    prevLabelEl.textContent = `Prev: ${currentActiveLooks[prevIdx].name}`;
-  }
-
-  // Active Colors 3D Spatial Tag
-  const colorsTextEl = document.getElementById('amfsActiveColorsText');
-  if (colorsTextEl) {
-    const activeColorParts = [];
-    if (studioState.top.included) activeColorParts.push(studioState.top.color);
-    if (studioState.bottom.included) activeColorParts.push(studioState.bottom.color);
-    if (studioState.shoes.included) activeColorParts.push(studioState.shoes.color);
-    colorsTextEl.textContent = activeColorParts.length ? activeColorParts.join(' · ') : 'Omitted Drape';
-  }
-
-  // Check if any layer is omitted from the model
-  const omittedLayers = [];
-  if (!studioState.top.included) omittedLayers.push('Top Wear');
-  if (!studioState.bottom.included) omittedLayers.push('Bottom Wear');
-  if (!studioState.shoes.included) omittedLayers.push('Footwear');
-
-  const omitBadge = document.getElementById('amfsOmitWarningBadge');
-  const omitText = document.getElementById('amfsOmitWarningText');
-  const modelFrame = document.getElementById('amfsModelFrameContainer');
-
-  if (omittedLayers.length > 0) {
-    if (omitBadge) {
-      omitBadge.classList.remove('hidden');
-      if (omitText) omitText.textContent = `${omittedLayers.join(' & ')} Omitted from Look`;
-    }
-    if (modelFrame) {
-      modelFrame.classList.add('ring-2', 'ring-amber-500/80');
-    }
-  } else {
-    if (omitBadge) omitBadge.classList.add('hidden');
-    if (modelFrame) modelFrame.classList.remove('ring-2', 'ring-amber-500/80');
-  }
-
-  const container = document.getElementById('amfsLayersContainer');
-  if (!container) return;
-
-  const topSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
-  const bottomSizes = ['28', '30', '32', '34', '36', '38'];
-  const shoeSizes = ['7 UK', '8 UK', '9 UK', '10 UK', '11 UK'];
-
-  // Helper to render layer card
-  const renderStudioLayer = (layerKey, layerLabel, layerStep, layerData, sizesList) => {
-    const isInc = layerData.included;
-    const item = layerData.item;
-    const colors = item.colors || [{ name: 'Default', hex: '#c19a6b' }];
-
-    return `
-      <div class="bg-white border ${isInc ? 'border-stone-200 shadow-xs' : 'border-dashed border-stone-300 opacity-60 bg-stone-50'} rounded-2xl p-3.5 transition-all">
-        
-        <!-- Header: Toggle Checkbox + Image + Title + Price -->
-        <div class="flex items-center justify-between gap-3 mb-2.5">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <label class="relative flex items-center cursor-pointer" title="${isInc ? 'Uncheck to remove this garment from model & bundle' : 'Check to include'}">
-              <input type="checkbox" ${isInc ? 'checked' : ''} onchange="toggleStudioLayer('${layerKey}', this.checked)" class="w-4 h-4 text-amber-500 rounded border-stone-300 focus:ring-amber-400 cursor-pointer">
-            </label>
-            <img src="${item.img}" class="w-12 h-14 object-cover rounded-lg border border-stone-200 flex-shrink-0" alt="${layerLabel}">
-            <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
-                <span class="text-[8px] font-mono uppercase bg-stone-100 text-stone-700 px-1.5 py-0.5 rounded font-bold">${layerStep} ${layerLabel}</span>
-                <span class="text-xs font-serif font-bold text-stone-900">₹${Number(item.price).toLocaleString('en-IN')}</span>
-                ${!isInc ? `<span class="text-[8px] font-mono text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded font-bold">Omitted from Look</span>` : ''}
-              </div>
-              <h5 class="font-serif text-xs font-bold text-stone-900 truncate mt-0.5">${item.title}</h5>
-            </div>
-          </div>
-        </div>
-
-        <!-- Description -->
-        <p class="text-[11px] text-stone-600 font-light leading-relaxed bg-stone-50/80 p-2 rounded-lg border border-stone-100 mb-2.5">
-          ${item.desc || 'Bespoke tailoring constructed with unlined precision and luxury natural fibers.'}
-        </p>
-
-        <!-- Customizer Row: Colors + Sizes (Only if included) -->
-        ${isInc ? `
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-stone-100 items-center">
-            
-            <!-- Color Swatches -->
-            <div>
-              <span class="text-[9px] font-mono uppercase font-bold text-stone-500 block mb-1">Color: <strong class="text-stone-800">${layerData.color}</strong></span>
-              <div class="flex items-center gap-1.5 flex-wrap">
-                ${colors.map(c => `
-                  <button type="button" onclick="setStudioLayerColor('${layerKey}', '${c.name}', '${c.hex}')" class="flex items-center gap-1 px-2 py-0.5 rounded-lg border text-[9px] font-mono font-bold cursor-pointer transition-all ${layerData.color === c.name ? 'border-amber-500 bg-amber-50 text-amber-900 shadow-xs' : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'}" title="${c.name}">
-                    <span class="w-2.5 h-2.5 rounded-full border border-black/10" style="background-color: ${c.hex};"></span>
-                    <span>${c.name}</span>
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-
-            <!-- Size Pills -->
-            <div>
-              <span class="text-[9px] font-mono uppercase font-bold text-stone-500 block mb-1">Size: <strong class="text-stone-800">${layerData.size}</strong></span>
-              <div class="flex gap-1 flex-wrap">
-                ${sizesList.map(s => `
-                  <button type="button" onclick="setStudioLayerSize('${layerKey}', '${s}')" class="px-2 py-0.5 rounded-md text-[9px] font-mono font-bold cursor-pointer transition-all ${layerData.size === s ? 'bg-amber-500 text-stone-950 border border-amber-600 shadow-xs' : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'}">
-                    ${s}
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-
-          </div>
-        ` : ''}
-
-      </div>
-    `;
-  };
-
-  container.innerHTML = `
-    ${renderStudioLayer('top', 'Top Wear', '01', studioState.top, topSizes)}
-    ${renderStudioLayer('bottom', 'Bottom Wear', '02', studioState.bottom, bottomSizes)}
-    ${renderStudioLayer('shoes', 'Footwear', '03', studioState.shoes, shoeSizes)}
-  `;
-
-  // Calculate Subtotal & Discount
-  let rawSubtotal = 0;
-  let itemsCount = 0;
-  if (studioState.top.included) { rawSubtotal += studioState.top.item.price; itemsCount++; }
-  if (studioState.bottom.included) { rawSubtotal += studioState.bottom.item.price; itemsCount++; }
-  if (studioState.shoes.included) { rawSubtotal += studioState.shoes.item.price; itemsCount++; }
-
-  const discountRate = itemsCount === 3 ? 0.12 : (itemsCount === 2 ? 0.08 : 0);
-  const finalPrice = Math.round(rawSubtotal * (1 - discountRate));
-  const savings = rawSubtotal - finalPrice;
-
-  const countLabel = document.getElementById('amfsSelectedCountLabel');
-  if (countLabel) countLabel.textContent = `Ensemble Total (${itemsCount} ${itemsCount === 1 ? 'Piece' : 'Pieces'} Selected):`;
-
-  const finalPriceEl = document.getElementById('amfsFinalPrice');
-  if (finalPriceEl) finalPriceEl.textContent = '₹' + Number(finalPrice).toLocaleString('en-IN');
-
-  const origPriceEl = document.getElementById('amfsOriginalPrice');
-  if (origPriceEl) {
-    if (savings > 0) {
-      origPriceEl.textContent = '₹' + Number(rawSubtotal).toLocaleString('en-IN');
-      origPriceEl.classList.remove('hidden');
-    } else {
-      origPriceEl.classList.add('hidden');
-    }
-  }
-
-  const savEl = document.getElementById('amfsSavingsLabel');
-  if (savEl) {
-    if (savings > 0) {
-      savEl.textContent = `Save ₹${Number(savings).toLocaleString('en-IN')} (${Math.round(discountRate * 100)}% Off)`;
-      savEl.classList.remove('hidden');
-    } else {
-      savEl.classList.add('hidden');
-    }
-  }
-
-  const btnTextEl = document.getElementById('amfsAddToCartBtnText');
-  if (btnTextEl) btnTextEl.textContent = `Acquire Fitted Ensemble (${itemsCount} ${itemsCount === 1 ? 'Item' : 'Items'} · ₹${Number(finalPrice).toLocaleString('en-IN')})`;
-
-  const badgeEl = document.getElementById('amfsBundleBadge');
-  if (badgeEl) {
-    badgeEl.textContent = itemsCount === 3 ? '12% Full Ensemble Privilege' : (itemsCount === 2 ? '8% Duo Privilege' : 'Standard Privilege');
-  }
-}
-
-// ── Studio Layer Toggle / Color / Size ──
-window.toggleStudioLayer = function(layerKey, isIncluded) {
-  if (studioState[layerKey]) {
-    studioState[layerKey].included = isIncluded;
-    renderStudioCustomizer();
-    if (typeof ndToast === 'function') {
-      ndToast(isIncluded ? `Included ${layerKey} in look drape!` : `Omitted ${layerKey} from look drape.`, 'info');
-    }
-  }
-};
-
-window.setStudioLayerColor = function(layerKey, colorName, hex) {
-  if (studioState[layerKey]) {
-    studioState[layerKey].color = colorName;
-    studioState[layerKey].hex = hex;
-    renderStudioCustomizer();
-  }
-};
-
-window.setStudioLayerSize = function(layerKey, size) {
-  if (studioState[layerKey]) {
-    studioState[layerKey].size = size;
-    renderStudioCustomizer();
-  }
-};
-
-// ── Confirm Studio Ensemble Add to Cart with all selected sizes & colors ──
-window.confirmStudioEnsembleAddToCart = function() {
-  const itemsToAdd = [];
-  if (studioState.top.included && studioState.top.item) {
-    itemsToAdd.push({
-      id: studioState.top.item.id,
-      title: studioState.top.item.title,
-      price: studioState.top.item.price,
-      image: studioState.top.item.img || studioState.top.item.image,
-      size: studioState.top.size,
-      color: studioState.top.color
-    });
-  }
-  if (studioState.bottom.included && studioState.bottom.item) {
-    itemsToAdd.push({
-      id: studioState.bottom.item.id,
-      title: studioState.bottom.item.title,
-      price: studioState.bottom.item.price,
-      image: studioState.bottom.item.img || studioState.bottom.item.image,
-      size: studioState.bottom.size,
-      color: studioState.bottom.color
-    });
-  }
-  if (studioState.shoes.included && studioState.shoes.item) {
-    itemsToAdd.push({
-      id: studioState.shoes.item.id,
-      title: studioState.shoes.item.title,
-      price: studioState.shoes.item.price,
-      image: studioState.shoes.item.img || studioState.shoes.item.image,
-      size: studioState.shoes.size,
-      color: studioState.shoes.color
-    });
-  }
-
-  if (itemsToAdd.length === 0) {
-    if (typeof ndToast === 'function') ndToast('Please select at least 1 item to acquire.', 'error');
-    return;
-  }
-
-  itemsToAdd.forEach(it => {
-    if (typeof addToCart === 'function') {
-      addToCart(it, 1, false);
-    }
-  });
-
-  const detailsSummary = itemsToAdd.map(i => `${i.color} / Size ${i.size}`).join(' · ');
-  if (typeof ndToast === 'function') {
-    ndToast(`Fitted ${itemsToAdd.length}-Piece Look (${detailsSummary}) added to Bag! 🛍️`, 'success');
-  }
-
-  closeModelFittingStudioModal();
-  closeAtelierFitModal();
-
-  setTimeout(() => {
-    if (typeof toggleQuickBagDrawer === 'function') {
-      var overlay = document.getElementById('quickBagOverlay');
-      if (overlay && overlay.classList.contains('hidden')) {
-        toggleQuickBagDrawer();
-      }
-    }
-  }, 350);
-};
-
-window.confirmStudioEnsembleInstantBuy = function() {
-  confirmStudioEnsembleAddToCart();
-  setTimeout(() => {
-    window.location.href = '<?= base_url('checkout') ?>';
-  }, 350);
 };
 </script>
 
@@ -4522,9 +5252,25 @@ window.confirmStudioEnsembleInstantBuy = function() {
 
           <!-- Wishlist top-right -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 z-10" onclick="event.stopPropagation()">
-            <button onclick="toggleWishlistItem({id:<?= $fd['id'] ?>, title:'<?= addslashes($fd['title']) ?>', price:<?= $fd_flash ?>, image:'<?= addslashes($fd_img) ?>'})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black text-rose-400 flex items-center justify-center border border-white/20 shadow-md transition-all hover:scale-110 cursor-pointer" title="Save to Wardrobe">
-              <span class="material-symbols-outlined text-[11px] sm:text-xs">favorite</span>
-            </button>
+            <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
+              <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$fd['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$fd['id'] ?>, title:'<?= addslashes(htmlspecialchars($fd['title'])) ?>', price:<?= $fd_flash ?>, image:'<?= addslashes($fd_img) ?>'}, event)">
+              <div class="svg-container">
+                <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+                </svg>
+                <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+                </svg>
+                <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="10,10 20,20"></polygon>
+                  <polygon points="10,50 20,50"></polygon>
+                  <polygon points="20,80 30,70"></polygon>
+                  <polygon points="90,10 80,20"></polygon>
+                  <polygon points="90,50 80,50"></polygon>
+                  <polygon points="80,80 70,70"></polygon>
+                </svg>
+              </div>
+            </div>
           </div>
 
           <!-- Bottom price bar inside image -->
@@ -4572,15 +5318,64 @@ window.confirmStudioEnsembleInstantBuy = function() {
             </span>
           </div>
 
+          <!-- Points Earning Pill (2x Flash Drop Bonus) -->
+          <?php 
+            $fd_pts = !empty($fd['reward_points']) ? (int)$fd['reward_points'] : max(1, round($fd_flash * 0.06)); 
+            $fd_bonus_pts = $fd_pts * 2; // 2x Flash Drop Event Multiplier
+          ?>
+          <div class="flex items-center justify-between gap-1 py-1 px-2 rounded-lg bg-amber-50 border border-amber-200">
+            <span class="text-[9px] sm:text-[10px] font-mono font-bold text-amber-900 flex items-center gap-1">
+              <span>🪙 +<?= number_format($fd_bonus_pts) ?> pts</span>
+              <span class="text-amber-700 font-normal">(2× Flash Drop Double Points)</span>
+            </span>
+            <span class="text-[9px] font-mono text-emerald-700 font-bold">₹<?= number_format($fd_bonus_pts) ?> Cashback</span>
+          </div>
+
           <!-- Action Buttons -->
           <div class="grid grid-cols-2 gap-1.5 sm:gap-2 mt-auto pt-2 sm:pt-3 border-t border-stone-100">
-            <button onclick="addToCart({id:<?= $fd['id'] ?>, title:'<?= addslashes(htmlspecialchars($fd['title'])) ?>', price:<?= $fd_flash ?>, image:'<?= addslashes($fd_img) ?>'}, 1)" class="w-full py-1.5 sm:py-2.5 bg-stone-50 border border-stone-200 text-stone-900 font-mono text-[8.5px] sm:text-[11px] uppercase tracking-wider hover:bg-stone-100 transition-all flex items-center justify-center gap-1 cursor-pointer rounded-lg sm:rounded-xl font-semibold active:scale-95">
-              <span class="material-symbols-outlined text-[10px] sm:text-xs text-[#a16207]">shopping_bag</span>
-              <span>Acquire</span>
+            <?php
+              $acquire_fd_data = [
+                'id' => (int)$fd['id'],
+                'title' => $fd['title'],
+                'price' => (float)$fd_flash,
+                'compare_price' => (float)($fd_original ?? ($fd['compare_at_price'] ?? 0)),
+                'reward_points' => $fd_bonus_pts,
+                'image' => $fd_img,
+                'vendor' => $fd['vendor'] ?? 'Lumina Atelier Milano',
+                'category' => 'flash',
+                'description' => strip_tags($fd['short_description'] ?? 'Exclusive limited edition flash drop.')
+              ];
+            ?>
+            <button type="button" 
+                    data-tooltip="Fit &amp; Sizing" 
+                    data-product="<?= htmlspecialchars(json_encode($acquire_fd_data), ENT_QUOTES, 'UTF-8') ?>" 
+                    onclick="openAtelierFitModal(this.dataset.product || this.getAttribute('data-product'))" 
+                    class="uiverse-action-btn uiverse-acquire-btn active:scale-95">
+              <div class="uiverse-btn-wrapper">
+                <div class="uiverse-btn-text">
+                  <span class="material-symbols-outlined text-[12px] sm:text-[13px] text-[#a16207]">shopping_bag</span>
+                  <span>Acquire</span>
+                </div>
+                <span class="uiverse-btn-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                  <span>AI Fit</span>
+                </span>
+              </div>
             </button>
-            <button onclick="openExpressCheckout(<?= $fd['id'] ?>, '<?= addslashes($fd['title']) ?>', <?= $fd_flash ?>, '<?= addslashes($fd_img) ?>', <?= $fd['id'] ?>)" class="w-full py-1.5 sm:py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-mono text-[8.5px] sm:text-[11px] uppercase tracking-wider font-extrabold transition-all flex items-center justify-center gap-1 cursor-pointer rounded-lg sm:rounded-xl shadow-sm border border-stone-900 active:scale-95">
-              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-              <span>Buy</span>
+            <button type="button" 
+                    data-tooltip="Flash: ₹<?= number_format($fd_flash, 0) ?>" 
+                    onclick="openExpressCheckout(<?= $fd['id'] ?>, '<?= addslashes($fd['title']) ?>', <?= $fd_flash ?>, '<?= addslashes($fd_img) ?>', <?= $fd['id'] ?>)" 
+                    class="uiverse-action-btn uiverse-buy-btn active:scale-95">
+              <div class="uiverse-btn-wrapper">
+                <div class="uiverse-btn-text">
+                  <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                  <span>Buy</span>
+                </div>
+                <span class="uiverse-btn-icon">
+                  <svg viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 text-[#e9c176]"><path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>
+                  <span>1-Click</span>
+                </span>
+              </div>
             </button>
           </div>
         </div>
@@ -4653,32 +5448,625 @@ window.confirmStudioEnsembleInstantBuy = function() {
 </section>
 
 <!-- ══════════════════════════════════════════════════════
-     PRIVATE ACCESS: REQUEST ATELIER INVITATION
+     ATELIER PRIVILEGE & SUBSCRIPTION REWARDS GRID (LUXURY WHITE)
 ══════════════════════════════════════════════════════ -->
+<section class="py-16 md:py-24 bg-white border-t border-b border-stone-200/80 text-stone-900 scroll-unfold-section relative overflow-hidden" id="loyaltySubscriptionSection">
+  <!-- Subtle ambient background luxury warm gradient -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(217,119,6,0.04),rgba(255,255,255,0))] pointer-events-none"></div>
+
+  <div class="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop relative z-10">
+    
+    <!-- Section Header -->
+    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+      <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200/90 text-amber-900 font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-3 shadow-2xs">
+        <span class="text-amber-600">✦</span> Atelier Privileges &amp; Rewards <span class="text-amber-600">✦</span>
+      </span>
+      <h2 class="font-serif text-3xl sm:text-4xl text-stone-950 font-bold mb-3 tracking-tight">Points Rewards &amp; Private Subscription</h2>
+      <p class="text-xs sm:text-sm text-stone-600 font-normal leading-relaxed">
+        Every acquisition elevates your standing. Calculate your exact cashback yield, unlock escalating tier multipliers, and explore curated monthly subscription privileges.
+      </p>
+    </div>
+
+    <!-- 4-Column High-End Overview Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-12">
+      
+      <!-- Card 1: Points & Instant Cashback -->
+      <div class="bg-white p-6 sm:p-7 rounded-2xl border border-stone-200/90 hover:border-amber-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-xs relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-amber-700 shadow-2xs group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl">toll</span>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 font-mono text-[10.5px] font-bold tracking-wider">
+              1 Pt = ₹1
+            </span>
+          </div>
+          <h3 class="font-serif text-lg font-bold text-stone-900 mb-2 group-hover:text-amber-800 transition-colors">Atelier Reward Points</h3>
+          <p class="text-xs text-stone-600 font-normal leading-relaxed mb-5">
+            Earn 6 points for every ₹100 spent (6% Atelier Cashback) across all collections. Points never expire and convert directly to cash deductions on future orders.
+          </p>
+        </div>
+        <ul class="space-y-2.5 pt-4 border-t border-stone-100 text-[11px] font-mono text-stone-700">
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+            <span>Instant checkout redemption</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+            <span>+150 pts welcome bonus on signup</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+            <span>2× double points on flash drops</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 2: Tier Multipliers (Bronze to Diamond) -->
+      <div class="bg-white p-6 sm:p-7 rounded-2xl border border-stone-200/90 hover:border-sky-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-xs relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200/80 flex items-center justify-center text-sky-700 shadow-2xs group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl">workspace_premium</span>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-900 font-mono text-[10.5px] font-bold tracking-wider">
+              Up to 3.0× Multiplier
+            </span>
+          </div>
+          <h3 class="font-serif text-lg font-bold text-stone-900 mb-2 group-hover:text-sky-800 transition-colors">VIP Multiplier Tiers</h3>
+          <p class="text-xs text-stone-600 font-normal leading-relaxed mb-5">
+            Ascend through Silver, Gold, Platinum, and Diamond tiers. Unlock accelerating points velocity and guaranteed VIP discounts.
+          </p>
+        </div>
+        <ul class="space-y-2.5 pt-4 border-t border-stone-100 text-[11px] font-mono text-stone-700">
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-sky-600 font-bold">star</span>
+            <span>Silver (1.2×) &amp; Gold (1.5×)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-sky-600 font-bold">diamond</span>
+            <span>Platinum (2.0×) Tier Multiplier</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-sky-600 font-bold">crown</span>
+            <span>Diamond Sovereign: 3.0× Velocity</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 3: Bespoke Private Subscription -->
+      <div class="bg-white p-6 sm:p-7 rounded-2xl border border-stone-200/90 hover:border-purple-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-xs relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200/80 flex items-center justify-center text-purple-700 shadow-2xs group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl">card_membership</span>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-900 font-mono text-[10.5px] font-bold tracking-wider">
+              Private Whitelist
+            </span>
+          </div>
+          <h3 class="font-serif text-lg font-bold text-stone-900 mb-2 group-hover:text-purple-800 transition-colors">Atelier Subscription</h3>
+          <p class="text-xs text-stone-600 font-normal leading-relaxed mb-5">
+            Private invitation pass granting 48-hour priority access to numbered capsule launches, personal tailor appointments, and zero-fee logistics.
+          </p>
+        </div>
+        <ul class="space-y-2.5 pt-4 border-t border-stone-100 text-[11px] font-mono text-stone-700">
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-purple-600 font-bold">schedule</span>
+            <span>48-hr early capsule reserve window</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-purple-600 font-bold">local_shipping</span>
+            <span>Complimentary white-glove shipping</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-purple-600 font-bold">psychology</span>
+            <span>Dedicated AI stylist priority</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 4: Daily Streaks & Badges -->
+      <div class="bg-white p-6 sm:p-7 rounded-2xl border border-stone-200/90 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-xs relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-700 shadow-2xs group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl">military_tech</span>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-900 font-mono text-[10.5px] font-bold tracking-wider">
+              Gamified Bounties
+            </span>
+          </div>
+          <h3 class="font-serif text-lg font-bold text-stone-900 mb-2 group-hover:text-emerald-800 transition-colors">Streaks &amp; Badges</h3>
+          <p class="text-xs text-stone-600 font-normal leading-relaxed mb-5">
+            Check in daily, build your wardrobe style archetypes, and collect achievement badges with bonus point drops up to 5,000 points.
+          </p>
+        </div>
+        <ul class="space-y-2.5 pt-4 border-t border-stone-100 text-[11px] font-mono text-stone-700">
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">local_fire_department</span>
+            <span>Daily style streak bonuses</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">military_tech</span>
+            <span>Collector achievement trophies</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">casino</span>
+            <span>Spin &amp; Win VIP exclusive drops</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         INTERACTIVE REAL-TIME POINTS & REWARDS CALCULATOR (LUXURY OBSIDIAN BLACK)
+    ══════════════════════════════════════════════════════ -->
+    <div class="bg-[#0c0d14] border border-amber-500/30 rounded-3xl p-6 sm:p-10 mb-14 shadow-2xl relative overflow-hidden text-white">
+      <!-- Glow ambient accents -->
+      <div class="absolute -top-24 -right-24 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+        
+        <!-- Controls Column (Left) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-400/30 flex items-center justify-center text-amber-400 shadow-sm">
+              <span class="material-symbols-outlined text-2xl">calculate</span>
+            </div>
+            <div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-white tracking-tight">Live Points &amp; Cashback Calculator</h3>
+              <p class="text-xs text-stone-400 font-light">Simulate your order spend and tier multiplier to view exact cash credits.</p>
+            </div>
+          </div>
+
+          <!-- Purchase Amount Slider & Input -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="font-mono text-xs font-bold text-stone-300 uppercase tracking-wider">Planned Purchase Value</label>
+              <div class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-xl border border-white/20 focus-within:border-amber-400 focus-within:ring-2 focus-within:ring-amber-400/20 shadow-sm transition-all">
+                <span class="text-xs font-serif font-bold text-[#e9c176]">₹</span>
+                <input type="number" id="calcSpendInput" value="15000" min="500" max="250000" step="500" class="w-24 bg-transparent text-right font-serif font-bold text-sm text-white outline-none border-none">
+              </div>
+            </div>
+            <input type="range" id="calcSpendSlider" min="1000" max="100000" step="1000" value="15000" class="w-full accent-amber-400 bg-white/20 h-2.5 rounded-lg cursor-pointer">
+            <div class="flex items-center justify-between text-[11px] font-mono text-stone-400 mt-1">
+              <span>₹1,000</span>
+              <span>₹25,000</span>
+              <span>₹50,000</span>
+              <span>₹1,00,000+</span>
+            </div>
+
+            <!-- Quick Preset Chips -->
+            <div class="flex flex-wrap gap-2 mt-3">
+              <button type="button" onclick="setCalcSpend(2500)" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-[11px] font-mono font-medium text-stone-300 transition-all cursor-pointer">₹2,500</button>
+              <button type="button" onclick="setCalcSpend(5000)" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-[11px] font-mono font-medium text-stone-300 transition-all cursor-pointer">₹5,000</button>
+              <button type="button" onclick="setCalcSpend(15000)" class="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400 text-[11px] font-mono font-bold text-amber-300 transition-all cursor-pointer">₹15,000</button>
+              <button type="button" onclick="setCalcSpend(35000)" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-[11px] font-mono font-medium text-stone-300 transition-all cursor-pointer">₹35,000</button>
+              <button type="button" onclick="setCalcSpend(75000)" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-[11px] font-mono font-medium text-stone-300 transition-all cursor-pointer">₹75,000</button>
+            </div>
+          </div>
+
+          <!-- Select VIP Tier -->
+          <div>
+            <label class="font-mono text-xs font-bold text-stone-300 uppercase tracking-wider block mb-2">Select Your VIP Tier Multiplier</label>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="calcTierGrid">
+              <button type="button" data-multiplier="1.0" data-tier="Bronze" onclick="setCalcTier(this, 1.0, 'Bronze')" class="calc-tier-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:border-amber-400/40 text-left transition-all cursor-pointer">
+                <div class="text-sm">🥉</div>
+                <div class="font-serif text-xs font-bold text-white mt-1">Bronze</div>
+                <div class="font-mono text-[10px] text-stone-400">1.0× Base</div>
+              </button>
+              <button type="button" data-multiplier="1.2" data-tier="Silver" onclick="setCalcTier(this, 1.2, 'Silver')" class="calc-tier-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:border-sky-400/50 text-left transition-all cursor-pointer">
+                <div class="text-sm">🥈</div>
+                <div class="font-serif text-xs font-bold text-white mt-1">Silver</div>
+                <div class="font-mono text-[10px] text-sky-300 font-semibold">1.2× Boost</div>
+              </button>
+              <button type="button" data-multiplier="1.5" data-tier="Gold" onclick="setCalcTier(this, 1.5, 'Gold')" class="calc-tier-btn active-tier p-2.5 rounded-xl border-2 border-amber-400 bg-amber-500/15 text-left transition-all shadow-md ring-2 ring-amber-400/20 cursor-pointer">
+                <div class="text-sm">🥇</div>
+                <div class="font-serif text-xs font-bold text-amber-300 mt-1">Gold</div>
+                <div class="font-mono text-[10px] text-amber-300 font-bold">1.5× Boost</div>
+              </button>
+              <button type="button" data-multiplier="2.0" data-tier="Platinum" onclick="setCalcTier(this, 2.0, 'Platinum')" class="calc-tier-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:border-purple-400/50 text-left transition-all cursor-pointer">
+                <div class="text-sm">💎</div>
+                <div class="font-serif text-xs font-bold text-white mt-1">Platinum</div>
+                <div class="font-mono text-[10px] text-purple-300 font-semibold">2.0× Boost</div>
+              </button>
+              <button type="button" data-multiplier="3.0" data-tier="Diamond" onclick="setCalcTier(this, 3.0, 'Diamond')" class="calc-tier-btn p-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:border-cyan-400/50 text-left transition-all cursor-pointer">
+                <div class="text-sm">👑</div>
+                <div class="font-serif text-xs font-bold text-white mt-1">Diamond</div>
+                <div class="font-mono text-[10px] text-cyan-300 font-bold">3.0× Max</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- VIP Subscription Pass Privilege Toggle -->
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-amber-400/40 transition-all cursor-pointer" onclick="toggleCalcSubscription()">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
+                <span class="material-symbols-outlined text-base">verified</span>
+              </div>
+              <div>
+                <span class="font-serif text-xs font-bold text-white block">Include Atelier VIP Club Pass</span>
+                <span class="text-[10px] font-mono text-stone-400">+300 Monthly Point Bounty &amp; 15% VIP Privilege</span>
+              </div>
+            </div>
+            <input type="checkbox" id="calcSubToggle" class="w-4 h-4 accent-amber-400 cursor-pointer" onchange="updateAtelierCalculator()">
+          </div>
+        </div>
+
+        <!-- Real-Time Calculation Result HUD (Right) -->
+        <div class="lg:col-span-5">
+          <div class="bg-gradient-to-b from-[#161722] to-[#0a0b10] p-6 sm:p-7 rounded-2xl border border-amber-500/40 shadow-xl flex flex-col justify-between relative overflow-hidden">
+            <!-- Top luxury gold accent line -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-amber-500 to-[#e9c176]"></div>
+
+            <div class="flex items-center justify-between pb-4 border-b border-white/10">
+              <span class="font-mono text-[11px] uppercase tracking-wider text-stone-400 font-semibold">Calculation Breakdown</span>
+              <span id="calcTierBadge" class="px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 font-mono text-[10px] font-bold">
+                🥇 Gold (1.5×)
+              </span>
+            </div>
+
+            <!-- Big Stat 1: Total Points -->
+            <div class="my-5">
+              <span class="text-[10.5px] font-mono text-stone-400 uppercase tracking-wider block mb-1">Total Points Earned</span>
+              <div class="flex items-baseline gap-2">
+                <span id="calcPointsTotal" class="font-serif text-4xl sm:text-5xl font-extrabold text-[#e9c176] tracking-tight">1,350</span>
+                <span class="font-mono text-xs font-bold text-amber-400 uppercase">PTS</span>
+              </div>
+              <div class="text-[11.5px] font-mono text-emerald-400 font-semibold mt-1 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-emerald-400">savings</span>
+                <span>Direct Cash Value: <strong id="calcCashbackVal" class="font-serif text-white text-sm">₹1,350.00</strong></span>
+              </div>
+            </div>
+
+            <!-- Formula Transparency Card -->
+            <div class="p-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-[11px] font-mono text-stone-300 space-y-2 mb-5">
+              <div class="flex justify-between">
+                <span class="text-stone-400">Base Cashback (6% of spend):</span>
+                <span id="calcBasePts" class="font-bold text-white">900 pts</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-stone-400">Tier Multiplier:</span>
+                <span id="calcMultiplierLabel" class="font-bold text-amber-400">1.5×</span>
+              </div>
+              <div class="flex justify-between" id="calcSubBonusRow" style="display: none;">
+                <span class="text-stone-400">VIP Pass Bounty:</span>
+                <span class="font-bold text-purple-400">+300 pts</span>
+              </div>
+              <div class="flex justify-between pt-2 border-t border-white/10 font-bold">
+                <span class="text-[#e9c176]">Effective Return Rate:</span>
+                <span id="calcReturnPct" class="text-emerald-400">9.0% Yield</span>
+              </div>
+            </div>
+
+            <!-- Milestone Progress Bar -->
+            <div class="pt-1">
+              <div class="flex justify-between text-[10.5px] font-mono mb-1.5">
+                <span class="text-stone-400" id="calcProgressLabel">Next Tier: Platinum (₹70,000 away)</span>
+                <span class="text-amber-400 font-bold" id="calcProgressPct">18%</span>
+              </div>
+              <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                <div id="calcProgressBar" class="bg-gradient-to-r from-amber-400 to-[#e9c176] h-full rounded-full transition-all duration-300" style="width: 18%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         ATELIER CURATED SUBSCRIPTION PLANS (REAL & TRANSPARENT WHITE)
+    ══════════════════════════════════════════════════════ -->
+    <div class="mb-12">
+      <div class="text-center max-w-xl mx-auto mb-8">
+        <span class="font-mono text-[10.5px] text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full uppercase tracking-[0.2em] inline-block mb-2 font-bold">✦ Curated Deliveries ✦</span>
+        <h3 class="font-serif text-2xl sm:text-3xl text-stone-950 font-bold">Bespoke Atelier Subscription Passes</h3>
+        <p class="text-xs text-stone-500 font-normal mt-1">Select an ongoing subscription tier for guaranteed monthly designer capsules and whitelist privileges.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        
+        <!-- Plan 1: VIP Monthly Capsule Club -->
+        <div class="bg-white p-7 sm:p-8 rounded-3xl border border-stone-200/90 hover:border-amber-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group shadow-sm relative overflow-hidden">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 font-mono text-[10px] font-bold uppercase tracking-wider">
+                Monthly Capsule
+              </span>
+              <span class="text-xs text-stone-500 font-mono">Auto-renews monthly</span>
+            </div>
+            <h4 class="font-serif text-xl font-bold text-stone-950 mb-1 group-hover:text-amber-800 transition-colors">VIP Monthly Capsule Club</h4>
+            <p class="text-xs text-stone-600 font-normal mb-6">1 Exclusive 240 GSM heavy cotton streetwear graphic tee auto-delivered to your doorstep each month.</p>
+            
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="font-serif text-4xl font-extrabold text-stone-950">₹999</span>
+              <span class="font-mono text-xs text-stone-500">/ month</span>
+              <span class="line-through font-mono text-xs text-stone-400 ml-1">₹1,999</span>
+              <span class="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">50% OFF</span>
+            </div>
+
+            <ul class="space-y-3 text-xs font-mono text-stone-700 mb-6">
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+                <span>1 Exclusive Heavyweight Tee (240 GSM) Guaranteed</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+                <span>Free Doorstep Express White-Glove Delivery</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+                <span>15% Off all other catalog pieces</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+                <span>2× Double Points multiplier on all purchases</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-emerald-600 font-bold">check_circle</span>
+                <span>Pause, skip, or cancel anytime with 1-click</span>
+              </li>
+            </ul>
+          </div>
+
+          <button type="button" onclick="ndToast('Redirecting to VIP Capsule Pass checkout...', 'info'); setTimeout(() => { window.location.href = '<?= base_url("cart") ?>'; }, 700);" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-[#e9c176] text-stone-950 font-mono text-xs font-bold uppercase tracking-wider hover:opacity-95 transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer">
+            Subscribe Now · ₹999/mo
+          </button>
+        </div>
+
+        <!-- Plan 2: Atelier Seasonal Haute Mystery Box -->
+        <div class="bg-white p-7 sm:p-8 rounded-3xl border-2 border-purple-300 hover:border-purple-500 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 right-0 px-4 py-1.5 bg-purple-700 text-white font-mono text-[9.5px] font-bold uppercase tracking-wider rounded-bl-xl shadow-xs">
+            Collector's Choice
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-900 font-mono text-[10px] font-bold uppercase tracking-wider">
+                Quarterly Delivery
+              </span>
+              <span class="text-xs text-stone-500 font-mono">Delivered every 3 months</span>
+            </div>
+            <h4 class="font-serif text-xl font-bold text-stone-950 mb-1 group-hover:text-purple-800 transition-colors">Haute Mystery Capsule Box</h4>
+            <p class="text-xs text-stone-600 font-normal mb-6">Curated 3-item luxury streetwear capsule box (3× Retail Value ₹7,500+) delivered every season.</p>
+            
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="font-serif text-4xl font-extrabold text-stone-950">₹2,499</span>
+              <span class="font-mono text-xs text-stone-500">/ quarter</span>
+              <span class="line-through font-mono text-xs text-stone-400 ml-1">₹5,499</span>
+              <span class="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-200 px-1.5 py-0.5 rounded">55% OFF</span>
+            </div>
+
+            <ul class="space-y-3 text-xs font-mono text-stone-700 mb-6">
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-purple-600 font-bold">check_circle</span>
+                <span>3 Luxury Streetwear Garments Guaranteed</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-purple-600 font-bold">check_circle</span>
+                <span>Includes 1 Heavy Hoodie + 2 Tops/Accessories</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-purple-600 font-bold">check_circle</span>
+                <span>48-Hour Private Whitelist Early Access</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-purple-600 font-bold">check_circle</span>
+                <span>Priority VIP Doorstep Size Exchanges</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-sm text-purple-600 font-bold">check_circle</span>
+                <span>Dedicated VIP AI Stylist Assistance</span>
+              </li>
+            </ul>
+          </div>
+
+          <button type="button" onclick="ndToast('Redirecting to Haute Mystery Box checkout...', 'info'); setTimeout(() => { window.location.href = '<?= base_url("cart") ?>'; }, 700);" class="w-full py-3.5 rounded-xl bg-stone-950 hover:bg-stone-800 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer">
+            Subscribe Now · ₹2,499/quarter
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Trust Badges Bar -->
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono text-stone-600">
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">verified_user</span> 100% Guaranteed Authentic</span>
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-amber-600">local_shipping</span> Free Express White-Glove Logistics</span>
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-sky-600">cached</span> Instant Doorstep Size Exchanges</span>
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-purple-600">lock</span> Zero Lock-In · Pause or Cancel Anytime</span>
+      </div>
+    </div>
+
+    <!-- Tier Quick-Indicator Badges Bar -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-[#faf9f6] border border-stone-200/90 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-amber-700 text-lg">military_tech</span>
+        <span class="font-mono text-xs font-bold text-stone-800 uppercase tracking-wider">Active VIP Tiers:</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+        <span class="px-3 py-1.5 rounded-xl bg-white border border-stone-200 text-amber-900 font-mono text-xs font-bold flex items-center gap-1.5 shadow-2xs">
+          <span>🥉</span> Bronze (1.0× · ₹0+)
+        </span>
+        <span class="px-3 py-1.5 rounded-xl bg-white border border-sky-200 text-sky-900 font-mono text-xs font-bold flex items-center gap-1.5 shadow-2xs">
+          <span>🥈</span> Silver (1.2× · ₹15k+)
+        </span>
+        <span class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 font-mono text-xs font-bold flex items-center gap-1.5 shadow-2xs">
+          <span>🥇</span> Gold (1.5× · ₹40k+)
+        </span>
+        <span class="px-3 py-1.5 rounded-xl bg-white border border-purple-200 text-purple-900 font-mono text-xs font-bold flex items-center gap-1.5 shadow-2xs">
+          <span>💎</span> Platinum (2.0× · ₹85k+)
+        </span>
+        <span class="px-3 py-1.5 rounded-xl bg-white border border-cyan-300 text-cyan-950 font-mono text-xs font-bold flex items-center gap-1.5 shadow-2xs">
+          <span>👑</span> Diamond Sovereign (3.0× · ₹1.5L+)
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// ── Atelier Points & Privilege Real-Time Calculator Logic ──
+(function initAtelierPointsCalculator() {
+  var currentMultiplier = 1.5;
+  var currentTierName = 'Gold';
+  var tierThresholds = {
+    'Bronze': { min: 0, next: 15000, nextName: 'Silver (1.2×)' },
+    'Silver': { min: 15000, next: 40000, nextName: 'Gold (1.5×)' },
+    'Gold': { min: 40000, next: 85000, nextName: 'Platinum (2.0×)' },
+    'Platinum': { min: 85000, next: 150000, nextName: 'Diamond Sovereign (3.0×)' },
+    'Diamond': { min: 150000, next: 150000, nextName: 'Max Diamond Tier Unlocked' }
+  };
+
+  window.setCalcSpend = function(val) {
+    var sInput = document.getElementById('calcSpendInput');
+    var sSlider = document.getElementById('calcSpendSlider');
+    if (sInput) sInput.value = val;
+    if (sSlider) sSlider.value = val;
+    updateAtelierCalculator();
+  };
+
+  window.setCalcTier = function(btnEl, multiplier, tierName) {
+    currentMultiplier = multiplier;
+    currentTierName = tierName;
+
+    document.querySelectorAll('#calcTierGrid .calc-tier-btn').forEach(function(b) {
+      b.classList.remove('border-2', 'border-amber-400', 'bg-amber-500/15', 'active-tier', 'shadow-md', 'ring-2', 'ring-amber-400/20');
+      b.classList.add('border', 'border-white/10', 'bg-white/[0.04]');
+      var nameEl = b.querySelector('.font-serif');
+      if (nameEl) nameEl.className = 'font-serif text-xs font-bold text-white mt-1';
+    });
+
+    if (btnEl) {
+      btnEl.classList.remove('border', 'border-white/10', 'bg-white/[0.04]');
+      btnEl.classList.add('border-2', 'border-amber-400', 'bg-amber-500/15', 'active-tier', 'shadow-md', 'ring-2', 'ring-amber-400/20');
+      var nameEl = btnEl.querySelector('.font-serif');
+      if (nameEl) nameEl.className = 'font-serif text-xs font-bold text-amber-300 mt-1';
+    }
+
+    var badgeEl = document.getElementById('calcTierBadge');
+    if (badgeEl) {
+      var icon = tierName === 'Bronze' ? '🥉' : (tierName === 'Silver' ? '🥈' : (tierName === 'Gold' ? '🥇' : (tierName === 'Platinum' ? '💎' : '👑')));
+      badgeEl.textContent = icon + ' ' + tierName + ' (' + multiplier.toFixed(1) + '×)';
+    }
+
+    updateAtelierCalculator();
+  };
+
+  window.toggleCalcSubscription = function() {
+    var toggle = document.getElementById('calcSubToggle');
+    if (toggle) {
+      toggle.checked = !toggle.checked;
+      updateAtelierCalculator();
+    }
+  };
+
+  window.updateAtelierCalculator = function() {
+    var spendInput = document.getElementById('calcSpendInput');
+    var spend = parseFloat(spendInput ? spendInput.value : 15000) || 0;
+    
+    // Formula: 6% Base Cashback points (6 pts per ₹100) * Tier Multiplier + Subscription bonus (300 pts)
+    var basePts = Math.round(spend * 0.06);
+    var subToggle = document.getElementById('calcSubToggle');
+    var subBonus = (subToggle && subToggle.checked) ? 300 : 0;
+    var totalPts = Math.round((basePts * currentMultiplier) + subBonus);
+    var cashVal = totalPts; // 1 pt = ₹1
+
+    // Update Points display
+    var ptsEl = document.getElementById('calcPointsTotal');
+    if (ptsEl) ptsEl.textContent = totalPts.toLocaleString('en-IN');
+
+    // Update Cash Value
+    var cashEl = document.getElementById('calcCashbackVal');
+    if (cashEl) cashEl.textContent = '₹' + cashVal.toLocaleString('en-IN') + '.00';
+
+    // Update Base pts
+    var baseEl = document.getElementById('calcBasePts');
+    if (baseEl) baseEl.textContent = basePts.toLocaleString('en-IN') + ' pts';
+
+    // Multiplier Label
+    var multEl = document.getElementById('calcMultiplierLabel');
+    if (multEl) multEl.textContent = currentMultiplier.toFixed(1) + '×';
+
+    // Sub bonus row
+    var subRow = document.getElementById('calcSubBonusRow');
+    if (subRow) subRow.style.display = subBonus > 0 ? 'flex' : 'none';
+
+    // Return Percentage Yield
+    var returnPct = spend > 0 ? ((cashVal / spend) * 100).toFixed(1) : '6.0';
+    var returnEl = document.getElementById('calcReturnPct');
+    if (returnEl) returnEl.textContent = returnPct + '% Yield';
+
+    // Milestone Progress
+    var tData = tierThresholds[currentTierName] || tierThresholds['Bronze'];
+    var progLabel = document.getElementById('calcProgressLabel');
+    var progPctEl = document.getElementById('calcProgressPct');
+    var progBar = document.getElementById('calcProgressBar');
+
+    if (currentTierName === 'Diamond') {
+      if (progLabel) progLabel.textContent = '👑 Maximum Sovereign Status Achieved';
+      if (progPctEl) progPctEl.textContent = '100%';
+      if (progBar) progBar.style.width = '100%';
+    } else {
+      var nextTarget = tData.next;
+      var remaining = Math.max(0, nextTarget - spend);
+      var pct = Math.min(100, Math.round((spend / nextTarget) * 100));
+      if (progLabel) progLabel.textContent = 'Next Tier: ' + tData.nextName + ' (' + (remaining > 0 ? '₹' + remaining.toLocaleString('en-IN') + ' away' : 'Unlocked!') + ')';
+      if (progPctEl) progPctEl.textContent = pct + '%';
+      if (progBar) progBar.style.width = pct + '%';
+    }
+  };
+
+  // Sync Input and Slider
+  var sInput = document.getElementById('calcSpendInput');
+  var sSlider = document.getElementById('calcSpendSlider');
+  if (sInput && sSlider) {
+    sInput.addEventListener('input', function() {
+      sSlider.value = sInput.value;
+      updateAtelierCalculator();
+    });
+    sSlider.addEventListener('input', function() {
+      sInput.value = sSlider.value;
+      updateAtelierCalculator();
+    });
+  }
+
+  // Initialize
+  setTimeout(updateAtelierCalculator, 100);
+})();
+</script>
+
 <!-- ══════════════════════════════════════════════════════
-     PRIVATE ACCESS: REQUEST ATELIER INVITATION (LUXURY WHITE)
+     PRIVATE ACCESS: REQUEST ATELIER INVITATION (LUXURY OBSIDIAN BLACK)
 ══════════════════════════════════════════════════════ -->
-<section class="py-16 md:py-24 bg-[#faf9f6] border-t border-b border-stone-200 text-stone-900 scroll-unfold-section relative overflow-hidden" id="newsletterSection">
+<section class="py-16 md:py-24 bg-[#0a0b0e] border-t border-b border-stone-800 text-white scroll-unfold-section relative overflow-hidden" id="newsletterSection">
   <!-- Subtle warm ambient backdrop glow -->
-  <div class="absolute w-96 h-96 rounded-full bg-amber-500/5 blur-[100px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+  <div class="absolute w-96 h-96 rounded-full bg-amber-500/10 blur-[120px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
 
   <div class="max-w-xl mx-auto px-4 text-center relative z-10">
-    <span class="font-mono text-xs text-[#a16207] uppercase tracking-[0.25em] block mb-2 font-bold">✦ Private Access ✦</span>
-    <h2 class="font-serif text-3xl sm:text-4xl text-stone-950 font-bold mb-3 tracking-tight">Request Atelier Invitation</h2>
-    <p class="text-stone-600 mb-8 text-xs sm:text-sm font-light leading-relaxed max-w-md mx-auto">
+    <span class="font-mono text-xs text-[#e9c176] uppercase tracking-[0.25em] block mb-2 font-bold">✦ Private Access ✦</span>
+    <h2 class="font-serif text-3xl sm:text-4xl text-white font-bold mb-3 tracking-tight">Request Atelier Invitation</h2>
+    <p class="text-stone-300 mb-8 text-xs sm:text-sm font-light leading-relaxed max-w-md mx-auto">
       Receive private access to hand-numbered capsule releases, bespoke fittings, and runway previews.
     </p>
 
     <form class="flex flex-col sm:flex-row gap-2.5 max-w-md mx-auto" onsubmit="event.preventDefault(); ndToast('Your invitation request has been prioritized by the Atelier.', 'success'); this.reset();">
-      <input type="email" placeholder="Enter your private email" required class="flex-1 bg-white px-4 py-3.5 text-xs text-stone-900 border border-stone-300 focus:border-stone-950 focus:ring-1 focus:ring-stone-950 rounded-xl outline-none shadow-2xs font-sans">
+      <input type="email" placeholder="Enter your private email" required class="flex-1 bg-white/10 px-4 py-3.5 text-xs text-white placeholder:text-stone-400 border border-white/20 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 rounded-xl outline-none shadow-sm font-sans backdrop-blur-sm">
       <button type="submit" data-cursor="SUBMIT" class="bg-gradient-to-r from-amber-400 to-[#e9c176] hover:opacity-95 text-stone-950 font-mono text-xs uppercase tracking-wider px-7 py-3.5 font-extrabold shadow-md active:scale-95 transition-all cursor-pointer rounded-xl flex-shrink-0">
         Request Invitation
       </button>
     </form>
 
-    <div class="mt-6 flex items-center justify-center gap-6 text-[10px] font-mono text-stone-500">
-      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-600">lock</span> Confidential &amp; Encrypted</span>
-      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-[#a16207]">verified</span> Strict Zero Spam Guarantee</span>
+    <div class="mt-6 flex items-center justify-center gap-6 text-[10px] font-mono text-stone-400">
+      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">lock</span> Confidential &amp; Encrypted</span>
+      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-[#e9c176]">verified</span> Strict Zero Spam Guarantee</span>
     </div>
   </div>
 </section>

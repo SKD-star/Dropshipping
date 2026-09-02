@@ -2,27 +2,43 @@
 namespace App\Jobs;
 
 use App\Adapters\CjSupplierAdapter;
+use App\Adapters\QikinkSupplierAdapter;
+use App\Adapters\PrintroveSupplierAdapter;
+use App\Adapters\UrbanCrewSupplierAdapter;
+use SupplierInterface;
 use PDO;
 use Throwable;
 
 require_once __DIR__ . '/../core/adapters/CjSupplierAdapter.php';
+require_once __DIR__ . '/../core/adapters/QikinkSupplierAdapter.php';
+require_once __DIR__ . '/../core/adapters/PrintroveSupplierAdapter.php';
+require_once __DIR__ . '/../core/adapters/UrbanCrewSupplierAdapter.php';
 
 /**
  * FulfillmentJob — End-to-End Idempotent Automated Order Fulfillment Engine
- * Pushes paid orders to supplier API, creates shipments, syncs AWB tracking,
- * updates order timeline, and notifies customer.
+ * Pushes paid orders to supplier API (Printrove / Qikink / UrbanCrew / CJ), creates shipments,
+ * syncs AWB tracking, updates order timeline, and notifies customer.
  */
 class FulfillmentJob
 {
     private PDO $pdo;
     private int $store_id;
-    private CjSupplierAdapter $supplier;
+    private SupplierInterface $supplier;
 
-    public function __construct(PDO $pdo, int $store_id = 1)
+    public function __construct(PDO $pdo, int $store_id = 1, string $provider = 'printrove')
     {
         $this->pdo = $pdo;
         $this->store_id = $store_id;
-        $this->supplier = new CjSupplierAdapter($this->pdo, $this->store_id);
+        
+        if (stripos($provider, 'printrove') !== false) {
+            $this->supplier = new PrintroveSupplierAdapter($this->pdo, $this->store_id);
+        } elseif (stripos($provider, 'urbancrew') !== false) {
+            $this->supplier = new UrbanCrewSupplierAdapter($this->pdo, $this->store_id);
+        } elseif (stripos($provider, 'cj') !== false) {
+            $this->supplier = new CjSupplierAdapter($this->pdo, $this->store_id);
+        } else {
+            $this->supplier = new QikinkSupplierAdapter($this->pdo, $this->store_id);
+        }
     }
 
     public function handle(array $payload): bool

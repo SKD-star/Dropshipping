@@ -5,8 +5,14 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title><?= htmlspecialchars($title ?? 'NovaDrop - Autonomous Performance Commerce OS') ?></title>
 <meta name="description" content="<?= htmlspecialchars($meta_description ?? 'NovaDrop — Curated ergonomic tools and performance essentials. Designed with intention, crafted to last.') ?>">
+<meta property="og:title" content="<?= htmlspecialchars($title ?? 'NovaDrop') ?>">
+<meta property="og:description" content="<?= htmlspecialchars($meta_description ?? 'Curated garments and architectural objects. Designed with intention, crafted to last.') ?>">
+<?php if (!empty($og_image)): ?>
+<meta property="og:image" content="<?= htmlspecialchars($og_image) ?>">
+<?php endif; ?>
+<meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="<?= base_url('manifest.json') ?>">
-<meta name="theme-color" content="#4338ca">
+<meta name="theme-color" content="#1A1815">
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -20,33 +26,42 @@ if ('serviceWorker' in navigator) {
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
     tailwind.config = {
         darkMode: "class",
         theme: {
             extend: {
                 "colors": {
-                    "surface": "#FAFAF9",
-                    "background": "#FAFAF9",
-                    "primary": "#1C1917",
+                    "nd-bg": "#FAF8F5",
+                    "nd-surface": "#FFFFFF",
+                    "nd-ink": "#1A1815",
+                    "nd-ink-muted": "#6B6560",
+                    "nd-border": "#E8E3DC",
+                    "nd-accent": "#92400e",
+                    "nd-accent-hover": "#78350f",
+                    "surface": "#FFFFFF",
+                    "background": "#FAF8F5",
+                    "primary": "#1A1815",
                     "on-primary": "#FFFFFF",
                     "secondary": "#44403C",
                     "on-secondary": "#FFFFFF",
-                    "accent": "#A16207",
-                    "accent-light": "#E9C176",
+                    "accent": "#92400e",
+                    "accent-light": "#d97706",
                     "surface-container": "#F5F3F0",
-                    "surface-container-low": "#F9F8F6",
+                    "surface-container-low": "#FAF8F5",
                     "surface-container-high": "#ECEAE6",
-                    "outline-variant": "#D6D3D1",
-                    "on-surface": "#0C0A09",
-                    "on-surface-variant": "#57534E",
+                    "outline-variant": "#E8E3DC",
+                    "on-surface": "#1A1815",
+                    "on-surface-variant": "#6B6560",
                     "error": "#DC2626"
                 },
                 "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
+                    "DEFAULT": "4px",
+                    "sm": "4px",
+                    "md": "6px",
+                    "lg": "8px",
+                    "xl": "10px",
                     "full": "9999px"
                 },
                 "spacing": {
@@ -59,19 +74,50 @@ if ('serviceWorker' in navigator) {
                     "margin-mobile": "16px"
                 },
                 "fontFamily": {
-                    "label-caps": ["Montserrat", "Inter", "sans-serif"],
+                    "serif": ["Playfair Display", "Cormorant Garamond", "serif"],
+                    "display": ["Playfair Display", "serif"],
+                    "subheading": ["Cormorant Garamond", "serif"],
+                    "sans": ["Inter", "-apple-system", "sans-serif"],
                     "body-md": ["Inter", "sans-serif"],
                     "body-lg": ["Inter", "sans-serif"],
-                    "button": ["Montserrat", "Inter", "sans-serif"],
+                    "button": ["Inter", "sans-serif"],
                     "headline-sm": ["Cormorant Garamond", "Playfair Display", "serif"],
-                    "display-lg": ["Cormorant Garamond", "Playfair Display", "serif"],
-                    "headline-md": ["Cormorant Garamond", "Playfair Display", "serif"]
+                    "display-lg": ["Playfair Display", "serif"],
+                    "headline-md": ["Playfair Display", "Cormorant Garamond", "serif"]
                 }
             }
         }
     }
 </script>
 <style>
+    :root {
+        --nd-bg: #FAF8F5;
+        --nd-surface: #FFFFFF;
+        --nd-ink: #1A1815;
+        --nd-ink-muted: #6B6560;
+        --nd-border: #E8E3DC;
+        --nd-accent: #92400e;
+        --nd-accent-hover: #78350f;
+        --nd-text-xs: 12px;
+        --nd-text-sm: 14px;
+        --nd-text-base: 16px;
+        --nd-text-lg: 20px;
+        --nd-text-xl: 28px;
+        --nd-text-2xl: 40px;
+        --nd-text-display: 56px;
+        --nd-radius-sm: 4px;
+        --nd-radius-md: 6px;
+        --nd-radius-lg: 8px;
+    }
+    body {
+        background-color: var(--nd-bg);
+        color: var(--nd-ink);
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
+    h1, h2, h3, .font-serif {
+        font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    }
+
     /* UI/UX Pro Max — Liquid Glass Design System & Realistic Iconography */
     .material-symbols-outlined {
         font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
@@ -297,8 +343,8 @@ if ('serviceWorker' in navigator) {
                     padding 0.32s ease,
                     border 0.32s ease !important;
         will-change: transform, opacity, max-height;
-        max-height: 180px;
-        overflow: hidden;
+        flex-shrink: 0 !important;
+        width: 100% !important;
     }
     .quick-bag-item-removing {
         transform: translateX(50px) scale(0.9) !important;
@@ -325,12 +371,317 @@ if ('serviceWorker' in navigator) {
             -webkit-overflow-scrolling: touch;
         }
     }
-    .goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon, .goog-te-gadget-simple img { display: none !important; }
-    body { top: 0px !important; }
-    #google_translate_element { display: none !important; }
-    .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-    .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
-    .skiptranslate iframe { display: none !important; }
+    @media (prefers-reduced-motion: reduce) {
+        *, ::before, ::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+    :focus-visible {
+        outline: 2px solid var(--nd-accent, #92400e) !important;
+        outline-offset: 2px !important;
+    }
+    /* ════════════════════════════════════════════════════════════
+       UIVERSE ANIMATED HEART LIKE COMPONENT (BY CATRACO)
+    ════════════════════════════════════════════════════════════ */
+    .heart-container {
+      --heart-color: rgb(244, 63, 94);
+      position: relative;
+      width: 32px;
+      height: 32px;
+      transition: .3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .heart-container .checkbox {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      z-index: 20;
+      cursor: pointer;
+      margin: 0;
+      inset: 0;
+    }
+
+    .heart-container .svg-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      pointer-events: none;
+    }
+
+    .heart-container .svg-outline,
+    .heart-container .svg-filled {
+      fill: var(--heart-color);
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      transition: transform .2s ease;
+    }
+
+    .heart-container .svg-filled {
+      animation: keyframes-svg-filled .6s ease-out;
+      display: none;
+    }
+
+    .heart-container .svg-celebrate {
+      position: absolute;
+      animation: keyframes-svg-celebrate .5s;
+      animation-fill-mode: forwards;
+      display: none;
+      stroke: var(--heart-color);
+      fill: var(--heart-color);
+      stroke-width: 2px;
+      pointer-events: none;
+      width: 40px;
+      height: 40px;
+    }
+
+    .heart-container .checkbox:checked ~ .svg-container .svg-filled {
+      display: block;
+    }
+
+    .heart-container .checkbox:checked ~ .svg-container .svg-outline {
+      display: none;
+    }
+
+    .heart-container .checkbox:checked ~ .svg-container .svg-celebrate {
+      display: block;
+    }
+
+    .heart-container:hover .svg-outline {
+      transform: scale(1.18);
+    }
+
+    @keyframes keyframes-svg-filled {
+      0% {
+        transform: scale(0);
+      }
+      30% {
+        transform: scale(1.35);
+      }
+      60% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+        filter: brightness(1.2);
+      }
+    }
+
+    @keyframes keyframes-svg-celebrate {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        opacity: 1;
+        filter: brightness(1.3);
+      }
+      100% {
+        transform: scale(1.4);
+        opacity: 0;
+        display: none;
+      }
+    }
+
+    /* ─── Uiverse Animated Tooltip & Sliding Action Buttons ─── */
+    .uiverse-action-btn {
+      --height: 32px;
+      --tooltip-height: 26px;
+      --tooltip-width: 100px;
+      --gap-tooltip: 10px;
+      position: relative;
+      width: 100%;
+      height: var(--height);
+      border-radius: 0.65rem;
+      font-family: inherit;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: visible;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    @media (min-width: 640px) {
+      .uiverse-action-btn {
+        --height: 36px;
+        --tooltip-height: 28px;
+        --tooltip-width: 110px;
+        --gap-tooltip: 12px;
+      }
+    }
+
+    /* Tooltip Bubble */
+    .uiverse-action-btn::before {
+      position: absolute;
+      content: attr(data-tooltip);
+      width: var(--tooltip-width);
+      height: var(--tooltip-height);
+      background-color: #18181b;
+      border: 1px solid rgba(233, 193, 118, 0.45);
+      font-size: 0.68rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 700;
+      color: #e9c176;
+      border-radius: 0.5rem;
+      line-height: var(--tooltip-height);
+      text-align: center;
+      bottom: calc(var(--height) + var(--gap-tooltip) + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 4px 10px -2px rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+      z-index: 60;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+
+    /* Tooltip Arrow */
+    .uiverse-action-btn::after {
+      position: absolute;
+      content: '';
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-top-color: #18181b;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(var(--height) + var(--gap-tooltip) - 4px);
+      pointer-events: none;
+      z-index: 60;
+    }
+
+    .uiverse-action-btn::after,
+    .uiverse-action-btn::before {
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .uiverse-btn-wrapper {
+      overflow: hidden;
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      width: 100%;
+      height: 100%;
+    }
+
+    .uiverse-btn-text,
+    .uiverse-btn-icon {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    @media (min-width: 640px) {
+      .uiverse-btn-text,
+      .uiverse-btn-icon {
+        font-size: 0.72rem;
+      }
+    }
+
+    .uiverse-btn-text {
+      top: 0;
+    }
+
+    .uiverse-btn-icon {
+      top: 100%;
+    }
+
+    .uiverse-btn-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Hover State Transitions */
+    .uiverse-action-btn:hover .uiverse-btn-text {
+      top: -100%;
+    }
+
+    .uiverse-action-btn:hover .uiverse-btn-icon {
+      top: 0;
+    }
+
+    .uiverse-action-btn:hover::before,
+    .uiverse-action-btn:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .uiverse-action-btn:hover::before {
+      bottom: calc(var(--height) + var(--gap-tooltip));
+    }
+
+    .uiverse-action-btn:hover::after {
+      bottom: calc(var(--height) + var(--gap-tooltip) - 10px);
+    }
+
+    /* Specific Variant 1: Acquire Button */
+    .uiverse-acquire-btn {
+      background-color: #fafaf9;
+      border: 1px solid #e7e5e4;
+      color: #1c1917;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .uiverse-acquire-btn:hover {
+      background-color: #f5f5f4;
+      border-color: #a16207;
+      color: #1c1917;
+    }
+
+    .uiverse-acquire-btn .uiverse-btn-text {
+      color: #1c1917;
+    }
+
+    .uiverse-acquire-btn .uiverse-btn-icon {
+      color: #a16207;
+    }
+
+    /* Specific Variant 2: Buy Button */
+    .uiverse-buy-btn {
+      background-color: #0c0a09;
+      border: 1px solid #1c1917;
+      color: #ffffff;
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .uiverse-buy-btn:hover {
+      background-color: #18181b;
+      border-color: #e9c176;
+    }
+
+    .uiverse-buy-btn .uiverse-btn-text {
+      color: #ffffff;
+    }
+
+    .uiverse-buy-btn .uiverse-btn-icon {
+      color: #e9c176;
+    }
 </style>
 </head>
 <body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex flex-col selection:bg-accent-light selection:text-primary overflow-x-hidden w-full max-w-full">
@@ -404,7 +755,7 @@ if ('serviceWorker' in navigator) {
 
     <!-- Center Column: Haute Couture Brand Logo -->
     <div class="flex-shrink-0 flex items-center justify-center px-4">
-      <?php $_h_brand = htmlspecialchars($hs['brand_name'] ?? 'LUMINA'); ?>
+      <?php $_h_brand = htmlspecialchars($hs['brand_name'] ?? 'NovaDrop'); ?>
       <a class="font-serif text-2xl sm:text-3xl md:text-[28px] tracking-[0.26em] text-stone-950 hover:opacity-85 transition-opacity font-light uppercase select-none" href="<?= base_url() ?>">
         <?= $_h_brand ?><span class="text-[#a16207] font-bold">.</span>
       </a>
@@ -530,7 +881,7 @@ if ('serviceWorker' in navigator) {
       <!-- ── Curated Bag Button ── -->
       <button type="button" id="headerCartBtn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-stone-900 bg-stone-100 hover:bg-stone-950 hover:text-[#e9c176] border border-stone-200 hover:border-stone-950 transition-all hover:scale-105 active:scale-95 relative cursor-pointer shadow-xs group" onclick="toggleQuickBagDrawer()" aria-label="Open Curated Bag" title="Curated Bag">
         <span class="material-symbols-outlined text-[19px] group-hover:text-[#e9c176] transition-colors">shopping_bag</span>
-        <?php $c_count = (isset($this->session) && method_exists($this->session, 'userdata')) ? (int)($this->session->userdata('cart_count') ?? 0) : 0; ?>
+        <?php $c_count = isset($cart_count) ? (int)$cart_count : ((isset($this->session) && method_exists($this->session, 'userdata')) ? (int)($this->session->userdata('cart_count') ?? 0) : 0); ?>
         <span id="cartBadgeCount" class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-stone-950 text-white text-[9px] font-mono font-extrabold rounded-full flex items-center justify-center border-2 border-white shadow-md <?= $c_count > 0 ? '' : 'hidden' ?>">
           <?= $c_count ?>
         </span>
@@ -541,104 +892,117 @@ if ('serviceWorker' in navigator) {
 </header>
 
 <!-- ── Quick-Bag Slideover Drawer (UI/UX Pro Max Pattern) ── -->
-<div id="quickBagOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity duration-300" onclick="if(event.target===this)toggleQuickBagDrawer()" data-lenis-prevent="true" style="overscroll-behavior: contain;">
-  <div class="fixed inset-y-0 right-0 max-w-[90vw] sm:max-w-md w-full h-full liquid-glass bg-surface shadow-2xl p-5 sm:p-6 md:p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out will-change-transform transform-gpu overflow-hidden" id="quickBagPanel" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+<div id="quickBagOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] hidden transition-opacity duration-300" onclick="if(event.target===this)toggleQuickBagDrawer()" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+  <div class="fixed inset-y-0 right-0 max-w-[92vw] sm:max-w-md w-full h-full liquid-glass bg-surface shadow-2xl p-4 sm:p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out will-change-transform transform-gpu overflow-hidden" id="quickBagPanel" data-lenis-prevent="true" style="overscroll-behavior: contain;">
     
     <!-- Drawer Header (Fixed) -->
-    <div class="flex justify-between items-center pb-3.5 sm:pb-4 border-b border-outline-variant/40 flex-shrink-0">
+    <div class="flex justify-between items-center pb-3 border-b border-outline-variant/40 flex-shrink-0">
       <div class="flex items-center gap-2">
         <span class="material-symbols-outlined text-[#a16207]">shopping_bag</span>
-        <h3 class="font-headline-sm text-lg sm:text-xl text-primary font-serif font-bold">Curated Bag</h3>
+        <h3 class="font-headline-sm text-lg text-primary font-serif font-bold">Curated Bag</h3>
       </div>
-      <button type="button" onclick="toggleQuickBagDrawer()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors cursor-pointer" aria-label="Close Bag">
-        <span class="material-symbols-outlined text-xl">close</span>
+      <button type="button" onclick="toggleQuickBagDrawer()" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors cursor-pointer" aria-label="Close Bag">
+        <span class="material-symbols-outlined text-lg">close</span>
       </button>
     </div>
 
-    <!-- Free Express Delivery Progress Bar -->
-    <div class="py-2.5 border-b border-stone-200/80 flex-shrink-0" id="quickBagShippingMeter">
-      <div class="flex items-center justify-between text-[10.5px] mb-1">
-        <span class="font-mono text-stone-600 flex items-center gap-1">
+    <!-- Free Express Delivery Progress Bar (Compact) -->
+    <div class="py-2 border-b border-stone-200/80 flex-shrink-0" id="quickBagShippingMeter">
+      <div class="flex items-center justify-between text-[10px] mb-1">
+        <span class="font-mono text-stone-600 flex items-center gap-1 truncate">
           <span class="material-symbols-outlined text-[13px] text-[#a16207]">local_shipping</span>
           <span id="quickBagShippingText">Add more for Free Express Delivery</span>
         </span>
-        <span class="font-mono font-bold text-stone-900" id="quickBagShippingPct">100%</span>
+        <span class="font-mono font-bold text-stone-900 ml-2" id="quickBagShippingPct">100%</span>
       </div>
-      <div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
+      <div class="w-full bg-stone-100 rounded-full h-1 overflow-hidden">
         <div id="quickBagShippingBar" class="bg-gradient-to-r from-[#a16207] to-amber-400 h-full rounded-full transition-all duration-500" style="width: 100%;"></div>
       </div>
     </div>
 
-    <!-- Drawer Items List (Flexible Scroll Area) -->
-    <div class="py-3.5 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3 min-h-0 pr-1.5" id="quickBagItemsList" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+    <!-- Drawer Items List (Maximized Flexible Scroll Area) -->
+    <div class="py-2.5 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-2.5 min-h-0 pr-1" id="quickBagItemsList" data-lenis-prevent="true" style="overscroll-behavior: contain;">
       <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
         <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">checkroom</span>
         <p>Your curated selection is ready to be tailored.</p>
       </div>
     </div>
 
-    <!-- VIP Promo / Coupon Application Section -->
-    <div class="border-t border-stone-200/80 pt-3 pb-2.5 flex flex-col gap-2 flex-shrink-0 bg-stone-50/90 -mx-5 sm:-mx-6 md:-mx-8 px-5 sm:px-6 md:px-8">
-      <div class="flex items-center justify-between">
-        <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-stone-700 flex items-center gap-1">
-          <span class="material-symbols-outlined text-xs text-[#a16207]">sell</span>
-          <span>VIP Privilege &amp; Offers</span>
+    <!-- Compact Expandable VIP Promo Section -->
+    <details class="group border-t border-stone-200/80 pt-2 flex-shrink-0" id="quickBagCouponAccordion">
+      <summary class="flex items-center justify-between text-[10.5px] font-mono font-bold text-stone-700 hover:text-stone-950 cursor-pointer list-none select-none py-1">
+        <span class="flex items-center gap-1.5 truncate">
+          <span class="material-symbols-outlined text-[13px] text-[#a16207]">sell</span>
+          <span>Have a promo code?</span>
+          <span id="quickBagCouponStatus" class="text-[9.5px] font-mono text-emerald-600 font-bold ml-1 hidden"></span>
         </span>
-        <span id="quickBagCouponStatus" class="text-[9.5px] font-mono text-emerald-600 font-bold hidden">Applied! 🎉</span>
-      </div>
+        <span class="material-symbols-outlined text-xs group-open:rotate-180 transition-transform text-stone-400 flex-shrink-0">expand_more</span>
+      </summary>
       
-      <!-- Input + Apply Button -->
-      <div class="flex items-center gap-1.5">
-        <input type="text" id="quickBagCouponInput" placeholder="Enter VIP Code (e.g. LUMINA50)" class="flex-1 px-3 py-1.5 sm:py-2 bg-white border border-stone-200 rounded-xl text-xs font-mono uppercase text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#a16207] shadow-2xs">
-        <button type="button" onclick="applyQuickBagCoupon()" id="quickBagCouponBtn" class="px-3.5 py-1.5 sm:py-2 bg-stone-950 hover:bg-stone-800 text-white font-mono text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow-xs">
-          Apply
-        </button>
+      <div class="pt-1.5 pb-1 flex flex-col gap-1.5">
+        <!-- Input + Apply Button -->
+        <div class="relative flex items-center">
+          <input type="text" id="quickBagCouponInput" placeholder="VIP Code (e.g. LUMINA50)" class="w-full pl-2.5 pr-16 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-mono uppercase text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-stone-950 focus:bg-white transition-all shadow-2xs">
+          <button type="button" onclick="applyQuickBagCoupon()" id="quickBagCouponBtn" class="absolute right-1 px-2.5 py-1 bg-stone-950 hover:bg-stone-800 text-white font-mono text-[9.5px] font-bold uppercase tracking-wider rounded-md transition-all cursor-pointer">
+            Apply
+          </button>
+        </div>
+
+        <!-- Tap-To-Apply Quick Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          <button type="button" onclick="setQuickCoupon('LUMINA50')" class="px-2 py-0.5 rounded bg-amber-50 border border-amber-200 hover:border-amber-400 text-[#a16207] text-[8px] font-mono font-bold uppercase flex items-center gap-0.5 flex-shrink-0 transition-all cursor-pointer">
+            <span>🏷️ LUMINA50</span>
+            <span class="opacity-75">(50%)</span>
+          </button>
+          <button type="button" onclick="setQuickCoupon('NOVA10')" class="px-2 py-0.5 rounded bg-stone-100 border border-stone-200 hover:border-stone-400 text-stone-700 text-[8px] font-mono font-bold uppercase flex items-center gap-0.5 flex-shrink-0 transition-all cursor-pointer">
+            <span>🏷️ NOVA10</span>
+            <span class="opacity-75">(10%)</span>
+          </button>
+          <button type="button" onclick="setQuickCoupon('FREESHIP')" class="px-2 py-0.5 rounded bg-stone-100 border border-stone-200 hover:border-stone-400 text-stone-700 text-[8px] font-mono font-bold uppercase flex items-center gap-0.5 flex-shrink-0 transition-all cursor-pointer">
+            <span>🚚 FREESHIP</span>
+          </button>
+        </div>
+      </div>
+    </details>
+
+    <!-- Drawer Footer (Compact Fixed) -->
+    <div class="border-t border-outline-variant/40 pt-2 flex flex-col gap-2 flex-shrink-0 mt-auto">
+      <div class="space-y-0.5 text-xs font-mono">
+        <div class="flex justify-between items-center text-stone-500 text-[10.5px]">
+          <span>Bag Subtotal:</span>
+          <span id="quickBagOriginalSubtotal" data-price-inr="0">₹0</span>
+        </div>
+        <div id="quickBagDiscountRow" class="hidden flex justify-between items-center text-xs font-mono text-emerald-600 font-bold">
+          <span>VIP Discount (<span id="quickBagAppliedCouponCode"></span><span id="quickBagDiscountCode"></span>):</span>
+          <span id="quickBagDiscountAmt"><span id="quickBagDiscountAmount">-₹0</span></span>
+        </div>
+        <div class="flex justify-between items-center text-sm sm:text-base font-bold font-serif text-primary border-t border-dashed border-stone-200 pt-1">
+          <span>Estimated Total:</span>
+          <span id="quickBagSubtotal" data-price-inr="0">₹0</span>
+        </div>
+        <!-- Points Earned on Order -->
+        <div class="flex items-center justify-between py-1 px-2 mt-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-950 text-[10px] font-mono font-bold" id="quickBagPointsRow">
+          <span class="flex items-center gap-1">
+            <span>🪙 Order Earns:</span>
+            <span id="quickBagPointsVal" class="text-amber-900 font-extrabold">+0 pts</span>
+          </span>
+          <span class="text-amber-700 font-normal" id="quickBagCashbackVal">(₹0 Cashback Credit)</span>
+        </div>
       </div>
 
-      <!-- Tap-To-Apply Quick Coupons -->
-      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-0.5">
-        <button type="button" onclick="setQuickCoupon('LUMINA50')" class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 hover:border-amber-400 text-[#a16207] text-[8.5px] sm:text-[9px] font-mono font-bold uppercase flex items-center gap-1 flex-shrink-0 transition-all cursor-pointer">
-          <span>🏷️ LUMINA50</span>
-          <span class="text-[7.5px] opacity-75">(50% OFF)</span>
-        </button>
-        <button type="button" onclick="setQuickCoupon('NOVA10')" class="px-2.5 py-1 rounded-lg bg-stone-100 border border-stone-200 hover:border-stone-400 text-stone-700 text-[8.5px] sm:text-[9px] font-mono font-bold uppercase flex items-center gap-1 flex-shrink-0 transition-all cursor-pointer">
-          <span>🏷️ NOVA10</span>
-          <span class="text-[7.5px] opacity-75">(10% OFF)</span>
-        </button>
-        <button type="button" onclick="setQuickCoupon('FREESHIP')" class="px-2.5 py-1 rounded-lg bg-stone-100 border border-stone-200 hover:border-stone-400 text-stone-700 text-[8.5px] sm:text-[9px] font-mono font-bold uppercase flex items-center gap-1 flex-shrink-0 transition-all cursor-pointer">
-          <span>🚚 FREESHIP</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Drawer Footer (Fixed) -->
-    <div class="border-t border-outline-variant/40 pt-3 flex flex-col gap-2.5 flex-shrink-0 mt-auto">
-      <div class="flex justify-between items-center text-xs font-mono text-stone-500">
-        <span>Bag Subtotal:</span>
-        <span id="quickBagOriginalSubtotal" data-price-inr="0">₹0</span>
-      </div>
-      <div id="quickBagDiscountRow" class="hidden flex justify-between items-center text-xs font-mono text-emerald-600 font-bold">
-        <span>VIP Discount (<span id="quickBagAppliedCouponCode"></span>):</span>
-        <span id="quickBagDiscountAmt">-₹0</span>
-      </div>
-      <div class="flex justify-between items-center text-base sm:text-lg font-bold font-serif text-primary border-t border-dashed border-stone-200 pt-2">
-        <span>Estimated Total:</span>
-        <span id="quickBagSubtotal" data-price-inr="0">₹0</span>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex flex-col gap-2 pt-1">
-        <a href="<?= base_url('cart') ?>" class="w-full py-2.5 sm:py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 font-mono text-xs uppercase tracking-wider font-bold text-center rounded-xl transition-all cursor-pointer border border-stone-200/80">
-          View Full Bag
+      <!-- Streamlined Action Buttons (Side-by-side) -->
+      <div class="flex items-center gap-2 pt-0.5">
+        <a href="<?= base_url('cart') ?>" class="w-1/3 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-mono text-[10.5px] uppercase tracking-wider font-bold text-center rounded-xl transition-all cursor-pointer border border-stone-200 truncate">
+          Full Bag
         </a>
-        <a href="<?= base_url('checkout') ?>" class="w-full py-3 sm:py-3.5 bg-stone-950 hover:bg-stone-900 text-white font-mono text-xs uppercase tracking-wider font-bold text-center rounded-xl transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2">
-          <span>Proceed to Checkout</span>
+        <a href="<?= base_url('checkout') ?>" class="flex-1 py-2.5 bg-stone-950 hover:bg-stone-900 text-white font-mono text-xs uppercase tracking-wider font-bold text-center rounded-xl transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-1.5">
+          <span>Checkout</span>
           <span class="material-symbols-outlined text-sm">arrow_forward</span>
         </a>
       </div>
 
-      <div class="text-center pt-1">
-        <span class="text-[10px] font-mono text-stone-500 flex items-center justify-center gap-1">
+      <div class="text-center">
+        <span class="text-[9px] font-mono text-stone-400 flex items-center justify-center gap-1">
           <span class="material-symbols-outlined text-xs text-[#a16207]">verified_user</span>
           <span>Complimentary insured courier delivery</span>
         </span>
@@ -658,7 +1022,7 @@ if ('serviceWorker' in navigator) {
       <!-- Drawer Header -->
       <div class="flex justify-between items-center pb-4 border-b border-outline-variant/30">
         <div class="flex items-center gap-2">
-          <span class="font-headline-sm text-2xl text-primary font-serif tracking-widest uppercase">LUMINA</span>
+          <span class="font-headline-sm text-2xl text-primary font-serif tracking-widest uppercase"><?= htmlspecialchars($hs['brand_name'] ?? 'NOVADROP') ?></span>
           <span class="text-[9px] font-mono uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded-full font-bold">Atelier</span>
         </div>
         <button type="button" onclick="toggleMobileNav()" class="w-9 h-9 rounded-full flex items-center justify-center text-primary hover:bg-surface-container transition-colors cursor-pointer" aria-label="Close Menu">
@@ -815,25 +1179,17 @@ if ('serviceWorker' in navigator) {
       <input type="hidden" id="ecVariantId" name="variant_id" value="">
       <input type="hidden" id="ecBaseInr" name="base_inr" value="0">
       
-      <!-- Size / Fit Selector -->
+      <!-- Category-Accurate Size / Fit Selector -->
       <div>
-        <label class="font-label-caps uppercase tracking-wider text-[10px] text-on-surface-variant block mb-1 font-bold">Select Atelier Fit:</label>
-        <div class="flex gap-2 font-mono">
-          <label class="flex-1 text-center py-1.5 border border-outline-variant rounded cursor-pointer hover:border-primary text-xs has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-white transition-all">
-            <input type="radio" name="ec_size" value="S" class="hidden">
-            <span>S</span>
-          </label>
-          <label class="flex-1 text-center py-1.5 border border-outline-variant rounded cursor-pointer hover:border-primary text-xs has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-white transition-all">
+        <div class="flex justify-between items-center mb-1">
+          <label class="font-label-caps uppercase tracking-wider text-[10px] text-stone-700 block font-bold">Select Atelier Fit:</label>
+          <span id="ecSelectedSizeLabel" class="text-[10px] font-mono font-bold text-[#a16207]">Size M</span>
+        </div>
+        <div class="flex gap-1.5 font-mono overflow-x-auto no-scrollbar py-0.5" id="ecSizeContainer">
+          <!-- Dynamically populated by openExpressCheckout via resolveProductSizes -->
+          <label class="flex-1 text-center py-1.5 border border-stone-200 rounded-lg cursor-pointer hover:border-stone-900 text-xs has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-[#e9c176] has-[:checked]:font-bold transition-all shadow-2xs">
             <input type="radio" name="ec_size" value="M" checked class="hidden">
             <span>M</span>
-          </label>
-          <label class="flex-1 text-center py-1.5 border border-outline-variant rounded cursor-pointer hover:border-primary text-xs has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-white transition-all">
-            <input type="radio" name="ec_size" value="L" class="hidden">
-            <span>L</span>
-          </label>
-          <label class="flex-1 text-center py-1.5 border border-outline-variant rounded cursor-pointer hover:border-primary text-xs has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-white transition-all">
-            <input type="radio" name="ec_size" value="XL" class="hidden">
-            <span>XL</span>
           </label>
         </div>
       </div>
@@ -865,6 +1221,17 @@ if ('serviceWorker' in navigator) {
             <span class="w-3.5 h-3.5 rounded-full border border-stone-300 flex-shrink-0 shadow-xs" style="background-color: #1b4332;"></span>
             <span class="truncate">Emerald</span>
           </label>
+        </div>
+      </div>
+
+      <!-- Quantity Stepper -->
+      <div class="flex items-center justify-between py-2 px-3 bg-stone-50 border border-stone-200 rounded-xl shadow-2xs">
+        <label class="font-label-caps uppercase tracking-wider text-[10px] text-stone-700 font-bold">Select Quantity:</label>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="changeEcQuantity(-1)" class="w-6 h-6 rounded-lg bg-white hover:bg-stone-200 border border-stone-300 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs text-stone-800 active:scale-95">-</button>
+          <input type="hidden" id="ecQuantity" name="quantity" value="1">
+          <span id="ecQuantityDisplay" class="w-6 text-center font-mono font-bold text-xs text-stone-950">1</span>
+          <button type="button" onclick="changeEcQuantity(1)" class="w-6 h-6 rounded-lg bg-white hover:bg-stone-200 border border-stone-300 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs text-stone-800 active:scale-95">+</button>
         </div>
       </div>
 
@@ -935,11 +1302,15 @@ if ('serviceWorker' in navigator) {
         </div>
       </div>
 
-      <!-- Action Button -->
-      <div class="pt-2">
-        <button type="submit" id="ecSubmitBtn" class="w-full py-3.5 bg-primary text-on-primary font-button text-xs uppercase tracking-widest font-bold hover:bg-secondary transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer">
-          <span class="material-symbols-outlined text-base">verified_user</span>
-          <span id="ecSubmitBtnText">Place Order &amp; Confirm Acquisition →</span>
+      <!-- Dual Action Buttons: Add to Bag + Instant Buy -->
+      <div class="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <button type="button" onclick="handleExpressAddToCart()" id="ecAddToCartBtn" class="w-full py-3 px-4 bg-stone-100 hover:bg-stone-200 text-stone-900 border border-stone-300 font-button text-xs uppercase tracking-wider font-bold rounded-xl transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95">
+          <span class="material-symbols-outlined text-base text-[#a16207]">shopping_bag</span>
+          <span>Add to Curated Bag</span>
+        </button>
+        <button type="submit" id="ecSubmitBtn" class="w-full py-3 px-4 bg-stone-950 hover:bg-stone-900 text-white font-button text-xs uppercase tracking-wider font-extrabold rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95">
+          <span class="material-symbols-outlined text-base text-[#e9c176]">bolt</span>
+          <span id="ecSubmitBtnText">Instant 1-Click Buy →</span>
         </button>
       </div>
 
@@ -1098,7 +1469,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── In-Site 1-Click Express Checkout System ──
-window.openExpressCheckout = function(productId, title, priceInr, imgUrl, variantId) {
+window.changeEcQuantity = function(delta) {
+  var input = document.getElementById('ecQuantity');
+  var display = document.getElementById('ecQuantityDisplay');
+  var currentQty = parseInt(input ? input.value : 1) || 1;
+  var newQty = Math.max(1, Math.min(20, currentQty + delta));
+  if (input) input.value = newQty;
+  if (display) display.textContent = newQty;
+};
+
+window.openExpressCheckout = function(productId, title, priceInr, imgUrl, variantId, preselectedSize, preselectedColor, preselectedQty) {
   var modal = document.getElementById('expressCheckoutModal');
   if (!modal) return;
   
@@ -1115,6 +1495,32 @@ window.openExpressCheckout = function(productId, title, priceInr, imgUrl, varian
   var points = Math.round(priceInr * 0.1);
   document.getElementById('ecPointsEarned').textContent = '✦ Earn +' + points + ' Lumina Points';
   
+  // Set quantity
+  var qtyInput = document.getElementById('ecQuantity');
+  var qtyDisplay = document.getElementById('ecQuantityDisplay');
+  var initQty = parseInt(preselectedQty) || 1;
+  if (qtyInput) qtyInput.value = initQty;
+  if (qtyDisplay) qtyDisplay.textContent = initQty;
+
+  // Render category-accurate sizes dynamically (jeans waist sizes, shoes UK sizes, apparel letters, bag One Size)
+  var possibleSizes = (typeof window.resolveProductSizes === 'function') ? window.resolveProductSizes(title || '') : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  var activeSize = preselectedSize || possibleSizes[Math.min(2, possibleSizes.length - 1)];
+  
+  var sizeContainer = document.getElementById('ecSizeContainer');
+  if (sizeContainer) {
+    sizeContainer.innerHTML = possibleSizes.map(function(sz) {
+      var isChecked = (sz === activeSize);
+      return `
+        <label class="flex-1 min-w-[48px] text-center py-1.5 border border-stone-200 rounded-lg cursor-pointer hover:border-stone-900 text-xs has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-[#e9c176] has-[:checked]:font-bold transition-all shadow-2xs">
+          <input type="radio" name="ec_size" value="${sz}" ${isChecked ? 'checked' : ''} class="hidden" onchange="var lbl=document.getElementById('ecSelectedSizeLabel'); if(lbl) lbl.textContent='Size ' + this.value;">
+          <span>${sz}</span>
+        </label>
+      `;
+    }).join('');
+  }
+  var sizeLbl = document.getElementById('ecSelectedSizeLabel');
+  if (sizeLbl) sizeLbl.textContent = 'Size ' + activeSize;
+
   // Load saved address from localStorage if available
   var saved = JSON.parse(localStorage.getItem('lumina_saved_shipping') || '{}');
   if (saved.fullName) document.getElementById('ecFullName').value = saved.fullName;
@@ -1128,6 +1534,41 @@ window.openExpressCheckout = function(productId, title, priceInr, imgUrl, varian
   document.body.style.overflow = 'hidden';
   if (window.lenisInstance && typeof window.lenisInstance.stop === 'function') {
     window.lenisInstance.stop();
+  }
+};
+
+window.handleExpressAddToCart = function() {
+  var prodId = parseInt(document.getElementById('ecProductId').value) || 1;
+  var title = document.getElementById('ecProductTitle').textContent || 'Curated Piece';
+  var price = parseFloat(document.getElementById('ecBaseInr').value || 0);
+  var img = document.getElementById('ecProductImg').src || '';
+  
+  var sizeRadio = document.querySelector('input[name="ec_size"]:checked');
+  var size = sizeRadio ? sizeRadio.value : 'M';
+  
+  var colorRadio = document.querySelector('input[name="ec_color"]:checked');
+  var color = colorRadio ? colorRadio.value : '';
+
+  var qty = parseInt(document.getElementById('ecQuantity')?.value || 1) || 1;
+
+  if (typeof window.addToCart === 'function') {
+    window.addToCart({
+      id: prodId,
+      variant_id: prodId,
+      product_id: prodId,
+      title: title,
+      price: price,
+      image: img,
+      size: size,
+      color: color
+    }, qty, '✦ Added ' + qty + 'x "' + title + '" (Size ' + size + ') to Curated Bag!', function() {
+      closeExpressCheckout();
+      if (typeof toggleQuickBagDrawer === 'function') toggleQuickBagDrawer();
+    });
+    closeExpressCheckout();
+    setTimeout(function() {
+      if (typeof toggleQuickBagDrawer === 'function') toggleQuickBagDrawer();
+    }, 450);
   }
 };
 
@@ -1214,11 +1655,12 @@ window.handleExpressOrderSubmit = function(e) {
   // Save to localStorage for future frictionless orders
   localStorage.setItem('lumina_saved_shipping', JSON.stringify({ fullName, phone, address, city, pincode }));
   
-  // 1. Add to cart via AJAX with size and color
+  // 1. Add to cart via AJAX with size, color, and selected quantity
+  var qty = parseInt(document.getElementById('ecQuantity')?.value || 1) || 1;
   var formData = new FormData();
   formData.append('variant_id', variantId);
   formData.append('product_id', variantId);
-  formData.append('quantity', 1);
+  formData.append('quantity', qty);
   formData.append('size', size);
   formData.append('color', color);
   formData.append('title', title);

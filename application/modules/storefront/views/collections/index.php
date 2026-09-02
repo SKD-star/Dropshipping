@@ -226,17 +226,47 @@
 
               <!-- Dual Action Buttons -->
               <div class="grid grid-cols-2 gap-1.5 sm:gap-2 pt-2 border-t border-stone-100">
+                <?php
+                  $acquire_cp_data = [
+                    'id' => (int)$p['id'],
+                    'title' => $p['title'],
+                    'price' => (float)$p_price,
+                    'compare_price' => (float)($p['compare_price'] ?? 0),
+                    'image' => $p_img,
+                    'vendor' => $p['vendor'] ?? 'Lumina Atelier Milano',
+                    'description' => strip_tags($p['description'] ?? 'Bespoke collection piece.')
+                  ];
+                ?>
                 <button type="button" 
-                        onclick="addToCart({id:<?= $p['id'] ?>, title:'<?= addslashes(htmlspecialchars($p['title'])) ?>', price:<?= $p_price ?>, image:'<?= addslashes(htmlspecialchars($p_img)) ?>'}, 1)" 
-                        class="w-full py-1.5 sm:py-2 bg-stone-100 hover:bg-stone-200 text-stone-900 font-button text-[8.5px] sm:text-[10px] uppercase tracking-wider rounded-lg sm:rounded-xl transition-colors flex items-center justify-center gap-1 cursor-pointer font-semibold border border-stone-200 active:scale-95">
-                  <span class="material-symbols-outlined text-[11px] sm:text-[13px]">shopping_bag</span>
-                  <span>Acquire</span>
+                        data-tooltip="Fit &amp; Sizing" 
+                        data-quickview="<?= htmlspecialchars(json_encode($acquire_cp_data), ENT_QUOTES, 'UTF-8') ?>" 
+                        onclick="openQuickView(this.dataset.quickview || this.getAttribute('data-quickview'))" 
+                        class="uiverse-action-btn uiverse-acquire-btn active:scale-95">
+                  <div class="uiverse-btn-wrapper">
+                    <div class="uiverse-btn-text">
+                      <span class="material-symbols-outlined text-[12px] sm:text-[13px] text-[#a16207]">shopping_bag</span>
+                      <span>Acquire</span>
+                    </div>
+                    <span class="uiverse-btn-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                      <span>AI Fit</span>
+                    </span>
+                  </div>
                 </button>
                 <button type="button" 
+                        data-tooltip="Instant: ₹<?= number_format($p_price, 0) ?>" 
                         onclick="openExpressCheckout(<?= $p['id'] ?>, '<?= addslashes(htmlspecialchars($p['title'])) ?>', <?= $p_price ?>, '<?= addslashes(htmlspecialchars($p_img)) ?>', <?= $p['id'] ?>);" 
-                        class="w-full py-1.5 sm:py-2 bg-stone-950 hover:bg-stone-800 text-white font-button text-[8.5px] sm:text-[10px] uppercase tracking-wider rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer font-bold shadow-sm active:scale-95 border border-stone-900">
-                  <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-                  <span>Buy</span>
+                        class="uiverse-action-btn uiverse-buy-btn active:scale-95">
+                  <div class="uiverse-btn-wrapper">
+                    <div class="uiverse-btn-text">
+                      <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-[#e9c176] flex-shrink-0" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                      <span>Buy</span>
+                    </div>
+                    <span class="uiverse-btn-icon">
+                      <svg viewBox="0 0 16 16" fill="currentColor" class="w-3.5 h-3.5 text-[#e9c176]"><path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>
+                      <span>1-Click</span>
+                    </span>
+                  </div>
                 </button>
               </div>
             </div>

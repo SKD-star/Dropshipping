@@ -222,6 +222,72 @@ class Cart_model extends MY_Model
     }
 
     /**
+     * Update the size of an existing item in the cart
+     */
+    public function update_item_size(string $cart_id, int $variant_id, string $new_size): array
+    {
+        $new_size = trim($new_size);
+        if (!$new_size) {
+            return ['success' => false, 'message' => 'Invalid size specified.'];
+        }
+
+        $cart_item = $this->db->where('cart_id', $cart_id)->where('variant_id', $variant_id)->get('cart_items')->row_array();
+        if (!$cart_item) {
+            return ['success' => false, 'message' => 'Item not found in your bag.'];
+        }
+
+        $variant = $this->db->where('id', $variant_id)->get('product_variants')->row_array();
+        if (!$variant) {
+            return ['success' => false, 'message' => 'Product variant not found.'];
+        }
+        $product_id = (int)$variant['product_id'];
+
+        $target_variant = $this->db->where('product_id', $product_id)
+                                   ->where('option1_value', $new_size)
+                                   ->get('product_variants')->row_array();
+
+        if (!$target_variant) {
+            $v_title = !empty($variant['option2_value']) ? "Size {$new_size} / {$variant['option2_value']}" : "Size {$new_size}";
+            $sku = 'LUM-' . $product_id . '-' . strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $new_size)) . '-' . mt_rand(100, 999);
+            $this->db->insert('product_variants', [
+                'product_id'    => $product_id,
+                'sku'           => $sku,
+                'title'         => $v_title,
+                'option1_value' => $new_size,
+                'option2_value' => $variant['option2_value'] ?? null,
+                'price'         => $variant['price'],
+                'inventory_qty' => 100,
+                'is_active'     => 1,
+                'created_at'    => date('Y-m-d H:i:s')
+            ]);
+            $new_variant_id = (int)$this->db->insert_id();
+        } else {
+            $new_variant_id = (int)$target_variant['id'];
+        }
+
+        if ($new_variant_id === $variant_id) {
+            return ['success' => true, 'message' => "Size is already {$new_size}."];
+        }
+
+        $existing_target = $this->db->where('cart_id', $cart_id)
+                                    ->where('variant_id', $new_variant_id)
+                                    ->get('cart_items')->row_array();
+
+        if ($existing_target) {
+            $merged_qty = $existing_target['quantity'] + $cart_item['quantity'];
+            $this->db->where('id', $existing_target['id'])->update('cart_items', ['quantity' => $merged_qty]);
+            $this->db->where('id', $cart_item['id'])->delete('cart_items');
+        } else {
+            $this->db->where('id', $cart_item['id'])->update('cart_items', [
+                'variant_id' => $new_variant_id
+            ]);
+        }
+
+        $this->_touch($cart_id);
+        return ['success' => true, 'message' => "Size updated to {$new_size}."];
+    }
+
+    /**
      * Merge guest cart into customer cart on login.
      * Transfers guest cart items to the customer's existing or new cart.
      */

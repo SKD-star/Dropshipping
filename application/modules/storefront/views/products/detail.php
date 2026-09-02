@@ -10,81 +10,100 @@
   $gallery_images = [];
   if (!empty($product['images'])) {
       foreach ($product['images'] as $img) {
-          $gallery_images[] = $img['url'];
+          if (!empty($img['url'])) {
+              $gallery_images[] = $img['url'];
+          }
       }
   }
-  if (count($gallery_images) < 4) {
-      $fallback_pool = [
-          base_url('img/cashmere_cocoon_coat.jpg'),
-          base_url('img/model_look_classic.jpg'),
-          base_url('img/melton_wool_peacoat.jpg'),
-          base_url('img/model_look_executive.jpg'),
-      ];
-      foreach ($fallback_pool as $fb) {
-          if (!in_array($fb, $gallery_images)) $gallery_images[] = $fb;
-          if (count($gallery_images) >= 4) break;
-      }
+  if (empty($gallery_images)) {
+      $gallery_images = [$primary_image];
   }
 
   $variants = $product['variants'] ?? [];
   $default_variant = $variants[0] ?? [
     'id' => $product['id'] ?? 1,
-    'price' => $product['base_price'] ?? 4399,
-    'compare_price' => !empty($product['compare_at_price']) ? $product['compare_at_price'] : 5939,
-    'inventory_qty' => 3,
-    'sku' => 'LUM-ATELIER-01',
-    'title' => 'M / Camel Cashmere'
+    'price' => $product['base_price'] ?? 1586,
+    'compare_price' => !empty($product['compare_at_price']) ? $product['compare_at_price'] : 0,
+    'inventory_qty' => 50,
+    'sku' => 'ALX-1017-WHT-S',
+    'title' => 'White / S(US 36)'
   ];
   
   $price = (float)$default_variant['price'];
-  $compare_price = !empty($default_variant['compare_price']) && $default_variant['compare_price'] > $price ? (float)$default_variant['compare_price'] : ($price * 1.35);
-  $discount_pct = round((($compare_price - $price) / $compare_price) * 100);
+  $compare_price = !empty($default_variant['compare_price']) && (float)$default_variant['compare_price'] > $price 
+      ? (float)$default_variant['compare_price'] 
+      : (!empty($product['compare_at_price']) && (float)$product['compare_at_price'] > $price ? (float)$product['compare_at_price'] : 0);
+  $discount_pct = ($compare_price > $price && $compare_price > 0) ? round((($compare_price - $price) / $compare_price) * 100) : 0;
   
-  $vendor_name = $vendor_info['business_name'] ?? 'Lumina Atelier Milano';
-  $short_desc = $product['short_description'] ?? 'An architectural double-faced silhouette hand-cut from 700 GSM pure Mongolian cashmere with fluid drop shoulders, unlined horn button closures, and sculpted welt pockets.';
-  $full_desc = $product['description'] ?? $short_desc;
+  $vendor_name = $product['vendor'] ?? ($vendor_info['business_name'] ?? 'Verified Direct Supplier');
+  $short_desc = !empty($product['short_description']) ? $product['short_description'] : (mb_substr(strip_tags($product['description'] ?? ''), 0, 180) . '...');
+  $full_desc = !empty($product['description']) ? $product['description'] : $short_desc;
   
-  // Tactile color shades
-  $color_shades = [
-      ['name' => 'Camel Cashmere', 'hex' => '#c29b64', 'img' => base_url('img/cashmere_cocoon_coat.jpg')],
-      ['name' => 'Onyx Noir', 'hex' => '#18181b', 'img' => base_url('img/melton_wool_peacoat.jpg')],
-      ['name' => 'Melange Oatmeal', 'hex' => '#d4cbbd', 'img' => base_url('img/model_look_classic.jpg')],
-      ['name' => 'Midnight Suiting', 'hex' => '#1e293b', 'img' => base_url('img/wool_blazer_luxury.jpg')],
+  // Dynamic Color Extraction from Variants
+  $color_shades = [];
+  $seen_colors = [];
+  $color_hex_map = [
+      'white' => '#ffffff',
+      'black' => '#111827',
+      'gray' => '#9ca3af',
+      'heather gray' => '#9ca3af',
+      'grey' => '#9ca3af',
+      'navy' => '#1e3a8a',
+      'navy blue' => '#1e3a8a',
+      'camel' => '#c29b64',
+      'olive' => '#556b2f',
+      'beige' => '#d4cbbd',
+      'charcoal' => '#374151',
   ];
 
-  // 3 Curated 3-Piece Ensemble Looks
-  $ensemble_looks = [
-      [
-          'name' => 'The Milan Executive',
-          'vibe' => 'Formal & Sharp Sartorial Cut',
-          'discount' => '12% OFF',
-          'model_img' => base_url('img/model_look_executive.jpg'),
-          'mannequin_img' => base_url('img/mannequin_look_executive.jpg'),
-          'top' => ['id' => $product['id'] ?? 1, 'title' => $product_title, 'price' => $price, 'img' => $primary_image, 'type' => 'Top Wear (Active)'],
-          'bottom' => ['id' => 2, 'title' => 'Okayama 14.5oz Selvedge Denim', 'price' => 4499, 'img' => base_url('img/okayama_selvedge_denim.jpg'), 'type' => 'Bottom Wear'],
-          'shoes' => ['id' => 7, 'title' => 'Handcrafted Leather Chelsea Boots', 'price' => 5999, 'img' => base_url('img/chelsea_leather_boots.jpg'), 'type' => 'Footwear'],
-      ],
-      [
-          'name' => 'The Tailored Atelier',
-          'vibe' => 'Refined Contemporary Drape',
-          'discount' => '12% OFF',
-          'model_img' => base_url('img/model_look_classic.jpg'),
-          'mannequin_img' => base_url('img/mannequin_look_classic.jpg'),
-          'top' => ['id' => $product['id'] ?? 1, 'title' => $product_title, 'price' => $price, 'img' => $primary_image, 'type' => 'Top Wear (Active)'],
-          'bottom' => ['id' => 6, 'title' => 'Italian Pleated Wool Trousers', 'price' => 4999, 'img' => base_url('img/italian_pleated_trousers.jpg'), 'type' => 'Bottom Wear'],
-          'shoes' => ['id' => 8, 'title' => 'Burnished Calfskin Penny Loafers', 'price' => 5499, 'img' => base_url('img/calfskin_penny_loafers.jpg'), 'type' => 'Footwear'],
-      ],
-      [
-          'name' => 'The Monochrome Street Poise',
-          'vibe' => 'Architectural Minimalist Weekend',
-          'discount' => '12% OFF',
-          'model_img' => base_url('img/model_look_street.jpg'),
-          'mannequin_img' => base_url('img/mannequin_look_street.jpg'),
-          'top' => ['id' => $product['id'] ?? 1, 'title' => $product_title, 'price' => $price, 'img' => $primary_image, 'type' => 'Top Wear (Active)'],
-          'bottom' => ['id' => 2, 'title' => 'Okayama 14.5oz Selvedge Denim', 'price' => 4499, 'img' => base_url('img/okayama_selvedge_denim.jpg'), 'type' => 'Bottom Wear'],
-          'shoes' => ['id' => 9, 'title' => 'Minimalist Suede Derby Shoes', 'price' => 4799, 'img' => base_url('img/minimalist_suede_derby.jpg'), 'type' => 'Footwear'],
-      ]
-  ];
+  foreach ($variants as $v) {
+      $v_title = $v['title'] ?? '';
+      $parts = explode('/', $v_title);
+      $color_name = trim($parts[0] ?? 'Standard');
+      if (!empty($color_name) && !isset($seen_colors[$color_name])) {
+          $seen_colors[$color_name] = true;
+          $c_lower = strtolower($color_name);
+          $hex = $color_hex_map[$c_lower] ?? '#6b7280';
+          $color_shades[] = [
+              'name' => $color_name,
+              'hex'  => $hex,
+              'img'  => $primary_image
+          ];
+      }
+  }
+  if (empty($color_shades)) {
+      $color_shades = [
+          ['name' => 'Original Finish', 'hex' => '#111827', 'img' => $primary_image]
+      ];
+  }
+
+  // Dynamic Size Extraction from Variants
+  $available_sizes = [];
+  $seen_sizes = [];
+  foreach ($variants as $v) {
+      $v_title = $v['title'] ?? '';
+      $parts = explode('/', $v_title);
+      $size_name = isset($parts[1]) ? trim($parts[1]) : trim($parts[0]);
+      if (!empty($size_name) && !preg_match('/^(default title|standard|tailored standard)$/i', $size_name) && !isset($seen_sizes[$size_name])) {
+          $seen_sizes[$size_name] = true;
+          $available_sizes[] = $size_name;
+      }
+  }
+
+  // Category & Product-Type Intelligent Sizing Engine
+  if (empty($available_sizes)) {
+      $combined_type = strtolower($product_title . ' ' . ($product['category_name'] ?? '') . ' ' . ($product['category'] ?? ''));
+      if (preg_match('/(shoe|boot|sneaker|loafer|chelsea|footwear|heel|mule|oxford|sandal|derby|slide)/i', $combined_type)) {
+          $available_sizes = ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'];
+      } elseif (preg_match('/(jean|denim|trouser|pant|chino|bottom|selvedge|slacks|cargo|waist)/i', $combined_type)) {
+          $available_sizes = ['28', '30', '32', '34', '36', '38'];
+      } elseif (preg_match('/(bag|tote|purse|wallet|belt|scarf|hat|sunglass|watch|ring|necklace|bracelet|fragrance)/i', $combined_type)) {
+          $available_sizes = ['One Size'];
+      } else {
+          $available_sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+      }
+  }
+
 ?>
 
 <main class="min-h-screen bg-[#faf9f6] text-stone-900 pt-20 sm:pt-24 pb-24">
@@ -109,8 +128,8 @@
       <!-- Scarcity & Courier Tag -->
       <div class="flex items-center gap-3 text-xs font-mono">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-[#e9c176]/40 text-[#e9c176] font-semibold shadow-sm backdrop-blur-sm">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>Archival Edition · Strictly 150 Cuts</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Curated Atelier Edition</span>
         </span>
         <span class="text-white/30 hidden md:inline">|</span>
         <span class="text-white/70 text-[11px] font-semibold hidden md:inline">BlueDart Priority Express</span>
@@ -139,12 +158,14 @@
           <!-- Top Scarcity Pill Overlay -->
           <div class="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
             <span class="text-[10px] font-mono font-bold uppercase tracking-wider bg-black/85 text-[#e9c176] px-3.5 py-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-md flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176] animate-pulse"></span>
-              <span>Archival Edition</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176]"></span>
+              <span><?= htmlspecialchars($product['collection_title'] ?? 'Archival Edition') ?></span>
             </span>
+            <?php if (!empty($product['vendor'])): ?>
             <span class="text-[10px] font-mono text-white bg-black/70 px-3 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
-              Grade-A Pure Cashmere
+              <?= htmlspecialchars($product['vendor']) ?>
             </span>
+            <?php endif; ?>
           </div>
 
           <!-- Top-Right Fullscreen / Studio Button -->
@@ -156,7 +177,7 @@
           <!-- Bottom Active Shade Indicator -->
           <div class="absolute bottom-4 left-4 z-10">
             <span class="text-xs font-mono text-white bg-black/85 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md shadow-lg" id="activeShadePhotoLabel">
-              Shade: Camel Cashmere
+              Shade: <?= htmlspecialchars($color_shades[0]['name'] ?? 'Original Finish') ?>
             </span>
           </div>
 
@@ -242,31 +263,40 @@
           </div>
         </div>
 
-        <!-- ── FLASH SALE & FOMO SCARCITY COUNTDOWN BAR ── -->
-        <div class="p-3 rounded-2xl bg-gradient-to-r from-red-50 to-amber-50 border border-red-200/80 shadow-sm">
-          <div class="flex items-center justify-between gap-2 mb-1.5">
-            <div class="flex items-center gap-1.5 text-red-600 font-mono text-xs font-bold uppercase tracking-wider">
-              <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-              <span>⚡ FLASH SALE ENDS IN:</span>
+        <!-- ── ATELIER PROVENANCE & DELIVERY PROMISE ── -->
+        <div class="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200/80 shadow-2xs">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 text-stone-900 font-mono text-xs font-bold">
+              <span class="material-symbols-outlined text-[#a16207] text-base">verified</span>
+              <span>Complimentary White-Glove Dispatch</span>
             </div>
-            <div class="font-mono text-xs font-extrabold text-red-700 bg-white/80 px-2 py-0.5 rounded-lg border border-red-200 shadow-xs" id="detailFomoClock">
-              03h : 42m : 18s
-            </div>
+            <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+              BlueDart Priority
+            </span>
           </div>
-          <!-- Scarcity Stock Progress Bar -->
-          <div class="w-full bg-red-100 rounded-full h-1.5 overflow-hidden">
-            <div class="bg-gradient-to-r from-amber-500 to-red-600 h-full rounded-full" style="width: 86%;"></div>
-          </div>
-          <div class="flex justify-between items-center text-[10px] font-mono text-stone-500 mt-1">
-            <span>🔥 86% of Allocated Batch Claimed</span>
-            <span class="font-bold text-red-600">Only 3 Pieces Left in Archive</span>
-          </div>
+          <p class="text-[11px] font-mono text-stone-600 mt-1">
+            Individually inspected, cedar-packaged &amp; hand-numbered with certificate of provenance.
+          </p>
         </div>
 
+        <?php 
+          $detail_pts = !empty($product['reward_points']) ? (int)$product['reward_points'] : max(1, round($price * 0.06));
+          $gold_pts = round($detail_pts * 1.5);
+        ?>
         <!-- VIP Loyalty Points Earned Badge -->
-        <div class="flex items-center gap-2 text-xs font-mono text-amber-700 bg-amber-50/90 border border-amber-200/70 p-2.5 rounded-xl">
-          <span class="material-symbols-outlined text-amber-600 text-sm">stars</span>
-          <span>Earn <strong class="text-stone-900">+<?= round($price * 0.05) ?> NovaDrop Points</strong> (₹<?= round($price * 0.025) ?> Cashback) on this order</span>
+        <div class="flex items-center justify-between gap-3 text-xs font-mono text-amber-950 bg-gradient-to-r from-amber-50 via-[#fef3c7]/60 to-amber-50 border border-amber-200/90 p-3 rounded-2xl shadow-2xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-400/40 flex items-center justify-center text-amber-700 flex-shrink-0">
+              <span class="material-symbols-outlined text-base">toll</span>
+            </div>
+            <div>
+              <span class="font-bold text-stone-950 block text-[11.5px]">Earn +<span id="detailPointsVal"><?= number_format($detail_pts) ?></span> Atelier Reward Points</span>
+              <span class="text-[10px] text-stone-500">₹<span id="detailCashbackVal"><?= number_format($detail_pts) ?></span>.00 Instant Cash Credit · 1.5× for Gold (<?= number_format($gold_pts) ?> pts)</span>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-900 font-bold text-[9.5px] border border-amber-300">
+            1 Pt = ₹1
+          </span>
         </div>
 
         <!-- Short Description -->
@@ -292,7 +322,7 @@
         <div>
           <div class="flex justify-between items-center mb-2">
             <span class="text-xs font-mono uppercase tracking-wider text-stone-900 font-bold">
-              Color Finish: <span class="text-[#a16207]" id="selectedColorName">Camel Cashmere</span>
+              Color Finish: <span class="text-[#a16207]" id="selectedColorName"><?= htmlspecialchars($color_shades[0]['name'] ?? 'Original') ?></span>
             </span>
             <span class="text-[10px] font-mono text-stone-400">Natural Garment Dyed</span>
           </div>
@@ -313,7 +343,7 @@
         <div>
           <div class="flex justify-between items-center mb-2">
             <span class="text-xs font-mono uppercase tracking-wider text-stone-900 font-bold">
-              Select Size: <span class="text-[#a16207]" id="selectedSizeLabel">M (Tailored Poise)</span>
+              Select Size: <span class="text-[#a16207]" id="selectedSizeLabel"><?= htmlspecialchars($available_sizes[0] ?? 'M') ?></span>
             </span>
             <button type="button" onclick="openSizeGuideModal()" class="text-xs font-mono text-[#a16207] hover:underline flex items-center gap-1 cursor-pointer font-bold">
               <span class="material-symbols-outlined text-sm">straighten</span>
@@ -321,16 +351,26 @@
             </button>
           </div>
 
-          <div class="grid grid-cols-5 gap-2">
-            <?php foreach (['XS', 'S', 'M', 'L', 'XL'] as $szIdx => $sz): ?>
-            <?php $isDefSz = ($sz === 'M'); ?>
+          <div class="flex flex-wrap gap-2">
+            <?php foreach ($available_sizes as $szIdx => $sz): ?>
+            <?php $isDefSz = ($szIdx === 0); ?>
             <button type="button" 
-                    onclick="selectProductSize('<?= $sz ?>', this)"
-                    class="size-pill-btn <?= $isDefSz ? 'bg-stone-950 text-[#e9c176] font-bold shadow-md' : 'bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100' ?> py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer">
-              <span><?= $sz ?></span>
-              <span class="block text-[8px] text-stone-400 font-sans mt-0.5"><?= $sz === 'M' ? '3 Left' : 'Available' ?></span>
+                    onclick="selectProductSize('<?= htmlspecialchars(addslashes($sz)) ?>', this)"
+                    class="size-pill-btn <?= $isDefSz ? 'bg-stone-950 text-[#e9c176] font-bold shadow-md' : 'bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100' ?> py-2 px-3 text-center text-xs font-mono rounded-xl transition-all cursor-pointer">
+              <span><?= htmlspecialchars($sz) ?></span>
+              <span class="block text-[8px] text-stone-400 font-sans mt-0.5">In Stock</span>
             </button>
             <?php endforeach; ?>
+          </div>
+        </div>
+
+        <!-- ── Interactive Quantity Stepper ── -->
+        <div class="flex items-center justify-between py-2 px-3.5 bg-stone-50 border border-stone-200 rounded-2xl shadow-2xs">
+          <span class="text-xs font-mono uppercase tracking-wider text-stone-900 font-bold">Piece Quantity:</span>
+          <div class="flex items-center gap-2.5">
+            <button type="button" onclick="changePdpQuantity(-1)" class="w-7 h-7 rounded-lg bg-white hover:bg-stone-200 border border-stone-300 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs text-stone-800 active:scale-95">-</button>
+            <span id="pdpQuantityDisplay" class="w-6 text-center font-mono font-bold text-xs text-stone-950">1</span>
+            <button type="button" onclick="changePdpQuantity(1)" class="w-7 h-7 rounded-lg bg-white hover:bg-stone-200 border border-stone-300 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs text-stone-800 active:scale-95">+</button>
           </div>
         </div>
 
@@ -360,7 +400,7 @@
           
           <!-- Primary 1-Click Instant Acquisition -->
           <button type="button" 
-                  onclick="openExpressCheckout(<?= $product['id'] ?>, '<?= addslashes(htmlspecialchars($product_title)) ?>', <?= $price ?>, '<?= addslashes(htmlspecialchars($primary_image)) ?>', <?= $product['id'] ?>);"
+                  onclick="handlePdpInstantCheckout()"
                   class="w-full py-3.5 px-6 bg-gradient-to-r from-amber-400 to-[#e9c176] hover:opacity-90 text-black font-button font-extrabold text-xs sm:text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
             <span class="material-symbols-outlined text-lg">bolt</span>
             <span>Instant 1-Click Acquisition</span>
@@ -369,17 +409,32 @@
           <!-- Add to Wardrobe Bag Button -->
           <div class="grid grid-cols-5 gap-2">
             <button type="button" 
-                    onclick="addToCart({id:<?= $product['id'] ?>, title:'<?= addslashes(htmlspecialchars($product_title)) ?>', price:<?= $price ?>, image:'<?= addslashes(htmlspecialchars($primary_image)) ?>'}, 1)"
+                    onclick="handlePdpAddToCart()"
                     class="col-span-4 py-3 px-6 bg-stone-950 hover:bg-stone-800 text-white font-button font-bold text-xs uppercase tracking-widest rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
               <span class="material-symbols-outlined text-base">shopping_bag</span>
               <span>Acquire to Wardrobe Bag</span>
             </button>
-            <button type="button" 
-                    onclick="toggleWishlistItem({id:<?= (int)$product['id'] ?>, title:'<?= addslashes(htmlspecialchars($product_title)) ?>', price:<?= $price ?>, image:'<?= addslashes(htmlspecialchars($primary_image)) ?>'})"
-                    class="col-span-1 py-3 bg-stone-100 hover:bg-stone-200 border border-stone-300 text-rose-500 rounded-2xl flex items-center justify-center transition-colors cursor-pointer shadow-sm"
-                    title="Save to Wardrobe Wishlist">
-              <span class="material-symbols-outlined text-xl">favorite</span>
-            </button>
+            <div class="col-span-1 py-2 bg-stone-100 hover:bg-stone-200 border border-stone-300 rounded-2xl flex items-center justify-center transition-colors cursor-pointer shadow-sm relative overflow-hidden" title="Save to Wardrobe Wishlist">
+              <div class="heart-container" title="Like">
+                <input type="checkbox" class="checkbox" data-wishlist-id="<?= (int)$product['id'] ?>" onchange="toggleWishlistItem({id:<?= (int)$product['id'] ?>, title:'<?= addslashes(htmlspecialchars($product_title)) ?>', price:<?= $price ?>, image:'<?= addslashes(htmlspecialchars($primary_image)) ?>'}, event)">
+                <div class="svg-container">
+                  <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+                  </svg>
+                  <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+                  </svg>
+                  <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="10,10 20,20"></polygon>
+                    <polygon points="10,50 20,50"></polygon>
+                    <polygon points="20,80 30,70"></polygon>
+                    <polygon points="90,10 80,20"></polygon>
+                    <polygon points="90,50 80,50"></polygon>
+                    <polygon points="80,80 70,70"></polygon>
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -443,8 +498,28 @@
   </section>
 
 
-  <!-- ── 3. OBSIDIAN ATELIER CRAFT & ENGINEERING SHOWCASE (DRAMATIC BLACK CANVAS) ── -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- ── 3. DYNAMIC EDITORIAL SPECIFICATIONS & CRAFTSMANSHIP (STUDIO SHOWCASE) ── -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white rounded-3xl border border-stone-200 shadow-xl p-6 sm:p-10 text-stone-900">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="px-3 py-1 bg-amber-50 text-[#a16207] border border-amber-200 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
+          ✦ Editorial Story &amp; Specifications
+        </span>
+      </div>
+      
+      <div class="prose prose-stone max-w-none text-stone-700 leading-relaxed font-sans text-sm sm:text-base space-y-4">
+        <?php 
+          $formatted_desc = nl2br(htmlspecialchars($full_desc));
+          $formatted_desc = preg_replace('/### (.*?)(<br \/>|\n)/i', '<h4 class="font-serif text-lg sm:text-xl font-bold text-stone-950 mt-4 mb-2 pb-1 border-b border-stone-200">$1</h4>', $formatted_desc);
+          $formatted_desc = preg_replace('/\*\*(.*?)\*\*/', '<strong class="text-stone-900 font-bold">$1</strong>', $formatted_desc);
+          echo $formatted_desc;
+        ?>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. OBSIDIAN ATELIER CRAFT & ENGINEERING SHOWCASE (DRAMATIC BLACK CANVAS) ── -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-[#090a0f] rounded-3xl border border-white/15 shadow-2xl p-8 sm:p-12 md:p-14 text-white relative overflow-hidden">
       
       <!-- Ambient Golden Radial Lighting -->
@@ -457,7 +532,7 @@
           Engineered For Decades of Poise<span class="text-[#e9c176]">.</span>
         </h2>
         <p class="text-white/60 text-xs sm:text-sm mt-3 font-light font-sans leading-relaxed">
-          Every silhouette is conceived without compromise, combining ancient Mongolian harvesting with single-needle Italian hand-construction.
+          Every silhouette is conceived without compromise, combining premium combed yarn spinning with durable double-needle stitching.
         </p>
       </div>
 
@@ -502,171 +577,62 @@
   </section>
 
 
-  <!-- ── 4. ✦ AI STYLIST ENSEMBLE SUITE (3-PIECE COMPLETE LOOKS WITH CONNECTORS) ✦ ── -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" id="curatedEnsemblesSection">
+  <!-- ── 4. COMPLETE THE WARDROBE (CURATED ARCHIVE RECOMMENDATIONS) ── -->
+  <?php if (!empty($related)): ?>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" id="curatedRelatedSection">
     
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 mb-8 pb-4 border-b border-stone-200">
       <div>
         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-[#a16207] text-[10px] font-mono font-bold uppercase tracking-wider mb-2">
           <span class="material-symbols-outlined text-xs">auto_awesome</span>
-          <span>AI Stylist Autonomous Ensembles</span>
+          <span>Curated Styling Pairings</span>
         </div>
-        <h3 class="font-serif text-2xl sm:text-3xl text-stone-950 font-bold">Curated 3-Piece Complete Looks</h3>
-        <p class="text-xs text-stone-500 font-light mt-1">This is a topwear piece. Below are 3 curated looks. Click any box to inspect or open the Model Studio.</p>
+        <h3 class="font-serif text-2xl sm:text-3xl text-stone-950 font-bold">Complete the Wardrobe</h3>
+        <p class="text-xs text-stone-500 font-light mt-1">Harmonious garments and accessories curated to pair with this piece.</p>
       </div>
 
       <div class="flex items-center gap-2">
-        <span class="text-xs font-mono text-stone-500 mr-2 hidden sm:inline">← Scroll Ensembles →</span>
-        <button type="button" onclick="scrollEnsembleRail(-340)" class="w-9 h-9 rounded-full bg-white border border-stone-300 hover:border-stone-950 text-stone-800 flex items-center justify-center transition-colors cursor-pointer shadow-xs" title="Previous Look">
-          <span class="material-symbols-outlined text-sm">chevron_left</span>
-        </button>
-        <button type="button" onclick="scrollEnsembleRail(340)" class="w-9 h-9 rounded-full bg-white border border-stone-300 hover:border-stone-950 text-stone-800 flex items-center justify-center transition-colors cursor-pointer shadow-xs" title="Next Look">
-          <span class="material-symbols-outlined text-sm">chevron_right</span>
-        </button>
+        <a href="<?= base_url('shop') ?>" class="text-xs font-mono uppercase tracking-wider text-[#a16207] font-bold hover:underline">
+          View All Archives →
+        </a>
       </div>
     </div>
 
-    <!-- Horizontal Scrollable Track of 3 Complete Looks -->
-    <div class="flex gap-6 overflow-x-auto custom-scrollbar pb-6 snap-x" id="pdpEnsembleTrack">
-      
-      <?php foreach ($ensemble_looks as $lIdx => $look): ?>
+    <!-- Product Cards Grid for Related Items -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      <?php foreach ($related as $r): ?>
       <?php 
-        $tot_orig = $look['top']['price'] + $look['bottom']['price'] + $look['shoes']['price'];
-        $tot_ensemble = round($tot_orig * 0.88); // 12% privilege bundle discount
-        $savings = $tot_orig - $tot_ensemble;
+        $r_img = !empty($r['primary_image']) ? $r['primary_image'] : base_url('img/cashmere_cocoon_coat.jpg');
+        $r_price = (float)($r['min_price'] ?? $r['base_price'] ?? 0);
       ?>
-      <div class="w-[310px] sm:w-[340px] flex-shrink-0 snap-start bg-white border border-stone-200 hover:border-amber-300/80 rounded-3xl p-5 flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300" id="pdpLookCard_<?= $lIdx ?>">
-        
+      <div class="group bg-white rounded-2xl border border-stone-200 hover:border-[#a16207]/60 p-3 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300">
         <div>
-          <!-- Look Header -->
-          <div class="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
-            <div class="flex items-center gap-2.5">
-              <span class="w-7 h-7 rounded-full bg-stone-900 text-white font-mono text-xs font-bold flex items-center justify-center shadow-xs">
-                0<?= $lIdx + 1 ?>
-              </span>
-              <div>
-                <h4 class="font-serif font-bold text-xs sm:text-sm text-stone-900 truncate max-w-[160px]"><?= htmlspecialchars($look['name']) ?></h4>
-                <span class="text-[10px] text-stone-500 font-light block"><?= htmlspecialchars($look['vibe']) ?></span>
-              </div>
-            </div>
-            <span class="text-[9px] font-mono uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
-              <?= $look['discount'] ?>
-            </span>
-          </div>
-
-          <!-- Stacked 3 Slots with Connectors -->
-          <div class="space-y-2.5 mb-4">
-            
-            <!-- Slot 1: Top Wear (Active Piece) -->
-            <div class="bg-amber-50/40 border border-amber-300/80 ring-1 ring-amber-300/50 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
-                  <img src="<?= htmlspecialchars($look['top']['img']) ?>" alt="<?= htmlspecialchars($look['top']['title']) ?>" class="w-full h-full object-cover">
-                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">01</span>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[8px] font-mono uppercase font-bold text-[#a16207] bg-amber-100/90 px-1.5 py-0.5 rounded inline-block mb-0.5">
-                    ★ Top Wear (Active)
-                  </span>
-                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate"><?= htmlspecialchars($look['top']['title']) ?></h5>
-                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="<?= $look['top']['price'] ?>">₹<?= number_format($look['top']['price'], 0) ?></span>
-                </div>
-              </div>
-              <span class="px-2 py-1 bg-amber-100 text-amber-900 rounded-lg text-[9px] font-mono font-bold border border-amber-300 flex items-center gap-0.5">
-                <span class="material-symbols-outlined text-[10px]">check</span>
-                <span>Active</span>
-              </span>
-            </div>
-
-            <!-- Connector 1 -->
-            <div class="flex items-center justify-center -my-1">
-              <div class="w-0.5 h-2.5 bg-stone-300"></div>
-            </div>
-
-            <!-- Slot 2: Bottom Wear -->
-            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
-                  <img src="<?= htmlspecialchars($look['bottom']['img']) ?>" alt="<?= htmlspecialchars($look['bottom']['title']) ?>" class="w-full h-full object-cover">
-                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">02</span>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Bottom Wear</span>
-                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate"><?= htmlspecialchars($look['bottom']['title']) ?></h5>
-                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="<?= $look['bottom']['price'] ?>">₹<?= number_format($look['bottom']['price'], 0) ?></span>
-                </div>
-              </div>
-              <button type="button" 
-                      onclick="addToCart({id:<?= $look['bottom']['id'] ?>, title:'<?= addslashes(htmlspecialchars($look['bottom']['title'])) ?>', price:<?= $look['bottom']['price'] ?>, image:'<?= addslashes(htmlspecialchars($look['bottom']['img'])) ?>'}, 1)" 
-                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
-                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
-                <span>Add</span>
-              </button>
-            </div>
-
-            <!-- Connector 2 -->
-            <div class="flex items-center justify-center -my-1">
-              <div class="w-0.5 h-2.5 bg-stone-300"></div>
-            </div>
-
-            <!-- Slot 3: Footwear -->
-            <div class="bg-stone-50 border border-stone-200 hover:border-stone-400 rounded-2xl p-2.5 flex items-center justify-between gap-2.5 shadow-xs transition-all">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <div class="relative w-12 h-14 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200 shadow-xs">
-                  <img src="<?= htmlspecialchars($look['shoes']['img']) ?>" alt="<?= htmlspecialchars($look['shoes']['title']) ?>" class="w-full h-full object-cover">
-                  <span class="absolute top-1 left-1 bg-stone-900/90 text-white text-[7px] font-mono px-1 py-0.5 rounded font-bold">03</span>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[8px] font-mono uppercase font-bold text-stone-500 block mb-0.5">Footwear</span>
-                  <h5 class="font-serif text-xs font-bold text-stone-900 truncate"><?= htmlspecialchars($look['shoes']['title']) ?></h5>
-                  <span class="font-serif font-bold text-xs text-stone-900" data-price-inr="<?= $look['shoes']['price'] ?>">₹<?= number_format($look['shoes']['price'], 0) ?></span>
-                </div>
-              </div>
-              <button type="button" 
-                      onclick="addToCart({id:<?= $look['shoes']['id'] ?>, title:'<?= addslashes(htmlspecialchars($look['shoes']['title'])) ?>', price:<?= $look['shoes']['price'] ?>, image:'<?= addslashes(htmlspecialchars($look['shoes']['img'])) ?>'}, 1)" 
-                      class="px-2.5 py-1.5 bg-stone-900 hover:bg-black text-white rounded-lg text-[9px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs">
-                <span class="material-symbols-outlined text-[11px]">add_shopping_bag</span>
-                <span>Add</span>
-              </button>
-            </div>
-
-          </div>
+          <a href="<?= base_url('products/' . $r['slug']) ?>" class="block relative aspect-[3/4] bg-stone-100 rounded-xl overflow-hidden mb-3">
+            <img src="<?= htmlspecialchars($r_img) ?>" alt="<?= htmlspecialchars($r['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          </a>
+          <span class="text-[9px] font-mono uppercase tracking-widest text-[#a16207] font-bold block mb-1"><?= htmlspecialchars($r['vendor'] ?? 'Atelier') ?></span>
+          <h4 class="font-serif text-xs sm:text-sm font-bold text-stone-900 line-clamp-1 mb-1 group-hover:text-[#a16207] transition-colors">
+            <a href="<?= base_url('products/' . $r['slug']) ?>"><?= htmlspecialchars($r['title']) ?></a>
+          </h4>
+          <span class="font-serif font-bold text-sm text-stone-950 block" data-price-inr="<?= $r_price ?>">₹<?= number_format($r_price, 0) ?></span>
         </div>
-
-        <!-- Ensemble Actions & Pricing -->
-        <div class="pt-3 border-t border-stone-200 space-y-2.5">
-          
-          <!-- Interactive Model Studio Trigger -->
-          <button type="button" onclick="openPdpModelStudioModal(<?= $lIdx ?>)" class="w-full py-2.5 bg-stone-900 hover:bg-black text-white rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs">
-            <span class="material-symbols-outlined text-sm text-[#e9c176]">accessibility_new</span>
-            <span>Interactive Model Studio</span>
-          </button>
-
-          <!-- Combo Pricing -->
-          <div class="flex items-baseline justify-between text-xs px-1">
-            <span class="text-stone-500 font-mono text-[11px]">Look Total:</span>
-            <div class="flex items-baseline gap-1.5">
-              <span class="font-serif font-bold text-sm text-stone-900" data-price-inr="<?= $tot_ensemble ?>">₹<?= number_format($tot_ensemble, 0) ?></span>
-              <span class="text-[10px] text-stone-400 line-through" data-price-inr="<?= $tot_orig ?>">₹<?= number_format($tot_orig, 0) ?></span>
-              <span class="text-[10px] text-emerald-600 font-mono font-bold">Save ₹<?= number_format($savings, 0) ?></span>
-            </div>
-          </div>
-
-          <!-- Acquire Complete 3-Piece Look -->
+        <div class="pt-3 mt-2 border-t border-stone-100 flex items-center gap-1.5">
+          <a href="<?= base_url('products/' . $r['slug']) ?>" class="flex-1 py-2 bg-stone-950 hover:bg-stone-800 text-white font-mono text-[10px] uppercase font-bold tracking-wider rounded-xl text-center transition-all">
+            View Piece
+          </a>
           <button type="button" 
-                  onclick="acquireFullEnsemble(<?= $lIdx ?>)" 
-                  class="w-full py-2.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 hover:opacity-90 text-stone-950 font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
-            <span class="material-symbols-outlined text-sm">checkroom</span>
-            <span>Acquire Complete 3-Piece Look</span>
+                  onclick="addToCart({id:<?= (int)$r['id'] ?>, title:'<?= addslashes(htmlspecialchars($r['title'])) ?>', price:<?= $r_price ?>, image:'<?= addslashes($r_img) ?>'}, 1)"
+                  class="p-2 bg-stone-100 hover:bg-stone-200 text-stone-900 rounded-xl transition-colors cursor-pointer"
+                  title="Add to Bag">
+            <span class="material-symbols-outlined text-sm">shopping_bag</span>
           </button>
         </div>
-
       </div>
       <?php endforeach; ?>
-
     </div>
 
   </section>
+  <?php endif; ?>
 
 
   <!-- ── 5. VERIFIED CLIENT REVIEWS SECTION ── -->
@@ -759,61 +725,7 @@
 </main>
 
 
-<!-- ══════════════════════════════════════════════════════
-     7. INTERACTIVE MODEL STUDIO LOOKBOOK MODAL (POPUP)
-══════════════════════════════════════════════════════ -->
-<div id="pdpModelStudioModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[130] hidden items-center justify-center p-4 md:p-8" onclick="if(event.target===this)closePdpModelStudioModal()">
-  <div class="bg-[#0b0c10] p-6 sm:p-8 rounded-3xl max-w-4xl w-full border border-white/20 text-white shadow-2xl relative max-h-[92vh] overflow-y-auto custom-scrollbar flex flex-col justify-between">
-    
-    <!-- Modal Header -->
-    <div class="flex justify-between items-center pb-4 mb-6 border-b border-white/15">
-      <div>
-        <span class="text-[10px] font-mono uppercase tracking-widest text-[#e9c176] block mb-0.5">✦ Spatial Model Lookbook</span>
-        <h3 class="font-serif text-xl sm:text-2xl font-bold text-white" id="pdpModelStudioTitle">Look 01 · The Milan Executive</h3>
-      </div>
-      <button type="button" onclick="closePdpModelStudioModal()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors">
-        ✕
-      </button>
-    </div>
 
-    <!-- Modal Content Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6 items-center">
-      
-      <!-- Left: Big Model Photo -->
-      <div class="md:col-span-6 relative aspect-[3/4] rounded-2xl overflow-hidden bg-black/80 border border-white/20 shadow-xl group">
-        <img id="pdpModelStudioImg" src="<?= base_url('img/model_look_executive.jpg') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Model Look">
-        <div class="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/80 text-[10px] font-mono text-[#e9c176] border border-white/20 backdrop-blur-md">
-          Live Model Runway Poise
-        </div>
-      </div>
-
-      <!-- Right: Ensembles Checklist -->
-      <div class="md:col-span-6 flex flex-col justify-between space-y-4">
-        <div>
-          <span class="text-xs font-mono uppercase tracking-wider text-[#e9c176] block mb-1">Ensemble Breakdown</span>
-          <h4 class="font-serif text-lg font-bold text-white mb-3" id="pdpModelStudioSubtitle">3 Tailored Harmonious Pieces</h4>
-          
-          <div class="space-y-3" id="pdpModelStudioItemsList">
-            <!-- Items injected via JS -->
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-white/15 space-y-3">
-          <div class="flex justify-between items-baseline">
-            <span class="text-xs font-mono text-white/60">Bundle Total (12% Privilege):</span>
-            <span class="font-serif text-xl font-bold text-[#e9c176]" id="pdpModelStudioPrice">₹12,229</span>
-          </div>
-
-          <button type="button" id="btnPdpAcquireStudioLook" class="w-full py-3.5 bg-gradient-to-r from-amber-400 to-[#e9c176] text-black font-button font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-xl hover:opacity-90 cursor-pointer">
-            Acquire Complete 3-Piece Ensemble →
-          </button>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
 
 
 <!-- ══════════════════════════════════════════════════════
@@ -881,7 +793,7 @@
 
 
 <script>
-const pdpEnsembleLooksData = <?= json_encode($ensemble_looks) ?>;
+const pdpEnsembleLooksData = <?= json_encode($ensemble_looks ?? []) ?>;
 let currentProductPrice = <?= $price ?>;
 
 // ── Horizontal Rail Scroll ──
@@ -911,8 +823,20 @@ function selectMainPhoto(imgUrl, btn) {
   btn.classList.remove('opacity-70');
 }
 
+// ── Global PDP Selection State ──
+window.pdpSelectedSize = '<?= !empty($available_sizes[0]) ? addslashes($available_sizes[0]) : "M" ?>';
+window.pdpSelectedColor = '<?= !empty($color_shades[0]["name"]) ? addslashes($color_shades[0]["name"]) : "Original Finish" ?>';
+window.pdpSelectedQuantity = 1;
+
+window.changePdpQuantity = function(delta) {
+  window.pdpSelectedQuantity = Math.max(1, Math.min(20, (window.pdpSelectedQuantity || 1) + delta));
+  const el = document.getElementById('pdpQuantityDisplay');
+  if (el) el.textContent = window.pdpSelectedQuantity;
+};
+
 // ── Tactile Shade Swatch Switcher ──
 function selectColorShade(shadeName, imgUrl, btn) {
+  window.pdpSelectedColor = shadeName;
   const label = document.getElementById('selectedColorName');
   const photoLabel = document.getElementById('activeShadePhotoLabel');
   if (label) label.textContent = shadeName;
@@ -937,13 +861,50 @@ function selectColorShade(shadeName, imgUrl, btn) {
 
 // ── Size Selector ──
 function selectProductSize(sizeCode, btn) {
+  window.pdpSelectedSize = sizeCode;
   const label = document.getElementById('selectedSizeLabel');
   if (label) label.textContent = sizeCode + ' (Selected)';
 
   document.querySelectorAll('.size-pill-btn').forEach(b => {
-    b.className = 'size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer';
+    b.className = 'size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2 px-3 text-center text-xs font-mono rounded-xl transition-all cursor-pointer';
   });
-  btn.className = 'size-pill-btn bg-stone-950 text-[#e9c176] font-bold shadow-md py-2.5 text-center text-xs font-mono rounded-xl transition-all cursor-pointer';
+  btn.className = 'size-pill-btn bg-stone-950 text-[#e9c176] font-bold shadow-md py-2 px-3 text-center text-xs font-mono rounded-xl transition-all cursor-pointer';
+}
+
+// ── PDP Direct Add To Cart & Checkout with chosen Size/Color/Quantity ──
+function handlePdpAddToCart() {
+  const chosenSize = window.pdpSelectedSize || 'M';
+  const chosenColor = window.pdpSelectedColor || '';
+  const chosenQty = window.pdpSelectedQuantity || 1;
+  addToCart({
+    id: <?= (int)$product['id'] ?>,
+    title: '<?= addslashes(htmlspecialchars($product_title)) ?>',
+    price: currentProductPrice,
+    image: '<?= addslashes(htmlspecialchars($primary_image)) ?>',
+    size: chosenSize,
+    color: chosenColor
+  }, chosenQty, '✦ Added ' + chosenQty + 'x <?= addslashes(htmlspecialchars($product_title)) ?> (Size ' + chosenSize + ') to Bag!');
+}
+
+function handlePdpInstantCheckout() {
+  const chosenSize = window.pdpSelectedSize || 'M';
+  const chosenColor = window.pdpSelectedColor || '';
+  const chosenQty = window.pdpSelectedQuantity || 1;
+  if (typeof openExpressCheckout === 'function') {
+    openExpressCheckout(
+      <?= (int)$product['id'] ?>,
+      '<?= addslashes(htmlspecialchars($product_title)) ?>',
+      currentProductPrice,
+      '<?= addslashes(htmlspecialchars($primary_image)) ?>',
+      <?= (int)$product['id'] ?>,
+      chosenSize,
+      chosenColor,
+      chosenQty
+    );
+  } else {
+    handlePdpAddToCart();
+    setTimeout(() => { window.location.href = '<?= base_url("checkout") ?>'; }, 300);
+  }
 }
 
 // ── VIP Privilege Coupon Application ──
@@ -979,76 +940,7 @@ function checkPincodeDelivery() {
   }
 }
 
-// ── 1-Click Acquire Full 3-Piece Ensemble ──
-function acquireFullEnsemble(lookIdx) {
-  const look = pdpEnsembleLooksData[lookIdx];
-  if (!look) return;
 
-  const items = [look.top, look.bottom, look.shoes];
-  items.forEach((it, idx) => {
-    setTimeout(() => {
-      addToCart({
-        id: it.id,
-        title: it.title,
-        price: it.price,
-        image: it.img
-      }, 1);
-    }, idx * 120);
-  });
-
-  if (typeof showStashToast === 'function') {
-    showStashToast('Added 3-Piece Ensemble (' + look.name + ') to Bag with 12% Privilege Savings! 🛍️');
-  }
-}
-
-// ── Interactive Model Studio Modal ──
-function openPdpModelStudioModal(lookIdx) {
-  const look = pdpEnsembleLooksData[lookIdx];
-  if (!look) return;
-
-  const modal = document.getElementById('pdpModelStudioModal');
-  const title = document.getElementById('pdpModelStudioTitle');
-  const subtitle = document.getElementById('pdpModelStudioSubtitle');
-  const img = document.getElementById('pdpModelStudioImg');
-  const priceEl = document.getElementById('pdpModelStudioPrice');
-  const list = document.getElementById('pdpModelStudioItemsList');
-  const btn = document.getElementById('btnPdpAcquireStudioLook');
-
-  title.textContent = 'Look 0' + (lookIdx + 1) + ' · ' + look.name;
-  subtitle.textContent = look.vibe;
-  img.src = look.model_img || look.mannequin_img;
-
-  const tot_orig = look.top.price + look.bottom.price + look.shoes.price;
-  const tot_ensemble = Math.round(tot_orig * 0.88);
-  priceEl.textContent = '₹' + tot_ensemble.toLocaleString('en-IN');
-
-  list.innerHTML = [look.top, look.bottom, look.shoes].map((it, i) => `
-    <div class="flex items-center gap-3 p-2.5 bg-white/5 border border-white/10 rounded-xl">
-      <img src="${it.img}" class="w-10 h-10 object-cover rounded-lg bg-black/40">
-      <div class="min-w-0 flex-1">
-        <span class="text-[9px] font-mono text-[#e9c176] uppercase font-bold block">${it.type}</span>
-        <h6 class="font-serif text-xs font-bold text-white truncate">${it.title}</h6>
-      </div>
-      <span class="font-mono text-xs font-bold text-white">₹${Number(it.price).toLocaleString('en-IN')}</span>
-    </div>
-  `).join('');
-
-  btn.onclick = function() {
-    acquireFullEnsemble(lookIdx);
-    closePdpModelStudioModal();
-  };
-
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
-}
-
-function closePdpModelStudioModal() {
-  const modal = document.getElementById('pdpModelStudioModal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-}
 
 // ── Modals ──
 function openSizeGuideModal() {
@@ -1175,32 +1067,121 @@ document.addEventListener('keydown', function(e) {
   </div>
 </div>
 
-<!-- ── Mobile Luxury Sticky Bottom Buy Bar (Frictionless Touch Conversion) ── -->
-<div class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#0c0e14]/95 backdrop-blur-2xl border-t border-white/20 px-4 py-3 shadow-[0_-10px_30px_rgba(0,0,0,0.85)]">
-  <div class="flex items-center gap-3">
-    
-    <!-- Left Price Info -->
-    <div class="flex flex-col min-w-[80px]">
-      <span class="text-[9px] font-mono uppercase tracking-widest text-[#e9c176] font-bold">Atelier Piece</span>
-      <span class="font-serif text-lg font-bold text-white leading-tight" data-price-inr="<?= $price ?>">₹<?= number_format($price, 0) ?></span>
+<!-- ══ RECENTLY VIEWED PRODUCTS STRIP ══ -->
+<section id="recentlyViewedSection" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-stone-200 hidden">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-[#92400e] font-bold block mb-1">Your Journey</span>
+      <h2 class="font-serif text-2xl sm:text-3xl text-stone-950 font-bold">Recently Explored Silhouettes</h2>
     </div>
+  </div>
+  <div id="recentlyViewedGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-6"></div>
+</section>
 
-    <!-- Quick Wishlist Heart -->
-    <button type="button" onclick="toggleWishlistItem({id:<?= (int)$product['id'] ?>, title:'<?= addslashes(htmlspecialchars($product_title)) ?>', price:<?= $price ?>, image:'<?= addslashes(htmlspecialchars($primary_image)) ?>'})" class="w-11 h-11 rounded-xl bg-white/10 border border-white/15 text-rose-400 flex items-center justify-center flex-shrink-0 active:scale-90 transition-all cursor-pointer">
-      <span class="material-symbols-outlined text-xl">favorite</span>
-    </button>
-
-    <!-- Quick Add to Bag -->
-    <button type="button" onclick="addToCart({id:<?= $product['id'] ?>, title:'<?= addslashes(htmlspecialchars($product_title)) ?>', price:<?= $price ?>, image:'<?= addslashes(htmlspecialchars($primary_image)) ?>'}, 1)" class="w-11 h-11 rounded-xl bg-white/15 border border-white/20 text-white flex items-center justify-center flex-shrink-0 active:scale-90 transition-all cursor-pointer" title="Add to Bag">
-      <span class="material-symbols-outlined text-xl">shopping_bag</span>
-    </button>
-
-    <!-- Primary 1-Click Instant Acquisition Button -->
-    <button type="button" onclick="openExpressCheckout(<?= $product['id'] ?>, '<?= addslashes(htmlspecialchars($product_title)) ?>', <?= $price ?>, '<?= addslashes(htmlspecialchars($primary_image)) ?>', <?= $product['id'] ?>);" class="flex-1 py-3 px-3 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 text-stone-950 font-mono font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer">
-      <span class="material-symbols-outlined text-base">bolt</span>
-      <span>1-Click Buy</span>
-    </button>
-
+<!-- ══ BACK IN STOCK NOTIFY MODAL ══ -->
+<div id="restockModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+  <div class="bg-white rounded-2xl border border-stone-200 shadow-2xl max-w-md w-full p-6 relative text-left">
+    <button type="button" onclick="closeRestockModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-900 w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center cursor-pointer">✕</button>
+    <div class="w-10 h-10 rounded-xl bg-amber-50 text-[#92400e] flex items-center justify-center mb-3">
+      <span class="material-symbols-outlined text-xl">notifications_active</span>
+    </div>
+    <span class="text-[10px] font-mono uppercase tracking-widest text-[#92400e] font-bold block mb-1">Priority Waitlist</span>
+    <h3 class="font-serif text-xl font-bold text-stone-950 mb-1">Notify When Restocked</h3>
+    <p class="text-xs text-stone-500 mb-4 font-light">Leave your email or WhatsApp number. We will notify you the moment our atelier crafts the next limited batch.</p>
+    <form id="restockForm" onsubmit="submitRestockNotify(event)" class="space-y-3">
+      <input type="hidden" name="product_id" value="<?= (int)$product['id'] ?>">
+      <input type="hidden" name="variant_id" id="restockVariantId" value="<?= (int)$default_variant['id'] ?>">
+      <div>
+        <label class="font-mono text-[10px] uppercase tracking-wider text-stone-600 block mb-1 font-bold">Email or WhatsApp Number *</label>
+        <input type="text" id="restockContact" name="contact" placeholder="you@domain.com or +91 98765 43210" required class="w-full text-xs bg-stone-50 px-3.5 py-2.5 border border-stone-200 rounded-lg outline-none focus:border-stone-950 focus:bg-white transition-all font-sans">
+      </div>
+      <button type="submit" class="w-full py-3 bg-[#1A1815] hover:bg-[#2e2a25] text-white font-button text-xs uppercase tracking-widest rounded-lg font-bold transition-all shadow-md cursor-pointer">
+        Join Priority Waitlist
+      </button>
+      <div id="restockFeedback" class="text-xs text-center font-medium mt-2 hidden"></div>
+    </form>
   </div>
 </div>
+
+<script>
+// ── Recently Viewed Products & Restock Notify ──
+(function() {
+  try {
+    const currentProd = {
+      id: <?= (int)$product['id'] ?>,
+      title: <?= json_encode($product_title) ?>,
+      slug: <?= json_encode($product['slug'] ?? 'the-atelier-cashmere-cocoon-coat') ?>,
+      price: <?= (float)$price ?>,
+      image: <?= json_encode($primary_image) ?>
+    };
+    let viewed = JSON.parse(localStorage.getItem('novadrop_recently_viewed') || '[]');
+    viewed = viewed.filter(p => p.id !== currentProd.id);
+    viewed.unshift(currentProd);
+    viewed = viewed.slice(0, 8);
+    localStorage.setItem('novadrop_recently_viewed', JSON.stringify(viewed));
+    
+    const others = viewed.filter(p => p.id !== currentProd.id);
+    const grid = document.getElementById('recentlyViewedGrid');
+    const sec = document.getElementById('recentlyViewedSection');
+    if (others.length > 0 && grid && sec) {
+      sec.classList.remove('hidden');
+      grid.innerHTML = others.slice(0, 4).map(p => `
+        <div class="group relative flex flex-col bg-white border border-[#E8E3DC] rounded-lg overflow-hidden transition-all hover:shadow-md">
+          <a href="<?= base_url('products/') ?>${p.slug}" class="block aspect-[3/4] bg-[#FAF8F5] overflow-hidden">
+            <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${p.title}">
+          </a>
+          <div class="p-3.5 flex flex-col justify-between flex-1">
+            <h4 class="font-serif font-bold text-sm text-[#1A1815] line-clamp-1 mb-1">
+              <a href="<?= base_url('products/') ?>${p.slug}" class="hover:underline">${p.title}</a>
+            </h4>
+            <div class="text-xs font-mono font-bold text-[#92400e]">₹${Number(p.price).toLocaleString()}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch(e) {}
+})();
+
+function openRestockModal(variantId) {
+  if (variantId) document.getElementById('restockVariantId').value = variantId;
+  document.getElementById('restockModal').classList.remove('hidden');
+  document.getElementById('restockModal').classList.add('flex');
+}
+function closeRestockModal() {
+  document.getElementById('restockModal').classList.add('hidden');
+  document.getElementById('restockModal').classList.remove('flex');
+}
+function submitRestockNotify(e) {
+  e.preventDefault();
+  const contact = document.getElementById('restockContact').value;
+  const prodId = <?= (int)$product['id'] ?>;
+  const varId = document.getElementById('restockVariantId').value;
+  const fb = document.getElementById('restockFeedback');
+  
+  const fd = new FormData();
+  fd.append('product_id', prodId);
+  fd.append('variant_id', varId);
+  fd.append('contact', contact);
+  fd.append('<?= $this->security->get_csrf_token_name() ?>', '<?= $this->security->get_csrf_hash() ?>');
+  
+  fetch('<?= base_url('storefront/products/ajax_notify_restock') ?>', { method: 'POST', body: fd })
+    .then(r => r.json())
+    .then(res => {
+      fb.classList.remove('hidden');
+      if (res.success) {
+        fb.className = 'text-xs text-center font-medium mt-2 text-emerald-700 font-serif';
+        fb.textContent = res.message;
+        setTimeout(closeRestockModal, 2500);
+      } else {
+        fb.className = 'text-xs text-center font-medium mt-2 text-red-600';
+        fb.textContent = res.message || 'Error subscribing.';
+      }
+    })
+    .catch(() => {
+      fb.classList.remove('hidden');
+      fb.className = 'text-xs text-center font-medium mt-2 text-red-600';
+      fb.textContent = 'Unable to connect to server. Please try again.';
+    });
+}
+</script>
 

@@ -90,7 +90,11 @@ class Promotions extends MY_Controller
             redirect('admin/promotions/flash_sales');
         }
 
-        $flash_sales = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('flash_sales')->result_array();
+        $fs_q = $this->db->order_by('id', 'DESC');
+        if ($this->db->field_exists('store_id', 'flash_sales')) {
+            $fs_q->where('store_id', $this->store_id);
+        }
+        $flash_sales = $fs_q->get('flash_sales')->result_array();
         $data = [
             'title'       => 'Flash Sales — NovaDrop Admin',
             'flash_sales' => $flash_sales,
@@ -141,7 +145,11 @@ class Promotions extends MY_Controller
             redirect('admin/promotions/bundles');
         }
 
-        $bundles = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('product_bundles')->result_array();
+        $bq = $this->db->order_by('id', 'DESC');
+        if ($this->db->field_exists('store_id', 'product_bundles')) {
+            $bq->where('store_id', $this->store_id);
+        }
+        $bundles = $bq->get('product_bundles')->result_array();
         $products = $this->db->where('status', 'active')->order_by('title', 'ASC')->get('products')->result_array();
         $data = [
             'title'    => 'Product Bundles — NovaDrop Admin',
@@ -190,7 +198,11 @@ class Promotions extends MY_Controller
             redirect('admin/promotions/pre_orders');
         }
 
-        $pre_orders = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('pre_orders')->result_array();
+        $pq = $this->db->order_by('id', 'DESC');
+        if ($this->db->field_exists('store_id', 'pre_orders')) {
+            $pq->where('store_id', $this->store_id);
+        }
+        $pre_orders = $pq->get('pre_orders')->result_array();
         $products   = $this->db->where('status', 'active')->order_by('title', 'ASC')->get('products')->result_array();
         $data = [
             'title'      => 'Pre-Orders — NovaDrop Admin',
@@ -232,7 +244,11 @@ class Promotions extends MY_Controller
             redirect('admin/promotions/mystery_drops');
         }
 
-        $drops = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('mystery_drops')->result_array();
+        $dq = $this->db->order_by('id', 'DESC');
+        if ($this->db->field_exists('store_id', 'mystery_drops')) {
+            $dq->where('store_id', $this->store_id);
+        }
+        $drops = $dq->get('mystery_drops')->result_array();
         $data  = ['title' => 'Mystery Drops — NovaDrop Admin', 'drops' => $drops];
         $this->load->view('admin/layout/header', $data);
         $this->load->view('admin/promotions/mystery_drops', $data);
@@ -272,7 +288,11 @@ class Promotions extends MY_Controller
             redirect('admin/promotions/group_buying');
         }
 
-        $campaigns = $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('group_buy_campaigns')->result_array();
+        $gq = $this->db->order_by('id', 'DESC');
+        if ($this->db->field_exists('store_id', 'group_buy_campaigns')) {
+            $gq->where('store_id', $this->store_id);
+        }
+        $campaigns = $gq->get('group_buy_campaigns')->result_array();
         $products   = $this->db->where('status', 'active')->order_by('title', 'ASC')->get('products')->result_array();
 
         // Add participant count
@@ -285,6 +305,78 @@ class Promotions extends MY_Controller
         $data = ['title' => 'Group Buying — NovaDrop Admin', 'campaigns' => $campaigns, 'products' => $products];
         $this->load->view('admin/layout/header', $data);
         $this->load->view('admin/promotions/group_buying', $data);
+        $this->load->view('admin/layout/footer', $data);
+    }
+
+    // ─── Coordinated Ensemble Packs & DTC Lookbook Manager ────
+    public function ensembles()
+    {
+        if ($this->input->method() === 'post') {
+            $act = $this->input->post('action');
+            
+            if ($act === 'save_discounts') {
+                $b3 = max(0, min(90, (float)$this->input->post('bundle_discount_3')));
+                $b2 = max(0, min(90, (float)$this->input->post('bundle_discount_2')));
+                $enabled = $this->input->post('bundle_discount_enabled') ? 1 : 0;
+                $free_ship = $this->input->post('bundle_free_shipping') ? 1 : 0;
+
+                // Ensure columns exist in home_settings
+                $this->load->dbforge();
+                if ($this->db->table_exists('home_settings')) {
+                    $fields = $this->db->list_fields('home_settings');
+                    $to_add = [];
+                    if (!in_array('bundle_discount_3', $fields)) $to_add['bundle_discount_3'] = ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 15.00];
+                    if (!in_array('bundle_discount_2', $fields)) $to_add['bundle_discount_2'] = ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 10.00];
+                    if (!in_array('bundle_discount_enabled', $fields)) $to_add['bundle_discount_enabled'] = ['type' => 'TINYINT', 'constraint' => '1', 'default' => 1];
+                    if (!in_array('bundle_free_shipping', $fields)) $to_add['bundle_free_shipping'] = ['type' => 'TINYINT', 'constraint' => '1', 'default' => 1];
+                    if (!in_array('ensemble_looks_json', $fields)) $to_add['ensemble_looks_json'] = ['type' => 'TEXT', 'null' => TRUE];
+                    if (!empty($to_add)) {
+                        $this->dbforge->add_column('home_settings', $to_add);
+                    }
+
+                    $save_data = [
+                        'bundle_discount_3'       => $b3,
+                        'bundle_discount_2'       => $b2,
+                        'bundle_discount_enabled' => $enabled,
+                        'bundle_free_shipping'    => $free_ship,
+                        'updated_at'              => date('Y-m-d H:i:s')
+                    ];
+
+                    $existing = $this->db->where('store_id', $this->store_id)->get('home_settings')->row_array();
+                    if ($existing) {
+                        $this->db->where('store_id', $this->store_id)->update('home_settings', $save_data);
+                    } else {
+                        $save_data['store_id'] = $this->store_id;
+                        $this->db->insert('home_settings', $save_data);
+                    }
+                }
+
+                $this->audit('promotions.ensembles_saved', 'home_settings', 0, [], ['b3' => $b3, 'b2' => $b2]);
+                $this->session->set_flashdata('success', 'Coordinated Ensemble discounts and settings updated successfully! ✦');
+                redirect('admin/promotions/ensembles');
+            }
+        }
+
+        $hs = $this->db->where('store_id', $this->store_id)->limit(1)->get('home_settings')->row_array();
+        if (!$hs) {
+            $hs = $this->db->limit(1)->get('home_settings')->row_array() ?: [];
+        }
+
+        $products = $this->db->where('status', 'active')->order_by('title', 'ASC')->get('products')->result_array();
+
+        $data = [
+            'title'         => 'Coordinated Ensemble Packs — NovaDrop Admin',
+            'home_settings' => $hs,
+            'products'      => $products,
+            'b3_discount'   => isset($hs['bundle_discount_3']) ? (float)$hs['bundle_discount_3'] : 15.0,
+            'b2_discount'   => isset($hs['bundle_discount_2']) ? (float)$hs['bundle_discount_2'] : 10.0,
+            'b_enabled'     => isset($hs['bundle_discount_enabled']) ? (int)$hs['bundle_discount_enabled'] : 1,
+            'b_freeship'    => isset($hs['bundle_free_shipping']) ? (int)$hs['bundle_free_shipping'] : 1,
+            'looks_json'    => $hs['ensemble_looks_json'] ?? '',
+        ];
+
+        $this->load->view('admin/layout/header', $data);
+        $this->load->view('admin/promotions/ensembles', $data);
         $this->load->view('admin/layout/footer', $data);
     }
 }

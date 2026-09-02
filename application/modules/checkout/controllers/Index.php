@@ -104,7 +104,7 @@ class Index extends MY_Controller
         $home_settings = !empty($hs_row) ? $hs_row : [];
 
         $data = [
-            'title'         => 'Checkout — ' . env('APP_NAME', 'LUMINA'),
+            'title'         => 'Checkout — ' . env('APP_NAME', 'NovaDrop'),
             'totals'        => $totals,
             'cart'          => $totals,
             'cart_count'    => $this->Cart_model->count_items($cart_id),
@@ -136,7 +136,7 @@ class Index extends MY_Controller
         $home_settings = !empty($hs_row) ? $hs_row : [];
 
         $data = [
-            'title'            => 'Payment — ' . env('APP_NAME', 'LUMINA'),
+            'title'            => 'Payment — ' . env('APP_NAME', 'NovaDrop'),
             'totals'           => $totals,
             'shipping'         => $shipping,
             'email'            => $email,
@@ -241,7 +241,7 @@ class Index extends MY_Controller
         $home_settings = !empty($hs_row) ? $hs_row : [];
 
         $data = [
-            'title'         => 'Order Confirmed #' . $order['order_number'] . ' — ' . env('APP_NAME', 'LUMINA'),
+            'title'         => 'Order Confirmed #' . $order['order_number'] . ' — ' . env('APP_NAME', 'NovaDrop'),
             'order'         => $order,
             'home_settings' => $home_settings,
             'cart_count'    => 0,

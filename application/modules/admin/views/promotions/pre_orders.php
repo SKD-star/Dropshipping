@@ -14,19 +14,25 @@
       <table class="table table-hover mb-0">
         <thead><tr><th>Product ID</th><th>Available From</th><th>Max Qty</th><th>Deposit Required</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
-        <?php foreach ($pre_orders as $po): ?>
+        <?php foreach ($pre_orders as $po):
+          $po_from    = $po['available_from'] ?? ($po['release_date'] ?? ($po['dispatch_date'] ?? null));
+          $po_qty     = $po['max_quantity'] ?? ($po['max_qty'] ?? ($po['quantity'] ?? null));
+          $po_deposit = (float)($po['deposit_required'] ?? ($po['deposit'] ?? 0));
+          $po_active  = (int)($po['is_active'] ?? ($po['active'] ?? 1));
+          $po_pid     = $po['product_id'] ?? ($po['pid'] ?? 0);
+        ?>
         <tr>
-          <td class="fw-bold">Product #<?= $po['product_id'] ?></td>
-          <td><small><?= $po['available_from'] ? date('d M Y', strtotime($po['available_from'])) : 'TBD' ?></small></td>
-          <td><?= $po['max_quantity'] ? number_format($po['max_quantity']) : 'Unlimited' ?></td>
-          <td><?= $po['deposit_required'] > 0 ? '₹' . number_format($po['deposit_required'], 2) : 'Full Price' ?></td>
-          <td><span class="badge badge-<?= $po['is_active'] ? 'success' : 'secondary' ?>"><?= $po['is_active'] ? 'Active' : 'Disabled' ?></span></td>
+          <td class="fw-bold">Product #<?= $po_pid ?></td>
+          <td><small><?= $po_from ? date('d M Y', strtotime($po_from)) : 'TBD' ?></small></td>
+          <td><?= $po_qty ? number_format($po_qty) : 'Unlimited' ?></td>
+          <td><?= $po_deposit > 0 ? '₹' . number_format($po_deposit, 2) : 'Full Price' ?></td>
+          <td><span class="badge badge-<?= $po_active ? 'success' : 'secondary' ?>"><?= $po_active ? 'Active' : 'Disabled' ?></span></td>
           <td>
             <form method="post" action="<?= base_url('admin/promotions/pre_orders') ?>" class="d-inline">
               <?= csrf_field() ?>
               <input type="hidden" name="preorder_action" value="toggle">
               <input type="hidden" name="id" value="<?= $po['id'] ?>">
-              <button class="btn btn-sm btn-outline-<?= $po['is_active'] ? 'warning' : 'success' ?>"><?= $po['is_active'] ? 'Disable' : 'Enable' ?></button>
+              <button class="btn btn-sm btn-outline-<?= $po_active ? 'warning' : 'success' ?>"><?= $po_active ? 'Disable' : 'Enable' ?></button>
             </form>
             <form method="post" action="<?= base_url('admin/promotions/pre_orders') ?>" class="d-inline" onsubmit="return confirm('Delete this pre-order campaign?')">
               <?= csrf_field() ?>

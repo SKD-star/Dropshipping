@@ -11,21 +11,17 @@ RewriteRule ^migrations/ - [F,L]
 
 # ── Deny dev-tools directory (ngrok, cloudflared, bat scripts) ───
 RewriteRule ^dev-tools/ - [F,L]
-RewriteRule ^cloudflared\.exe - [F,L]
+RewriteRule ^_archive/ - [F,L]
 RewriteRule ^db\.php - [F,L]
-
-# ── Block direct access to legacy /admin/ PHP bootstrap files ────
-# (remove this block after /admin/ is fully decommissioned)
-RewriteRule ^admin/head\.php - [F,L]
-RewriteRule ^admin/layout_header\.php - [F,L]
-RewriteRule ^admin/layout_footer\.php - [F,L]
-RewriteRule ^admin/sidebar\.php - [F,L]
-RewriteRule ^admin/maxbar\.php - [F,L]
-RewriteRule ^admin/loading\.php - [F,L]
 
 # Route REST API V1 endpoints
 RewriteRule ^api/v1/(.*)$ api/v1/index.php [QSA,L]
 RewriteRule ^api/v1$ api/v1/index.php [QSA,L]
+
+# ── Asset routing fallbacks ─────────────────────────────────────────
+RewriteRule ^css/(.*)$ assets/css/$1 [L]
+RewriteRule ^js/(.*)$ assets/js/$1 [L]
+RewriteRule ^img/(.*)$ assets/img/$1 [L]
 
 # Remove index.php from URL
 RewriteCond %{REQUEST_FILENAME} !-f

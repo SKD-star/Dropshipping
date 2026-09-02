@@ -42,7 +42,6 @@ class Affiliates extends MY_Controller
 
             if ($act === 'create') {
                 $row = [
-                    'store_id'        => $this->store_id,
                     'name'            => trim($this->input->post('name', true)),
                     'email'           => trim($this->input->post('email', true)),
                     'handle'          => trim($this->input->post('handle', true)),
@@ -52,6 +51,9 @@ class Affiliates extends MY_Controller
                     'status'          => 'active',
                     'created_at'      => date('Y-m-d H:i:s'),
                 ];
+                if ($this->db->field_exists('store_id', 'influencers')) {
+                    $row['store_id'] = $this->store_id;
+                }
                 $this->db->insert('influencers', $row);
                 $this->audit('influencer.created', 'influencers', $this->db->insert_id(), [], $row);
                 $this->session->set_flashdata('success', "Influencer '{$row['name']}' added.");
@@ -73,9 +75,14 @@ class Affiliates extends MY_Controller
             redirect('admin/affiliates/influencers');
         }
 
-        $influencers = $this->db->table_exists('influencers')
-            ? $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('influencers')->result_array()
-            : [];
+        $influencers = [];
+        if ($this->db->table_exists('influencers')) {
+            $inf_q = $this->db->order_by('id', 'DESC');
+            if ($this->db->field_exists('store_id', 'influencers')) {
+                $inf_q->where('store_id', $this->store_id);
+            }
+            $influencers = $inf_q->get('influencers')->result_array();
+        }
 
         // Add referral conversion stats
         foreach ($influencers as &$inf) {
@@ -100,9 +107,14 @@ class Affiliates extends MY_Controller
     // ─── Referrals ────────────────────────────────────────────
     public function referrals()
     {
-        $referrals = $this->db->table_exists('referrals')
-            ? $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->limit(100)->get('referrals')->result_array()
-            : [];
+        $referrals = [];
+        if ($this->db->table_exists('referrals')) {
+            $ref_q = $this->db->order_by('id', 'DESC')->limit(100);
+            if ($this->db->field_exists('store_id', 'referrals')) {
+                $ref_q->where('store_id', $this->store_id);
+            }
+            $referrals = $ref_q->get('referrals')->result_array();
+        }
 
         $data = ['title' => 'Referrals — NovaDrop Admin', 'referrals' => $referrals];
         $this->load->view('admin/layout/header', $data);
@@ -132,9 +144,14 @@ class Affiliates extends MY_Controller
             redirect('admin/affiliates/payouts');
         }
 
-        $payouts = $this->db->table_exists('affiliate_payouts')
-            ? $this->db->where('store_id', $this->store_id)->order_by('id', 'DESC')->get('affiliate_payouts')->result_array()
-            : [];
+        $payouts = [];
+        if ($this->db->table_exists('affiliate_payouts')) {
+            $pay_q = $this->db->order_by('id', 'DESC');
+            if ($this->db->field_exists('store_id', 'affiliate_payouts')) {
+                $pay_q->where('store_id', $this->store_id);
+            }
+            $payouts = $pay_q->get('affiliate_payouts')->result_array();
+        }
 
         $data = ['title' => 'Affiliate Payouts — NovaDrop Admin', 'payouts' => $payouts];
         $this->load->view('admin/layout/header', $data);

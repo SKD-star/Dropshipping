@@ -1,33 +1,45 @@
 <?php
 /**
  * ====================================================================
- *  LUMINA COMMERCE OS — SINGLE MASTER CONFIGURATION FILE
- *  Change your database and website settings ONLY in this ONE file!
+ *  NovaDrop Commerce OS — Master Configuration Shim
+ *  Reads all environment variables from .env as the Single Source of Truth.
  * ====================================================================
  */
 
-// ─── 1. DATABASE SETTINGS ───────────────────────────────────────────
-// Change these 5 lines for InfinityFree, Hostinger, or Localhost:
-define('DB_HOST', '127.0.0.1');              // MySQL Host (e.g. 'sql300.infinityfree.com' or '127.0.0.1')
-define('DB_PORT', 3306);                     // MySQL Port (Default: 3306)
-define('DB_NAME', 'novadrop');               // Database Name (e.g. 'if0_38123456_novadrop')
-define('DB_USER', 'root');                   // Database Username (e.g. 'if0_38123456')
-define('DB_PASS', '');                       // Database Password
+// Bootstrap .env
+$env_path = __DIR__ . '/.env';
+if (file_exists($env_path)) {
+    foreach (file($env_path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        $line = trim($line);
+        if ($line === '' || $line[0] === '#' || strpos($line, '=') === false) continue;
+        [$k, $v] = explode('=', $line, 2);
+        $k = trim($k);
+        $v = trim($v, " \t\n\r\0\x0B\"'");
+        if (!isset($_ENV[$k])) {
+            putenv("$k=$v");
+            $_ENV[$k] = $v;
+            $_SERVER[$k] = $v;
+        }
+    }
+}
 
-// ─── 2. WEBSITE URL (AUTO-DETECTED) ─────────────────────────────────
-// Leave empty '' to automatically detect localhost, InfinityFree, or any live domain!
-define('APP_URL', '');
+// ─── Canonical Constants (derived from .env) ────────────────────────
+if (!defined('DB_HOST')) define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
+if (!defined('DB_PORT')) define('DB_PORT', (int)(getenv('DB_PORT') ?: 3306));
+if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'novadrop');
+if (!defined('DB_USER')) define('DB_USER', getenv('DB_USER') ?: 'root');
+if (!defined('DB_PASS')) define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
 
-// ─── 3. STORE DETAILS ───────────────────────────────────────────────
-define('STORE_NAME', 'Lumina Atelier');
-define('STORE_CURRENCY', 'INR');             // 'INR', 'USD', 'EUR', 'GBP', 'AED', 'CAD'
-define('STORE_CURRENCY_SYMBOL', '₹');
+if (!defined('APP_NAME')) define('APP_NAME', getenv('APP_NAME') ?: 'NovaDrop');
+if (!defined('APP_URL'))  define('APP_URL', getenv('APP_URL') ?: '');
+if (!defined('APP_ENV'))  define('APP_ENV', getenv('APP_ENV') ?: 'development');
 
-// ─── 4. PAYMENT GATEWAY KEYS (Optional) ─────────────────────────────
-define('RAZORPAY_KEY_ID', 'rzp_test_XXXXXXXXXX');
-define('RAZORPAY_KEY_SECRET', 'your_secret_here');
-define('STRIPE_PUBLIC_KEY', 'pk_test_XXXXXXXXXX');
-define('STRIPE_SECRET_KEY', 'sk_test_XXXXXXXXXX');
+if (!defined('STORE_NAME')) define('STORE_NAME', getenv('APP_NAME') ?: 'NovaDrop');
+if (!defined('STORE_CURRENCY')) define('STORE_CURRENCY', getenv('STORE_CURRENCY') ?: 'INR');
+if (!defined('STORE_CURRENCY_SYMBOL')) define('STORE_CURRENCY_SYMBOL', getenv('STORE_CURRENCY_SYMBOL') ?: '₹');
 
-// ─── 5. ENVIRONMENT MODE ────────────────────────────────────────────
-define('APP_ENV', 'development');            // 'development' or 'production'
+// Payment Gateway Constants
+if (!defined('RAZORPAY_KEY_ID')) define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
+if (!defined('RAZORPAY_KEY_SECRET')) define('RAZORPAY_KEY_SECRET', getenv('RAZORPAY_KEY_SECRET') ?: '');
+if (!defined('STRIPE_PUBLIC_KEY')) define('STRIPE_PUBLIC_KEY', getenv('STRIPE_PUBLIC_KEY') ?: '');
+if (!defined('STRIPE_SECRET_KEY')) define('STRIPE_SECRET_KEY', getenv('STRIPE_SECRET_KEY') ?: '');

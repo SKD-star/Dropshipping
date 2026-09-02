@@ -3,9 +3,9 @@
 <?php
   $current_uri   = isset($current_uri) ? $current_uri : (isset($this->uri) ? $this->uri->uri_string() : '');
   $hs            = $home_settings ?? [];
-  $_f_brand      = htmlspecialchars($hs['brand_name'] ?? 'LUMINA');
+  $_f_brand      = htmlspecialchars($hs['brand_name'] ?? 'NovaDrop');
   $_f_tagline    = htmlspecialchars($hs['brand_tagline'] ?? 'Curated luxury garments and architectural objects for the considered space. Designed with intention, crafted to last.');
-  $_f_copyright  = htmlspecialchars($hs['copyright_text'] ?? '© 2026 ' . ($_f_brand ?: 'LUMINA') . ' ATELIER COLLECTIVE. ALL RIGHTS RESERVED.');
+  $_f_copyright  = htmlspecialchars($hs['copyright_text'] ?? '© 2026 ' . ($_f_brand ?: 'NovaDrop') . ' ATELIER COLLECTIVE. ALL RIGHTS RESERVED.');
 ?>
 
 <!-- ── Luxury Atelier Footer ── -->
@@ -85,13 +85,12 @@
 <?php
   $hs = $home_settings ?? [];
   $wa_enabled = isset($hs['whatsapp_enabled']) ? (int)$hs['whatsapp_enabled'] : 1;
-  $wa_num     = !empty($hs['whatsapp_number']) ? preg_replace('/[^0-9]/', '', $hs['whatsapp_number']) : '919999999999';
-  $wa_msg     = !empty($hs['whatsapp_message']) ? urlencode($hs['whatsapp_message']) : urlencode('Hi! I found your Lumina Atelier store and need styling help.');
-  $_is_home   = ($current_uri === '' || $current_uri === 'lookbook');
+  $wa_num     = !empty($hs['whatsapp_number']) ? preg_replace('/[^0-9]/', '', $hs['whatsapp_number']) : (getenv('TWILIO_WHATSAPP_NUMBER') ?: '919999999999');
+  $wa_msg     = !empty($hs['whatsapp_message']) ? urlencode($hs['whatsapp_message']) : urlencode('Hi! I am browsing the NovaDrop Atelier collection and would love styling guidance.');
 ?>
-<?php if ($wa_enabled && !$_is_home): ?>
+<?php if ($wa_enabled): ?>
 <!-- ══ GLOBAL WHATSAPP LIVE CONCIERGE BUTTON ══ -->
-<a id="whatsappBtnGlobal" href="https://wa.me/<?= $wa_num ?>?text=<?= $wa_msg ?>" target="_blank" rel="noopener" class="fixed bottom-5 sm:bottom-6 right-4 sm:right-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer" style="background: linear-gradient(135deg, #25d366, #128c7e);" title="Chat on WhatsApp">
+<a id="whatsappBtnGlobal" href="https://wa.me/<?= $wa_num ?>?text=<?= $wa_msg ?>" target="_blank" rel="noopener" class="fixed bottom-5 sm:bottom-6 right-4 sm:right-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer" style="background: linear-gradient(135deg, #25d366, #128c7e);" title="Chat on WhatsApp with NovaDrop Stylist">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="26" height="26">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
@@ -133,27 +132,27 @@
     <div id="sfWheelActiveState" class="relative z-10 transition-opacity duration-300">
       
       <!-- Top Badge -->
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#e9c176]/15 via-amber-400/10 to-[#e9c176]/15 border border-[#e9c176]/40 text-[#e9c176] text-[10px] font-mono font-bold uppercase tracking-[0.2em] mb-2.5 shadow-[0_0_15px_rgba(233,193,118,0.1)]">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#e9c176]/15 via-amber-400/10 to-[#e9c176]/15 border border-[#e9c176]/40 text-[#e9c176] text-[10px] font-mono font-bold uppercase tracking-[0.2em] mb-2 shadow-[0_0_15px_rgba(233,193,118,0.1)]">
         <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176] animate-ping"></span>
         <span>✦ VIP ATELIER PRIVILEGE ✦</span>
       </div>
       
-      <h3 class="font-serif text-2xl sm:text-[26px] font-bold text-white mb-1 leading-tight tracking-tight">
+      <h3 class="font-serif text-xl sm:text-2xl font-bold text-white mb-1 leading-tight tracking-tight">
         Spin &amp; Win <span class="bg-gradient-to-r from-[#ffe8b3] via-[#e9c176] to-[#f59e0b] bg-clip-text text-transparent">Instant Privilege</span>
       </h3>
-      <p class="text-[11px] font-mono text-white/60 mb-3 sm:mb-4 px-2">
+      <p class="text-[10.5px] font-mono text-white/60 mb-2.5 sm:mb-3 px-2">
         Unlock guaranteed VIP discounts, cash gifts &amp; complimentary shipping!
       </p>
       
-      <!-- ══ WHEEL DISPLAY STAGE ══ -->
-      <div id="sfWheelStage" class="relative w-[280px] h-[280px] sm:w-[310px] sm:h-[310px] mx-auto mb-4 select-none flex items-center justify-center">
+      <!-- ══ WHEEL DISPLAY STAGE (RESPONSIVE) ══ -->
+      <div id="sfWheelStage" class="relative w-[260px] h-[260px] sm:w-[290px] sm:h-[290px] mx-auto mb-3 select-none flex items-center justify-center">
         
         <!-- Outer Glowing Rim Halo -->
-        <div class="absolute -inset-3 rounded-full bg-gradient-to-tr from-amber-500/20 via-[#e9c176]/30 to-amber-300/20 blur-xl pointer-events-none animate-pulse"></div>
+        <div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-amber-500/20 via-[#e9c176]/30 to-amber-300/20 blur-xl pointer-events-none animate-pulse"></div>
 
         <!-- 3D Luxury Swiss Timepiece Gold Pointer with Spring Flick -->
-        <div id="sfWheelPointer" class="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30 pointer-events-none transition-transform origin-top" style="filter: drop-shadow(0 4px 10px rgba(0,0,0,0.9));">
-          <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div id="sfWheelPointer" class="absolute -top-3 left-1/2 -translate-x-1/2 z-30 pointer-events-none transition-transform origin-top" style="filter: drop-shadow(0 4px 10px rgba(0,0,0,0.9));">
+          <svg width="32" height="40" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- Outer Golden Arrow Bevel -->
             <path d="M17 42L4 12C2 7.5 5.5 2 10.5 2H23.5C28.5 2 32 7.5 30 12L17 42Z" fill="url(#ptrGoldOuter)" stroke="#ffd700" stroke-width="1.5"/>
             <!-- Inner Faceted Body -->
@@ -185,30 +184,30 @@
         </div>
 
         <!-- Super-Sampled High-Definition Wheel Canvas (600x600 Internal Buffer for Crystal Sharpness) -->
-        <canvas id="sfWheelCanvas" width="600" height="600" class="w-[280px] h-[280px] sm:w-[310px] sm:h-[310px] rounded-full cursor-pointer relative z-10 shadow-[0_12px_40px_rgba(0,0,0,0.95)]"></canvas>
+        <canvas id="sfWheelCanvas" width="600" height="600" class="w-full h-full rounded-full cursor-pointer relative z-10 shadow-[0_12px_40px_rgba(0,0,0,0.95)]"></canvas>
 
         <!-- Center 3D Luxury Push Button Hub -->
-        <div id="sfSpinCap" onclick="spinStorefrontWheel()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[58px] h-[58px] sm:w-[64px] sm:h-[64px] rounded-full bg-gradient-to-b from-[#241f1c] via-[#120f0e] to-[#080606] border-[2.5px] border-[#e9c176] shadow-[0_0_25px_rgba(0,0,0,0.95),0_0_15px_rgba(233,193,118,0.4),inset_0_2px_4px_rgba(255,255,255,0.3)] flex flex-col items-center justify-center cursor-pointer z-20 group hover:scale-105 active:scale-95 transition-all">
-          <div class="w-2 h-2 rounded-full bg-gradient-to-tr from-amber-400 to-[#e9c176] shadow-[0_0_8px_#e9c176] mb-0.5 animate-pulse"></div>
-          <span class="font-sans font-black text-[11px] sm:text-xs tracking-[0.15em] text-[#e9c176] group-hover:text-white transition-colors">SPIN</span>
+        <div id="sfSpinCap" onclick="spinStorefrontWheel()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52px] h-[52px] sm:w-[58px] sm:h-[58px] rounded-full bg-gradient-to-b from-[#241f1c] via-[#120f0e] to-[#080606] border-[2.5px] border-[#e9c176] shadow-[0_0_25px_rgba(0,0,0,0.95),0_0_15px_rgba(233,193,118,0.4),inset_0_2px_4px_rgba(255,255,255,0.3)] flex flex-col items-center justify-center cursor-pointer z-20 group hover:scale-105 active:scale-95 transition-all">
+          <div class="w-1.5 h-1.5 rounded-full bg-gradient-to-tr from-amber-400 to-[#e9c176] shadow-[0_0_8px_#e9c176] mb-0.5 animate-pulse"></div>
+          <span class="font-sans font-black text-[10px] sm:text-[11px] tracking-[0.15em] text-[#e9c176] group-hover:text-white transition-colors">SPIN</span>
         </div>
       </div>
 
       <!-- ══ EMAIL INPUT & SPIN BUTTON FORM ══ -->
-      <div id="sfSpinInputForm" class="space-y-2.5">
+      <div id="sfSpinInputForm" class="space-y-2">
         <div class="relative">
           <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 text-sm pointer-events-none">mail</span>
-          <input type="email" id="sfSpinEmail" placeholder="Enter your email to unlock spin (e.g. name@domain.com)" class="w-full pl-9 pr-3.5 py-3 bg-white/[0.06] hover:bg-white/[0.09] focus:bg-black/60 border border-white/15 focus:border-[#e9c176] rounded-2xl text-xs font-mono text-white placeholder:text-white/40 outline-none transition-all shadow-inner text-center focus:ring-2 focus:ring-[#e9c176]/20">
+          <input type="email" id="sfSpinEmail" placeholder="Enter your email to unlock spin (e.g. name@domain.com)" class="w-full pl-9 pr-3.5 py-2.5 sm:py-3 bg-white/[0.06] hover:bg-white/[0.09] focus:bg-black/60 border border-white/15 focus:border-[#e9c176] rounded-2xl text-xs font-mono text-white placeholder:text-white/40 outline-none transition-all shadow-inner text-center focus:ring-2 focus:ring-[#e9c176]/20">
         </div>
         
-        <button type="button" id="sfSpinActionBtn" onclick="spinStorefrontWheel()" class="relative overflow-hidden w-full py-3.5 bg-gradient-to-r from-amber-500 via-[#e9c176] to-amber-500 text-stone-950 font-mono font-extrabold text-xs uppercase tracking-[0.15em] rounded-2xl shadow-[0_8px_25px_rgba(233,193,118,0.35)] cursor-pointer hover:opacity-95 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
+        <button type="button" id="sfSpinActionBtn" onclick="spinStorefrontWheel()" class="relative overflow-hidden w-full py-3 sm:py-3.5 bg-gradient-to-r from-amber-500 via-[#e9c176] to-amber-500 text-stone-950 font-mono font-extrabold text-xs uppercase tracking-[0.15em] rounded-2xl shadow-[0_8px_25px_rgba(233,193,118,0.35)] cursor-pointer hover:opacity-95 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
           <span class="text-sm">🎡</span>
           <span>SPIN &amp; CLAIM PRIVILEGE</span>
           <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-0.5">arrow_forward</span>
         </button>
 
-        <p class="text-[10px] font-mono text-white/40 flex items-center justify-center gap-1.5">
+        <p class="text-[9.5px] font-mono text-white/40 flex items-center justify-center gap-1.5">
           <span class="material-symbols-outlined text-[12px] text-[#e9c176]">verified_user</span>
           <span>100% Guaranteed Reward • 1 Spin per VIP Guest</span>
         </p>
@@ -276,38 +275,16 @@
 // ════════════════════════════════════════════════════════════
 // ULTRA-LUXE GAMIFIED LUCKY WHEEL ENGINE (HIGH-DEFINITION)
 // ════════════════════════════════════════════════════════════
-(function() {
-  let wheelTriggered = false;
-
-  function triggerLuckyWheelDirectly() {
-    if (wheelTriggered) return;
-    if (sessionStorage.getItem('sfWheelPlayed')) return;
-    wheelTriggered = true;
-    openStorefrontWheelModal();
-  }
-
-  // Scroll trigger (>120px)
-  window.addEventListener('scroll', function() {
-    if (!wheelTriggered && window.scrollY > 120) {
-      triggerLuckyWheelDirectly();
-    }
-  }, { passive: true });
-
-  // Timely fallback after 3.5 seconds
-  setTimeout(function() {
-    if (!wheelTriggered) {
-      triggerLuckyWheelDirectly();
-    }
-  }, 3500);
-})();
+// Note: Auto-trigger disabled to provide a calm, luxury browsing experience.
+// Accessible via floating "VIP ATELIER / Spin & Win" button.
 
 const sfSlices = [
-  { label: '50% OFF', sub: 'GRAND VIP', color1: '#421a05', color2: '#1a0902', border: '#f59e0b', icon: '👑', code: 'LUMINA50' },
-  { label: '₹500 OFF', sub: 'CASH GIFT', color1: '#064e3b', color2: '#02261d', border: '#10b981', icon: '💎', code: 'STAY500' },
-  { label: '25% OFF', sub: 'ATELIER VIP', color1: '#3b0764', color2: '#160326', border: '#c084fc', icon: '✦', code: 'VIP25' },
-  { label: 'FREE EXP', sub: 'DELIVERY', color1: '#1e3a8a', color2: '#08163b', border: '#60a5fa', icon: '🚀', code: 'FREESHIP' },
-  { label: 'MYSTERY', sub: 'SECRET BOX', color1: '#701a75', color2: '#2b072e', border: '#f472b6', icon: '🎁', code: 'MYSTERYGIFT' },
-  { label: '15% OFF', sub: 'STOREWIDE', color1: '#262320', color2: '#11100f', border: '#e9c176', icon: '✨', code: 'LUCKY15' }
+  { label: '50% OFF', sub: 'GRAND VIP', color1: '#4a2608', color2: '#180a02', border: '#ffd700', icon: '👑', code: 'LUMINA50', accent: '#fde047' },
+  { label: '₹500 OFF', sub: 'CASH GIFT', color1: '#064e3b', color2: '#02241b', border: '#34d399', icon: '💎', code: 'STAY500', accent: '#a7f3d0' },
+  { label: '25% OFF', sub: 'ATELIER VIP', color1: '#4c1d95', color2: '#190736', border: '#c084fc', icon: '✦', code: 'VIP25', accent: '#e9d5ff' },
+  { label: 'FREE EXP', sub: 'DELIVERY', color1: '#1e3a8a', color2: '#091538', border: '#60a5fa', icon: '🚀', code: 'FREESHIP', accent: '#bfdbfe' },
+  { label: 'MYSTERY', sub: 'SECRET BOX', color1: '#831843', color2: '#2b0717', border: '#f472b6', icon: '🎁', code: 'MYSTERYGIFT', accent: '#fbcfe8' },
+  { label: '15% OFF', sub: 'STOREWIDE', color1: '#262626', color2: '#0e0e0e', border: '#e9c176', icon: '✨', code: 'LUCKY15', accent: '#fef08a' }
 ];
 
 let sfAngle = 0;
@@ -327,14 +304,14 @@ function playTickSound() {
     const osc = sfAudioCtx.createOscillator();
     const gain = sfAudioCtx.createGain();
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(900, sfAudioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(140, sfAudioCtx.currentTime + 0.035);
-    gain.gain.setValueAtTime(0.14, sfAudioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, sfAudioCtx.currentTime + 0.035);
+    osc.frequency.setValueAtTime(1000, sfAudioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(120, sfAudioCtx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.18, sfAudioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, sfAudioCtx.currentTime + 0.04);
     osc.connect(gain);
     gain.connect(sfAudioCtx.destination);
     osc.start();
-    osc.stop(sfAudioCtx.currentTime + 0.035);
+    osc.stop(sfAudioCtx.currentTime + 0.04);
   } catch (e) {}
 }
 
@@ -353,12 +330,12 @@ function playWinFanfare() {
           const gain = sfAudioCtx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, sfAudioCtx.currentTime);
-          gain.gain.setValueAtTime(0.18, sfAudioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, sfAudioCtx.currentTime + 0.6);
+          gain.gain.setValueAtTime(0.2, sfAudioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, sfAudioCtx.currentTime + 0.65);
           osc.connect(gain);
           gain.connect(sfAudioCtx.destination);
           osc.start();
-          osc.stop(sfAudioCtx.currentTime + 0.6);
+          osc.stop(sfAudioCtx.currentTime + 0.65);
         } catch(e) {}
       }, idx * 110);
     });
@@ -410,17 +387,18 @@ function drawSfWheel() {
   const cx = 300;
   const cy = 300;
   const outerR = 294;
-  const rimWidth = 28;
+  const rimWidth = 30;
   const wheelR = outerR - rimWidth;
   const num = sfSlices.length;
   const arc = (2 * Math.PI) / num;
 
-  // 1. Draw Multi-Bevel Metallic Gold Outer Bezel
+  // 1. Draw Multi-Bevel Metallic 24k Gold Outer Bezel
   const rimGrad = ctx.createRadialGradient(cx, cy, wheelR, cx, cy, outerR);
   rimGrad.addColorStop(0, '#1c1917');
-  rimGrad.addColorStop(0.2, '#78350f');
-  rimGrad.addColorStop(0.5, '#ffd700');
-  rimGrad.addColorStop(0.8, '#f59e0b');
+  rimGrad.addColorStop(0.15, '#78350f');
+  rimGrad.addColorStop(0.45, '#ffd700');
+  rimGrad.addColorStop(0.75, '#f59e0b');
+  rimGrad.addColorStop(0.95, '#b45309');
   rimGrad.addColorStop(1, '#1c1917');
 
   ctx.fillStyle = rimGrad;
@@ -428,23 +406,23 @@ function drawSfWheel() {
   ctx.arc(cx, cy, outerR, 0, 2 * Math.PI);
   ctx.fill();
 
-  // Outer Gold Rim Stroke
+  // Outer Gold Rim Stroke with Specular Bevel
   ctx.strokeStyle = '#ffd700';
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 3.5;
   ctx.stroke();
 
   // Concentric Inner Engraved Golden Ring
   ctx.strokeStyle = '#fef08a';
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.2;
   ctx.beginPath();
   ctx.arc(cx, cy, outerR - 4, 0, 2 * Math.PI);
   ctx.stroke();
 
-  // 2. Draw 24 Precision Glowing Cabochon Studs / LED Bulbs
+  // 2. Draw 24 Precision Glowing Cabochon Studs / Jewel LEDs
   const totalStuds = 24;
   const studRadius = 5.5;
   const studDist = outerR - (rimWidth / 2);
-  const now = Date.now() / 180;
+  const now = Date.now() / 160;
 
   for (let s = 0; s < totalStuds; s++) {
     const sAngle = (s * 2 * Math.PI) / totalStuds;
@@ -470,7 +448,7 @@ function drawSfWheel() {
     ctx.restore();
   }
 
-  // 3. Draw Slices with Rich Atelier Depth Gradients
+  // 3. Draw Slices with Rich Atelier Depth & Satin Gradients
   for (let i = 0; i < num; i++) {
     const a = sfAngle + i * arc;
     const slice = sfSlices[i];
@@ -482,14 +460,14 @@ function drawSfWheel() {
     ctx.closePath();
 
     // Radial Depth Gradient
-    const sliceGrad = ctx.createRadialGradient(cx, cy, 40, cx, cy, wheelR);
+    const sliceGrad = ctx.createRadialGradient(cx, cy, 35, cx, cy, wheelR);
     sliceGrad.addColorStop(0, slice.color2);
-    sliceGrad.addColorStop(0.75, slice.color1);
+    sliceGrad.addColorStop(0.7, slice.color1);
     sliceGrad.addColorStop(1, slice.color2);
     ctx.fillStyle = sliceGrad;
     ctx.fill();
 
-    // Golden Divider Line
+    // Golden Divider Line with 3D Highlight
     ctx.strokeStyle = '#ffd700';
     ctx.lineWidth = 2.5;
     ctx.stroke();
@@ -502,30 +480,80 @@ function drawSfWheel() {
     ctx.stroke();
     ctx.restore();
 
-    // 4. Draw Slice Typography & Icon (Perfect Radial Alignment)
+    // 4. Draw Physical 3D Gold Delimiter Pegs at each boundary
+    const pegX = cx + Math.cos(a) * (wheelR - 5);
+    const pegY = cy + Math.sin(a) * (wheelR - 5);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(pegX, pegY, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#ffd700';
+    ctx.shadowColor = '#000000';
+    ctx.shadowBlur = 4;
+    ctx.fill();
+    ctx.strokeStyle = '#b45309';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+
+    // 5. Draw Slice Content (Perfect Tangential Arc Layout with Generous Clearance)
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(a + arc / 2);
 
-    // 4a. Icon Badge near outer rim
-    ctx.font = '26px system-ui, -apple-system, sans-serif';
+    // 5a. Icon Medal Disc near outer rim (r = 216)
+    ctx.save();
+    ctx.translate(216, 0);
+    ctx.rotate(Math.PI / 2);
+    
+    ctx.beginPath();
+    ctx.arc(0, 0, 15, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,215,0,0.6)';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    ctx.font = '18px "Apple Color Emoji", "Segoe UI Emoji", system-ui, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(slice.icon, wheelR - 38, 0);
+    ctx.fillText(slice.icon, 0, 0);
+    ctx.restore();
 
-    // 4b. Primary Bold Prize Label
+    // 5b. Primary Bold Prize Label (r = 152, oriented along arc tangent)
+    ctx.save();
+    ctx.translate(152, 0);
+    ctx.rotate(Math.PI / 2);
     ctx.fillStyle = '#ffffff';
-    ctx.shadowColor = 'rgba(0,0,0,0.9)';
-    ctx.shadowBlur = 6;
-    ctx.font = 'bold 21px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(slice.label, wheelR - 102, -10);
+    ctx.shadowColor = 'rgba(0,0,0,0.95)';
+    ctx.shadowBlur = 8;
+    ctx.font = '900 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(slice.label, 0, 0);
+    ctx.restore();
 
-    // 4c. Secondary Sub-label in Gold Accent
-    ctx.fillStyle = '#fde047';
-    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+    // 5c. Secondary Subtitle Pill (r = 96, oriented along arc tangent)
+    ctx.save();
+    ctx.translate(96, 0);
+    ctx.rotate(Math.PI / 2);
+    
+    // Background mini pill
+    ctx.beginPath();
+    ctx.roundRect(-34, -7.5, 68, 15, 6);
+    ctx.fillStyle = 'rgba(0,0,0,0.65)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,215,0,0.45)';
+    ctx.lineWidth = 0.9;
+    ctx.stroke();
+
+    ctx.fillStyle = slice.accent || '#fde047';
+    ctx.shadowColor = 'rgba(0,0,0,0.95)';
     ctx.shadowBlur = 4;
-    ctx.font = 'bold 12px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(slice.sub, wheelR - 102, 12);
+    ctx.font = 'bold 8.5px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(slice.sub, 0, 0);
+    ctx.restore();
 
     ctx.restore();
   }
@@ -534,10 +562,9 @@ function drawSfWheel() {
   ctx.beginPath();
   ctx.arc(cx, cy, wheelR, 0, 2 * Math.PI);
   ctx.strokeStyle = '#ffd700';
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 3.5;
   ctx.stroke();
 }
-
 
 function spinStorefrontWheel() {
   if (sfIsSpinning) return;
@@ -566,7 +593,7 @@ function spinStorefrontWheel() {
   const totalRotations = 6 * (2 * Math.PI);
   const targetAngle = sfAngle + totalRotations + targetSliceAngle - (Math.PI / 2);
   const startAngle = sfAngle;
-  const duration = 4200;
+  const duration = 4400;
   let startTime = null;
 
   function animate(ts) {
@@ -1482,46 +1509,122 @@ window.closeMysteryDropModal = function() {
             </span>
           </div>
 
-          <!-- Size Selector -->
+          <!-- Size Selector for Main Product -->
           <div class="mb-2.5">
             <div class="flex justify-between items-center mb-1">
               <span class="font-label-caps uppercase text-[10px] text-stone-700 font-bold">Select Size</span>
               <button type="button" onclick="openFittingModal()" class="text-[#a16207] underline text-[10px] font-mono font-bold cursor-pointer">Sizer Guide</button>
             </div>
-            <div class="grid grid-cols-4 gap-1.5 font-mono" id="qvSizePills">
-              <button type="button" onclick="selectQvSize('S', this)" class="qv-size-btn py-1.5 border border-stone-200 rounded-xl hover:border-stone-900 text-center text-xs">S</button>
-              <button type="button" onclick="selectQvSize('M', this)" class="qv-size-btn py-1.5 border border-stone-950 bg-stone-950 text-[#e9c176] rounded-xl text-center text-xs font-bold shadow-xs">M</button>
-              <button type="button" onclick="selectQvSize('L', this)" class="qv-size-btn py-1.5 border border-stone-200 rounded-xl hover:border-stone-900 text-center text-xs">L</button>
-              <button type="button" onclick="selectQvSize('XL', this)" class="qv-size-btn py-1.5 border border-stone-200 rounded-xl hover:border-stone-900 text-center text-xs">XL</button>
+            <div class="flex flex-wrap gap-1.5 font-mono" id="qvSizePills">
+              <button type="button" onclick="selectQvSize('S', this)" class="qv-size-btn px-3 py-1.5 border border-stone-200 rounded-xl hover:border-stone-900 text-center text-xs">S</button>
+              <button type="button" onclick="selectQvSize('M', this)" class="qv-size-btn px-3 py-1.5 border border-stone-950 bg-stone-950 text-[#e9c176] rounded-xl text-center text-xs font-bold shadow-xs">M</button>
+              <button type="button" onclick="selectQvSize('L', this)" class="qv-size-btn px-3 py-1.5 border border-stone-200 rounded-xl hover:border-stone-900 text-center text-xs">L</button>
+              <button type="button" onclick="selectQvSize('XL', this)" class="qv-size-btn px-3 py-1.5 border border-stone-200 rounded-xl hover:border-stone-900 text-center text-xs">XL</button>
+            </div>
+          </div>
+
+          <!-- Quantity Stepper for Main Product -->
+          <div class="flex items-center justify-between py-2 px-3 bg-stone-50 border border-stone-200 rounded-xl mb-2.5">
+            <span class="font-label-caps uppercase text-[10px] text-stone-700 font-bold">Quantity</span>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="changeQvQuantity(-1)" class="w-6 h-6 rounded-lg bg-white border border-stone-300 hover:border-stone-900 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs text-stone-800 active:scale-95">-</button>
+              <span id="qvQuantityDisplay" class="w-6 text-center font-mono font-bold text-xs text-stone-950">1</span>
+              <button type="button" onclick="changeQvQuantity(1)" class="w-6 h-6 rounded-lg bg-white border border-stone-300 hover:border-stone-900 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs text-stone-800 active:scale-95">+</button>
             </div>
           </div>
         </div>
 
         <!-- ✦ AI STYLIST ENSEMBLE PAIRING (COMPLETE THE LOOK) ✦ -->
-        <div id="qvAiPairBox" class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80">
-          <div class="flex items-center justify-between gap-2 mb-1.5">
-            <span class="text-[9px] font-mono uppercase tracking-widest text-[#a16207] font-bold flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">auto_awesome</span>
-              <span>AI Stylist Ensemble Pairing</span>
-            </span>
+        <div id="qvAiPairBox" class="p-3.5 rounded-2xl bg-gradient-to-br from-amber-50/90 via-amber-100/40 to-stone-50 border border-amber-300/80 shadow-xs mb-2.5">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[9.5px] font-mono uppercase tracking-wider text-[#a16207] font-bold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-[#a16207]">auto_awesome</span>
+                <span>AI Stylist Curated Pairing</span>
+              </span>
+              <span class="text-[8.5px] bg-amber-200/70 text-amber-950 font-mono font-extrabold px-1.5 py-0.5 rounded border border-amber-300">
+                99% Match
+              </span>
+            </div>
             <button type="button" onclick="consultStylistOnQv()" class="text-[9px] font-mono text-[#a16207] hover:underline font-bold flex items-center gap-0.5 cursor-pointer">
               <span>Ask AI Stylist</span>
               <span class="material-symbols-outlined text-[10px]">arrow_forward</span>
             </button>
           </div>
 
-          <div class="flex items-center justify-between gap-2.5 bg-white p-2 rounded-xl border border-stone-200 shadow-xs">
-            <div class="flex items-center gap-2 min-w-0">
-              <img id="qvAiPairImg" src="<?= base_url('img/okayama_selvedge_denim.jpg') ?>" class="w-10 h-10 object-cover rounded-lg bg-stone-100 flex-shrink-0 border border-stone-200">
-              <div class="min-w-0">
-                <h5 id="qvAiPairTitle" class="font-serif text-[11px] font-bold text-stone-900 truncate">14.5oz Okayama Denim</h5>
-                <span id="qvAiPairPrice" class="font-mono text-[10px] text-[#a16207] font-bold" data-price-inr="3499">₹3,499</span>
+          <!-- Dynamic Bundle Incentive Ribbon -->
+          <div class="mb-2 px-2.5 py-1 rounded-lg bg-stone-950 text-[#e9c176] text-[9.5px] font-mono font-bold flex items-center justify-between shadow-2xs">
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-[11px] text-amber-400">local_offer</span>
+              <span>Complete The Look Privilege:</span>
+            </span>
+            <span class="text-white font-extrabold tracking-wide">SAVE 10% ON COMBO</span>
+          </div>
+
+          <div class="bg-white p-3 rounded-xl border border-stone-200 shadow-2xs space-y-2.5">
+            <div class="flex items-center justify-between gap-2.5">
+              <div class="flex items-center gap-2.5 min-w-0 cursor-pointer" onclick="if(currentQvAiPair) openProductQuickViewModal(currentQvAiPair)">
+                <img id="qvAiPairImg" src="<?= base_url('img/okayama_selvedge_denim.jpg') ?>" class="w-12 h-13 object-cover rounded-xl bg-stone-100 flex-shrink-0 border border-stone-200 shadow-2xs hover:scale-105 transition-transform duration-300">
+                <div class="min-w-0">
+                  <span class="text-[8px] font-mono uppercase text-stone-500 font-bold block">Recommended Match</span>
+                  <h5 id="qvAiPairTitle" class="font-serif text-xs font-bold text-stone-900 truncate hover:text-[#a16207] transition-colors">14.5oz Okayama Denim</h5>
+                  <div class="flex items-baseline gap-1.5 mt-0.5">
+                    <span id="qvAiPairPrice" class="font-mono text-[11px] text-[#a16207] font-bold" data-price-inr="3499">₹3,499</span>
+                    <span class="text-[9px] text-emerald-700 font-mono font-semibold">· 10% Bundle Off</span>
+                  </div>
+                </div>
+              </div>
+              <button type="button" onclick="toggleQvPairInclusion()" id="btnQvAddPair" class="px-3 py-2 bg-stone-950 hover:bg-stone-800 text-[#e9c176] font-mono text-[9.5px] uppercase font-bold rounded-xl transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer shadow-xs active:scale-95">
+                <span class="material-symbols-outlined text-xs">add</span>
+                <span id="btnQvAddPairText">Pair Piece</span>
+              </button>
+            </div>
+
+            <!-- Stylist Reasoning Quote -->
+            <p id="qvAiPairReason" class="text-[10px] text-stone-600 font-light italic leading-snug px-1 border-l-2 border-amber-300">
+              "Handpicked by Milan AI Stylist to create a harmonious silhouette with perfectly balanced textures."
+            </p>
+
+            <!-- Interactive Paired Item Size & Quantity Row -->
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-stone-100">
+              <!-- Size Selector for Paired Item -->
+              <div class="inline-flex items-center gap-1.5 bg-amber-50/90 border border-amber-300/80 rounded-lg px-2 py-0.5 shadow-2xs">
+                <span class="text-[8px] font-mono uppercase text-amber-900 font-extrabold tracking-wider">SIZE</span>
+                <div class="relative flex items-center">
+                  <select id="qvAiPairSizeSelect" onchange="window.currentQvAiPairSize = this.value; updateQvComboPricing();" class="text-[10px] font-mono font-bold bg-transparent text-stone-950 cursor-pointer focus:outline-hidden pr-3 appearance-none leading-none py-0">
+                    <option value="28">28</option>
+                    <option value="30">30</option>
+                    <option value="32" selected>32</option>
+                    <option value="34">34</option>
+                    <option value="36">36</option>
+                    <option value="38">38</option>
+                  </select>
+                  <span class="material-symbols-outlined text-[11px] text-amber-800 pointer-events-none absolute right-0">expand_more</span>
+                </div>
+              </div>
+
+              <!-- Quantity for Paired Item -->
+              <div class="flex items-center gap-1 bg-stone-100 border border-stone-200 rounded-lg px-1.5 py-0.5">
+                <span class="text-[8px] font-mono uppercase text-stone-500 font-bold mr-1">QTY:</span>
+                <button type="button" onclick="changeQvAiPairQuantity(-1)" class="w-4 h-4 rounded bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center font-bold text-[10px] cursor-pointer shadow-2xs leading-none active:scale-95">-</button>
+                <span id="qvAiPairQtyDisplay" class="font-mono text-[10px] font-bold px-1 text-stone-950">1</span>
+                <button type="button" onclick="changeQvAiPairQuantity(1)" class="w-4 h-4 rounded bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center font-bold text-[10px] cursor-pointer shadow-2xs leading-none active:scale-95">+</button>
               </div>
             </div>
-            <button type="button" onclick="addAiPairToBag()" id="btnQvAddPair" class="px-2.5 py-1 bg-stone-950 hover:bg-stone-800 text-[#e9c176] font-mono text-[9px] uppercase font-bold rounded-lg transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer shadow-xs">
-              <span class="material-symbols-outlined text-xs">add</span>
-              <span>Pair Piece</span>
-            </button>
+
+            <!-- Live Combo Pricing Calculation Row -->
+            <div id="qvComboPricingRow" class="hidden p-2 rounded-lg bg-emerald-50/80 border border-emerald-200 text-emerald-950 flex items-center justify-between text-[10.5px] font-mono">
+              <div class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-emerald-600">verified</span>
+                <span class="font-bold">2-Piece Ensemble Combo:</span>
+              </div>
+              <div class="flex items-baseline gap-1.5">
+                <span id="qvComboFinalPrice" class="font-serif font-bold text-stone-950 text-xs">₹7,828</span>
+                <span id="qvComboOriginalPrice" class="text-[9px] text-stone-400 line-through">₹8,698</span>
+                <span id="qvComboSavings" class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.5 rounded">Save ₹870</span>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -1529,7 +1632,7 @@ window.closeMysteryDropModal = function() {
         <div class="space-y-2 pt-1 border-t border-stone-200">
           <button type="button" id="qvAddBagBtn" onclick="handleQvAddToCart()" class="w-full py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-button text-xs uppercase tracking-widest text-center rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer font-bold">
             <span class="material-symbols-outlined text-sm text-[#e9c176]">shopping_bag</span>
-            <span>Add to Curated Bag</span>
+            <span id="qvAddBagBtnText">Add to Curated Bag</span>
           </button>
           <button type="button" id="qvInstantBuyBtn" onclick="handleQvInstantBuy()" class="w-full py-2 bg-gradient-to-r from-amber-400 to-[#e9c176] hover:opacity-90 text-black font-button text-xs uppercase tracking-widest text-center rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer font-extrabold shadow-sm">
             <span class="material-symbols-outlined text-sm">bolt</span>
@@ -1545,7 +1648,7 @@ window.closeMysteryDropModal = function() {
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- 3. 💬 VIP ATELIER AI STYLIST FLOATING CONCIERGE CHAT WIDGET                  -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div id="atelierStylistWidget" class="hidden md:flex fixed bottom-6 right-6 z-40 flex-col items-end transition-all duration-300">
+<div id="atelierStylistWidget" class="hidden md:flex fixed bottom-[82px] sm:bottom-[90px] right-4 sm:right-6 z-40 flex-col items-end transition-all duration-300">
   
   <!-- Chat Popup Window -->
   <div id="atelierStylistChatBox" class="bg-[#faf9f6] text-stone-900 shadow-2xl rounded-3xl border border-stone-300/80 w-[94vw] sm:w-[400px] max-w-sm mb-3 hidden flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300" data-lenis-prevent="true" style="overscroll-behavior: contain;">
@@ -2402,7 +2505,10 @@ window.applyCalculatedSize = function() {
 // ── Quick-View System with AI Stylist Ensemble Pairing ──
 let currentQvProduct = null;
 let currentQvSelectedSize = 'M';
+let currentQvQuantity = 1;
 let currentQvAiPair = null;
+let currentQvAiPairSize = '32';
+let currentQvAiPairQuantity = 1;
 
 const atelierEnsemblePairings = [
   { match: ['hoodie', 'terry', 'sweatshirt'], pair: { id: 2, title: '14.5oz Okayama Selvedge Denim', price: 3499, image: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>' } },
@@ -2413,36 +2519,89 @@ const atelierEnsemblePairings = [
   { match: ['shoe', 'loafer', 'boot', 'derby'], pair: { id: 6, title: 'Italian Pleated Trousers', price: 3199, image: '<?= base_url("img/italian_pleated_trousers.jpg") ?>' } }
 ];
 
+window.changeQvQuantity = function(delta) {
+  currentQvQuantity = Math.max(1, Math.min(20, (currentQvQuantity || 1) + delta));
+  const el = document.getElementById('qvQuantityDisplay');
+  if (el) el.textContent = currentQvQuantity;
+  const btn = document.getElementById('qvAddBagBtnText');
+  if (btn && currentQvProduct) {
+    btn.textContent = currentQvQuantity > 1 ? `Add ${currentQvQuantity} Pieces to Curated Bag` : 'Add to Curated Bag';
+  }
+};
+
+window.changeQvAiPairQuantity = function(delta) {
+  currentQvAiPairQuantity = Math.max(1, Math.min(20, (currentQvAiPairQuantity || 1) + delta));
+  const el = document.getElementById('qvAiPairQtyDisplay');
+  if (el) el.textContent = currentQvAiPairQuantity;
+};
+
 window.openQuickView = function(prodData) {
-  try {
-    if (typeof prodData === 'string') {
-      try {
-        currentQvProduct = JSON.parse(prodData);
-      } catch (e) {
-        currentQvProduct = JSON.parse(decodeURIComponent(prodData));
-      }
-    } else {
-      currentQvProduct = prodData;
-    }
-  } catch (err) {
-    console.warn('Quick view parse fallback:', err);
-    currentQvProduct = prodData || {};
+  if (typeof window.openAtelierFitModal === 'function') {
+    return window.openAtelierFitModal(prodData);
   }
 
-  if (!currentQvProduct || typeof currentQvProduct !== 'object') {
-    currentQvProduct = {
-      id: 1,
-      title: 'Sculpted 500 GSM Terry Hoodie',
-      price: 2899,
-      image: '<?= base_url("img/sculpted_terry_hoodie.jpg") ?>',
-      vendor: 'Lumina Atelier Milano',
-      description: 'Substantial 500 GSM loopback cotton jersey garments, custom garment-dyed in muted architectural tones for effortless daily poise.'
-    };
+  var parsed = null;
+  if (typeof prodData === 'string') {
+    try {
+      parsed = JSON.parse(prodData);
+    } catch (e1) {
+      try {
+        var cleanStr = prodData
+          .replace(/&quot;/g, '"')
+          .replace(/&#039;/g, "'")
+          .replace(/&#39;/g, "'")
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>');
+        parsed = JSON.parse(cleanStr);
+      } catch (e2) {
+        try {
+          parsed = JSON.parse(decodeURIComponent(prodData));
+        } catch (e3) {
+          console.warn('Quick view parse fallback:', e3);
+        }
+      }
+    }
+  } else if (prodData && typeof prodData === 'object') {
+    parsed = prodData;
   }
+
+  currentQvProduct = (parsed && typeof parsed === 'object') ? parsed : {
+    id: 1,
+    title: 'Sculpted 500 GSM Terry Hoodie',
+    price: 2899,
+    image: '<?= base_url("img/sculpted_terry_hoodie.jpg") ?>',
+    vendor: 'Lumina Atelier Milano',
+    description: 'Substantial 500 GSM loopback cotton jersey garments, custom garment-dyed in muted architectural tones for effortless daily poise.'
+  };
+
+  // Reset Quantities
+  currentQvQuantity = 1;
+  const qvQtyEl = document.getElementById('qvQuantityDisplay');
+  if (qvQtyEl) qvQtyEl.textContent = '1';
+  const qvBtnText = document.getElementById('qvAddBagBtnText');
+  if (qvBtnText) qvBtnText.textContent = 'Add to Curated Bag';
 
   const qvImg = document.getElementById('qvImg');
   if (qvImg) qvImg.src = currentQvProduct.image || currentQvProduct.img || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>';
   
+  // Dynamic accurate fabric badge on main image
+  const qvTag = document.getElementById('qvTag');
+  if (qvTag) {
+    const titleLow = (currentQvProduct.title || '').toLowerCase();
+    if (titleLow.includes('denim') || titleLow.includes('trouser') || titleLow.includes('selvedge') || currentQvProduct.id === 2) {
+      qvTag.textContent = '14.5oz OKAYAMA SELVEDGE';
+    } else if (titleLow.includes('hoodie') || titleLow.includes('terry') || titleLow.includes('sweat')) {
+      qvTag.textContent = '500 GSM HEAVYWEIGHT TERRY';
+    } else if (titleLow.includes('shoe') || titleLow.includes('boot') || titleLow.includes('loafer') || titleLow.includes('derby')) {
+      qvTag.textContent = 'FULL-GRAIN CALFSKIN';
+    } else if (titleLow.includes('silk')) {
+      qvTag.textContent = '100% MULBERRY SILK';
+    } else {
+      qvTag.textContent = '700 GSM CASHMERE';
+    }
+  }
+
   const qvTitle = document.getElementById('qvTitle');
   if (qvTitle) qvTitle.textContent = currentQvProduct.title || 'Haute Couture Piece';
 
@@ -2471,27 +2630,56 @@ window.openQuickView = function(prodData) {
     }
   }
 
-  // Determine intelligent AI Stylist pairing
+  // Render Dynamic Category-Accurate Sizes for Main Product
+  const mainSizes = (typeof window.resolveProductSizes === 'function') 
+    ? window.resolveProductSizes(currentQvProduct) 
+    : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  const defSize = mainSizes[Math.min(2, mainSizes.length - 1)];
+  currentQvSelectedSize = defSize;
+
+  const sizePillsEl = document.getElementById('qvSizePills');
+  if (sizePillsEl) {
+    sizePillsEl.innerHTML = mainSizes.map(sz => {
+      const isDef = (sz === defSize);
+      return `<button type="button" onclick="selectQvSize('${sz}', this)" class="qv-size-btn px-3.5 py-1.5 border ${isDef ? 'border-stone-950 bg-stone-950 text-[#e9c176] font-bold shadow-xs' : 'border-stone-200 bg-white hover:border-stone-900 text-stone-800'} rounded-xl text-center text-xs font-mono transition-all cursor-pointer">${sz}</button>`;
+    }).join('');
+  }
+
+  // Determine intelligent AI Stylist pairing & reasoning
   const titleLower = (currentQvProduct.title || '').toLowerCase();
   let matchedPair = null;
-  if (typeof atelierEnsemblePairings !== 'undefined' && Array.isArray(atelierEnsemblePairings)) {
-    for (let rule of atelierEnsemblePairings) {
-      if (rule.match.some(m => titleLower.includes(m))) {
-        matchedPair = rule.pair;
-        break;
-      }
-    }
+  let pairingReason = "Handpicked by Milan AI Stylist to create a harmonious silhouette with perfectly balanced textures.";
+
+  if (titleLower.includes('denim') || titleLower.includes('trouser') || titleLower.includes('selvedge') || currentQvProduct.id === 2) {
+    matchedPair = { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, image: '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>', category: 'coat' };
+    pairingReason = "Hand-loomed 700 GSM Mongolian Cashmere drapes effortlessly over raw 14.5oz Okayama selvedge for a sharp tailored contrast.";
+  } else if (titleLower.includes('coat') || titleLower.includes('jacket') || currentQvProduct.id === 1) {
+    matchedPair = { id: 2, title: 'Vintage Okayama 14.5oz Selvedge Trousers', price: 4299, image: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>', category: 'denim' };
+    pairingReason = "Rigid shuttle-loomed Japanese denim grounds the fluid double-faced cashmere cocoon silhouette.";
+  } else if (titleLower.includes('hoodie') || titleLower.includes('terry') || currentQvProduct.id === 3) {
+    matchedPair = { id: 2, title: 'Vintage Okayama 14.5oz Selvedge Trousers', price: 4299, image: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>', category: 'denim' };
+    pairingReason = "500 GSM loopback drape elevated with architectural tapered selvedge trousers.";
+  } else {
+    matchedPair = { id: 2, title: '14.5oz Okayama Selvedge Denim', price: 3499, image: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>', category: 'denim' };
   }
-  if (!matchedPair) {
-    matchedPair = { id: 2, title: '14.5oz Okayama Selvedge Denim', price: 3499, image: '<?= base_url("img/okayama_selvedge_denim.jpg") ?>' };
-  }
+
   currentQvAiPair = matchedPair;
+  currentQvAiPairQuantity = 1;
+  window.isQvPairIncluded = false;
 
   // Update AI Pair Box in Quick View
   const pairTitle = document.getElementById('qvAiPairTitle');
   const pairPrice = document.getElementById('qvAiPairPrice');
   const pairImg = document.getElementById('qvAiPairImg');
   const pairBtn = document.getElementById('btnQvAddPair');
+  const pairBtnText = document.getElementById('btnQvAddPairText');
+  const pairReasonEl = document.getElementById('qvAiPairReason');
+  const pairQtyEl = document.getElementById('qvAiPairQtyDisplay');
+  const comboRow = document.getElementById('qvComboPricingRow');
+
+  if (pairQtyEl) pairQtyEl.textContent = '1';
+  if (comboRow) comboRow.classList.add('hidden');
+  if (pairReasonEl) pairReasonEl.textContent = `"${pairingReason}"`;
 
   if (pairTitle) pairTitle.textContent = matchedPair.title;
   if (pairPrice) {
@@ -2500,33 +2688,20 @@ window.openQuickView = function(prodData) {
   }
   if (pairImg) pairImg.src = matchedPair.image;
   if (pairBtn) {
-    pairBtn.innerHTML = '<span class="material-symbols-outlined text-xs">add</span><span>Pair Piece</span>';
-    pairBtn.className = 'px-2.5 py-1 bg-stone-950 hover:bg-stone-800 text-[#e9c176] font-mono text-[9px] uppercase font-bold rounded-lg transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer shadow-xs';
+    pairBtn.className = 'px-3 py-2 bg-stone-950 hover:bg-stone-800 text-[#e9c176] font-mono text-[9.5px] uppercase font-bold rounded-xl transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer shadow-xs active:scale-95';
+    if (pairBtnText) pairBtnText.textContent = 'Pair Piece';
   }
 
-// ── Universal Modal Scroll Isolation & Background Lock Manager ──
-window.lockStorefrontScroll = function() {
-  document.body.style.overflow = 'hidden';
-  document.documentElement.style.overflow = 'hidden';
-  if (window.lenisInstance) {
-    try { window.lenisInstance.stop(); } catch(e) {}
+  // Populate AI Pair Size Selector
+  const pairSizeSelect = document.getElementById('qvAiPairSizeSelect');
+  if (pairSizeSelect) {
+    const pairSizes = (typeof window.resolveProductSizes === 'function') 
+      ? window.resolveProductSizes(matchedPair) 
+      : ['28', '30', '32', '34', '36', '38'];
+    const defPairSize = pairSizes[Math.min(2, pairSizes.length - 1)];
+    window.currentQvAiPairSize = defPairSize;
+    pairSizeSelect.innerHTML = pairSizes.map(s => `<option value="${s}" ${s === defPairSize ? 'selected' : ''}>${s}</option>`).join('');
   }
-};
-
-window.unlockStorefrontScroll = function() {
-  setTimeout(() => {
-    var anyOpen = document.querySelector(
-      '#quickBagOverlay:not(.hidden), #quickViewDrawer:not(.hidden):not([style*="display: none"]), #pincodeModal:not(.hidden):not([style*="display: none"]), #wishlistDrawerOverlay:not(.hidden), #monogramModal:not(.hidden):not([style*="display: none"]), #fittingModal:not(.hidden):not([style*="display: none"]), #searchModal:not(.hidden):not([style*="display: none"]), #mobileNavOverlay:not(.hidden), #storefrontWheelModal:not(.hidden), #vipWheelModal:not(.hidden), #expressCheckoutModal:not(.hidden), #exitIntentOverlay.show'
-    );
-    if (!anyOpen) {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      if (window.lenisInstance) {
-        try { window.lenisInstance.start(); } catch(e) {}
-      }
-    }
-  }, 150);
-};
 
   const drawer = document.getElementById('quickViewDrawer');
   const panel = document.getElementById('quickViewPanel');
@@ -2555,68 +2730,138 @@ window.closeQuickView = function() {
   }, 200);
 };
 
+window.consultStylistOnQv = function() {
+  const prod = currentQvProduct;
+  closeQuickView();
+  setTimeout(() => {
+    if (typeof openAtelierFitModal === 'function') {
+      openAtelierFitModal(prod);
+    } else {
+      window.location.href = '<?= base_url("pages/stylist") ?>';
+    }
+  }, 240);
+};
+
 window.selectQvSize = function(size, btn) {
   currentQvSelectedSize = size;
   document.querySelectorAll('.qv-size-btn').forEach(b => {
-    b.className = 'qv-size-btn py-1.5 border border-stone-200 rounded-xl hover:border-stone-900 text-center text-xs';
+    b.className = 'qv-size-btn px-3.5 py-1.5 border border-stone-200 bg-white hover:border-stone-900 text-stone-800 rounded-xl text-center text-xs font-mono transition-all cursor-pointer';
   });
-  btn.className = 'qv-size-btn py-1.5 border border-stone-950 bg-stone-950 text-[#e9c176] rounded-xl text-center text-xs font-bold shadow-xs';
+  if (btn) {
+    btn.className = 'qv-size-btn px-3.5 py-1.5 border border-stone-950 bg-stone-950 text-[#e9c176] rounded-xl text-center text-xs font-mono font-bold shadow-xs transition-all cursor-pointer';
+  }
 };
 
-window.addAiPairToBag = function() {
-  if (!currentQvAiPair) return;
-  addToCart({
-    id: currentQvAiPair.id,
-    title: currentQvAiPair.title,
-    price: currentQvAiPair.price,
-    image: currentQvAiPair.image
-  }, 1);
-
+// ── Toggle Paired Piece Inclusion with 10% Bundle Privilege ──
+window.toggleQvPairInclusion = function() {
+  window.isQvPairIncluded = !window.isQvPairIncluded;
   const pairBtn = document.getElementById('btnQvAddPair');
-  if (pairBtn) {
-    pairBtn.innerHTML = '<span class="material-symbols-outlined text-xs">check</span><span>Added ✓</span>';
-    pairBtn.className = 'px-2.5 py-1 bg-emerald-700 text-white font-mono text-[9px] uppercase font-bold rounded-lg transition-all flex items-center gap-1 flex-shrink-0';
-  }
+  const pairBtnText = document.getElementById('btnQvAddPairText');
+  const comboRow = document.getElementById('qvComboPricingRow');
+  const qvBtnText = document.getElementById('qvAddBagBtnText');
 
-  if (typeof showStashToast === 'function') {
-    showStashToast('AI Stylist Ensemble Piece: ' + currentQvAiPair.title + ' added to your bag!');
+  if (window.isQvPairIncluded) {
+    if (pairBtn) {
+      pairBtn.className = 'px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-mono text-[9.5px] uppercase font-bold rounded-xl transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer shadow-xs active:scale-95';
+    }
+    if (pairBtnText) pairBtnText.textContent = '✓ Paired (10% Off)';
+    if (comboRow) comboRow.classList.remove('hidden');
+    updateQvComboPricing();
+  } else {
+    if (pairBtn) {
+      pairBtn.className = 'px-3 py-2 bg-stone-950 hover:bg-stone-800 text-[#e9c176] font-mono text-[9.5px] uppercase font-bold rounded-xl transition-all flex items-center gap-1 flex-shrink-0 cursor-pointer shadow-xs active:scale-95';
+    }
+    if (pairBtnText) pairBtnText.textContent = 'Pair Piece';
+    if (comboRow) comboRow.classList.add('hidden');
+    if (qvBtnText) qvBtnText.textContent = 'Add to Curated Bag';
   }
 };
 
-window.consultStylistOnQv = function() {
-  const title = currentQvProduct ? currentQvProduct.title : 'this piece';
-  closeQuickView();
+// ── Live Calculation for Quick View Combo Discount ──
+window.updateQvComboPricing = function() {
+  if (!currentQvProduct || !currentQvAiPair) return;
+  const mainPrice = parseFloat(currentQvProduct.price) || 0;
+  const mainQty = currentQvQuantity || 1;
+  const pairPrice = parseFloat(currentQvAiPair.price) || 0;
+  const pairQty = currentQvAiPairQuantity || 1;
 
-  const chatBox = document.getElementById('atelierStylistChatBox');
-  const widget = document.getElementById('atelierStylistWidget');
-  if (chatBox) chatBox.classList.remove('hidden');
+  const totalOrig = (mainPrice * mainQty) + (pairPrice * pairQty);
+  const discountRate = 0.10; // 10% combo discount
+  const finalComboPrice = Math.round(totalOrig * (1 - discountRate));
+  const savings = totalOrig - finalComboPrice;
 
-  const input = document.getElementById('stylistChatInput');
-  if (input) {
-    input.value = 'How would you recommend styling the ' + title + ' for an executive or evening look?';
-    setTimeout(() => {
-      if (typeof sendStylistMessage === 'function') sendStylistMessage();
-    }, 300);
+  const finalEl = document.getElementById('qvComboFinalPrice');
+  const origEl = document.getElementById('qvComboOriginalPrice');
+  const savEl = document.getElementById('qvComboSavings');
+  const qvBtnText = document.getElementById('qvAddBagBtnText');
+
+  if (finalEl) finalEl.textContent = '₹' + Number(finalComboPrice).toLocaleString('en-IN');
+  if (origEl) origEl.textContent = '₹' + Number(totalOrig).toLocaleString('en-IN');
+  if (savEl) savEl.textContent = 'Save ₹' + Number(savings).toLocaleString('en-IN');
+
+  if (window.isQvPairIncluded && qvBtnText) {
+    qvBtnText.textContent = `Add 2-Piece Ensemble to Bag (₹${Number(finalComboPrice).toLocaleString('en-IN')})`;
+  }
+};
+
+window.changeQvQuantity = function(delta) {
+  currentQvQuantity = Math.max(1, Math.min(20, (currentQvQuantity || 1) + delta));
+  const el = document.getElementById('qvQuantityDisplay');
+  if (el) el.textContent = currentQvQuantity;
+  if (window.isQvPairIncluded) {
+    updateQvComboPricing();
+  }
+};
+
+window.changeQvAiPairQuantity = function(delta) {
+  currentQvAiPairQuantity = Math.max(1, Math.min(20, (currentQvAiPairQuantity || 1) + delta));
+  const el = document.getElementById('qvAiPairQtyDisplay');
+  if (el) el.textContent = currentQvAiPairQuantity;
+  if (window.isQvPairIncluded) {
+    updateQvComboPricing();
   }
 };
 
 window.handleQvAddToCart = function() {
   if (!currentQvProduct) return;
+  const size = currentQvSelectedSize || 'M';
+  const qty = currentQvQuantity || 1;
+
+  // Add primary garment
   addToCart({
     id: currentQvProduct.id || 1,
-    size: currentQvSelectedSize,
+    size: size,
     title: currentQvProduct.title,
     price: currentQvProduct.price,
-    image: currentQvProduct.image
-  }, 1);
+    image: currentQvProduct.image || currentQvProduct.img
+  }, qty, `✦ Added ${qty}x ${currentQvProduct.title} (Size ${size}) to Curated Bag!`);
+
+  // If paired piece is included, add with 10% bundle privilege
+  if (window.isQvPairIncluded && currentQvAiPair) {
+    const pairSize = window.currentQvAiPairSize || '32';
+    const pairQty = currentQvAiPairQuantity || 1;
+    const discountedPairPrice = Math.round(Number(currentQvAiPair.price) * 0.90);
+
+    addToCart({
+      id: currentQvAiPair.id,
+      title: currentQvAiPair.title + ' (VIP Bundle Privilege)',
+      price: discountedPairPrice,
+      image: currentQvAiPair.image || currentQvAiPair.img,
+      size: pairSize
+    }, pairQty, `✦ Added ${pairQty}x ${currentQvAiPair.title} (Size ${pairSize} · 10% Bundle Privilege) to Bag!`);
+  }
+
   closeQuickView();
 };
 
 window.handleQvInstantBuy = function() {
   if (!currentQvProduct) return;
+  const size = currentQvSelectedSize || 'M';
+  const qty = currentQvQuantity || 1;
+
   closeQuickView();
   if (window.openExpressCheckout) {
-    openExpressCheckout(currentQvProduct.id, currentQvProduct.title, currentQvProduct.price, currentQvProduct.image);
+    openExpressCheckout(currentQvProduct.id, currentQvProduct.title, currentQvProduct.price, currentQvProduct.image || currentQvProduct.img, currentQvProduct.id, size, qty);
   } else {
     window.location.href = '<?= base_url('checkout') ?>';
   }
@@ -2864,20 +3109,47 @@ window.getWishlistItems = function() {
   } catch (e) { return []; }
 };
 
-window.toggleWishlistItem = function(prod) {
+window.syncWishlistCheckboxes = function() {
+  const items = getWishlistItems();
+  const ids = new Set(items.map(i => Number(i.id)));
+  document.querySelectorAll('.heart-container .checkbox[data-wishlist-id]').forEach(cb => {
+    const id = Number(cb.getAttribute('data-wishlist-id'));
+    cb.checked = ids.has(id);
+  });
+};
+
+window.toggleWishlistItem = function(prod, event) {
+  if (event && event.stopPropagation) event.stopPropagation();
   let items = getWishlistItems();
-  const existingIdx = items.findIndex(i => i.id === prod.id);
+  const prodId = Number(prod.id);
+  const existingIdx = items.findIndex(i => Number(i.id) === prodId);
+  let isLiked = false;
+  
   if (existingIdx >= 0) {
     items.splice(existingIdx, 1);
-    ndToast('Removed from Wardrobe', 'info');
+    isLiked = false;
+    if (typeof ndToast === 'function') ndToast('Removed from Wardrobe', 'info');
   } else {
     items.push(prod);
-    ndToast('Saved to Wardrobe ❤️', 'success');
+    isLiked = true;
+    if (typeof ndToast === 'function') ndToast('Saved to Wardrobe ❤️', 'success');
   }
+  
   localStorage.setItem('lumina_wishlist', JSON.stringify(items));
   updateWishlistBadge();
   renderWishlistItems();
+  
+  // Sync all heart checkboxes for this item
+  document.querySelectorAll(`.heart-container .checkbox[data-wishlist-id="${prodId}"]`).forEach(cb => {
+    cb.checked = isLiked;
+  });
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof window.syncWishlistCheckboxes === 'function') {
+    window.syncWishlistCheckboxes();
+  }
+});
 
 window.updateWishlistBadge = function() {
   const items = getWishlistItems();
@@ -3085,38 +3357,43 @@ window.saveMonogramPreference = function() {
 function toggleQuickBagDrawer(forceState) {
   var overlay = document.getElementById('quickBagOverlay');
   var panel = document.getElementById('quickBagPanel');
-  if (!overlay || !panel) return;
+  if (!overlay || !panel) {
+    // Fallback: navigate to cart page if drawer elements not present
+    window.location.href = '<?= base_url("cart") ?>';
+    return;
+  }
 
-  var isCurrentlyHidden = overlay.classList.contains('hidden') || overlay.classList.contains('opacity-0');
+  var isCurrentlyHidden = overlay.classList.contains('hidden') || overlay.classList.contains('opacity-0') || overlay.style.display === 'none';
   var shouldOpen = (forceState !== undefined) ? forceState : isCurrentlyHidden;
 
   if (shouldOpen) {
     overlay.classList.remove('hidden');
+    overlay.style.display = 'block';
     overlay.style.pointerEvents = 'auto';
-    lockStorefrontScroll();
-    requestAnimationFrame(() => {
+    if (typeof lockStorefrontScroll === 'function') lockStorefrontScroll();
+    requestAnimationFrame(function() {
       overlay.classList.remove('opacity-0');
       overlay.classList.add('opacity-100');
       panel.classList.remove('translate-x-full');
       panel.classList.add('translate-x-0');
     });
-    // Only fetch if list is not already populated
-    var list = document.getElementById('quickBagItemsList');
-    if (!list || list.children.length === 0 || list.querySelector('.material-symbols-outlined')) {
-      loadQuickBagItems();
-    }
+    // Always refresh the cart contents when opening
+    loadQuickBagItems();
   } else {
     overlay.style.pointerEvents = 'none';
     overlay.classList.remove('opacity-100');
     overlay.classList.add('opacity-0');
     panel.classList.remove('translate-x-0');
     panel.classList.add('translate-x-full');
-    setTimeout(() => {
+    setTimeout(function() {
       overlay.classList.add('hidden');
-      unlockStorefrontScroll();
+      overlay.style.display = 'none';
+      if (typeof unlockStorefrontScroll === 'function') unlockStorefrontScroll();
     }, 300);
   }
 }
+window.toggleQuickBagDrawer = toggleQuickBagDrawer;
+window.openBagDrawer = function() { toggleQuickBagDrawer(true); };
 
 // ── CSRF Token Helper ──
 function getCsrfToken() {
@@ -3171,47 +3448,461 @@ function loadQuickBagItems() {
     });
 }
 
+// ── Universal Category-Aware Product Sizing Engine ──
+window.resolveProductSizes = function(titleOrObj, category) {
+  var title = '';
+  var cat = '';
+  if (typeof titleOrObj === 'object' && titleOrObj !== null) {
+    title = (titleOrObj.title || titleOrObj.product_title || '').toLowerCase();
+    cat = (titleOrObj.category || titleOrObj.category_name || category || '').toLowerCase();
+  } else if (typeof titleOrObj === 'string') {
+    title = titleOrObj.toLowerCase();
+    cat = (category || '').toLowerCase();
+  }
+
+  var combined = title + ' ' + cat;
+
+  // 1. Shoes & Footwear (Numeric UK/EU Sizing)
+  if (/(shoe|boot|sneaker|loafer|chelsea|footwear|heel|mule|oxford|sandal|derby|slide)/i.test(combined)) {
+    return ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'];
+  }
+
+  // 2. Jeans, Denim, Trousers, Pants (Numeric Waist Sizing in Inches)
+  if (/(jean|denim|trouser|pant|chino|bottom|selvedge|slacks|cargo|waist)/i.test(combined)) {
+    return ['28', '30', '32', '34', '36', '38'];
+  }
+
+  // 3. Accessories / Bags / Jewellery
+  if (/(bag|tote|purse|wallet|belt|scarf|hat|sunglass|watch|ring|necklace|bracelet|fragrance)/i.test(combined)) {
+    return ['One Size'];
+  }
+
+  // 4. Apparel (T-shirts, Hoodies, Shirts, Coats, Jackets, Knitwear, Dresses)
+  return ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+};
+
 function renderQuickBagItems(items, subtotal) {
   var list = document.getElementById('quickBagItemsList');
   if (!list) return;
   
-  var html = '';
-  items.forEach(function(item, idx) {
-    var sizeLabel = item.option1_value || item.variant_title || '';
-    if (sizeLabel === 'Default Title' || sizeLabel === 'Atelier Standard') sizeLabel = '';
-    var colorLabel = item.option2_value || '';
-    var variantDetail = [sizeLabel ? 'Size ' + sizeLabel : '', colorLabel].filter(Boolean).join(' · ');
+  if (!items || items.length === 0) {
+    list.innerHTML = `
+      <div class="py-12 text-center text-stone-400">
+        <span class="material-symbols-outlined text-4xl mb-2 text-stone-300">shopping_bag</span>
+        <p class="text-xs font-mono">Your curated bag is currently empty.</p>
+      </div>
+    `;
+    updateQuickBagTotals(0);
+    return;
+  }
 
-    var itemPrice = parseFloat(item.unit_price || item.price || 0);
-    var itemImg = item.image_url || item.image || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>';
-    var itemTitle = item.product_title || item.title || 'Curated Atelier Piece';
+  // 1. Match Combos from LocalStorage OR Auto-Detect Complementary Looks
+  var savedCombos = [];
+  try {
+    savedCombos = JSON.parse(localStorage.getItem('lumina_cart_combos') || '[]');
+  } catch(e) { savedCombos = []; }
+
+  var matchedCombos = [];
+  var consumedItemKeys = {};
+
+  // A) Match explicit saved combos first
+  savedCombos.forEach(function(c) {
+    if (!c.itemIds || !c.itemIds.length) return;
+    var matchedItems = [];
+    items.forEach(function(item) {
+      var itemKey = item.variant_id || item.id;
+      var prodId = Number(item.product_id || item.variant_id || item.id);
+      if (!consumedItemKeys[itemKey] && c.itemIds.includes(prodId)) {
+        matchedItems.push(item);
+      }
+    });
+
+    if (matchedItems.length >= 2) {
+      matchedItems.forEach(function(mi) {
+        var k = mi.variant_id || mi.id;
+        consumedItemKeys[k] = true;
+      });
+      matchedCombos.push({
+        comboId: c.comboId,
+        lookName: c.lookName || 'Curated Ensemble Combo',
+        discount: matchedItems.length === 3 ? 15 : (matchedItems.length === 2 ? 10 : (c.discount || 10)),
+        items: matchedItems
+      });
+    }
+  });
+
+  // B) Auto-detect complementary ensemble combinations in remaining cart items
+  var unassignedItems = items.filter(function(item) {
     var itemKey = item.variant_id || item.id;
-    var itemQty = parseInt(item.quantity) || 1;
+    return !consumedItemKeys[itemKey];
+  });
+
+  if (unassignedItems.length >= 2) {
+    var topItems = [];
+    var bottomItems = [];
+    var shoeItems = [];
+
+    unassignedItems.forEach(function(item) {
+      var tLower = (item.product_title || item.title || '').toLowerCase();
+      if (/(shoe|boot|sneaker|loafer|derby|chelsea|footwear)/i.test(tLower)) shoeItems.push(item);
+      else if (/(jean|denim|trouser|pant|chino|slacks|cargo)/i.test(tLower)) bottomItems.push(item);
+      else if (/(coat|jacket|blazer|hoodie|shirt|t-shirt|knit|sweater|top)/i.test(tLower)) topItems.push(item);
+    });
+
+    // Form an ensemble combo if we have complementary pieces
+    var ensembleGroup = [];
+    if (topItems.length > 0) ensembleGroup.push(topItems.shift());
+    if (bottomItems.length > 0) ensembleGroup.push(bottomItems.shift());
+    if (shoeItems.length > 0) ensembleGroup.push(shoeItems.shift());
+
+    // If we formed at least a 2-piece complementary look, group them!
+    if (ensembleGroup.length >= 2) {
+      ensembleGroup.forEach(function(mi) {
+        var k = mi.variant_id || mi.id;
+        consumedItemKeys[k] = true;
+      });
+      var autoDisc = ensembleGroup.length >= 3 ? 15 : 10;
+      matchedCombos.push({
+        comboId: 'auto_combo_' + Date.now(),
+        lookName: 'Curated Ensemble Look',
+        discount: autoDisc,
+        items: ensembleGroup
+      });
+    }
+  }
+
+  // Remaining items that were NOT part of an active combo pack are Individual pieces
+  var individualItems = items.filter(function(item) {
+    var itemKey = item.variant_id || item.id;
+    return !consumedItemKeys[itemKey];
+  });
+
+  var html = '';
+
+  // ── 2. RENDER ACTIVE COMBO PACKS (IF ANY) ──
+  matchedCombos.forEach(function(combo) {
+    var comboCurrentTotal = 0;
+    var comboOriginalTotal = 0;
+    var comboKeys = [];
+
+    var comboItemsHtml = combo.items.map(function(item) {
+      var itemTitle = item.product_title || item.title || 'Curated Atelier Piece';
+      var rawSize = (item.option1_value || item.variant_title || '').trim();
+      var cleanSize = rawSize.replace(/^Size\s+/i, '');
+      var currentSizeCode = cleanSize.toUpperCase();
+
+      var itemPrice = parseFloat(item.unit_price || item.price || 0);
+      var itemImg = item.image_url || item.image || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>';
+      var itemKey = item.variant_id || item.id;
+      var itemQty = parseInt(item.quantity) || 1;
+      comboKeys.push(itemKey);
+
+      comboCurrentTotal += (itemPrice * itemQty);
+      comboOriginalTotal += (itemPrice * (1 + (combo.discount / 100)) * itemQty);
+
+      // Category detection
+      var catTag = 'PIECE';
+      var tLower = itemTitle.toLowerCase();
+      if (/(shoe|boot|sneaker|loafer|derby|chelsea|footwear)/.test(tLower)) catTag = 'FOOTWEAR';
+      else if (/(jean|denim|trouser|pant|chino|slacks|cargo)/.test(tLower)) catTag = 'BOTTOM WEAR';
+      else if (/(coat|jacket|blazer|hoodie|shirt|t-shirt|knit|sweater|top)/.test(tLower)) catTag = 'TOP WEAR';
+
+      var possibleSizes = resolveProductSizes(itemTitle);
+      var defaultOptionIndex = Math.min(2, possibleSizes.length - 1);
+      var sizeOptionsHtml = possibleSizes.map(function(sz, sidx) {
+        var isSel = (currentSizeCode === sz.toUpperCase() || 
+                    (sidx === defaultOptionIndex && (!currentSizeCode || currentSizeCode === 'STANDARD' || currentSizeCode === 'DEFAULT TITLE' || currentSizeCode === 'TAILORED STANDARD')));
+        return '<option value="' + sz + '" ' + (isSel ? 'selected' : '') + '>' + sz + '</option>';
+      }).join('');
+
+      return `
+        <div id="quickBagItem-${itemKey}" data-item-price="${itemPrice}" data-item-qty="${itemQty}" class="quick-bag-item-card" style="display: flex; gap: 12px; padding: 10px 12px; background: #ffffff; border: 1px solid #e7e5e4; border-radius: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); flex-shrink: 0; width: 100%; box-sizing: border-box;">
+          <div style="width: 50px; height: 60px; min-width: 50px; border-radius: 10px; overflow: hidden; background: #f5f5f4; border: 1px solid #e7e5e4; flex-shrink: 0;">
+            <img src="${itemImg}" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="${itemTitle}">
+          </div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 6px;">
+              <span style="font-family: monospace; font-size: 8px; font-weight: 700; text-transform: uppercase; color: #a16207; background: #fef3c7; border: 1px solid #fde68a; padding: 1px 5px; border-radius: 4px;">${catTag}</span>
+              <button onclick="removeQuickBagItem(${itemKey}, this)" style="background: transparent; border: none; padding: 0; color: #a8a29e; cursor: pointer; display: flex; align-items: center;" title="Remove piece from combo">
+                <span class="material-symbols-outlined" style="font-size: 15px;">close</span>
+              </button>
+            </div>
+            <h5 style="font-family: serif; font-weight: 700; font-size: 12px; color: #1c1917; margin: 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${itemTitle}">${itemTitle}</h5>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; padding-top: 4px; border-top: 1px solid #f5f5f4;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-family: monospace; font-size: 8.5px; font-weight: 700; text-transform: uppercase; color: #78716c;">Size:</span>
+                <select onchange="changeQuickBagItemSize(${itemKey}, this.value)" style="font-family: monospace; font-size: 10.5px; font-weight: 700; background: #f5f5f4; color: #1c1917; border: 1px solid #d6d3d1; border-radius: 6px; padding: 2px 4px; cursor: pointer; outline: none;">
+                  ${sizeOptionsHtml}
+                </select>
+                <div style="display: flex; align-items: center; border: 1px solid #d6d3d1; border-radius: 5px; background: #f5f5f4; overflow: hidden; margin-left: 4px;">
+                  <button type="button" onclick="changeQuickBagItemQty(${itemKey}, -1)" style="width: 18px; height: 18px; background: #ffffff; border: none; font-size: 11px; font-weight: bold; color: #44403c; cursor: pointer; display: flex; align-items: center; justify-content: center;">-</button>
+                  <span class="quick-bag-qty-num" style="width: 18px; text-align: center; font-family: monospace; font-size: 10px; font-weight: bold; color: #0c0a09; line-height: 18px;">${itemQty}</span>
+                  <button type="button" onclick="changeQuickBagItemQty(${itemKey}, 1)" style="width: 18px; height: 18px; background: #ffffff; border: none; font-size: 11px; font-weight: bold; color: #44403c; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                </div>
+              </div>
+              <span class="quick-bag-item-price-val font-serif" style="font-weight: 700; font-size: 12px; color: #0c0a09;" data-price-inr="${itemPrice * itemQty}">${formatPrice(itemPrice * itemQty)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    var comboSavings = Math.max(0, Math.round(comboOriginalTotal - comboCurrentTotal));
 
     html += `
-      <div id="quickBagItem-${itemKey}" data-item-price="${itemPrice}" data-item-qty="${itemQty}" class="quick-bag-item-card flex items-center gap-3 p-3 bg-surface-container rounded-xl border border-outline-variant/40 hover:border-accent/40 shadow-xs flex-shrink-0 w-full min-h-[76px]" style="animation-delay: ${idx * 40}ms;">
-        <img src="${itemImg}" class="w-14 h-16 object-cover rounded-lg bg-black/10 flex-shrink-0 border border-outline-variant/30">
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between gap-1">
-            <h4 class="font-serif font-bold text-xs text-primary truncate" title="${itemTitle}">${itemTitle}</h4>
-            <button onclick="removeQuickBagItem(${itemKey}, this)" class="text-on-surface-variant hover:text-red-500 hover:bg-red-500/10 text-xs p-1.5 rounded-lg transition-all cursor-pointer" aria-label="Remove item" title="Remove piece">
-              <span class="material-symbols-outlined text-sm">delete</span>
-            </button>
+      <div class="quick-bag-combo-card" data-combo-card="true" style="background: #18181b; color: #ffffff; border-radius: 20px; padding: 14px 16px; border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3); margin-bottom: 14px; flex-shrink: 0; width: 100%; box-sizing: border-box;">
+        <!-- Combo Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: #fbbf24;">auto_awesome</span>
+            <div>
+              <div style="font-family: monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #fbbf24;">${combo.lookName}</div>
+              <div style="font-family: monospace; font-size: 9.5px; color: #a8a29e;">${combo.items.length} Coordinated Pieces</div>
+            </div>
           </div>
-          ${variantDetail ? `<span class="inline-block mt-0.5 text-[9px] font-mono font-bold bg-accent/15 text-accent px-1.5 py-0.2 rounded">${variantDetail}</span>` : ''}
-          <div class="flex justify-between items-center mt-1.5">
-            <span class="text-[11px] text-on-surface-variant font-mono">${itemQty} × <strong class="text-primary" data-price-inr="${itemPrice}">${formatPrice(itemPrice)}</strong></span>
-            <span class="font-serif font-bold text-xs text-primary" data-price-inr="${itemPrice * itemQty}">${formatPrice(itemPrice * itemQty)}</span>
+          <span style="padding: 3px 8px; border-radius: 999px; background: rgba(6, 78, 59, 0.8); color: #6ee7b7; font-family: monospace; font-size: 9.5px; font-weight: 700; border: 1px solid rgba(110, 231, 183, 0.4);">
+            ${combo.discount}% Privilege
+          </span>
+        </div>
+
+        <!-- Nested Items in Combo -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          ${comboItemsHtml}
+        </div>
+
+        <!-- Combo Footer -->
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.12); margin-top: 10px; font-size: 12px;">
+          <div>
+            <div style="font-family: monospace; font-size: 10px; color: #a8a29e;">Combo Total: <strong style="color: #ffffff; font-size: 13px; font-family: serif;">${formatPrice(comboCurrentTotal)}</strong></div>
+            ${comboSavings > 0 ? `<div style="font-family: monospace; font-size: 9.5px; color: #34d399; font-weight: 700;">Saved ${formatPrice(comboSavings)} with ${combo.discount}% combo privilege</div>` : ''}
           </div>
+          <button type="button" onclick="removeQuickBagPack(${JSON.stringify(comboKeys).replace(/"/g, '&quot;')}, '${combo.comboId}', this)" style="background: none; border: none; font-family: monospace; font-size: 10px; color: #a8a29e; cursor: pointer; text-decoration: underline; text-transform: uppercase; letter-spacing: 0.05em;" onmouseover="this.style.color='#fb7185'" onmouseout="this.style.color='#a8a29e'">
+            Remove Combo
+          </button>
         </div>
       </div>
     `;
   });
+
+  // ── 3. RENDER INDIVIDUAL (NON-COMBO) ATELIER PIECES ──
+  if (individualItems.length > 0) {
+    if (matchedCombos.length > 0) {
+      html += `
+        <div style="font-family: monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #78716c; font-weight: 700; margin: 12px 0 8px 2px; display: flex; align-items: center; gap: 6px;">
+          <span style="width: 6px; height: 6px; border-radius: 999px; background: #a8a29e;"></span>
+          <span>Individual Atelier Pieces</span>
+        </div>
+      `;
+    }
+
+    individualItems.forEach(function(item) {
+      var itemTitle = item.product_title || item.title || 'Curated Atelier Piece';
+      var rawSize = (item.option1_value || item.variant_title || '').trim();
+      var cleanSize = rawSize.replace(/^Size\s+/i, '');
+      var currentSizeCode = cleanSize.toUpperCase();
+
+      var itemPrice = parseFloat(item.unit_price || item.price || 0);
+      var itemImg = item.image_url || item.image || '<?= base_url("img/cashmere_cocoon_coat.jpg") ?>';
+      var itemKey = item.variant_id || item.id;
+      var itemQty = parseInt(item.quantity) || 1;
+
+      // Category detection
+      var catTag = 'PIECE';
+      var tLower = itemTitle.toLowerCase();
+      if (/(shoe|boot|sneaker|loafer|derby|chelsea|footwear)/.test(tLower)) catTag = 'FOOTWEAR';
+      else if (/(jean|denim|trouser|pant|chino|slacks|cargo)/.test(tLower)) catTag = 'BOTTOM WEAR';
+      else if (/(coat|jacket|blazer|hoodie|shirt|t-shirt|knit|sweater|top)/.test(tLower)) catTag = 'TOP WEAR';
+
+      var possibleSizes = resolveProductSizes(itemTitle);
+      var defaultOptionIndex = Math.min(2, possibleSizes.length - 1);
+      var sizeOptionsHtml = possibleSizes.map(function(sz, sidx) {
+        var isSel = (currentSizeCode === sz.toUpperCase() || 
+                    (sidx === defaultOptionIndex && (!currentSizeCode || currentSizeCode === 'STANDARD' || currentSizeCode === 'DEFAULT TITLE' || currentSizeCode === 'TAILORED STANDARD')));
+        return '<option value="' + sz + '" ' + (isSel ? 'selected' : '') + '>' + sz + '</option>';
+      }).join('');
+
+      html += `
+        <div id="quickBagItem-${itemKey}" data-item-price="${itemPrice}" data-item-qty="${itemQty}" class="quick-bag-item-card" style="display: flex; gap: 14px; padding: 14px; background: #ffffff; border: 1px solid #e7e5e4; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); flex-shrink: 0; width: 100%; box-sizing: border-box;">
+          <div style="width: 64px; height: 78px; min-width: 64px; border-radius: 12px; overflow: hidden; background: #f5f5f4; border: 1px solid #e7e5e4; flex-shrink: 0;">
+            <img src="${itemImg}" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="${itemTitle}">
+          </div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;">
+              <span style="font-family: monospace; font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #a16207; background: #fef3c7; border: 1px solid #fde68a; padding: 2px 6px; border-radius: 4px;">${catTag}</span>
+              <button onclick="removeQuickBagItem(${itemKey}, this)" style="background: transparent; border: none; padding: 2px; color: #a8a29e; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 6px;" title="Remove piece" onmouseover="this.style.color='#e11d48'" onmouseout="this.style.color='#a8a29e'">
+                <span class="material-symbols-outlined" style="font-size: 16px;">close</span>
+              </button>
+            </div>
+            <h4 style="font-family: serif; font-weight: 700; font-size: 13px; color: #1c1917; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3;" title="${itemTitle}">${itemTitle}</h4>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; padding-top: 6px; border-top: 1px solid #f5f5f4;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <span style="font-family: monospace; font-size: 9px; font-weight: 700; text-transform: uppercase; color: #78716c;">Size:</span>
+                  <select onchange="changeQuickBagItemSize(${itemKey}, this.value)" style="font-family: monospace; font-size: 11px; font-weight: 700; background: #f5f5f4; color: #1c1917; border: 1px solid #d6d3d1; border-radius: 6px; padding: 2px 6px; cursor: pointer; outline: none;">
+                    ${sizeOptionsHtml}
+                  </select>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <span style="font-family: monospace; font-size: 9px; font-weight: 700; text-transform: uppercase; color: #78716c;">Qty:</span>
+                  <div style="display: flex; align-items: center; border: 1px solid #d6d3d1; border-radius: 6px; background: #f5f5f4; overflow: hidden;">
+                    <button type="button" onclick="changeQuickBagItemQty(${itemKey}, -1)" style="width: 20px; height: 20px; background: #ffffff; border: none; font-size: 12px; font-weight: bold; color: #44403c; cursor: pointer; display: flex; align-items: center; justify-content: center;">-</button>
+                    <span class="quick-bag-qty-num" style="width: 20px; text-align: center; font-family: monospace; font-size: 11px; font-weight: bold; color: #0c0a09; line-height: 20px;">${itemQty}</span>
+                    <button type="button" onclick="changeQuickBagItemQty(${itemKey}, 1)" style="width: 20px; height: 20px; background: #ffffff; border: none; font-size: 12px; font-weight: bold; color: #44403c; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                  </div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <span class="quick-bag-item-price-val font-serif" style="font-weight: 700; font-size: 13px; color: #0c0a09;" data-price-inr="${itemPrice * itemQty}">${formatPrice(itemPrice * itemQty)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
   
   list.innerHTML = html;
-  
   updateQuickBagTotals(subtotal);
 }
+
+// ── Change Quantity for an Item in Quick Bag ──
+window.changeQuickBagItemQty = function(variantId, delta) {
+  var card = document.getElementById('quickBagItem-' + variantId);
+  var curQty = card ? parseInt(card.getAttribute('data-item-qty') || 1) : 1;
+  var newQty = curQty + delta;
+
+  if (newQty <= 0) {
+    removeQuickBagItem(variantId);
+    return;
+  }
+
+  // 1. Instant 0ms Optimistic UI update on the card
+  if (card) {
+    card.setAttribute('data-item-qty', newQty);
+    var qtyDisplay = card.querySelector('.quick-bag-qty-num');
+    if (qtyDisplay) qtyDisplay.textContent = newQty;
+
+    var unitPrice = parseFloat(card.getAttribute('data-item-price') || 0);
+    var priceEl = card.querySelector('.quick-bag-item-price-val, [data-price-inr]');
+    if (priceEl && unitPrice > 0) {
+      var newLineTotal = unitPrice * newQty;
+      priceEl.textContent = formatPrice(newLineTotal);
+      priceEl.setAttribute('data-price-inr', newLineTotal);
+    }
+  }
+
+  // 2. Immediate Optimistic Cart Subtotal Update
+  var unitPrice = card ? parseFloat(card.getAttribute('data-item-price') || 0) : 0;
+  if (unitPrice > 0) {
+    var origEl = document.getElementById('quickBagOriginalSubtotal');
+    var subtotalEl = document.getElementById('quickBagSubtotal');
+    var curSub = parseFloat((origEl && origEl.getAttribute('data-price-inr')) || (subtotalEl && subtotalEl.getAttribute('data-price-inr')) || '0');
+    var newSub = Math.max(0, curSub + (unitPrice * delta));
+    updateQuickBagTotals(newSub);
+  }
+
+  // 3. Send Server Update via AJAX
+  var formData = new FormData();
+  formData.append('variant_id', variantId);
+  formData.append('quantity', newQty);
+  formData.append('<?= $this->security->get_csrf_token_name() ?>', getCsrfToken());
+
+  fetch('<?= base_url('cart/update') ?>', {
+    method: 'POST',
+    body: formData,
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+  .then(r => r.json())
+  .then(d => {
+    fetchQuickBagItems();
+  })
+  .catch(err => {
+    console.error('Cart quantity update error:', err);
+  });
+};
+
+// ── Remove Entire Pack from Quick Bag ──
+window.removeQuickBagPack = function(variantIds, comboId, btnEl) {
+  if (!Array.isArray(variantIds) || !variantIds.length) return;
+  
+  // 1. Clean from localStorage combo store
+  if (comboId) {
+    try {
+      var saved = JSON.parse(localStorage.getItem('lumina_cart_combos') || '[]');
+      saved = saved.filter(function(c) { return c.comboId !== comboId; });
+      localStorage.setItem('lumina_cart_combos', JSON.stringify(saved));
+    } catch(e) {}
+  }
+
+  // 2. Instant 0ms Optimistic UI Animation on the Combo Card Container
+  var comboCard = btnEl ? btnEl.closest('.quick-bag-combo-card, [data-combo-card]') : null;
+  if (!comboCard && btnEl) {
+    comboCard = btnEl.closest('div[style*="background: #18181b"], div[style*="background:#18181b"]');
+  }
+  if (comboCard) {
+    comboCard.style.transition = 'all 0.35s ease';
+    comboCard.style.opacity = '0';
+    comboCard.style.transform = 'translateX(50px) scale(0.95)';
+    setTimeout(() => {
+      if (comboCard && comboCard.parentNode) {
+        comboCard.parentNode.removeChild(comboCard);
+      }
+    }, 320);
+  }
+
+  // 3. Remove each item via /cart/remove
+  var remaining = variantIds.length;
+  variantIds.forEach(function(vId) {
+    var formData = new FormData();
+    formData.append('variant_id', vId);
+    formData.append('<?= $this->security->get_csrf_token_name() ?>', getCsrfToken());
+
+    fetch('<?= base_url('cart/remove') ?>', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .finally(() => {
+      remaining--;
+      if (remaining === 0) {
+        fetchQuickBagItems();
+        if (typeof ndToast === 'function') ndToast('Combo pack removed from bag.', 'info');
+      }
+    });
+  });
+};
+
+// ── Instant AJAX In-Drawer Size Switcher ──
+window.changeQuickBagItemSize = function(variantId, newSize) {
+  if (!variantId || !newSize) return;
+
+  var formData = new FormData();
+  formData.append('variant_id', variantId);
+  formData.append('size', newSize);
+  formData.append('<?= $this->security->get_csrf_token_name() ?>', getCsrfToken());
+
+  fetch('<?= base_url('cart/update_size') ?>', {
+    method: 'POST',
+    body: formData,
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d && d.success) {
+      var items = (d.data && d.data.items) || d.items || [];
+      var subtotal = (d.data && d.data.subtotal !== undefined) ? d.data.subtotal : (d.subtotal || 0);
+      renderQuickBagItems(items, subtotal);
+      ndToast('Garment size updated to ' + newSize + ' ✓', 'success');
+    } else {
+      ndToast(d.message || 'Could not update size', 'error');
+    }
+  })
+  .catch(err => {
+    console.error('Size update error:', err);
+    ndToast('Network error while updating size', 'error');
+  });
+};
 
 // ── 🎟️ Quick Bag Coupon & Real-Time Discount Engine ──
 window.quickBagAppliedCoupon = (function() {
@@ -3222,6 +3913,8 @@ window.quickBagAppliedCoupon = (function() {
 })();
 
 window.setQuickCoupon = function(code) {
+  var acc = document.getElementById('quickBagCouponAccordion');
+  if (acc) acc.open = true;
   var input = document.getElementById('quickBagCouponInput');
   if (input) {
     input.value = code;
@@ -3329,6 +4022,13 @@ window.updateQuickBagTotals = function(subtotal) {
     subtotalEl.setAttribute('data-price-inr', finalTotal);
     subtotalEl.textContent = formatPrice(finalTotal);
   }
+
+  // Calculate Atelier Reward Points for total order
+  var ptsVal = Math.max(0, Math.round(finalTotal * 0.06));
+  var ptsEl = document.getElementById('quickBagPointsVal');
+  var cashEl = document.getElementById('quickBagCashbackVal');
+  if (ptsEl) ptsEl.textContent = `+${Number(ptsVal).toLocaleString('en-IN')} pts`;
+  if (cashEl) cashEl.textContent = `(₹${Number(ptsVal).toLocaleString('en-IN')} Cashback Credit)`;
 };
 
 // ── 🗑️ Real-Time Item Removal Animation (Zero Toast / 60FPS Collapse) ──
