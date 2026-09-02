@@ -22,11 +22,9 @@ class Search extends MY_Controller
         $results = [];
         $total   = 0;
 
-        if ($query !== '') {
-            $results_data = $this->_perform_search($query, $page, $per_page);
-            $results = $results_data['items'];
-            $total   = $results_data['total'];
-        }
+        $results_data = $this->_perform_search($query, $page, $per_page);
+        $results = $results_data['items'];
+        $total   = $results_data['total'];
 
         if ($this->input->get('json') == 1) {
             $clean_items = [];
@@ -112,19 +110,24 @@ class Search extends MY_Controller
         }
 
         // 2. MySQL Fallback
-        $s = $this->db->escape_like_str($query);
         $this->db->select('p.*, pi.url AS primary_image, COALESCE(MIN(pv.price), p.base_price) AS min_price')
                  ->from('products p')
                  ->join('product_images pi', 'pi.product_id = p.id AND pi.is_primary = 1', 'left')
                  ->join('product_variants pv', 'pv.product_id = p.id AND pv.is_active = 1', 'left')
                  ->where('p.store_id', $this->store_id)
-                 ->where('p.status', 'active')
-                 ->group_start()
+                 ->where('p.status', 'active');
+
+        if (!empty($query)) {
+            $s = $this->db->escape_like_str($query);
+            $this->db->group_start()
                      ->like('p.title', $s)
                      ->or_like('p.description', $s)
                      ->or_like('p.vendor', $s)
-                 ->group_end()
-                 ->group_by('p.id')
+                     ->or_like('p.tags', $s)
+                 ->group_end();
+        }
+
+        $this->db->group_by('p.id')
                  ->order_by('p.views_count', 'DESC');
 
 
