@@ -863,9 +863,9 @@ if ('serviceWorker' in navigator) {
       </div>
 
       <!-- ── Search Button ── -->
-      <button type="button" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-stone-800 hover:text-[#a16207] hover:bg-stone-100/80 border border-transparent hover:border-stone-200 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs" onclick="toggleSearchModal()" aria-label="Search Collection" title="Search (Ctrl+K)">
+      <a href="<?= base_url('search') ?>" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-stone-800 hover:text-[#a16207] hover:bg-stone-100/80 border border-transparent hover:border-stone-200 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs" aria-label="Search Collection" title="Search">
         <span class="material-symbols-outlined text-[19px]">search</span>
-      </button>
+      </a>
 
       <!-- ── Wishlist Saved Wardrobe Button ── -->
       <button type="button" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-stone-800 hover:text-rose-500 hover:bg-rose-50/80 border border-transparent hover:border-rose-200 transition-all hover:scale-105 active:scale-95 relative cursor-pointer shadow-2xs group" onclick="openWishlistDrawer()" aria-label="Saved Wardrobe" title="Saved Wardrobe">

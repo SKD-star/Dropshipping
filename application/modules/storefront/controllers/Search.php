@@ -28,8 +28,7 @@ class Search extends MY_Controller
             $total   = $results_data['total'];
         }
 
-        // Return instant JSON for live in-modal search without page reload
-        if ($this->input->is_ajax_request() || $this->input->get('json') == 1 || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
+        if ($this->input->get('json') == 1) {
             $clean_items = [];
             foreach ($results as $p) {
                 $img = !empty($p['primary_image']) ? $p['primary_image'] : (!empty($p['image_url']) ? $p['image_url'] : base_url('assets/images/placeholder.jpg'));

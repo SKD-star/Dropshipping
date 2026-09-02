@@ -90,7 +90,7 @@
 ?>
 <?php if ($wa_enabled): ?>
 <!-- ══ GLOBAL WHATSAPP LIVE CONCIERGE BUTTON ══ -->
-<a id="whatsappBtnGlobal" href="https://wa.me/<?= $wa_num ?>?text=<?= $wa_msg ?>" target="_blank" rel="noopener" class="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer" style="background: linear-gradient(135deg, #25d366, #128c7e);" title="Chat on WhatsApp with NovaDrop Stylist">
+<a id="whatsappBtnGlobal" href="https://wa.me/<?= $wa_num ?>?text=<?= $wa_msg ?>" target="_blank" rel="noopener" class="fixed bottom-5 sm:bottom-6 right-4 sm:right-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer" style="background: linear-gradient(135deg, #25d366, #128c7e);" title="Chat on WhatsApp with NovaDrop Stylist">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="26" height="26">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
@@ -982,69 +982,54 @@ window.closeMysteryDropModal = function() {
 <!-- ══════════════════════════════════════════════════════
      MOBILE LUXURY ATELIER FLOATING DOCK (UI/UX PRO MAX)
 ══════════════════════════════════════════════════════ -->
-<?php
-  $ci_uri_str = function_exists('uri_string') ? uri_string() : (isset($this->uri) ? $this->uri->uri_string() : '');
-  $req_path_raw = strtolower(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?? '');
-  
-  $is_shop_active = (
-    strpos($ci_uri_str, 'shop') !== false ||
-    strpos($ci_uri_str, 'boutique') !== false ||
-    strpos($ci_uri_str, 'collections') !== false ||
-    strpos($ci_uri_str, 'products') !== false ||
-    strpos($req_path_raw, '/shop') !== false ||
-    strpos($req_path_raw, '/boutique') !== false ||
-    strpos($req_path_raw, '/collections') !== false ||
-    strpos($req_path_raw, '/products') !== false ||
-    strpos($req_path_raw, '/product/') !== false
-  );
-
-  $is_home_active = !$is_shop_active && (
-    $ci_uri_str === '' ||
-    $ci_uri_str === 'home' ||
-    $ci_uri_str === 'lookbook' ||
-    $ci_uri_str === 'curated' ||
-    $ci_uri_str === 'storefront' ||
-    $ci_uri_str === 'storefront/home' ||
-    $ci_uri_str === 'storefront/home/index' ||
-    preg_match('#^/(dropshipping/?)?$#i', $req_path_raw)
-  );
+<?php 
+  $raw_uri = strtolower($_SERVER['REQUEST_URI'] ?? '');
+  $clean_uri = trim(parse_url($raw_uri, PHP_URL_PATH) ?? '', '/');
+  $is_shop_page = (strpos($clean_uri, 'shop') !== false || strpos($clean_uri, 'boutique') !== false || strpos($clean_uri, 'collection') !== false);
+  $is_search_page = (strpos($clean_uri, 'search') !== false);
+  $is_wishlist_page = (strpos($clean_uri, 'wishlist') !== false || strpos($clean_uri, 'wardrobe') !== false);
+  $is_cart_page = (strpos($clean_uri, 'cart') !== false || strpos($clean_uri, 'checkout') !== false);
+  $is_home_page = (!$is_shop_page && !$is_search_page && !$is_wishlist_page && !$is_cart_page);
 ?>
-<nav class="fixed bottom-3 inset-x-3.5 sm:inset-x-6 max-w-sm mx-auto z-[75] md:hidden bg-stone-950/95 backdrop-blur-2xl border border-white/15 rounded-2xl py-1.5 px-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.08)] pointer-events-auto" aria-label="Mobile Navigation">
+<nav class="fixed bottom-3 inset-x-3.5 sm:inset-x-6 max-w-sm mx-auto z-[95] md:hidden bg-stone-950/95 backdrop-blur-2xl border border-white/15 rounded-2xl py-1.5 px-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.08)] select-none pointer-events-auto" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent;" aria-label="Mobile Navigation">
   <div class="flex items-center justify-between gap-1">
     
     <!-- Home -->
-    <a href="<?= base_url() ?>" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 cursor-pointer <?= $is_home_active ? 'text-[#e9c176] font-bold bg-white/10 shadow-xs border border-[#e9c176]/30' : 'text-stone-400 hover:text-stone-200' ?>" title="Atelier Home">
+    <a href="<?= base_url() ?>" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 <?= $is_home_page ? 'text-[#e9c176] font-bold bg-white/10 shadow-xs border border-[#e9c176]/30' : 'text-stone-400 hover:text-stone-200' ?>" title="Atelier Home">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5">home</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Home</span>
-      <?php if ($is_home_active): ?>
+      <?php if ($is_home_page): ?>
         <span class="w-1 h-1 rounded-full bg-[#e9c176] mt-0.5 shadow-[0_0_6px_#e9c176]"></span>
       <?php endif; ?>
     </a>
 
     <!-- Shop / Boutique -->
-    <a href="<?= base_url('shop') ?>" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 cursor-pointer <?= $is_shop_active ? 'text-[#e9c176] font-bold bg-white/10 shadow-xs border border-[#e9c176]/30' : 'text-stone-400 hover:text-stone-200' ?>" title="Explore Catalog">
+    <a href="<?= base_url('shop') ?>" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 <?= $is_shop_page ? 'text-[#e9c176] font-bold bg-white/10 shadow-xs border border-[#e9c176]/30' : 'text-stone-400 hover:text-stone-200' ?>" title="Explore Catalog">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5">checkroom</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Shop</span>
-      <?php if ($is_shop_active): ?>
+      <?php if ($is_shop_page): ?>
         <span class="w-1 h-1 rounded-full bg-[#e9c176] mt-0.5 shadow-[0_0_6px_#e9c176]"></span>
       <?php endif; ?>
     </a>
 
     <!-- Wishlist / Saved -->
-    <button type="button" onclick="openWishlistDrawer()" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-400 hover:text-rose-400 transition-all duration-200 active:scale-90 cursor-pointer relative" title="Saved Pieces">
+    <button type="button" onclick="openWishlistDrawer()" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl <?= $is_wishlist_page ? 'text-[#e9c176] font-bold bg-white/10 shadow-xs border border-[#e9c176]/30' : 'text-stone-400 hover:text-rose-400' ?> transition-all duration-200 active:scale-90 cursor-pointer relative" title="Saved Pieces">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5 hover:text-rose-400 transition-colors">favorite</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Saved</span>
-      <span id="mobileBottomWishlistBadge" class="absolute top-0.5 right-2 min-w-[16px] h-4 px-1 bg-rose-900 text-rose-200 text-[8px] font-mono font-extrabold rounded-full flex items-center justify-center border border-rose-500/50 shadow-md hidden">0</span>
+      <span id="mobileBottomWishlistBadge" class="absolute -top-0.5 right-2 min-w-[14px] h-[14px] px-0.5 bg-rose-500 text-white text-[7.5px] font-mono font-bold rounded-full flex items-center justify-center hidden">0</span>
     </button>
 
     <!-- Instant Search -->
-    <button type="button" onclick="toggleSearchModal()" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-400 hover:text-[#e9c176] transition-all duration-200 active:scale-90 cursor-pointer" title="Search Atelier">
+    <a href="<?= base_url('search') ?>" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 <?= $is_search_page ? 'text-[#e9c176] font-bold bg-white/10 shadow-xs border border-[#e9c176]/30' : 'text-stone-400 hover:text-[#e9c176]' ?>" title="Search">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5">search</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Search</span>
-    </button>
+      <?php if ($is_search_page): ?>
+        <span class="w-1 h-1 rounded-full bg-[#e9c176] mt-0.5 shadow-[0_0_6px_#e9c176]"></span>
+      <?php endif; ?>
+    </a>
 
     <!-- Curated Bag -->
-    <button type="button" onclick="if(typeof toggleQuickBagDrawer==='function'){toggleQuickBagDrawer();}else{window.location.href='<?= base_url('cart') ?>';}" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-400 hover:text-white transition-all duration-200 active:scale-90 relative cursor-pointer" title="Curated Bag">
+    <button type="button" onclick="toggleQuickBagDrawer()" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-400 hover:text-white transition-all duration-200 active:scale-90 relative cursor-pointer" title="Curated Bag">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5 text-stone-200">shopping_bag</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight text-stone-200 font-semibold">Bag</span>
       <?php $mb_count = (isset($this->session) && method_exists($this->session, 'userdata')) ? (int)($this->session->userdata('cart_count') ?? 0) : 0; ?>
@@ -1057,48 +1042,18 @@ window.closeMysteryDropModal = function() {
 </nav>
 
 <!-- ── Instant Search Modal (Ctrl+K) ── -->
-<div id="searchModal" data-lenis-prevent="true" class="fixed inset-0 bg-black/80 backdrop-blur-xl z-[9999] hidden items-start justify-center pt-8 sm:pt-20 px-3 sm:px-4 overflow-y-auto" onclick="if(event.target===this)toggleSearchModal()" style="overscroll-behavior: contain;">
-  <div data-lenis-prevent="true" class="bg-[#0c0d12] text-white border border-[#e9c176]/30 p-5 sm:p-7 rounded-3xl max-w-2xl w-full shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_40px_rgba(233,193,118,0.1)] relative my-auto animate-in fade-in zoom-in-95 duration-200" style="overscroll-behavior: contain;">
-    
-    <!-- Top Bar for Mobile -->
-    <div class="h-1 w-20 bg-gradient-to-r from-amber-400 to-[#e9c176] rounded-full mx-auto mb-4 sm:hidden"></div>
-
-    <!-- Search Input Bar -->
-    <div class="flex items-center gap-3 border-b border-white/15 pb-3.5 mb-3">
-      <span class="material-symbols-outlined text-[#e9c176] text-2xl">search</span>
-      <input type="text" id="liveSearchInput" placeholder="Search silk, cashmere, outerwear, boots..." class="w-full bg-transparent border-none focus:ring-0 text-base sm:text-lg text-white placeholder-stone-400 outline-none font-sans" oninput="handleSearchQuery(this.value)" autocomplete="off">
-      <button type="button" id="clearSearchInputBtn" onclick="clearLiveSearch()" class="hidden text-stone-400 hover:text-white p-1" title="Clear">
-        <span class="material-symbols-outlined text-lg">cancel</span>
-      </button>
-      <button type="button" onclick="toggleSearchModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer ml-1" aria-label="Close search">
+<div id="searchModal" data-lenis-prevent="true" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] hidden items-start justify-center pt-24 px-4" onclick="if(event.target===this)toggleSearchModal()" style="overscroll-behavior: contain;">
+  <div data-lenis-prevent="true" class="liquid-glass p-6 rounded-DEFAULT max-w-xl w-full ambient-elevation relative bg-surface border border-outline-variant/60" style="overscroll-behavior: contain;">
+    <div class="flex items-center gap-3 border-b border-outline-variant/40 pb-3 mb-4">
+      <span class="material-symbols-outlined text-accent text-xl">search</span>
+      <input type="text" id="liveSearchInput" placeholder="Search curated garments &amp; artifacts..." class="w-full bg-transparent border-none focus:ring-0 text-body-lg text-primary outline-none" oninput="handleSearchQuery(this.value)">
+      <button type="button" onclick="toggleSearchModal()" class="text-on-surface-variant hover:text-primary p-1">
         <span class="material-symbols-outlined text-xl">close</span>
       </button>
     </div>
-
-    <!-- Quick Trending Search Tags -->
-    <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-2 mb-3 text-xs">
-      <span class="text-[10px] font-mono text-stone-400 uppercase tracking-widest mr-1 flex-shrink-0">Trending:</span>
-      <button type="button" onclick="setLiveSearch('Silk')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-[#e9c176]/20 border border-white/10 hover:border-[#e9c176]/50 text-stone-300 hover:text-[#e9c176] transition-colors whitespace-nowrap cursor-pointer">✨ Mulberry Silk</button>
-      <button type="button" onclick="setLiveSearch('Cashmere')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-[#e9c176]/20 border border-white/10 hover:border-[#e9c176]/50 text-stone-300 hover:text-[#e9c176] transition-colors whitespace-nowrap cursor-pointer">🧥 Cashmere</button>
-      <button type="button" onclick="setLiveSearch('Boots')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-[#e9c176]/20 border border-white/10 hover:border-[#e9c176]/50 text-stone-300 hover:text-[#e9c176] transition-colors whitespace-nowrap cursor-pointer">👢 Chelsea Boots</button>
-      <button type="button" onclick="setLiveSearch('Denim')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-[#e9c176]/20 border border-white/10 hover:border-[#e9c176]/50 text-stone-300 hover:text-[#e9c176] transition-colors whitespace-nowrap cursor-pointer">👖 Selvedge Denim</button>
-      <button type="button" onclick="setLiveSearch('Trench')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-[#e9c176]/20 border border-white/10 hover:border-[#e9c176]/50 text-stone-300 hover:text-[#e9c176] transition-colors whitespace-nowrap cursor-pointer">🧥 Trench Coat</button>
+    <div id="searchResultsList" class="max-h-80 overflow-y-auto custom-scrollbar text-sm text-on-surface-variant flex flex-col gap-2">
+      <div class="py-6 text-center text-xs tracking-widest uppercase text-on-surface-variant">Type keywords to discover pieces...</div>
     </div>
-
-    <!-- Live Results Container (Direct In-Modal Product Grid & Instant Actions) -->
-    <div id="searchResultsList" class="max-h-[60vh] overflow-y-auto custom-scrollbar text-sm flex flex-col gap-2.5 pt-1">
-      <div class="py-8 text-center text-stone-400 text-xs tracking-wider uppercase font-mono flex flex-col items-center gap-2">
-        <span class="material-symbols-outlined text-3xl text-stone-500">manage_search</span>
-        <span>Type keywords or tap a category to search instantly</span>
-      </div>
-    </div>
-
-    <!-- Footer Micro Info -->
-    <div class="flex justify-between items-center pt-3 border-t border-white/10 mt-3 text-[10px] font-mono text-stone-500">
-      <span>✦ Instant AI Search &amp; Bag Checkout</span>
-      <span class="hidden sm:inline">Press ESC to close</span>
-    </div>
-
   </div>
 </div>
 
@@ -1831,39 +1786,31 @@ window.closeMysteryDropModal = function() {
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- 5. ❤️ CLIENT SAVED WARDROBE (WISHLIST SLIDE-OUT DRAWER)                      -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div id="wishlistDrawerOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[9998] hidden transition-opacity duration-300" onclick="if(event.target===this)closeWishlistDrawer()" data-lenis-prevent="true" style="overscroll-behavior: contain;">
-  <div class="fixed inset-y-0 right-0 max-w-[92vw] sm:max-w-md w-full bg-[#0d0e13] text-white border-l border-white/15 shadow-[0_25px_80px_rgba(0,0,0,0.95)] p-5 sm:p-7 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out z-10 overflow-y-auto custom-scrollbar" id="wishlistPanel" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+<div id="wishlistDrawerOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[115] hidden transition-opacity duration-300" onclick="if(event.target===this)closeWishlistDrawer()" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+  <div class="fixed inset-y-0 right-0 max-w-[90vw] sm:max-w-md w-full liquid-glass bg-surface shadow-2xl p-5 sm:p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out" id="wishlistPanel" data-lenis-prevent="true" style="overscroll-behavior: contain;">
     <div>
-      <div class="flex justify-between items-center pb-4 border-b border-white/10">
-        <div class="flex items-center gap-2.5">
-          <span class="w-8 h-8 rounded-full bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400">
-            <span class="material-symbols-outlined text-base">favorite</span>
-          </span>
-          <div>
-            <h3 class="font-serif text-lg sm:text-xl text-white font-bold tracking-wide">Saved Wardrobe</h3>
-            <span class="text-[9px] font-mono text-[#e9c176] uppercase tracking-widest font-semibold">✦ Curated Luxury Archive ✦</span>
-          </div>
+      <div class="flex justify-between items-center pb-4 border-b border-outline-variant/40">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-rose-500">favorite</span>
+          <h3 class="font-headline-sm text-xl text-primary font-serif">Saved Wardrobe</h3>
         </div>
-        <button type="button" onclick="closeWishlistDrawer()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer" aria-label="Close">
-          <span class="material-symbols-outlined text-lg">close</span>
+        <button type="button" onclick="closeWishlistDrawer()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors cursor-pointer" aria-label="Close">
+          <span class="material-symbols-outlined text-xl">close</span>
         </button>
       </div>
 
-      <div class="py-4 flex flex-col gap-3 max-h-[62vh] overflow-y-auto custom-scrollbar" id="wishlistItemsList" data-lenis-prevent="true" style="overscroll-behavior: contain;">
-        <div class="py-12 text-center text-stone-400 text-sm flex flex-col items-center gap-2">
-          <span class="material-symbols-outlined text-4xl text-stone-600">favorite_border</span>
+      <div class="py-4 flex flex-col gap-3 max-h-[65vh] overflow-y-auto custom-scrollbar" id="wishlistItemsList" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+        <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
           <p>Your saved wardrobe is empty.</p>
-          <a href="<?= base_url('shop') ?>" onclick="closeWishlistDrawer()" class="mt-3 text-xs text-[#e9c176] underline font-semibold font-mono">Explore Haute Couture →</a>
+          <a href="<?= base_url('shop') ?>" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
         </div>
       </div>
     </div>
 
-    <div class="border-t border-white/10 pt-4 space-y-2">
-      <button type="button" onclick="moveAllWishlistToBag()" class="w-full py-3.5 bg-gradient-to-r from-amber-400 via-[#e9c176] to-amber-500 text-stone-950 font-mono text-xs uppercase tracking-widest font-extrabold text-center rounded-xl hover:opacity-95 active:scale-95 transition-all shadow-xl block cursor-pointer">
-        Move All to Curated Bag 🛍️
-      </button>
-      <button type="button" onclick="closeWishlistDrawer()" class="w-full py-2 text-stone-400 hover:text-white text-[11px] font-mono uppercase tracking-wider text-center cursor-pointer transition-colors">
-        Continue Browsing
+    <div class="border-t border-outline-variant/40 pt-4">
+      <button type="button" onclick="moveAllWishlistToBag()" class="w-full py-3 bg-primary text-on-primary font-button text-xs uppercase tracking-widest text-center rounded hover:bg-secondary transition-colors shadow-md block cursor-pointer">
+        Move All to Curated Bag
       </button>
     </div>
   </div>
@@ -1923,6 +1870,16 @@ window.closeMysteryDropModal = function() {
 <!-- 7. GLOBAL MULTI-CURRENCY, WISHLIST & CLIENT ATELIER CONTROLLER SCRIPT         -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <script>
+// ── Global Scroll Lock / Unlock Helpers ──
+window.lockStorefrontScroll = function() {
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+};
+window.unlockStorefrontScroll = function() {
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+};
+
 // ── Live Multi-Currency Engine ──
 const CURRENCY_RATES = {
   INR: { rate: 1.0, symbol: '₹', code: 'INR', prefix: true },
@@ -3219,11 +3176,11 @@ document.addEventListener('DOMContentLoaded', function() {
 window.updateWishlistBadge = function() {
   const items = getWishlistItems();
   const count = items.length;
-  const headerBadge = document.getElementById('wishlistHeaderBadge');
-  if (headerBadge) {
-    headerBadge.textContent = count;
-    if (count > 0) headerBadge.classList.remove('hidden');
-    else headerBadge.classList.add('hidden');
+  const badge = document.getElementById('wishlistHeaderBadge');
+  if (badge) {
+    badge.textContent = count;
+    if (count > 0) badge.classList.remove('hidden');
+    else badge.classList.add('hidden');
   }
   const mobileBadge = document.getElementById('mobileBottomWishlistBadge');
   if (mobileBadge) {
@@ -3236,22 +3193,34 @@ window.updateWishlistBadge = function() {
 window.openWishlistDrawer = function() {
   const overlay = document.getElementById('wishlistDrawerOverlay');
   const panel = document.getElementById('wishlistPanel');
-  if (!overlay || !panel) return;
-  renderWishlistItems();
-  overlay.classList.remove('hidden');
-  overlay.classList.add('flex');
+  if (typeof renderWishlistItems === 'function') renderWishlistItems();
+  if (overlay) {
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    overlay.style.display = 'flex';
+  }
   if (typeof lockStorefrontScroll === 'function') lockStorefrontScroll();
-  setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+  if (panel) {
+    setTimeout(() => {
+      panel.classList.remove('translate-x-full');
+      panel.classList.add('translate-x-0');
+    }, 15);
+  }
 };
 
 window.closeWishlistDrawer = function() {
   const overlay = document.getElementById('wishlistDrawerOverlay');
   const panel = document.getElementById('wishlistPanel');
-  if (!overlay || !panel) return;
-  panel.classList.add('translate-x-full');
+  if (panel) {
+    panel.classList.remove('translate-x-0');
+    panel.classList.add('translate-x-full');
+  }
   setTimeout(() => {
-    overlay.classList.add('hidden');
-    overlay.classList.remove('flex');
+    if (overlay) {
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+      overlay.style.display = 'none';
+    }
     if (typeof unlockStorefrontScroll === 'function') unlockStorefrontScroll();
   }, 250);
 };
@@ -3263,42 +3232,25 @@ window.renderWishlistItems = function() {
 
   if (items.length === 0) {
     list.innerHTML = `
-      <div class="py-16 text-center text-stone-400 text-sm flex flex-col items-center gap-2">
-        <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-stone-500 mb-1">
-          <span class="material-symbols-outlined text-3xl text-rose-400/60">favorite_border</span>
-        </div>
-        <h4 class="font-serif text-base text-white font-bold">Your saved wardrobe is empty</h4>
-        <p class="text-xs text-stone-400 max-w-xs font-light">Explore runway lookbooks and save your favourite bespoke pieces here.</p>
-        <a href="<?= base_url('shop') ?>" onclick="closeWishlistDrawer()" class="mt-4 px-4 py-2 bg-white/10 hover:bg-[#e9c176]/20 border border-white/15 rounded-xl text-[#e9c176] text-xs font-mono font-bold uppercase tracking-wider transition-all">
-          Explore Boutique Catalog →
-        </a>
+      <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
+        <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
+        <p>Your saved wardrobe is empty.</p>
+        <a href="<?= base_url('shop') ?>" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
       </div>`;
     return;
   }
 
   let html = '';
   items.forEach(item => {
-    const titleSafe = (item.title || '').replace(/'/g, "\\'");
-    const imgSafe = (item.image || '').replace(/'/g, "\\'");
-    const priceNum = Number(item.price) || 0;
-    
     html += `
-      <div class="flex items-center gap-3 p-3 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 transition-all duration-200">
-        <img src="${item.image}" alt="${item.title}" class="w-16 h-20 object-cover rounded-xl bg-stone-900 border border-white/10 flex-shrink-0" onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
-        <div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-          <div>
-            <h4 class="font-serif font-bold text-xs text-white truncate">${item.title}</h4>
-            <span class="text-xs font-serif font-bold text-[#e9c176]">₹${priceNum.toLocaleString('en-IN')}</span>
-          </div>
-          <div class="flex items-center gap-2 mt-2">
-            <button type="button" onclick="addToCart({id:${item.id}, title:'${titleSafe}', price:${priceNum}, image:'${imgSafe}'}, 1); if(typeof toggleQuickBagDrawer==='function')toggleQuickBagDrawer(true); if(typeof ndToast==='function')ndToast('Moved to bag!', 'success');" class="px-2.5 py-1 bg-gradient-to-r from-amber-400 to-[#e9c176] text-stone-950 rounded-lg text-[10px] font-mono font-extrabold uppercase hover:opacity-95 active:scale-95 transition-all shadow-xs cursor-pointer flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">shopping_bag</span>
-              <span>Move to Bag</span>
-            </button>
-            <button type="button" onclick="toggleWishlistItem({id:${item.id}})" class="px-2 py-1 text-[10px] text-rose-400 hover:text-rose-300 font-mono flex items-center gap-0.5 cursor-pointer hover:underline">
-              <span class="material-symbols-outlined text-xs">delete</span>
-              <span>Remove</span>
-            </button>
+      <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl border border-outline-variant/40">
+        <img src="${item.image}" class="w-14 h-16 object-cover rounded-lg bg-black/10">
+        <div class="flex-1 min-w-0">
+          <h4 class="font-serif font-bold text-xs text-primary truncate">${item.title}</h4>
+          <span class="text-xs font-serif font-bold text-primary" data-price-inr="${item.price}">${formatPrice(item.price)}</span>
+          <div class="flex gap-2 mt-2">
+            <button onclick="addToCart({id:${item.id}, title:'${item.title.replace(/'/g, "\\'")}', price:${item.price}, image:'${item.image}'}, 1); ndToast('Moved to bag!', 'success');" class="text-[10px] px-2 py-1 bg-primary text-white rounded font-button uppercase tracking-wider">Move to Bag</button>
+            <button onclick="toggleWishlistItem({id:${item.id}})" class="text-[10px] text-rose-500 hover:underline">Remove</button>
           </div>
         </div>
       </div>
@@ -4239,36 +4191,7 @@ function toggleMobileNav() {
   }
 }
 
-// ── Instant Live Search Modal ──
-let liveSearchDebounceTimer = null;
-
-function clearLiveSearch() {
-  const inp = document.getElementById('liveSearchInput');
-  const clearBtn = document.getElementById('clearSearchInputBtn');
-  if (inp) {
-    inp.value = '';
-    inp.focus();
-  }
-  if (clearBtn) clearBtn.classList.add('hidden');
-  const box = document.getElementById('searchResultsList');
-  if (box) {
-    box.innerHTML = `
-      <div class="py-8 text-center text-stone-400 text-xs tracking-wider uppercase font-mono flex flex-col items-center gap-2">
-        <span class="material-symbols-outlined text-3xl text-stone-500">manage_search</span>
-        <span>Type keywords or tap a category to search instantly</span>
-      </div>`;
-  }
-}
-
-function setLiveSearch(query) {
-  const inp = document.getElementById('liveSearchInput');
-  if (inp) {
-    inp.value = query;
-    handleSearchQuery(query);
-    inp.focus();
-  }
-}
-
+// ── Search Modal ──
 function toggleSearchModal() {
   var m = document.getElementById('searchModal');
   if (!m) return;
@@ -4279,12 +4202,7 @@ function toggleSearchModal() {
     if (typeof lockStorefrontScroll === 'function') lockStorefrontScroll();
     setTimeout(() => {
       var inp = document.getElementById('liveSearchInput');
-      if (inp) {
-        inp.focus();
-        if (inp.value.trim().length > 0) {
-          handleSearchQuery(inp.value);
-        }
-      }
+      if (inp) inp.focus();
     }, 50);
   } else {
     m.classList.add('hidden');
@@ -4292,7 +4210,6 @@ function toggleSearchModal() {
     if (typeof unlockStorefrontScroll === 'function') unlockStorefrontScroll();
   }
 }
-
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); toggleSearchModal(); }
   if (e.key === 'Escape') {
@@ -4300,108 +4217,22 @@ document.addEventListener('keydown', e => {
     if (m && !m.classList.contains('hidden')) toggleSearchModal();
     var qb = document.getElementById('quickBagOverlay');
     if (qb && !qb.classList.contains('hidden')) toggleQuickBagDrawer();
-    var wl = document.getElementById('wishlistDrawerOverlay');
-    if (wl && !wl.classList.contains('hidden')) closeWishlistDrawer();
   }
 });
 
 function handleSearchQuery(q) {
-  const box = document.getElementById('searchResultsList');
-  const clearBtn = document.getElementById('clearSearchInputBtn');
+  var box = document.getElementById('searchResultsList');
   if (!box) return;
-
-  const trimmed = (q || '').trim();
-  if (clearBtn) {
-    if (trimmed.length > 0) clearBtn.classList.remove('hidden');
-    else clearBtn.classList.add('hidden');
-  }
-
-  if (trimmed.length < 1) {
-    box.innerHTML = `
-      <div class="py-8 text-center text-stone-400 text-xs tracking-wider uppercase font-mono flex flex-col items-center gap-2">
-        <span class="material-symbols-outlined text-3xl text-stone-500">manage_search</span>
-        <span>Type keywords or tap a category to search instantly</span>
-      </div>`;
+  if (q.trim().length < 2) {
+    box.innerHTML = '<div class="py-6 text-center text-xs tracking-widest uppercase text-on-surface-variant">Type at least 2 characters...</div>';
     return;
   }
-
-  box.innerHTML = `
-    <div class="py-10 text-center text-stone-300 text-xs tracking-widest uppercase font-mono flex flex-col items-center gap-2">
-      <div class="w-6 h-6 border-2 border-[#e9c176] border-t-transparent rounded-full animate-spin"></div>
-      <span>Searching atelier archive for "${trimmed}"...</span>
-    </div>`;
-
-  clearTimeout(liveSearchDebounceTimer);
-  liveSearchDebounceTimer = setTimeout(() => {
-    fetch('<?= base_url('search') ?>?q=' + encodeURIComponent(trimmed) + '&json=1', {
-      headers: {
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      }
+  fetch('<?= base_url('search?q=') ?>' + encodeURIComponent(q), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(r => r.text())
+    .then(() => {
+      box.innerHTML = '<a href="<?= base_url('search?q=') ?>' + encodeURIComponent(q) + '" class="p-3 bg-surface-container hover:bg-surface-container-high transition-colors rounded-DEFAULT flex justify-between items-center text-primary font-medium"><span>View curated results for "<strong>' + q + '</strong>"</span><span class="material-symbols-outlined text-sm">arrow_forward</span></a>';
     })
-    .then(r => r.json())
-    .then(data => {
-      if (!data || !data.products || data.products.length === 0) {
-        box.innerHTML = `
-          <div class="py-8 text-center text-stone-400 text-xs tracking-wider font-mono flex flex-col items-center gap-2">
-            <span class="material-symbols-outlined text-3xl text-stone-600">search_off</span>
-            <p>No creations matched "<strong>${trimmed}</strong>".</p>
-            <div class="pt-2 flex gap-2">
-              <button type="button" onclick="setLiveSearch('Silk')" class="px-3 py-1 bg-white/5 hover:bg-[#e9c176]/20 border border-white/15 rounded-lg text-[#e9c176] text-[11px] font-mono">Try Silk</button>
-              <button type="button" onclick="setLiveSearch('Cashmere')" class="px-3 py-1 bg-white/5 hover:bg-[#e9c176]/20 border border-white/15 rounded-lg text-[#e9c176] text-[11px] font-mono">Try Cashmere</button>
-            </div>
-          </div>`;
-        return;
-      }
-
-      let html = `<div class="text-[10px] font-mono text-[#e9c176] uppercase tracking-wider pb-1">Found ${data.total || data.products.length} Curated Pieces</div>`;
-      html += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">`;
-
-      data.products.forEach(p => {
-        const titleSafe = (p.title || '').replace(/'/g, "\\'");
-        const imgSafe = (p.image || '').replace(/'/g, "\\'");
-        const priceNum = Number(p.price) || 0;
-        const compPriceNum = Number(p.compare_price) || 0;
-        
-        html += `
-          <div class="flex items-center gap-3 p-2.5 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 transition-all duration-200 group">
-            <a href="${p.url}" class="w-16 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-stone-900 border border-white/10 block relative">
-              <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
-            </a>
-            <div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-              <div>
-                <span class="text-[9px] font-mono text-[#e9c176] uppercase tracking-wider block truncate font-semibold">${p.vendor || 'NOVADROP'}</span>
-                <a href="${p.url}" class="font-serif text-xs font-bold text-white hover:text-[#e9c176] transition-colors line-clamp-2 leading-snug">
-                  ${p.title}
-                </a>
-              </div>
-              <div class="mt-2 flex items-center justify-between gap-1">
-                <div class="flex items-baseline gap-1.5">
-                  <span class="font-serif font-bold text-xs text-white">₹${priceNum.toLocaleString('en-IN')}</span>
-                  ${compPriceNum > priceNum ? `<span class="text-[10px] text-stone-500 line-through">₹${compPriceNum.toLocaleString('en-IN')}</span>` : ''}
-                </div>
-                <div class="flex items-center gap-1">
-                  <button type="button" onclick="addToCart({id:${p.id}, title:'${titleSafe}', price:${priceNum}, image:'${imgSafe}'}, 1); if(typeof toggleQuickBagDrawer==='function')toggleQuickBagDrawer(true); if(typeof ndToast==='function')ndToast('Added to bag!', 'success');" class="px-2.5 py-1 bg-gradient-to-r from-amber-400 to-[#e9c176] text-stone-950 rounded-lg text-[10px] font-mono font-extrabold uppercase hover:opacity-95 active:scale-95 transition-all shadow-xs cursor-pointer flex items-center gap-0.5" title="Instant Add to Bag">
-                    <span class="material-symbols-outlined text-xs">shopping_bag</span>
-                    <span>+ Bag</span>
-                  </button>
-                  <button type="button" onclick="toggleWishlistItem({id:${p.id}, title:'${titleSafe}', price:${priceNum}, image:'${imgSafe}'}, event)" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-rose-500/20 text-stone-300 hover:text-rose-400 flex items-center justify-center transition-colors cursor-pointer" title="Save to Wishlist">
-                    <span class="material-symbols-outlined text-xs">favorite</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-
-      html += `</div>`;
-      box.innerHTML = html;
-    })
-    .catch(err => {
-      box.innerHTML = '<div class="py-6 text-center text-xs font-mono text-red-400">Unable to load live search results. Please try again.</div>';
-    });
-  }, 250);
+    .catch(() => {});
 }
 
 // ── 🔔 Luxury Glassmorphic Toast System (Bottom-Centered Non-Intrusive) ──
