@@ -8,7 +8,10 @@
       <h1 style="font-size:28px;font-weight:800;margin-bottom:4px">Order <?= htmlspecialchars($order['order_number']) ?></h1>
       <div style="font-size:13px;color:var(--text-2)">Placed on <?= date('d M Y, H:i', strtotime($order['created_at'])) ?></div>
     </div>
-    <div style="display:flex;gap:10px">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button type="button" onclick="buyAgainOrderDetail(<?= (int)$order['id'] ?>, this)" style="padding:8px 18px;font-size:13px;font-weight:800;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(to right, #f59e0b, #e9c176);color:#0c0d12;border:none;border-radius:8px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.25)">
+        ⚡ Buy Again
+      </button>
       <span class="nd-badge <?= $order['payment_status'] === 'paid' ? 'success' : 'warning' ?>" style="font-size:13px;padding:6px 14px">
         Payment: <?= strtoupper($order['payment_status']) ?>
       </span>
@@ -52,7 +55,17 @@
               <?php endif; ?>
               <div style="font-size:12px;color:var(--text-2);margin-top:4px">Qty: <?= $item['quantity'] ?> × ₹<?= number_format($item['unit_price'], 0) ?></div>
             </div>
-            <div style="font-weight:800;font-size:15px">₹<?= number_format($item['total_price'], 0) ?></div>
+            <div style="text-align:right">
+              <div style="font-weight:800;font-size:15px;margin-bottom:6px">₹<?= number_format($item['total_price'], 0) ?></div>
+              <?php if (!empty($item['variant_id'])): ?>
+              <button type="button" 
+                      onclick="buyAgainItem(<?= (int)$item['variant_id'] ?>, <?= (int)$item['quantity'] ?>, this)"
+                      aria-label="Reorder <?= htmlspecialchars($item['product_title']) ?>"
+                      style="padding:4px 10px;font-size:11px;font-weight:700;background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
+                ⚡ Buy item again →
+              </button>
+              <?php endif; ?>
+            </div>
           </div>
           <?php endforeach; ?>
         </div>
@@ -93,3 +106,58 @@
     </div>
   </div>
 </div>
+
+<script>
+function buyAgainOrderDetail(orderId, btn) {
+  if (!orderId) return;
+  const originalHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '⚡ Checking...';
+  }
+
+  const fd = new FormData();
+  fd.append('order_id', orderId);
+  fd.append('<?= $this->security->get_csrf_token_name() ?>', '<?= $this->security->get_csrf_hash() ?>');
+
+  fetch('<?= base_url("checkout/buy_again") ?>', {
+    method: 'POST',
+    body: fd,
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+
+    if (res.eligible === false && res.redirect) {
+      window.location.href = res.redirect;
+      return;
+    }
+
+    if (res.eligible === true && res.item) {
+      window.location.href = '<?= base_url("checkout?buy_now=1") ?>&variant_id=' + res.item.variant_id + '&quantity=1';
+    } else if (res.error || res.message) {
+      alert(res.error || res.message);
+    }
+  })
+  .catch(err => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+    alert('Network error initiating reorder. Please try again.');
+  });
+}
+
+function buyAgainItem(variantId, qty, btn) {
+  if (!variantId) return;
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = '⚡ Loading...';
+  }
+  window.location.href = '<?= base_url("checkout?buy_now=1") ?>&variant_id=' + variantId + '&quantity=' + (qty || 1);
+}
+</script>

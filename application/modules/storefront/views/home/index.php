@@ -584,220 +584,396 @@ body.sticky-active #socialProofFeed {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     1. SCROLL STEP 01: HYPNOTIC RUNWAY LOOKBOOK HERO
+     1. SCROLL STEP 01: HAUTE COUTURE HERO MULTI-SLIDE CAROUSEL (VIDEO + IMAGE ENGINE)
 ══════════════════════════════════════════════════════ -->
-<section class="relative min-h-0 sm:min-h-[85vh] md:min-h-[94vh] flex items-center justify-center overflow-hidden bg-[#0a0b0d] text-white scroll-unfold-section in-view pt-5 pb-10 md:py-20" id="chapter1" data-chapter="01 / 05 · The Capsule">
-  <div class="absolute inset-0 z-0 overflow-hidden">
-    <div id="heroZoomBg" class="absolute -inset-10 bg-cover bg-center transition-transform duration-300 ease-out opacity-35 filter saturate-[0.9] scale-110" 
-         style="background-image: url('<?= htmlspecialchars($home_settings['hero_bg_image'] ?? 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=85') ?>');"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0b0d] via-[#0a0b0d]/70 to-[#0a0b0d]/40"></div>
-    <div class="absolute w-[500px] h-[500px] rounded-full bg-amber-500/10 blur-[100px] top-1/4 left-1/3 pointer-events-none"></div>
-  </div>
+<?php
+  $hs = $home_settings ?? [];
 
-  <!-- 3D Interactive Particle Constellation Canvas (Desktop Only for Clean Mobile Look) -->
-  <canvas id="heroConstellationCanvas" class="hidden md:block absolute inset-0 z-10 pointer-events-none w-full h-full opacity-60"></canvas>
+  // If hero_slides not populated by controller, load from DB or fallback
+  if (empty($hero_slides)) {
+    $ci =& get_instance();
+    if (isset($ci->db) && $ci->db->table_exists('hero_slides')) {
+      $sq = $ci->db->where('is_active', 1)->order_by('sort_order', 'ASC')->order_by('id', 'ASC');
+      if ($ci->db->field_exists('store_id', 'hero_slides')) {
+        $sq->where('store_id', $ci->store_id ?? 1);
+      }
+      $hero_slides = $sq->get('hero_slides')->result_array();
+    }
+  }
 
-  <div class="max-w-container-max mx-auto px-4 sm:px-6 md:px-margin-desktop w-full relative z-20">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-gutter items-center">
-      
-      <!-- Editorial Header Text -->
-      <div class="lg:col-span-7 flex flex-col items-start">
-        <?php
-          $hs = $home_settings ?? [];
-          $_hero_label    = htmlspecialchars($hs['hero_label'] ?? 'Exclusive VIP Release · Live Catalog');
-          $_hero_headline = $hs['hero_headline'] ?? 'Form Without Compromise.';
-          $_hero_body     = htmlspecialchars($hs['hero_body'] ?? 'An architectural study in pure double-faced Mongolian cashmere, 14.5oz Okayama selvedge denim, and bespoke Italian tailoring.');
-          $_hero_cta      = htmlspecialchars($hs['hero_cta_text'] ?? 'Explore Boutique');
-          
-          // Cleanly split headline into main line and golden italic accent (WITHOUT repeating the word)
-          $clean_headline = trim(rtrim($_hero_headline, '.'));
-          $hl_words = explode(' ', $clean_headline);
-          if (count($hl_words) > 1) {
-            $hl_italic = array_pop($hl_words) . '.';
-            $hl_main   = implode(' ', $hl_words);
-          } else {
-            $hl_main   = $clean_headline;
-            $hl_italic = 'Atelier.';
-          }
-        ?>
-        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full mb-2.5 sm:mb-4 border border-[#e9c176]/40 shadow-xs">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#e9c176] animate-ping"></span>
-          <span class="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-[#e9c176] font-extrabold"><?= $_hero_label ?></span>
-        </div>
+  // Graceful luxury fallback if table empty
+  if (empty($hero_slides)) {
+    $hero_slides = [
+      [
+        'id'               => 1,
+        'badge'            => '✦ AW 2026 RUNWAY ARCHIVE · MEN & WOMEN COUTURE ✦',
+        'title_main'       => 'Couture & Tailoring.',
+        'title_accent'     => 'Men & Women Luxe.',
+        'subtitle'         => 'An architectural curation for men and women. Master-tailored cashmere blazers, sculptural silk gowns, and Okayama shuttle-loom selvedge. Crafted without compromise.',
+        'media_type'       => 'video',
+        'video_url'        => 'assets/videos/atelier_couture_loop.mp4',
+        'image_url'        => 'assets/img/atelier_couture_poster.jpg',
+        'cta_text'         => 'Explore Collection',
+        'cta_url'          => 'shop',
+        'secondary_text'   => 'AI Stylist',
+        'secondary_action' => 'openStylistModal()',
+      ],
+      [
+        'id'               => 2,
+        'badge'            => '✦ VIP PRIVILEGE DROP · UP TO 50% OFF ARCHIVE ✦',
+        'title_main'       => 'Haute Couture Finale.',
+        'title_accent'     => 'Up To 50% Off.',
+        'subtitle'         => 'Private vault acquisition unlocked for discerning collectors. Enjoy complimentary insured express dispatch + extra ₹500 off with code LUMINA50.',
+        'media_type'       => 'image',
+        'video_url'        => '',
+        'image_url'        => 'assets/img/luxury_privilege_sale_hero.jpg',
+        'cta_text'         => 'Claim 50% Privilege',
+        'cta_url'          => 'collections',
+        'secondary_text'   => 'Copy Code LUMINA50',
+        'secondary_action' => 'copyCouponCode(\'LUMINA50\')',
+      ],
+      [
+        'id'               => 3,
+        'badge'            => '✦ Atelier Silk Archive · Limited Run | Como Silk Lab ✦',
+        'title_main'       => 'Fluid Grace.',
+        'title_accent'     => 'Mulberry Silk.',
+        'subtitle'         => 'Grade 6A 22-Momme raw mulberry silk slip dresses, cut on a 45° bias with generational French hand-rolled seams.',
+        'media_type'       => 'image',
+        'video_url'        => '',
+        'image_url'        => 'assets/img/luxury_silk_evening.jpg',
+        'cta_text'         => 'Discover Silk Archive',
+        'cta_url'          => 'collections',
+        'secondary_text'   => 'AI Stylist',
+        'secondary_action' => 'openStylistModal()',
+      ],
+    ];
+  }
+?>
 
-        <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl text-white mb-2 sm:mb-4 font-light leading-[1.08] tracking-tight">
-          <?= htmlspecialchars($hl_main) ?> <span class="font-serif italic font-normal text-[#e9c176]"><?= htmlspecialchars($hl_italic) ?></span>
-        </h1>
+<section class="relative w-full bg-[#08090b] text-white select-none overflow-hidden" id="chapter1" data-chapter="01 / 05 · The Capsule">
 
-        <p class="text-white/75 max-w-lg mb-3 sm:mb-5 leading-relaxed font-light text-xs sm:text-base">
-          <?= $_hero_body ?>
-        </p>
-
-        <!-- Compact Material Pills -->
-        <div class="flex items-center gap-2 mb-4 sm:mb-6 overflow-x-auto no-scrollbar py-0.5 max-w-full">
-          <button onclick="switchHeroTextile('cashmere', this)" class="hero-swatch-btn active px-3 py-1 rounded-full bg-[#e9c176] text-stone-950 text-[10px] font-mono font-bold uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5 cursor-pointer flex-shrink-0">
-            <span class="w-1.5 h-1.5 rounded-full bg-stone-950"></span>
-            <span>700 GSM Cashmere</span>
-          </button>
-          <button onclick="switchHeroTextile('denim', this)" class="hero-swatch-btn px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white/80 text-[10px] font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0">
-            <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
-            <span>Okayama Denim</span>
-          </button>
-          <button onclick="switchHeroTextile('silk', this)" class="hero-swatch-btn px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white/80 text-[10px] font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0">
-            <span class="w-1.5 h-1.5 rounded-full bg-rose-300"></span>
-            <span>Mulberry Silk</span>
-          </button>
-        </div>
-
-        <!-- High-Impact Action CTAs -->
-        <div class="flex items-center gap-2.5 sm:gap-4 w-full sm:w-auto mb-3.5 sm:mb-5">
-          <?php
-            $_cta_url = !empty($hs['hero_cta_url']) ? base_url(ltrim($hs['hero_cta_url'],'/')) : base_url('shop');
-          ?>
-          <a href="<?= $_cta_url ?>" data-cursor="EXPLORE" class="flex-1 sm:flex-initial bg-white hover:bg-stone-100 text-stone-950 px-6 sm:px-8 py-3 sm:py-3.5 font-mono text-xs uppercase tracking-[0.14em] font-extrabold transition-all duration-300 shadow-xl flex items-center justify-center gap-2 group cursor-pointer text-center rounded-xl active:scale-95">
-            <span><?= $_hero_cta ?></span>
-            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-          </a>
-          <button onclick="openStylistModal()" data-cursor="STYLIST" class="flex-1 sm:flex-initial bg-stone-950/80 backdrop-blur-md text-white border border-[#e9c176]/50 hover:border-[#e9c176] px-5 sm:px-7 py-3 sm:py-3.5 font-mono text-xs uppercase tracking-[0.14em] font-bold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer text-center rounded-xl shadow-lg active:scale-95">
-            <span class="material-symbols-outlined text-[#e9c176] text-base">auto_awesome</span>
-            <span>AI Stylist</span>
-          </button>
-        </div>
-
-        <!-- Sleek Single-Line Micro Provenance Ticker -->
-        <div class="flex items-center flex-wrap gap-x-3 gap-y-1 text-[10px] sm:text-xs text-white/70 font-mono tracking-wide pt-2 border-t border-white/10 w-full">
-          <span class="flex items-center gap-1.5"><span class="text-[#e9c176]">✦</span> Certified Atelier Purity</span>
-          <span class="text-white/20 hidden sm:inline">·</span>
-          <span class="flex items-center gap-1.5"><span class="text-[#e9c176]">✦</span> 14-Day Doorstep Returns</span>
-          <span class="text-white/20 hidden sm:inline">·</span>
-          <span class="flex items-center gap-1.5"><span class="text-emerald-400">✦</span> Priority BlueDart Express</span>
-        </div>
-      </div>
-
-      <!-- 3D Magnetic Tilt Holographic Flash Launch & Product Offer Showcase (Connected to Database) -->
-      <?php 
-        $hero_p = !empty($featured[0]) ? $featured[0] : [
-          'id' => 1,
-          'title' => 'The Atelier Cashmere Cocoon Coat',
-          'base_price' => 4999,
-          'compare_at_price' => 8999,
-          'slug' => 'the-atelier-cashmere-cocoon-coat',
-          'primary_image' => base_url('img/cashmere_cocoon_coat.jpg'),
-          'vendor' => 'Lumina Atelier Milano'
-        ];
-        $hero_img = !empty($hero_p['primary_image']) ? $hero_p['primary_image'] : base_url('img/cashmere_cocoon_coat.jpg');
-        $regular_price = !empty($hero_p['compare_at_price']) && $hero_p['compare_at_price'] > $hero_p['base_price'] ? (float)$hero_p['compare_at_price'] : 8999.00;
-        $hero_price = (float)$hero_p['base_price'];
-        $discount_pct = round((($regular_price - $hero_price) / $regular_price) * 100);
-        $save_amount = $regular_price - $hero_price;
+  <!-- ══════════════════════════════════════════════════════════════
+       A. HAUTE COUTURE HERO MULTI-SLIDE CAROUSEL (VIDEO + IMAGE ENGINE)
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="relative w-full min-h-[560px] sm:min-h-[660px] md:min-h-[780px] lg:min-h-[86vh] flex items-center justify-center overflow-hidden" id="heroCarouselWrapper">
+    
+    <!-- Slides Container Track -->
+    <div class="relative w-full h-full min-h-[560px] sm:min-h-[660px] md:min-h-[780px] lg:min-h-[86vh]" id="heroSlidesTrack">
+      <?php foreach ($hero_slides as $s_idx => $slide): 
+        $is_first = ($s_idx === 0);
+        $v_url = !empty($slide['video_url']) ? (str_starts_with($slide['video_url'], 'http') ? $slide['video_url'] : base_url($slide['video_url'])) : '';
+        $img_url = !empty($slide['image_url']) ? (str_starts_with($slide['image_url'], 'http') ? $slide['image_url'] : base_url($slide['image_url'])) : base_url('assets/img/atelier_couture_poster.jpg');
+        $cta_target = !empty($slide['cta_url']) ? (str_starts_with($slide['cta_url'], 'http') ? $slide['cta_url'] : base_url(ltrim($slide['cta_url'], '/'))) : base_url('shop');
+        $is_discount = (stripos($slide['badge'] ?? '', '50%') !== false || stripos($slide['title_accent'] ?? '', 'Off') !== false);
       ?>
-      <div class="lg:col-span-5 relative mt-8 sm:mt-10 lg:mt-0 perspective-1000 w-full max-w-sm sm:max-w-md mx-auto">
-        <div class="tilt-card relative aspect-[3/4] w-full rounded-2xl overflow-hidden ambient-elevation border border-[#e9c176]/40 shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-gradient-to-b from-stone-900 via-stone-950 to-black group cursor-pointer" id="heroTiltCard" data-cursor="VIP DEAL" onclick="window.location.href='<?= base_url('products/' . $hero_p['slug']) ?>'">
+      <div class="hero-carousel-slide absolute inset-0 transition-opacity duration-1000 ease-in-out flex items-center justify-center <?= $is_first ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none' ?>" id="heroSlide_<?= $s_idx ?>" data-slide-index="<?= $s_idx ?>">
+        
+        <!-- Media Backdrop (Video or Image) — Luminous, Sparkling Bright & Ultra-Vivid -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+          <?php if (($slide['media_type'] ?? '') === 'video' && !empty($v_url)): 
+            $v_base = preg_replace('/\.(mp4|webm|ogg|mov)$/i', '', $v_url);
+            $v_webm = $v_base . '.webm';
+            $v_mp4  = $v_base . '.mp4';
+          ?>
+            <video autoplay muted loop playsinline poster="<?= $img_url ?>" class="w-full h-full object-cover filter brightness-[1.10] contrast-[1.04] saturate-[1.10] scale-100 transition-transform duration-1000 ease-out">
+              <source src="<?= $v_webm ?>" type="video/webm">
+              <source src="<?= $v_mp4 ?>" type="video/mp4">
+            </video>
+          <?php else: ?>
+            <img src="<?= $img_url ?>" 
+                 alt="<?= htmlspecialchars($slide['title_main'] ?? 'NovaDrop Editorial') ?>" 
+                 class="w-full h-full object-cover object-center filter brightness-[1.06] contrast-[1.03] scale-100 transition-transform duration-1000 ease-out"/>
+          <?php endif; ?>
+
+          <!-- Clear, Clean Ambient Gradients — Bright center, zero darkening over subjects -->
+          <div class="absolute inset-x-0 bottom-0 h-40 sm:h-52 bg-gradient-to-t from-[#08090b] via-[#08090b]/40 to-transparent pointer-events-none"></div>
+          <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/40 via-black/15 to-transparent pointer-events-none"></div>
           
-          <!-- Top Floating Flash Sale Ribbon -->
-          <div class="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 z-30 flex items-center justify-between pointer-events-none gap-1">
-            <div class="flex items-center gap-1 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500 via-[#e9c176] to-amber-300 text-stone-950 font-extrabold text-[9px] sm:text-[10px] uppercase tracking-wider sm:tracking-widest shadow-2xl border border-amber-200/50 animate-pulse truncate">
-              <span class="material-symbols-outlined text-xs">local_fire_department</span>
-              <span class="truncate"><?= $discount_pct ?>% OFF · VIP FLASH</span>
-            </div>
-            
-            <div class="liquid-glass-dark px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-[#e9c176]/30 text-[#e9c176] font-mono text-[9px] sm:text-[10px] flex items-center gap-1 flex-shrink-0">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              <span>✦ ATELIER LAUNCH</span>
-            </div>
-          </div>
+          <!-- Subtle Golden Aura Lighting Flare -->
+          <div class="absolute w-[340px] sm:w-[520px] h-[340px] sm:h-[520px] rounded-full bg-amber-400/10 blur-[130px] sm:blur-[160px] top-1/3 left-1/2 -translate-x-1/2 pointer-events-none"></div>
+        </div>
 
-          <!-- Product Image with 3D Depth Lighting & Floating Zoom -->
-          <div class="relative w-full h-full p-4 flex items-center justify-center overflow-hidden">
-            <!-- Background Radial Glow -->
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(233,193,118,0.25),transparent_70%)] pointer-events-none"></div>
-            
-            <img id="heroModelImage" src="<?= htmlspecialchars($hero_img) ?>" alt="<?= htmlspecialchars($hero_p['title']) ?>" class="w-full h-full object-cover rounded-xl drop-shadow-[0_25px_45px_rgba(0,0,0,0.9)] transition-transform duration-700 group-hover:scale-108"/>
-          </div>
-
-          <!-- Floating Engineering Spec Badge 1 -->
-          <div class="absolute top-16 sm:top-20 left-3 sm:left-4 liquid-glass-dark px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border border-[#e9c176]/30 text-[9px] sm:text-[10px] text-white flex items-center gap-1.5 shadow-2xl backdrop-blur-md">
-            <span class="material-symbols-outlined text-xs text-[#e9c176]">verified</span>
-            <span>100% Cashmere</span>
-          </div>
-
-          <!-- Floating Spec Badge 2 -->
-          <div class="absolute top-28 sm:top-36 right-3 sm:right-4 liquid-glass-dark px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border border-white/20 text-[9px] sm:text-[10px] text-white flex items-center gap-1.5 shadow-2xl backdrop-blur-md">
-            <span class="material-symbols-outlined text-xs text-emerald-400">local_shipping</span>
-            <span>18h Dispatch</span>
-          </div>
-
-          <!-- Bottom Master Offer Bar (Glassmorphic Luxury Gold) -->
-          <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 liquid-glass-dark p-3.5 sm:p-5 rounded-xl border border-[#e9c176]/40 text-white z-20 shadow-2xl backdrop-blur-xl bg-black/80">
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="text-[9px] sm:text-[10px] font-mono text-[#e9c176] uppercase tracking-wider flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                <span>VIP: <strong class="text-stone-950 bg-[#e9c176] px-1 py-0.5 rounded font-bold">LUMINA50</strong></span>
+        <!-- Centered Haute Couture Typography & Action Statement -->
+        <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-8 text-center flex flex-col items-center pt-8 pb-16 sm:py-16 md:py-20">
+          
+          <!-- Floating Prestige / Offer Pill -->
+          <div class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-black/75 backdrop-blur-xl border border-amber-400/50 text-white/95 shadow-[0_4px_25px_rgba(233,193,118,0.3)] mb-3 sm:mb-5 max-w-[94%] sm:max-w-none">
+            <span class="relative flex h-2 w-2 flex-shrink-0">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full <?= $is_discount ? 'bg-amber-400' : 'bg-emerald-400' ?> opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 <?= $is_discount ? 'bg-amber-400' : 'bg-emerald-400' ?>"></span>
+            </span>
+            <span class="font-mono text-[9px] sm:text-[10.5px] uppercase tracking-[0.14em] sm:tracking-[0.24em] text-[#e9c176] font-extrabold truncate">
+              <?= htmlspecialchars($slide['badge'] ?? '✦ AW 2026 RUNWAY ARCHIVE · MEN & WOMEN COUTURE ✦') ?>
+            </span>
+            <?php if (($slide['media_type'] ?? '') === 'video'): ?>
+              <span class="text-white/30 text-xs hidden xs:inline">|</span>
+              <span class="text-[8.5px] sm:text-[9.5px] text-amber-300 font-mono tracking-widest inline-flex items-center gap-1 font-bold flex-shrink-0">
+                <span class="material-symbols-outlined text-[11px] sm:text-[12px] animate-pulse">videocam</span> LIVE REEL
               </span>
-              <span class="text-[9px] sm:text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs">verified</span>
-                <span>Signature Piece</span>
-              </span>
-            </div>
-            
-            <h4 class="font-serif text-sm sm:text-base text-white font-bold leading-tight mb-2 truncate" id="heroGarmentTitle">
-              <?= htmlspecialchars($hero_p['title']) ?>
-            </h4>
+            <?php endif; ?>
+          </div>
 
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 pt-2 border-t border-white/15">
-              <div class="w-full sm:w-auto flex items-center justify-between sm:block">
-                <div class="flex items-baseline gap-1.5 sm:gap-2">
-                  <span class="font-bold text-lg sm:text-xl text-[#e9c176] font-serif" id="heroGarmentPrice" data-price-inr="<?= $hero_price ?>">₹<?= number_format($hero_price, 0) ?></span>
-                  <span class="text-xs text-white/50 line-through" data-price-inr="<?= $regular_price ?>">₹<?= number_format($regular_price, 0) ?></span>
-                  <span class="text-[9px] sm:text-[10px] font-bold text-amber-300 bg-amber-500/20 px-1 py-0.5 rounded border border-amber-500/30"><?= $discount_pct ?>%</span>
-                </div>
-                <?php $hero_pts = !empty($hero_p['reward_points']) ? (int)$hero_p['reward_points'] : max(1, round($hero_price * 0.06)); ?>
-                <div class="flex items-center gap-2 mt-0.5">
-                  <span class="text-[10px] sm:text-[11px] text-emerald-400 font-bold block">Save <span data-price-inr="<?= $save_amount ?>">₹<?= number_format($save_amount, 0) ?></span></span>
-                  <span class="text-[9.5px] font-mono text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30 flex items-center gap-1" title="Earn <?= number_format($hero_pts) ?> Atelier Points">
-                    <span>🪙 +<?= number_format($hero_pts) ?> pts</span>
-                    <span class="text-white/70 font-light">(₹<?= number_format($hero_pts) ?>)</span>
-                  </span>
-                </div>
-              </div>
-              
-              <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <button onclick="event.stopPropagation(); openAtelierFitModal({id: <?= $hero_p['id'] ?>, title: '<?= addslashes($hero_p['title']) ?>', price: <?= $hero_price ?>, compare_price: <?= $regular_price ?>, image: '<?= htmlspecialchars($hero_img) ?>', vendor: '<?= addslashes($hero_p['vendor'] ?? 'Lumina Atelier') ?>', category: 'coat'});" class="p-2 sm:px-3.5 sm:py-2.5 bg-white/10 hover:bg-white/20 text-white font-button text-[11px] uppercase tracking-wider rounded-lg transition-all flex items-center justify-center cursor-pointer" title="Acquire">
-                  <span class="material-symbols-outlined text-sm">shopping_bag</span>
-                </button>
-                <button onclick="event.stopPropagation(); openExpressCheckout(<?= $hero_p['id'] ?>, '<?= addslashes($hero_p['title']) ?>', <?= $hero_price ?>, '<?= htmlspecialchars($hero_img) ?>', <?= $hero_p['id'] ?>);" class="flex-1 sm:flex-initial px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-[#e9c176] via-amber-300 to-amber-500 hover:from-amber-300 hover:to-[#e9c176] text-stone-950 font-button text-[10px] sm:text-[11px] uppercase tracking-wider font-extrabold rounded-lg transition-all shadow-[0_0_20px_rgba(233,193,118,0.4)] flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span class="material-symbols-outlined text-sm">bolt</span>
-                  <span>Instant Buy</span>
-                </button>
-              </div>
-            </div>
+          <!-- Monumental Headline (Responsive & Crisp Legibility) -->
+          <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white font-light tracking-tight leading-[1.08] sm:leading-[1.02] mb-3 sm:mb-5 drop-shadow-[0_4px_25px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            <?= htmlspecialchars($slide['title_main'] ?? 'Couture & Tailoring.') ?>
+            <span class="block sm:inline font-serif italic font-normal bg-gradient-to-r from-[#fffdf5] via-[#f3d38e] to-[#c88d26] bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(233,193,118,0.5)]">
+              <?= htmlspecialchars($slide['title_accent'] ?? 'Men & Women Luxe.') ?>
+            </span>
+          </h1>
+
+          <!-- Editorial Narrative / Glassmorphic Subtitle Protection -->
+          <div class="max-w-2xl px-3.5 py-1.5 sm:py-2 rounded-2xl bg-black/35 sm:bg-black/25 backdrop-blur-sm border border-white/10 mb-4 sm:mb-7 shadow-lg">
+            <p class="text-stone-100 text-xs sm:text-sm md:text-base font-light tracking-wide leading-relaxed text-center drop-shadow-md">
+              <?= $slide['subtitle'] ?? '' ?>
+            </p>
+          </div>
+
+          <!-- Central Action Buttons (Optimized, Balanced & Compact on Mobile) -->
+          <div class="flex items-center justify-center gap-2 sm:gap-4 w-full max-w-sm sm:max-w-none mb-4 sm:mb-7 px-2 sm:px-0">
+            <a href="<?= $cta_target ?>" 
+               data-cursor="EXPLORE" 
+               class="flex-1 sm:flex-initial bg-gradient-to-r from-white via-stone-100 to-amber-100 hover:from-amber-200 hover:to-white text-stone-950 px-3.5 py-2 sm:px-8 sm:py-3.5 h-[38px] sm:h-[46px] font-mono text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-[0.16em] font-extrabold transition-all duration-300 shadow-[0_8px_30px_rgba(233,193,118,0.35)] flex items-center justify-center gap-1.5 sm:gap-2.5 rounded-lg sm:rounded-xl active:scale-95 border border-amber-300/70 group">
+              <span class="truncate"><?= htmlspecialchars($slide['cta_text'] ?? 'Explore Collection') ?></span>
+              <span class="material-symbols-outlined text-xs sm:text-sm font-bold group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+            </a>
+
+            <?php 
+              $sec_act = $slide['secondary_action'] ?? 'openStylistModal()';
+              $is_js = str_contains($sec_act, '(');
+              $is_copy = str_contains($sec_act, 'copyCouponCode');
+            ?>
+            <?php if ($is_js): ?>
+              <button onclick="<?= htmlspecialchars($sec_act) ?>" 
+                      data-cursor="ACTION" 
+                      class="flex-1 sm:flex-initial bg-black/80 hover:bg-black/95 backdrop-blur-xl text-white border border-[#e9c176]/70 hover:border-[#e9c176] px-3.5 py-2 sm:px-6 sm:py-3.5 h-[38px] sm:h-[46px] font-mono text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-[0.16em] font-bold transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl shadow-lg active:scale-95 group">
+                <span class="material-symbols-outlined text-[#e9c176] text-sm sm:text-base group-hover:rotate-12 transition-transform duration-300">
+                  <?= $is_copy ? 'content_copy' : 'auto_awesome' ?>
+                </span>
+                <span class="truncate"><?= htmlspecialchars($slide['secondary_text'] ?? 'AI Stylist') ?></span>
+              </button>
+            <?php else: ?>
+              <a href="<?= base_url(ltrim($sec_act, '/')) ?>" 
+                 class="flex-1 sm:flex-initial bg-black/80 hover:bg-black/95 backdrop-blur-xl text-white border border-[#e9c176]/70 hover:border-[#e9c176] px-3.5 py-2 sm:px-6 sm:py-3.5 h-[38px] sm:h-[46px] font-mono text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-[0.16em] font-bold transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl shadow-lg active:scale-95 group">
+                <span class="material-symbols-outlined text-[#e9c176] text-sm sm:text-base group-hover:rotate-12 transition-transform duration-300">auto_awesome</span>
+                <span class="truncate"><?= htmlspecialchars($slide['secondary_text'] ?? 'AI Stylist') ?></span>
+              </a>
+            <?php endif; ?>
+          </div>
+
+          <!-- Provenance Perks Bar (Compact on Mobile) -->
+          <div class="flex items-center justify-center flex-wrap gap-x-3 sm:gap-x-5 gap-y-1 text-[9.5px] sm:text-xs text-white/85 font-mono tracking-wider pt-2.5 border-t border-white/15 w-full max-w-lg">
+            <span class="flex items-center gap-1"><span class="text-[#e9c176]">✦</span> Certified Atelier Purity</span>
+            <span class="text-white/30 hidden xs:inline">·</span>
+            <span class="flex items-center gap-1"><span class="text-[#e9c176]">✦</span> 14-Day Doorstep Returns</span>
+            <span class="text-white/30 hidden xs:inline">·</span>
+            <span class="flex items-center gap-1"><span class="text-emerald-400">✦</span> Priority Express</span>
           </div>
 
         </div>
+
       </div>
-
+      <?php endforeach; ?>
     </div>
+
+    <!-- Navigation Arrow Controls (Hidden on narrow mobile to avoid overlap, visible on tablet & desktop) -->
+    <?php if (count($hero_slides) > 1): ?>
+      <button type="button" 
+              onclick="prevHeroSlide()" 
+              aria-label="Previous Slide" 
+              class="hidden sm:flex absolute left-4 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/55 hover:bg-black/90 text-white/80 hover:text-white border border-white/20 hover:border-amber-400/60 backdrop-blur-xl items-center justify-center transition-all duration-300 shadow-2xl active:scale-90 cursor-pointer group">
+        <span class="material-symbols-outlined text-xl sm:text-2xl group-hover:-translate-x-0.5 transition-transform duration-200">chevron_left</span>
+      </button>
+
+      <button type="button" 
+              onclick="nextHeroSlide()" 
+              aria-label="Next Slide" 
+              class="hidden sm:flex absolute right-4 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/55 hover:bg-black/90 text-white/80 hover:text-white border border-white/20 hover:border-amber-400/60 backdrop-blur-xl items-center justify-center transition-all duration-300 shadow-2xl active:scale-90 cursor-pointer group">
+        <span class="material-symbols-outlined text-xl sm:text-2xl group-hover:translate-x-0.5 transition-transform duration-200">chevron_right</span>
+      </button>
+
+      <!-- Bottom Slide Pagination Bar (Compact & positioned cleanly above mobile nav) -->
+      <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-black/70 backdrop-blur-xl border border-white/15 shadow-2xl">
+        <?php foreach ($hero_slides as $s_idx => $slide): 
+          $is_disc = (stripos($slide['badge'] ?? '', '50%') !== false || stripos($slide['title_accent'] ?? '', 'Off') !== false);
+        ?>
+          <button type="button" 
+                  onclick="goToHeroSlide(<?= $s_idx ?>)" 
+                  class="hero-slide-bullet relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9.5px] sm:text-[10px] font-mono font-bold transition-all duration-300 cursor-pointer <?= ($s_idx === 0) ? 'bg-white/20 text-[#e9c176] border border-amber-400/40' : 'text-white/50 hover:text-white/80 border border-transparent' ?>" 
+                  id="heroBullet_<?= $s_idx ?>">
+            <span class="w-1.5 h-1.5 rounded-full <?= ($s_idx === 0) ? 'bg-[#e9c176]' : 'bg-white/30' ?> bullet-dot"></span>
+            <span>0<?= $s_idx + 1 ?></span>
+            <?php if (($slide['media_type'] ?? '') === 'video'): ?>
+              <span class="material-symbols-outlined text-[10px] opacity-70">videocam</span>
+            <?php elseif ($is_disc): ?>
+              <span class="material-symbols-outlined text-[10px] text-amber-300">percent</span>
+            <?php endif; ?>
+          </button>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+
   </div>
 
-  <!-- Luxury Textile Ticker (Continuous Infinite Marquee) -->
-  <div class="absolute bottom-0 left-0 right-0 py-3 bg-black/80 backdrop-blur-lg border-t border-white/10 z-20 overflow-hidden">
-    <div class="marquee-track flex items-center gap-12 whitespace-nowrap text-white/75 text-xs font-label-caps uppercase tracking-[0.2em]" style="width: max-content;">
-      <span>✦ 100% Double-Faced Cashmere</span>
-      <span>✦ 13.5oz Okayama Selvedge Denim</span>
+  <!-- ══════════════════════════════════════════════════════════════
+       B. CONTINUOUS INFINITE LUXURY MARQUEE STREAM
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="w-full py-2.5 sm:py-3 bg-black/90 backdrop-blur-xl border-t border-white/10 overflow-hidden">
+    <div class="marquee-track flex items-center gap-8 sm:gap-12 whitespace-nowrap text-white/75 text-[11px] sm:text-xs font-label-caps uppercase tracking-[0.18em] sm:tracking-[0.2em]" style="width: max-content;">
+      <span>✦ 100% Double-Faced Mongolian Cashmere</span>
+      <span>✦ 14.5oz Okayama Selvedge Denim</span>
       <span>✦ 22-Momme Grade 6A Mulberry Silk</span>
       <span>✦ 480GSM Heavyweight French Terry</span>
       <span>✦ Hand-Crafted In Generational Ateliers</span>
       <span>✦ Complimentary Express Insured Delivery</span>
-      <!-- Seamless loop duplicate -->
-      <span>✦ 100% Double-Faced Cashmere</span>
-      <span>✦ 13.5oz Okayama Selvedge Denim</span>
+      <!-- Loop duplicate -->
+      <span>✦ 100% Double-Faced Mongolian Cashmere</span>
+      <span>✦ 14.5oz Okayama Selvedge Denim</span>
       <span>✦ 22-Momme Grade 6A Mulberry Silk</span>
       <span>✦ 480GSM Heavyweight French Terry</span>
       <span>✦ Hand-Crafted In Generational Ateliers</span>
       <span>✦ Complimentary Express Insured Delivery</span>
     </div>
   </div>
+
 </section>
+
+<!-- Hero Slider & Coupon Copy Javascript Controller -->
+<script>
+(function() {
+  const totalSlides = <?= count($hero_slides) ?>;
+
+  // Global coupon copy function with toast
+  window.copyCouponCode = function(code) {
+    if (!code) code = 'LUMINA50';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(() => {
+        showCouponToast(code);
+      }).catch(() => {
+        prompt('Copy your privilege coupon code:', code);
+      });
+    } else {
+      prompt('Copy your privilege coupon code:', code);
+    }
+  };
+
+  function showCouponToast(code) {
+    let t = document.getElementById('couponToastNotice');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'couponToastNotice';
+      t.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-stone-950/95 text-[#f3d38e] border border-amber-400/60 px-5 py-2.5 rounded-full shadow-2xl backdrop-blur-xl font-mono text-xs font-bold tracking-wider flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none';
+      t.innerHTML = '<span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span> <span>CODE <b class="text-white">' + code + '</b> COPIED TO CLIPBOARD!</span>';
+      document.body.appendChild(t);
+    }
+    t.classList.remove('opacity-0', 'pointer-events-none');
+    t.classList.add('opacity-100');
+    setTimeout(() => {
+      t.classList.remove('opacity-100');
+      t.classList.add('opacity-0', 'pointer-events-none');
+    }, 2800);
+  }
+
+  if (totalSlides <= 1) return;
+
+  let currentSlide = 0;
+  let autoSlideTimer = null;
+  const slideInterval = 7000; // 7 seconds per slide
+
+  window.goToHeroSlide = function(index) {
+    if (index < 0 || index >= totalSlides || index === currentSlide) return;
+
+    const prevSlideEl = document.getElementById('heroSlide_' + currentSlide);
+    const nextSlideEl = document.getElementById('heroSlide_' + index);
+    const prevBullet = document.getElementById('heroBullet_' + currentSlide);
+    const nextBullet = document.getElementById('heroBullet_' + index);
+
+    if (prevSlideEl) {
+      prevSlideEl.classList.remove('opacity-100', 'z-10');
+      prevSlideEl.classList.add('opacity-0', 'z-0', 'pointer-events-none');
+    }
+    if (nextSlideEl) {
+      nextSlideEl.classList.remove('opacity-0', 'z-0', 'pointer-events-none');
+      nextSlideEl.classList.add('opacity-100', 'z-10');
+      
+      // Auto-restart video if present
+      const vid = nextSlideEl.querySelector('video');
+      if (vid) {
+        vid.currentTime = 0;
+        vid.play().catch(() => {});
+      }
+    }
+
+    if (prevBullet) {
+      prevBullet.className = 'hero-slide-bullet relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9.5px] sm:text-[10px] font-mono font-bold transition-all duration-300 cursor-pointer text-white/50 hover:text-white/80 border border-transparent';
+      const dot = prevBullet.querySelector('.bullet-dot');
+      if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-white/30 bullet-dot';
+    }
+    if (nextBullet) {
+      nextBullet.className = 'hero-slide-bullet relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9.5px] sm:text-[10px] font-mono font-bold transition-all duration-300 cursor-pointer bg-white/20 text-[#e9c176] border border-amber-400/40';
+      const dot = nextBullet.querySelector('.bullet-dot');
+      if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#e9c176] bullet-dot';
+    }
+
+    currentSlide = index;
+    resetAutoSlide();
+  };
+
+  window.nextHeroSlide = function() {
+    const nextIdx = (currentSlide + 1) % totalSlides;
+    goToHeroSlide(nextIdx);
+  };
+
+  window.prevHeroSlide = function() {
+    const prevIdx = (currentSlide - 1 + totalSlides) % totalSlides;
+    goToHeroSlide(prevIdx);
+  };
+
+  function startAutoSlide() {
+    stopAutoSlide();
+    autoSlideTimer = setInterval(() => {
+      nextHeroSlide();
+    }, slideInterval);
+  }
+
+  function stopAutoSlide() {
+    if (autoSlideTimer) {
+      clearInterval(autoSlideTimer);
+      autoSlideTimer = null;
+    }
+  }
+
+  function resetAutoSlide() {
+    stopAutoSlide();
+    startAutoSlide();
+  }
+
+  const wrapper = document.getElementById('heroCarouselWrapper');
+  if (wrapper) {
+    wrapper.addEventListener('mouseenter', stopAutoSlide);
+    wrapper.addEventListener('mouseleave', startAutoSlide);
+
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    wrapper.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      stopAutoSlide();
+    }, { passive: true });
+
+    wrapper.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 35) {
+        if (diff > 0) nextHeroSlide();
+        else prevHeroSlide();
+      }
+      startAutoSlide();
+    }, { passive: true });
+  }
+
+  startAutoSlide();
+})();
+</script>
+
 
 <!-- ══════════════════════════════════════════════════════
      F0. MYNTRA / FLIPKART STYLE ROUND CATEGORY STRIP (3D MAGNETIC & CORONA RING)

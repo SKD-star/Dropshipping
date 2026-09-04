@@ -217,23 +217,21 @@ class Customer_model extends MY_Model
 
         $primary_identifier = !empty($clean_phone) ? $clean_phone : $clean_email;
         $otp_code = trim($otp_code);
-        $is_demo = ($otp_code === '123456');
 
-        if (!$is_demo) {
-            $valid_otp = $this->db->where('identifier', $primary_identifier)
-                                  ->where('otp_code', $otp_code)
-                                  ->where('is_used', 0)
-                                  ->where('expires_at >=', date('Y-m-d H:i:s'))
-                                  ->order_by('id', 'DESC')
-                                  ->limit(1)
-                                  ->get('customer_otps')->row_array();
+        // Validate OTP against database record only — no master/demo bypass allowed
+        $valid_otp = $this->db->where('identifier', $primary_identifier)
+                              ->where('otp_code', $otp_code)
+                              ->where('is_used', 0)
+                              ->where('expires_at >=', date('Y-m-d H:i:s'))
+                              ->order_by('id', 'DESC')
+                              ->limit(1)
+                              ->get('customer_otps')->row_array();
 
-            if (!$valid_otp) {
-                return ['success' => false, 'message' => 'Invalid or expired OTP code. Please enter the valid code or use demo 123456.'];
-            }
-
-            $this->db->where('id', $valid_otp['id'])->update('customer_otps', ['is_used' => 1]);
+        if (!$valid_otp) {
+            return ['success' => false, 'message' => 'Invalid or expired OTP code. Please request a new code.'];
         }
+
+        $this->db->where('id', $valid_otp['id'])->update('customer_otps', ['is_used' => 1]);
 
         // Look up customer by phone or email
         $customer = null;
@@ -320,5 +318,119 @@ class Customer_model extends MY_Model
             return true; // added
         }
     }
+
+    /**
+     * Get customer default shipping address
+     */
+    public function get_default_address(int $customer_id): ?array
+    {
+        $customer = $this->db->select('id, default_address_id, default_payment_method')
+                             ->where('id', $customer_id)
+                             ->where('store_id', $this->store_id)
+                             ->get('customers')->row_array();
+
+        if (!empty($customer['default_address_id'])) {
+            $addr = $this->db->where('id', $customer['default_address_id'])
+                             ->where('customer_id', $customer_id)
+                             ->get('addresses')->row_array();
+            if ($addr) return $addr;
+        }
+
+        // Fallback: Check for address with is_default = 1
+        $addr = $this->db->where('customer_id', $customer_id)
+                         ->where('is_default', 1)
+                         ->order_by('id', 'DESC')
+                         ->limit(1)
+                         ->get('addresses')->row_array();
+
+        if ($addr) return $addr;
+
+        // Fallback: Latest address
+        return $this->db->where('customer_id', $customer_id)
+                        ->order_by('id', 'DESC')
+                        ->limit(1)
+                        ->get('addresses')->row_array();
+    }
+
+    /**
+     * Get all saved addresses for a customer
+     */
+    public function get_saved_addresses(int $customer_id): array
+    {
+        return $this->db->where('customer_id', $customer_id)
+                        ->order_by('is_default', 'DESC')
+                        ->order_by('id', 'DESC')
+                        ->get('addresses')->result_array();
+    }
+
+    /**
+     * Set default address and payment preferences for customer
+     */
+    public function set_default_preferences(int $customer_id, ?int $address_id = null, ?string $payment_method = null): bool
+    {
+        $updates = ['updated_at' => date('Y-m-d H:i:s')];
+
+        if ($address_id !== null) {
+            // Verify address belongs to customer
+            $addr = $this->db->where('id', $address_id)
+                             ->where('customer_id', $customer_id)
+                             ->get('addresses')->row_array();
+            if ($addr) {
+                $updates['default_address_id'] = $address_id;
+                // Mark in addresses table as default
+                $this->db->where('customer_id', $customer_id)->update('addresses', ['is_default' => 0]);
+                $this->db->where('id', $address_id)->update('addresses', ['is_default' => 1]);
+            }
+        }
+
+        if ($payment_method !== null && in_array(strtolower($payment_method), ['cod', 'razorpay', 'stripe'])) {
+            $updates['default_payment_method'] = strtolower($payment_method);
+        }
+
+        if (count($updates) > 1) {
+            return $this->db->where('id', $customer_id)
+                            ->where('store_id', $this->store_id)
+                            ->update('customers', $updates);
+        }
+
+        return true;
+    }
+
+    /**
+     * Save or update an address for a customer
+     */
+    public function save_customer_address(int $customer_id, array $data, bool $is_default = false): int|false
+    {
+        $payload = [
+            'store_id'    => $this->store_id,
+            'customer_id' => $customer_id,
+            'first_name'  => trim($data['first_name'] ?? ''),
+            'last_name'   => trim($data['last_name'] ?? ''),
+            'company'     => trim($data['company'] ?? ''),
+            'address1'    => trim($data['address1'] ?? ''),
+            'address2'    => trim($data['address2'] ?? ''),
+            'city'        => trim($data['city'] ?? ''),
+            'state'       => trim($data['state'] ?? 'Maharashtra'),
+            'pincode'     => trim($data['pincode'] ?? ''),
+            'country'     => trim($data['country'] ?? 'IN'),
+            'phone'       => trim($data['phone'] ?? ''),
+            'is_default'  => $is_default ? 1 : 0,
+            'created_at'  => date('Y-m-d H:i:s'),
+        ];
+
+        if ($is_default) {
+            $this->db->where('customer_id', $customer_id)->update('addresses', ['is_default' => 0]);
+        }
+
+        $this->db->insert('addresses', $payload);
+        $new_id = $this->db->insert_id();
+
+        if ($new_id && $is_default) {
+            $this->db->where('id', $customer_id)->update('customers', ['default_address_id' => $new_id]);
+        }
+
+        return $new_id ?: false;
+    }
 }
+
 

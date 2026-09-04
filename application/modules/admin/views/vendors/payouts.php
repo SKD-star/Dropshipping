@@ -10,6 +10,9 @@
       <p class="text-muted small mb-0">Track and settle marketplace seller commissions, bank transfers, and UTR reference logs</p>
     </div>
     <div class="d-flex gap-2 align-items-center">
+      <a href="<?= base_url('admin/vendors/analytics') ?>" class="btn btn-sm btn-outline-primary px-3 shadow-sm font-weight-bold" style="border-radius:8px;">
+        <i class="fas fa-chart-line mr-1"></i> Analytics
+      </a>
       <a href="?status=pending" class="btn btn-sm <?= $status==='pending'?'btn-warning text-dark font-weight-bold':'btn-outline-warning text-dark' ?> px-3 shadow-sm" style="border-radius:8px;">
         <i class="fas fa-clock mr-1"></i> Pending Settlements
       </a>

@@ -53,6 +53,46 @@ class Products extends MY_Controller
         $hs_row = $this->db->where('store_id', $this->store_id)->limit(1)->get('home_settings')->row_array();
         $home_settings = !empty($hs_row) ? $hs_row : [];
 
+        // Preload customer Buy Now profile if logged in with default address
+        $buy_now_preload = null;
+        $customer_id = $this->session->userdata('customer_id');
+
+        // Check for subscription plan availability
+        $sub_plan = null;
+        if ($this->db->table_exists('subscription_plans')) {
+            $sub_plan = $this->db->where('is_active', 1)->order_by('id', 'ASC')->limit(1)->get('subscription_plans')->row_array();
+        }
+
+        if ($customer_id) {
+            $this->load->model('customers/Customer_model');
+            $default_address = $this->Customer_model->get_default_address((int)$customer_id);
+            if (!empty($default_address)) {
+                $saved_addresses = $this->Customer_model->get_saved_addresses((int)$customer_id);
+                $cust_record = $this->Customer_model->get_by_id((int)$customer_id);
+                $loyalty_pts = (int)($cust_record['loyalty_points'] ?? 0);
+                $buy_now_preload = [
+                    'customer_id'            => (int)$customer_id,
+                    'customer_name'          => $cust_record['name'] ?? '',
+                    'customer_email'         => $cust_record['email'] ?? '',
+                    'default_address'        => $default_address,
+                    'saved_addresses'        => $saved_addresses,
+                    'default_payment_method' => $cust_record['default_payment_method'] ?? 'cod',
+                    'idempotency_key'        => 'idemp_' . bin2hex(random_bytes(12)),
+                    'loyalty'                => [
+                        'points'       => $loyalty_pts,
+                        'tier'         => $cust_record['loyalty_tier'] ?? 'Bronze',
+                        'points_value' => round($loyalty_pts * 0.50, 2), // 1 point = ₹0.50 off
+                    ],
+                    'subscription'           => $sub_plan ? [
+                        'plan_id'      => (int)$sub_plan['id'],
+                        'plan_title'   => $sub_plan['title'] ?? 'VIP Auto-Replenish',
+                        'discount_pct' => (float)($sub_plan['discount_on_store'] ?: 10.0),
+                        'interval'     => $sub_plan['billing_interval'] ?? 'monthly',
+                    ] : null,
+                ];
+            }
+        }
+
         $data = [
             'title'            => ($product['seo_title'] ?: $product['title']) . ' — ' . env('APP_NAME', 'NovaDrop'),
             'meta_description' => $product['seo_description'] ?: $product['short_description'],
@@ -63,12 +103,100 @@ class Products extends MY_Controller
             'reviews'          => $reviews,
             'home_settings'    => $home_settings,
             'cart_count'       => $this->_get_cart_count(),
+            'buy_now_preload'  => $buy_now_preload,
         ];
 
 
         $this->load->view('storefront/layout/header', $data);
         $this->load->view('storefront/products/detail', $data);
         $this->load->view('storefront/layout/footer', $data);
+    }
+
+    // ─── POST: Submit a product review ───────────────────────
+    public function ajax_submit_review(): void
+    {
+        header('Content-Type: application/json');
+
+        if ($this->input->method() !== 'post') {
+            echo json_encode(['success' => false, 'message' => 'Method not allowed.']); return;
+        }
+
+        $customer_id = $this->session->userdata('customer_id');
+        if (!$customer_id) {
+            echo json_encode(['success' => false, 'message' => 'You must be logged in to leave a review.']); return;
+        }
+
+        $product_id = (int)$this->input->post('product_id');
+        $rating     = (int)$this->input->post('rating');
+        $title      = trim((string)$this->input->post('title', true));
+        $body       = trim((string)$this->input->post('body', true));
+
+        if (!$product_id || $rating < 1 || $rating > 5) {
+            echo json_encode(['success' => false, 'message' => 'Invalid rating or product.']); return;
+        }
+
+        // ── Verified purchase check ─────────────────────────
+        // Customer must have a completed order containing this product
+        $verified_order = $this->db
+            ->select('oi.order_id')
+            ->from('order_items oi')
+            ->join('orders o', 'o.id = oi.order_id')
+            ->where('o.customer_id', $customer_id)
+            ->where('oi.product_id', $product_id)
+            ->where_in('o.status', ['delivered', 'completed'])
+            ->limit(1)
+            ->get()->row_array();
+
+        $order_id = $verified_order ? $verified_order['order_id'] : null;
+
+        // Check for duplicate review
+        $existing = $this->db->where('customer_id', $customer_id)->where('product_id', $product_id)->count_all_results('reviews');
+        if ($existing > 0) {
+            echo json_encode(['success' => false, 'message' => 'You have already reviewed this product.']); return;
+        }
+
+        try {
+            $cust_name = $this->session->userdata('customer_name');
+            if (!$cust_name) {
+                $c_row = $this->db->select('name')->where('id', $customer_id)->get('customers')->row_array();
+                $cust_name = $c_row['name'] ?? 'Verified Buyer';
+            }
+
+            $this->db->insert('reviews', [
+                'store_id'      => $this->store_id,
+                'product_id'    => $product_id,
+                'customer_id'   => $customer_id,
+                'order_id'      => $order_id,
+                'name'          => $cust_name,
+                'rating'        => $rating,
+                'title'         => $title ?: null,
+                'body'          => $body ?: null,
+                'is_verified'   => $order_id ? 1 : 0,
+                // Auto-approve if verified purchase; hold unverified for moderation
+                'status'        => $order_id ? 'approved' : 'pending',
+                'helpful_count' => 0,
+                'created_at'    => date('Y-m-d H:i:s'),
+            ]);
+            $msg = $order_id
+                ? 'Thank you for your review! It is now live.'
+                : 'Your review has been submitted and is pending moderation.';
+            echo json_encode(['success' => true, 'message' => $msg, 'verified_purchase' => (bool)$order_id]);
+        } catch (Throwable $e) {
+            log_message('error', 'Review submit error: ' . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => 'Could not save review. Please try again.']);
+        }
+    }
+
+    // ─── POST: Mark review as helpful ─────────────────────────
+    public function ajax_helpful(): void
+    {
+        header('Content-Type: application/json');
+        if ($this->input->method() !== 'post') { echo json_encode(['success' => false]); return; }
+        $review_id = (int)$this->input->post('review_id');
+        if (!$review_id) { echo json_encode(['success' => false]); return; }
+        $this->db->set('helpful_count', 'helpful_count + 1', false)->where('id', $review_id)->update('reviews');
+        $count = $this->db->select('helpful_count')->where('id', $review_id)->get('reviews')->row_array()['helpful_count'] ?? 0;
+        echo json_encode(['success' => true, 'helpful_count' => (int)$count]);
     }
 
     public function ajax_notify_restock(): void

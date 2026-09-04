@@ -50,8 +50,10 @@ class Cart_model extends MY_Model
      */
     public function add_item(string $cart_id, int $variant_id, int $quantity = 1, ?string $size = null, ?string $color = null, ?string $title = null, ?float $price = null, ?string $image = null): array
     {
-        // 1. Check if direct variant_id exists
-        $variant = $this->db->select('pv.*, p.title AS product_title, p.status, p.requires_shipping')
+        $quantity = max(1, (int)$quantity);
+
+        // 1. Check if direct variant_id exists and is active
+        $variant = $this->db->select('pv.*, p.title AS product_title, p.base_price, p.status, p.requires_shipping')
                             ->from('product_variants pv')
                             ->join('products p', 'p.id = pv.product_id')
                             ->where('pv.id', $variant_id)
@@ -64,26 +66,28 @@ class Cart_model extends MY_Model
         if ($size && $variant) {
             $matching_variant = $this->db->where('product_id', $variant['product_id'])
                                          ->where('option1_value', $size)
+                                         ->where('is_active', 1)
                                          ->get('product_variants')->row_array();
             if ($matching_variant) {
                 $variant = array_merge($variant, $matching_variant);
             } else {
-                // Create the sized variant
+                // Legitimate variant sizing for existing active product - enforce authoritative server-side price
                 $v_title = $color ? "Size $size / $color" : "Size $size";
                 $sku = 'LUM-' . $variant['product_id'] . '-' . strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $size)) . '-' . mt_rand(100, 999);
+                $canonical_price = (float)$variant['price'] > 0 ? (float)$variant['price'] : (float)$variant['base_price'];
                 $this->db->insert('product_variants', [
                     'product_id'    => $variant['product_id'],
                     'sku'           => $sku,
                     'title'         => $v_title,
                     'option1_value' => $size,
                     'option2_value' => $color ?: null,
-                    'price'         => $price > 0 ? $price : $variant['price'],
-                    'inventory_qty' => 100,
+                    'price'         => $canonical_price,
+                    'inventory_qty' => (int)$variant['inventory_qty'],
                     'is_active'     => 1,
                     'created_at'    => date('Y-m-d H:i:s')
                 ]);
                 $new_v_id = $this->db->insert_id();
-                $variant = $this->db->select('pv.*, p.title AS product_title, p.status, p.requires_shipping')
+                $variant = $this->db->select('pv.*, p.title AS product_title, p.base_price, p.status, p.requires_shipping')
                                     ->from('product_variants pv')
                                     ->join('products p', 'p.id = pv.product_id')
                                     ->where('pv.id', $new_v_id)
@@ -94,17 +98,19 @@ class Cart_model extends MY_Model
         // 3. Fallback: check if product_id was passed instead of variant_id
         if (!$variant) {
             if ($size) {
-                $variant = $this->db->select('pv.*, p.title AS product_title, p.status, p.requires_shipping')
+                $variant = $this->db->select('pv.*, p.title AS product_title, p.base_price, p.status, p.requires_shipping')
                                     ->from('product_variants pv')
                                     ->join('products p', 'p.id = pv.product_id')
                                     ->where('pv.product_id', $variant_id)
                                     ->where('pv.option1_value', $size)
                                     ->where('p.store_id', $this->store_id)
+                                    ->where('p.status', 'active')
+                                    ->where('pv.is_active', 1)
                                     ->get()->row_array();
             }
 
             if (!$variant) {
-                $variant = $this->db->select('pv.*, p.title AS product_title, p.status, p.requires_shipping')
+                $variant = $this->db->select('pv.*, p.title AS product_title, p.base_price, p.status, p.requires_shipping')
                                     ->from('product_variants pv')
                                     ->join('products p', 'p.id = pv.product_id')
                                     ->where('pv.product_id', $variant_id)
@@ -116,78 +122,49 @@ class Cart_model extends MY_Model
             }
         }
 
-        // 4. Fallback: check if product exists directly
+        // If product or variant does not exist in active catalog, reject securely
         if (!$variant) {
-            $prod = $this->db->where('id', $variant_id)->get('products')->row_array();
-            if (!$prod && !empty($title)) {
-                // Auto-create product for catalog ensemble items
-                $slug = url_title($title, '-', true) . '-' . $variant_id;
-                $this->db->insert('products', [
-                    'id'          => $variant_id,
-                    'store_id'    => $this->store_id,
-                    'title'       => $title,
-                    'slug'        => $slug,
-                    'base_price'  => $price > 0 ? $price : 4999,
-                    'status'      => 'active',
-                    'created_at'  => date('Y-m-d H:i:s')
-                ]);
-                $prod = $this->db->where('id', $variant_id)->get('products')->row_array();
-                if ($image) {
-                    $this->db->insert('product_images', [
-                        'product_id' => $variant_id,
-                        'url'        => $image,
-                        'is_primary' => 1,
-                        'created_at' => date('Y-m-d H:i:s')
-                    ]);
-                }
-            }
-
-            if ($prod) {
-                $v_title = $size ? ($color ? "Size $size / $color" : "Size $size") : 'Atelier Standard';
-                $sku = 'LUM-' . $prod['id'] . '-' . ($size ? strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $size)) : 'STD') . '-' . mt_rand(100, 999);
-                $this->db->insert('product_variants', [
-                    'product_id'    => $prod['id'],
-                    'sku'           => $sku,
-                    'title'         => $v_title,
-                    'option1_value' => $size ?: 'M',
-                    'option2_value' => $color ?: null,
-                    'price'         => $price > 0 ? $price : (!empty($prod['base_price']) ? (float)$prod['base_price'] : 4999),
-                    'inventory_qty' => 100,
-                    'is_active'     => 1,
-                    'created_at'    => date('Y-m-d H:i:s')
-                ]);
-                $new_v_id = $this->db->insert_id();
-                $variant = $this->db->select('pv.*, p.title AS product_title, p.status, p.requires_shipping')
-                                    ->from('product_variants pv')
-                                    ->join('products p', 'p.id = pv.product_id')
-                                    ->where('pv.id', $new_v_id)
-                                    ->get()->row_array();
-            }
-        }
-
-        if (!$variant) {
-            return ['success' => true, 'message' => 'Curated piece added to bag.', 'cart_count' => 1];
+            return ['success' => false, 'message' => 'Item is currently unavailable or out of catalog.', 'cart_count' => $this->count_items($cart_id)];
         }
 
         $variant_id = (int)$variant['id'];
-
-        if (isset($variant['inventory_qty']) && $variant['inventory_qty'] < $quantity) {
-            $this->db->where('id', $variant_id)->update('product_variants', ['inventory_qty' => 100]);
-        }
+        $available_stock = (int)($variant['inventory_qty'] ?? 0);
 
         // Check if already in cart
         $existing = $this->db->where('cart_id', $cart_id)->where('variant_id', $variant_id)
                              ->get('cart_items')->row_array();
 
+        $current_in_cart = $existing ? (int)$existing['quantity'] : 0;
+        $total_requested = $current_in_cart + $quantity;
+
+        // Strict inventory enforcement: never inflate stock, reject overselling
+        if ($total_requested > $available_stock) {
+            $msg = $available_stock > 0 
+                ? "Only {$available_stock} unit(s) available in stock." 
+                : "This item is currently out of stock.";
+            return [
+                'success'    => false, 
+                'message'    => $msg, 
+                'cart_count' => $this->count_items($cart_id)
+            ];
+        }
+
+        $canonical_unit_price = (float)$variant['price'];
+        if ($canonical_unit_price <= 0 && !empty($variant['base_price'])) {
+            $canonical_unit_price = (float)$variant['base_price'];
+        }
+
         if ($existing) {
-            $new_qty = $existing['quantity'] + $quantity;
-            $this->db->where('id', $existing['id'])->update('cart_items', ['quantity' => $new_qty]);
+            $this->db->where('id', $existing['id'])->update('cart_items', [
+                'quantity'   => $total_requested,
+                'unit_price' => $canonical_unit_price, // Refresh price to authoritative catalog price
+            ]);
         } else {
             $this->db->insert('cart_items', [
                 'cart_id'    => $cart_id,
                 'variant_id' => $variant_id,
                 'quantity'   => $quantity,
-                'unit_price' => $variant['price'],
+                'unit_price' => $canonical_unit_price,
                 'added_at'   => date('Y-m-d H:i:s'),
             ]);
         }
@@ -203,13 +180,25 @@ class Cart_model extends MY_Model
         if ($quantity <= 0) {
             return $this->remove_item($cart_id, $variant_id);
         }
-        // Re-validate stock
-        $stock = $this->db->select('inventory_qty')->where('id', $variant_id)->get('product_variants')->row('inventory_qty');
-        if ($stock < $quantity) {
-            return ['success' => false, 'message' => "Only $stock left in stock."];
+        // Re-validate stock and live price
+        $variant = $this->db->select('inventory_qty, price, is_active')
+                            ->where('id', $variant_id)
+                            ->get('product_variants')->row_array();
+
+        if (!$variant || (int)$variant['is_active'] !== 1) {
+            return $this->remove_item($cart_id, $variant_id);
         }
+
+        $stock = (int)$variant['inventory_qty'];
+        if ($stock < $quantity) {
+            return ['success' => false, 'message' => "Only {$stock} unit(s) left in stock."];
+        }
+
         $this->db->where('cart_id', $cart_id)->where('variant_id', $variant_id)
-                 ->update('cart_items', ['quantity' => $quantity]);
+                 ->update('cart_items', [
+                     'quantity'   => $quantity,
+                     'unit_price' => (float)$variant['price']
+                 ]);
         $this->_touch($cart_id);
         return ['success' => true, 'message' => 'Cart updated.'];
     }
@@ -244,6 +233,7 @@ class Cart_model extends MY_Model
 
         $target_variant = $this->db->where('product_id', $product_id)
                                    ->where('option1_value', $new_size)
+                                   ->where('is_active', 1)
                                    ->get('product_variants')->row_array();
 
         if (!$target_variant) {
@@ -255,14 +245,20 @@ class Cart_model extends MY_Model
                 'title'         => $v_title,
                 'option1_value' => $new_size,
                 'option2_value' => $variant['option2_value'] ?? null,
-                'price'         => $variant['price'],
-                'inventory_qty' => 100,
+                'price'         => (float)$variant['price'],
+                'inventory_qty' => (int)$variant['inventory_qty'],
                 'is_active'     => 1,
                 'created_at'    => date('Y-m-d H:i:s')
             ]);
             $new_variant_id = (int)$this->db->insert_id();
+            $target_stock = (int)$variant['inventory_qty'];
         } else {
             $new_variant_id = (int)$target_variant['id'];
+            $target_stock = (int)$target_variant['inventory_qty'];
+        }
+
+        if ($target_stock < (int)$cart_item['quantity']) {
+            return ['success' => false, 'message' => "Size {$new_size} does not have enough stock available."];
         }
 
         if ($new_variant_id === $variant_id) {
@@ -275,6 +271,9 @@ class Cart_model extends MY_Model
 
         if ($existing_target) {
             $merged_qty = $existing_target['quantity'] + $cart_item['quantity'];
+            if ($merged_qty > $target_stock) {
+                return ['success' => false, 'message' => "Only {$target_stock} unit(s) available in size {$new_size}."];
+            }
             $this->db->where('id', $existing_target['id'])->update('cart_items', ['quantity' => $merged_qty]);
             $this->db->where('id', $cart_item['id'])->delete('cart_items');
         } else {

@@ -232,6 +232,41 @@ if (empty($customer_name)) {
             VIP Tier 01
           </span>
         </div>
+
+        <?php if (!empty($order['discount_code']) && strpos($order['discount_code'], 'VIP_SUB') !== false): ?>
+        <!-- Active Subscription Benefit Card -->
+        <div class="rounded-3xl bg-indigo-50 border border-indigo-200/80 p-5 sm:p-6 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl font-bold flex-shrink-0 shadow-md">
+              <span class="material-symbols-outlined text-xl">autorenew</span>
+            </div>
+            <div>
+              <h5 class="font-serif font-bold text-sm sm:text-base text-indigo-950">VIP Auto-Replenish Active</h5>
+              <p class="text-xs text-indigo-800/80 font-light">Your capsule replenishment is scheduled every 30 days with guaranteed 10% privilege savings.</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 font-mono text-[10px] font-bold uppercase tracking-wider">
+            Active Subscription
+          </span>
+        </div>
+        <?php endif; ?>
+
+        <!-- Subtle PWA Add to Home Screen Prompt -->
+        <div id="pwaInstallCard" class="rounded-3xl bg-gradient-to-r from-stone-900 to-stone-950 text-white border border-stone-800 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400 text-stone-950 flex items-center justify-center text-xl font-bold flex-shrink-0 shadow-md">
+              ⚡
+            </div>
+            <div>
+              <h5 class="font-serif font-bold text-sm sm:text-base text-[#e9c176]">Install NovaDrop for 1-Tap Access</h5>
+              <p class="text-xs text-stone-300 font-light">Add to your Home Screen for instant capsule drops, real-time shipment milestones, and express Buy Now.</p>
+            </div>
+          </div>
+          <button type="button" id="btnInstallPwa" onclick="installNovaDropPwa()" class="w-full sm:w-auto px-5 py-2.5 bg-[#e9c176] hover:bg-amber-400 active:scale-95 text-stone-950 font-mono font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer flex-shrink-0">
+            <span class="material-symbols-outlined text-sm">install_mobile</span>
+            <span>Add to Home Screen</span>
+          </button>
+        </div>
       </div>
 
       <!-- Shipping & Action Side Column (5 cols) -->
@@ -438,5 +473,27 @@ function handleAddUpsell(btn) {
       ndToast('🎉 Garment Protector Set added to your package!', 'success');
     }
   }, 750);
+}
+
+// PWA Add to Home Screen Controller
+let deferredPwaPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+});
+
+function installNovaDropPwa() {
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+    deferredPwaPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        const btn = document.getElementById('btnInstallPwa');
+        if (btn) btn.textContent = '✓ Added to Home Screen';
+      }
+      deferredPwaPrompt = null;
+    });
+  } else {
+    alert('To install NovaDrop:\n• On iOS / Safari: Tap the Share icon (↑) and tap "Add to Home Screen".\n• On Chrome / Android: Tap the browser menu (⋮) and tap "Install App".');
+  }
 }
 </script>

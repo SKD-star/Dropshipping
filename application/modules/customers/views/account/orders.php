@@ -117,9 +117,18 @@
             </div>
             <div class="flex justify-between items-center text-xs border-t border-outline-variant/30 pt-3">
               <span class="font-serif font-bold text-primary">₹<?= number_format($o['total'], 0) ?></span>
-              <a href="<?= base_url('account/order/' . $o['order_number']) ?>" class="text-xs uppercase font-semibold text-primary hover:underline">
-                Receipt →
-              </a>
+              <div class="flex items-center gap-2">
+                <button type="button" 
+                        onclick="buyAgainOrder(<?= (int)$o['id'] ?>, this)"
+                        aria-label="Buy again from Order #<?= htmlspecialchars($o['order_number']) ?>"
+                        class="px-2.5 py-1 bg-gradient-to-r from-amber-400 to-[#e9c176] hover:opacity-90 active:scale-95 text-stone-950 text-[10px] font-mono font-bold uppercase rounded transition-all shadow-xs flex items-center gap-1 cursor-pointer">
+                  <span class="material-symbols-outlined text-xs">bolt</span>
+                  <span>Buy Again</span>
+                </button>
+                <a href="<?= base_url('account/orders/' . $o['id']) ?>" class="text-xs uppercase font-semibold text-primary hover:underline">
+                  Receipt →
+                </a>
+              </div>
             </div>
           </div>
           <?php endforeach; ?>
@@ -130,3 +139,51 @@
   </div>
 
 </div>
+
+<script>
+function buyAgainOrder(orderId, btn) {
+  if (!orderId) return;
+  const originalHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined text-xs animate-spin">progress_activity</span><span>Checking...</span>';
+  }
+
+  const fd = new FormData();
+  fd.append('order_id', orderId);
+  fd.append('<?= $this->security->get_csrf_token_name() ?>', '<?= $this->security->get_csrf_hash() ?>');
+
+  fetch('<?= base_url("checkout/buy_again") ?>', {
+    method: 'POST',
+    body: fd,
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+
+    if (res.eligible === false && res.redirect) {
+      window.location.href = res.redirect;
+      return;
+    }
+
+    if (res.eligible === true && res.item) {
+      // Launch pre-filled fast checkout
+      window.location.href = '<?= base_url("checkout?buy_now=1") ?>&variant_id=' + res.item.variant_id + '&quantity=1';
+    } else if (res.error || res.message) {
+      alert(res.error || res.message);
+    }
+  })
+  .catch(err => {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+    }
+    alert('Network error initiating reorder. Please try again.');
+  });
+}
+</script>
+

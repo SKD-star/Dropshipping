@@ -31,7 +31,7 @@ class Auth extends MY_Controller
             $auth_ok = false;
             $admin_name = 'admin';
 
-            if ($user && (password_verify($password, $user['password_hash']) || ($password === 'admin123' && in_array($email, ['admin', 'admin@novadrop.in'])))) {
+            if ($user && password_verify($password, $user['password_hash'])) {
                 $auth_ok = true;
                 $admin_name = $user['name'] ?? 'admin';
                 $this->session->set_userdata([
@@ -54,7 +54,7 @@ class Auth extends MY_Controller
             // 2. Check admin table fallback
             if (!$auth_ok && $this->db->table_exists('admin')) {
                 $adm = $this->db->where('username', $email)->get('admin')->row_array();
-                if ($adm && (password_verify($password, $adm['password']) || ($password === 'admin123' && $email === 'admin'))) {
+                if ($adm && password_verify($password, $adm['password'])) {
                     $auth_ok = true;
                     $admin_name = $adm['username'] ?? 'admin';
                     $this->session->set_userdata([
@@ -83,9 +83,8 @@ class Auth extends MY_Controller
                 }
                 $_SESSION['loggedin'] = true;
                 $_SESSION['admin'] = $admin_name;
-                $_SESSION['admid'] = '67ac7cf58dfc4';
+                $_SESSION['admid'] = bin2hex(random_bytes(16));
                 $_SESSION['type'] = 'admin';
-                $_SESSION['madmin'] = '9870330063';
                 // Log to audit if table exists
                 if ($this->db->table_exists('audit_log')) {
                     $this->db->insert('audit_log', [

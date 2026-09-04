@@ -173,6 +173,8 @@ class Returns extends MY_Controller
     // ─── Approve Return / Exchange ────────────────────────────
     public function approve($id)
     {
+        if ($this->input->method() !== 'post') { redirect('admin/returns'); }
+
         $id = (int)$id;
         $req = $this->db->where('id', $id)->get('return_requests')->row_array();
         if (!$req) { show_404(); }
@@ -192,6 +194,8 @@ class Returns extends MY_Controller
     // ─── Mark Quality Inspection Passed & Settle ──────────────
     public function settle($id)
     {
+        if ($this->input->method() !== 'post') { redirect('admin/returns'); }
+
         $id = (int)$id;
         $req = $this->db->where('id', $id)->get('return_requests')->row_array();
         if (!$req) { show_404(); }
@@ -201,16 +205,111 @@ class Returns extends MY_Controller
                 'status'     => 'exchanged',
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
+            $this->audit('return.settled', 'return_requests', $id, [], ['type' => 'exchange']);
             $this->session->set_flashdata('success', "RMA #{$id}: QC Passed. Replacement size garment dispatched to customer!");
         } else {
-            $this->db->where('id', $id)->update('return_requests', [
-                'status'     => 'refunded',
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-            $this->session->set_flashdata('success', "RMA #{$id}: QC Passed. Refund of ₹" . number_format($req['refund_amount'], 2) . " credited to customer ({$req['refund_mode']})!");
+            // Refund flow: trigger real payment gateway refund
+            $refund_amount = (float)$req['refund_amount'];
+            $order_id      = (int)$req['order_id'];
+            $refund_mode   = $req['refund_mode'] ?? 'original_payment';
+
+            $gateway_refund_id = null;
+            $gateway_error     = null;
+
+            if ($refund_mode === 'original_payment' && $refund_amount > 0 && $order_id) {
+                // Find the payment record for this order
+                $payment = $this->db->where('order_id', $order_id)
+                                    ->where('status', 'captured')
+                                    ->order_by('id', 'DESC')
+                                    ->limit(1)
+                                    ->get('payments')->row_array();
+
+                if ($payment && !empty($payment['gateway_payment_id'])) {
+                    try {
+                        require_once APPPATH . 'core/interfaces/PaymentGatewayInterface.php';
+
+                        if ($payment['gateway'] === 'razorpay') {
+                            require_once APPPATH . 'core/adapters/RazorpayAdapter.php';
+                            $adapter = new RazorpayAdapter();
+                        } elseif ($payment['gateway'] === 'stripe') {
+                            require_once APPPATH . 'core/adapters/StripeAdapter.php';
+                            $adapter = new StripeAdapter();
+                        } else {
+                            $adapter = null;
+                        }
+
+                        if ($adapter) {
+                            $refund_res = $adapter->refund(
+                                $payment['gateway_payment_id'],
+                                $refund_amount,
+                                "RMA #{$id} - Quality inspection passed"
+                            );
+
+                            if ($refund_res['success']) {
+                                $gateway_refund_id = $refund_res['gateway_refund_id'] ?? null;
+                            } else {
+                                $gateway_error = $refund_res['error'] ?? 'Gateway refund failed';
+                                log_message('error', "[Returns::settle] Refund failed for RMA #{$id}: {$gateway_error}");
+                            }
+                        }
+                    } catch (Throwable $e) {
+                        $gateway_error = $e->getMessage();
+                        log_message('error', "[Returns::settle] Exception for RMA #{$id}: " . $e->getMessage());
+                    }
+                }
+
+                if (!$gateway_error) {
+                    // Log refund to refunds ledger
+                    if ($this->db->table_exists('refunds')) {
+                        $this->db->insert('refunds', [
+                            'store_id'          => $this->store_id,
+                            'order_id'          => $order_id,
+                            'return_request_id' => $id,
+                            'amount'            => $refund_amount,
+                            'currency'          => 'INR',
+                            'gateway'           => $payment['gateway'] ?? 'manual',
+                            'gateway_refund_id' => $gateway_refund_id,
+                            'reason'            => "RMA #{$id} approved return",
+                            'status'            => 'completed',
+                            'created_at'        => date('Y-m-d H:i:s'),
+                        ]);
+                    }
+
+                    // Update order status to refunded
+                    $this->db->where('id', $order_id)
+                             ->where('store_id', $this->store_id)
+                             ->update('orders', [
+                                 'status'         => 'refunded',
+                                 'payment_status' => 'refunded',
+                                 'updated_at'     => date('Y-m-d H:i:s'),
+                             ]);
+
+                    // Mark order_item payout_status as refunded so vendor doesn't get paid for this item
+                    if ($this->db->field_exists('payout_status', 'order_items') && !empty($req['order_item_id'])) {
+                        $this->db->where('id', $req['order_item_id'])
+                                 ->update('order_items', ['payout_status' => 'refunded']);
+                    }
+
+                    $this->db->where('id', $id)->update('return_requests', [
+                        'status'     => 'refunded',
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                    $this->audit('return.settled', 'return_requests', $id, [], ['type' => 'refund', 'gateway_refund_id' => $gateway_refund_id]);
+                    $this->session->set_flashdata('success', "RMA #{$id}: QC Passed. Refund of ₹" . number_format($refund_amount, 2) . " initiated to customer (Ref: {$gateway_refund_id})!");
+                } else {
+                    $this->session->set_flashdata('error', "RMA #{$id}: Gateway refund failed — {$gateway_error}. Please issue refund manually.");
+                }
+            } else {
+                // Store credit or bank/UPI manual refund — just update status
+                $this->db->where('id', $id)->update('return_requests', [
+                    'status'     => 'refunded',
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+                $this->audit('return.settled', 'return_requests', $id, [], ['type' => 'refund', 'mode' => $refund_mode]);
+                $this->session->set_flashdata('success', "RMA #{$id}: QC Passed. Refund of ₹" . number_format($refund_amount, 2) . " credited to customer ({$refund_mode})!");
+            }
         }
 
-        $this->audit('return.settled', 'return_requests', $id, [], ['type' => $req['type']]);
         redirect('admin/returns');
     }
 

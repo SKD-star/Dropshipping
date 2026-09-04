@@ -110,10 +110,9 @@ class AiEngine extends MY_Controller
                         }
                         break;
 
-
                     case 'run_pricing_agent':
-
-                        if (class_exists('\\App\\Agents\\DynamicPricingAgent')) {
+                        // Files already require_once'd above; class uses App\Agents\ namespace
+                        if (class_exists('App\\Agents\\DynamicPricingAgent')) {
                             $agent = new \App\Agents\DynamicPricingAgent($pdo, $this->store_id);
                             $res   = $agent->optimize_catalog_prices();
                             $result_msg = json_encode($res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -123,7 +122,7 @@ class AiEngine extends MY_Controller
                         break;
 
                     case 'run_seo_agent':
-                        if (class_exists('\\App\\Agents\\SeoContentAgent')) {
+                        if (class_exists('App\\Agents\\SeoContentAgent')) {
                             $agent = new \App\Agents\SeoContentAgent($pdo, $this->store_id);
                             $res   = $agent->generate_collection_guides();
                             $result_msg = is_string($res) ? $res : json_encode($res, JSON_UNESCAPED_UNICODE);
@@ -135,7 +134,7 @@ class AiEngine extends MY_Controller
                     case 'run_abandoned_cart':
                         $job_dir = APPPATH . 'jobs/';
                         if (is_dir($job_dir)) { foreach (glob($job_dir . '*.php') as $f) { require_once $f; } }
-                        if (class_exists('\\App\\Jobs\\AbandonedCartJob')) {
+                        if (class_exists('App\\Jobs\\AbandonedCartJob')) {
                             $job = new \App\Jobs\AbandonedCartJob($pdo, $this->store_id);
                             $job->handle();
                             $result_msg = 'Abandoned cart job completed.';
@@ -144,10 +143,50 @@ class AiEngine extends MY_Controller
                         }
                         break;
 
+                    case 'run_retention':
+                        if (class_exists('App\\Agents\\RetentionWinbackAgent')) {
+                            $agent = new \App\Agents\RetentionWinbackAgent($pdo, $this->store_id);
+                            $res   = $agent->run_all_workflows();
+                            $result_msg = json_encode($res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                        } else {
+                            $result_msg = 'RetentionWinbackAgent class not found.';
+                        }
+                        break;
+
+                    case 'run_email_marketing':
+                        if (class_exists('App\\Agents\\EmailMarketingAgent')) {
+                            $agent = new \App\Agents\EmailMarketingAgent($pdo, $this->store_id);
+                            $res   = method_exists($agent, 'run') ? $agent->run() : $agent->dispatch_campaigns();
+                            $result_msg = is_array($res) ? json_encode($res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : (string)$res;
+                        } else {
+                            $result_msg = 'EmailMarketingAgent class not found.';
+                        }
+                        break;
+
+                    case 'run_fraud_scan':
+                        if (class_exists('App\\Agents\\FraudRiskAgent')) {
+                            $agent = new \App\Agents\FraudRiskAgent($pdo, $this->store_id);
+                            $res   = method_exists($agent, 'scan_recent_orders') ? $agent->scan_recent_orders() : $agent->run();
+                            $result_msg = is_array($res) ? json_encode($res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : (string)$res;
+                        } else {
+                            $result_msg = 'FraudRiskAgent class not found.';
+                        }
+                        break;
+
+                    case 'run_whatsapp_campaigns':
+                        if (class_exists('App\\Agents\\WhatsAppCommerceAgent')) {
+                            $agent = new \App\Agents\WhatsAppCommerceAgent($pdo, $this->store_id);
+                            $res   = method_exists($agent, 'run_campaigns') ? $agent->run_campaigns() : $agent->run();
+                            $result_msg = is_array($res) ? json_encode($res, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : (string)$res;
+                        } else {
+                            $result_msg = 'WhatsAppCommerceAgent class not found.';
+                        }
+                        break;
+
                     case 'run_daily_digest':
                         $job_dir = APPPATH . 'jobs/';
                         if (is_dir($job_dir)) { foreach (glob($job_dir . '*.php') as $f) { require_once $f; } }
-                        if (class_exists('\\App\\Jobs\\DailyDigestJob')) {
+                        if (class_exists('App\\Jobs\\DailyDigestJob')) {
                             $job = new \App\Jobs\DailyDigestJob($pdo, $this->store_id);
                             $job->handle();
                             $result_msg = 'Daily digest dispatched.';

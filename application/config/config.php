@@ -75,7 +75,7 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['cookie_prefix'] = 'nd_';
 $config['cookie_domain'] = '';
 $config['cookie_path'] = '/';
-$config['cookie_secure'] = FALSE;
+$config['cookie_secure'] = _env('COOKIE_SECURE') !== null ? (bool)_env('COOKIE_SECURE') : $is_https;
 $config['cookie_httponly'] = TRUE;
 $config['cookie_samesite'] = 'Lax';
 $config['standardize_newlines'] = FALSE;

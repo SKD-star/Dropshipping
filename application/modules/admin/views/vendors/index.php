@@ -10,6 +10,9 @@
       <p class="text-muted small mb-0">Manage all third-party seller accounts, commission splits, and automated bank payouts</p>
     </div>
     <div class="d-flex gap-2 flex-wrap">
+      <a href="<?= base_url('admin/vendors/analytics') ?>" class="btn btn-outline-primary btn-sm px-3 font-weight-bold shadow-sm" style="border-radius:8px;">
+        <i class="fas fa-chart-line mr-1.5"></i> Marketplace Analytics
+      </a>
       <a href="<?= base_url('admin/vendors/payouts') ?>" class="btn btn-primary btn-sm px-3 font-weight-bold shadow-sm" style="border-radius:8px;">
         <i class="fas fa-money-bill-wave mr-1.5"></i> View Payouts &amp; Settlements
       </a>

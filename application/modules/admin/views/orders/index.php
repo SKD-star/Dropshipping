@@ -12,6 +12,9 @@
     </div>
     <div class="d-flex gap-2">
       <a href="?filter=all" class="btn btn-sm <?= empty($filter) || $filter === 'all' ? 'btn-primary font-weight-bold' : 'btn-outline-secondary' ?>">All</a>
+      <a href="?filter=buy_now" class="btn btn-sm <?= ($filter ?? '') === 'buy_now' ? 'btn-dark font-weight-bold text-warning' : 'btn-outline-dark' ?>" style="<?= ($filter ?? '') === 'buy_now' ? 'background:#1c1917;color:#fbbf24;border-color:#1c1917;' : '' ?>">
+        <i class="fas fa-bolt mr-1 text-warning"></i> Buy Now (<?= $buynow_cnt ?? 0 ?>)
+      </a>
       <a href="?filter=unfulfilled" class="btn btn-sm <?= ($filter ?? '') === 'unfulfilled' ? 'btn-warning text-dark font-weight-bold' : 'btn-outline-warning' ?>">
         <i class="fas fa-clock mr-1"></i> Unfulfilled (<?= $unfulfilled_cnt ?? 0 ?>)
       </a>
@@ -107,6 +110,9 @@
                 <!-- Order Number -->
                 <td>
                   <strong class="text-primary font-weight-bold">#<?= htmlspecialchars($ord['order_number'] ?? $ord['id']) ?></strong>
+                  <?php if (($ord['channel'] ?? '') === 'buy_now'): ?>
+                    <span class="badge font-weight-bold ml-1" style="background:#fef08a;color:#854d0e;border:1px solid #fde047;font-size:10px;">⚡ Buy Now</span>
+                  <?php endif; ?>
                   <div class="small text-muted">ID: <?= $ord['id'] ?></div>
                 </td>
 

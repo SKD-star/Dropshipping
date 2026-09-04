@@ -25,6 +25,8 @@ class Orders extends MY_Controller
             $this->db->where('fulfillment_status !=', 'fulfilled');
         } elseif ($filter === 'paid') {
             $this->db->where('payment_status', 'paid');
+        } elseif ($filter === 'buy_now') {
+            $this->db->where('channel', 'buy_now');
         }
 
         if ($cust_id > 0) {
@@ -43,6 +45,7 @@ class Orders extends MY_Controller
         $total_amount     = array_sum(array_map(fn($o) => (float)($o['total'] ?? $o['total_amount'] ?? 0), $orders));
         $unfulfilled_cnt  = count(array_filter($orders, fn($o) => ($o['fulfillment_status'] ?? '') !== 'fulfilled'));
         $paid_cnt         = count(array_filter($orders, fn($o) => ($o['payment_status'] ?? '') === 'paid'));
+        $buynow_cnt       = $this->db->where('channel', 'buy_now')->count_all_results('orders');
 
         $data = [
             'title'            => 'Orders Management — NovaDrop Admin',
@@ -54,6 +57,7 @@ class Orders extends MY_Controller
             'total_amount'     => $total_amount,
             'unfulfilled_cnt'  => $unfulfilled_cnt,
             'paid_cnt'         => $paid_cnt,
+            'buynow_cnt'       => $buynow_cnt,
         ];
 
         $this->load->view('admin/layout/header', $data);

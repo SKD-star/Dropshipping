@@ -170,57 +170,88 @@ class Auth extends MY_Controller
     }
 
     /**
-     * Google OAuth Login / Instant Sign-In Initiation
+     * Google OAuth Login — Server-side ID Token Verification
+     * Expects POST: { id_token: <Google ID Token from client-side Google Sign-In } 
      */
     public function google_login()
     {
-        $google_email = $this->input->get_post('email', true);
-        $google_name  = $this->input->get_post('name', true);
-        $google_id    = $this->input->get_post('id', true) ?: ('goog_' . uniqid());
-        $google_pic   = $this->input->get_post('picture', true);
-        $phone        = $this->input->get_post('phone', true);
-
-        // If email provided via POST or simulated one-click OAuth
-        if (!empty($google_email)) {
-            $customer = $this->Customer_model->find_or_create_google_user([
-                'email'   => $google_email,
-                'name'    => $google_name ?: explode('@', $google_email)[0],
-                'id'      => $google_id,
-                'picture' => $google_pic,
-                'phone'   => $phone
-            ]);
-
-            if ($customer) {
-                $this->session->set_userdata([
-                    'customer'    => $customer,
-                    'customer_id' => $customer['id'],
-                ]);
-
-                // Merge guest cart
-                $guest_cart = $this->session->userdata('cart_id');
-                if ($guest_cart) {
-                    $merged_id = $this->Cart_model->merge_guest_cart($guest_cart, $customer['id']);
-                    $this->session->set_userdata('cart_id', $merged_id);
-                }
-
-                if ($this->input->is_ajax_request()) {
-                    $this->json_success('Authenticated with Google successfully!', ['redirect' => base_url('account')]);
-                    return;
-                }
-
-                $this->session->set_flashdata('success', 'Authenticated with Google. Welcome, ' . htmlspecialchars($customer['name']) . '!');
-                redirect('account');
-                return;
+        // Only accept POST to prevent CSRF via direct URL navigation
+        if ($this->input->method() !== 'post') {
+            if ($this->input->is_ajax_request()) {
+                $this->json_error('Invalid request method.');
+            } else {
+                redirect('account/login');
             }
+            return;
         }
 
-        // Demo / Fallback Instant Google Auth Trigger
-        $demo_email = 'atelier.collector.' . substr(md5(microtime()), 0, 4) . '@gmail.com';
+        $id_token = trim($this->input->post('id_token', true) ?? '');
+
+        if (empty($id_token)) {
+            if ($this->input->is_ajax_request()) {
+                $this->json_error('Google authentication token is missing.');
+            } else {
+                $this->session->set_flashdata('error', 'Google sign-in failed: missing token.');
+                redirect('account/login');
+            }
+            return;
+        }
+
+        // Server-side token verification with Google's tokeninfo endpoint
+        $google_client_id = env('GOOGLE_CLIENT_ID', '');
+        if (empty($google_client_id)) {
+            $this->json_error('Google Sign-In is not configured on this store.');
+            return;
+        }
+
+        $verify_url = 'https://oauth2.googleapis.com/tokeninfo?id_token=' . urlencode($id_token);
+        $ch = curl_init($verify_url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 10,
+            CURLOPT_SSL_VERIFYPEER => true,
+        ]);
+        $raw = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($http_code !== 200 || empty($raw)) {
+            log_message('error', '[Customer Auth::google_login] Token verification HTTP ' . $http_code);
+            $this->json_error('Google sign-in verification failed. Please try again.');
+            return;
+        }
+
+        $payload = json_decode($raw, true);
+        if (empty($payload) || empty($payload['email']) || empty($payload['sub'])) {
+            $this->json_error('Invalid Google token payload.');
+            return;
+        }
+
+        // Verify audience matches our app to prevent token substitution attacks
+        $aud = $payload['aud'] ?? '';
+        if ($aud !== $google_client_id) {
+            log_message('error', '[Customer Auth::google_login] Audience mismatch: ' . $aud);
+            $this->json_error('Google token audience mismatch. Authentication rejected.');
+            return;
+        }
+
+        // Verify token is not expired
+        if (!empty($payload['exp']) && (int)$payload['exp'] < time()) {
+            $this->json_error('Google token has expired. Please sign in again.');
+            return;
+        }
+
+        $google_email = strtolower(trim($payload['email']));
+        $google_name  = $payload['name'] ?? explode('@', $google_email)[0];
+        $google_sub   = $payload['sub'];
+        $google_pic   = $payload['picture'] ?? null;
+
         $customer = $this->Customer_model->find_or_create_google_user([
-            'email'   => $demo_email,
-            'name'    => 'Atelier Google Collector',
-            'id'      => 'goog_' . time(),
-            'picture' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80'
+            'email'   => $google_email,
+            'name'    => $google_name,
+            'id'      => $google_sub,
+            'sub'     => $google_sub,
+            'picture' => $google_pic,
         ]);
 
         if ($customer) {
@@ -228,12 +259,25 @@ class Auth extends MY_Controller
                 'customer'    => $customer,
                 'customer_id' => $customer['id'],
             ]);
-            $this->session->set_flashdata('success', 'Connected with Google account successfully!');
+
+            // Merge guest cart
+            $guest_cart = $this->session->userdata('cart_id');
+            if ($guest_cart) {
+                $merged_id = $this->Cart_model->merge_guest_cart($guest_cart, $customer['id']);
+                $this->session->set_userdata('cart_id', $merged_id);
+            }
+
+            if ($this->input->is_ajax_request()) {
+                $this->json_success('Authenticated with Google successfully!', ['redirect' => base_url('account')]);
+                return;
+            }
+
+            $this->session->set_flashdata('success', 'Authenticated with Google. Welcome, ' . htmlspecialchars($customer['name']) . '!');
             redirect('account');
             return;
         }
 
-        redirect('account/login');
+        $this->json_error('Google sign-in could not be completed. Please try again.');
     }
 
     public function google_callback()
@@ -273,7 +317,7 @@ class Auth extends MY_Controller
                 'phone'      => $res['phone'],
                 'email'      => $res['email'],
                 'type'       => $res['type'],
-                'demo_otp'   => $res['otp_code']
+                // NOTE: otp_code intentionally NOT returned in response
             ]);
         } else {
             $this->json_error($res['message'] ?? 'Unable to send OTP.');

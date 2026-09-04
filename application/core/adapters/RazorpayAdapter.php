@@ -98,14 +98,26 @@ class RazorpayAdapter implements PaymentGatewayInterface
                 return ['success' => false, 'error' => 'Missing Razorpay payload fields'];
             }
 
-            $is_demo = empty($this->key_secret) || strpos($this->key_secret, 'your_secret') !== false || strpos($order_id, 'order_rzp_') !== false || strpos($order_id, 'mock') !== false;
+            // Demo mode is ONLY when credentials are genuinely missing/placeholder
+            // Never base demo-mode on the order_id string pattern — that bypassed real-money verification
+            $is_demo = empty($this->key_secret) || strpos($this->key_secret, 'your_secret') !== false;
             if ($is_demo) {
+                // In demo mode, still require a non-empty signature field as a basic sanity check
+                if (empty($signature)) {
+                    return ['success' => false, 'error' => 'Missing payment signature'];
+                }
                 return [
                     'success'            => true,
-                    'gateway_payment_id' => $payment_id ?: ('pay_lumina_' . substr(md5(uniqid()), 0, 14)),
+                    'gateway_payment_id' => $payment_id ?: ('pay_demo_' . substr(md5(uniqid()), 0, 14)),
                     'status'             => 'captured',
                     'amount_captured'    => 0,
+                    'is_demo'            => true,
                 ];
+            }
+
+            // Production: strict HMAC-SHA256 signature verification required
+            if (empty($signature)) {
+                return ['success' => false, 'error' => 'Missing payment signature'];
             }
 
             $expected = hash_hmac('sha256', "$order_id|$payment_id", $this->key_secret);

@@ -34,8 +34,37 @@ class MY_Controller extends CI_Controller {
         $this->store_id = (int) $this->config->item('store_id') ?: 1;
 
         // Load helpers and libraries universally needed
-        $this->load->helper(['url', 'form', 'security', 'language']);
+        $this->load->helper(['url', 'form', 'security', 'language', 'cookie']);
         $this->load->library(['session']);
+
+        // Universal Affiliate / Referral Attribution Capture (?ref=... or ?aff=...)
+        $ref_code = $this->input->get('ref', true) ?: ($this->input->get('aff', true) ?: $this->input->get('referral', true));
+        if ($ref_code) {
+            $ref_clean = strtoupper(substr(preg_replace('/[^A-Za-z0-9_-]/', '', $ref_code), 0, 32));
+            if (!empty($ref_clean)) {
+                $this->session->set_userdata('nd_referral_code', $ref_clean);
+                set_cookie([
+                    'name'     => 'nd_affiliate_ref',
+                    'value'    => $ref_clean,
+                    'expire'   => 30 * 86400,
+                    'path'     => '/',
+                    'secure'   => false,
+                    'httponly' => true,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Get active affiliate / referral code from request, session, or cookie
+     */
+    protected function get_active_referral_code(): ?string
+    {
+        $code = $this->input->get('ref', true) 
+             ?: ($this->input->get('aff', true) 
+             ?: ($this->session->userdata('nd_referral_code') 
+             ?: $this->input->cookie('nd_affiliate_ref', true)));
+        return !empty($code) ? strtoupper(substr(preg_replace('/[^A-Za-z0-9_-]/', '', $code), 0, 32)) : null;
     }
 
     /**

@@ -1020,10 +1020,13 @@ window.closeMysteryDropModal = function() {
     </button>
 
     <!-- Instant Search -->
-    <button type="button" onclick="toggleSearchModal()" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-400 hover:text-[#e9c176] transition-all duration-200 active:scale-90 cursor-pointer" title="Search">
+    <a href="<?= base_url('search') ?>" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 <?= $is_search_page ? 'text-[#e9c176] font-bold bg-white/10 shadow-xs border border-[#e9c176]/30' : 'text-stone-400 hover:text-[#e9c176]' ?>" title="Search">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5">search</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Search</span>
-    </button>
+      <?php if ($is_search_page): ?>
+        <span class="w-1 h-1 rounded-full bg-[#e9c176] mt-0.5 shadow-[0_0_6px_#e9c176]"></span>
+      <?php endif; ?>
+    </a>
 
     <!-- Curated Bag -->
     <button type="button" onclick="toggleQuickBagDrawer()" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-400 hover:text-white transition-all duration-200 active:scale-90 relative cursor-pointer" title="Curated Bag">
@@ -1038,40 +1041,18 @@ window.closeMysteryDropModal = function() {
   </div>
 </nav>
 
-<!-- ── Instant Search Modal (Interactive Search Widget) ── -->
-<div id="searchModal" data-lenis-prevent="true" class="fixed inset-0 bg-black/75 backdrop-blur-md z-[9999] hidden items-start justify-center pt-12 sm:pt-20 px-3 sm:px-4 overflow-y-auto" onclick="if(event.target===this)toggleSearchModal()" style="overscroll-behavior: contain;">
-  <div data-lenis-prevent="true" class="bg-white text-stone-900 rounded-3xl max-w-2xl w-full p-5 sm:p-7 border border-stone-200 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-200" style="overscroll-behavior: contain;">
-    
-    <!-- Search Input Row -->
-    <div class="flex items-center gap-3 border-b border-stone-200 pb-3.5 mb-4">
-      <span class="material-symbols-outlined text-[#a16207] text-2xl">search</span>
-      <input type="text" id="liveSearchInput" placeholder="Search cashmere coats, silk dresses, denim..." class="w-full bg-transparent border-none focus:ring-0 text-base sm:text-lg text-stone-950 font-serif outline-none placeholder:text-stone-400" oninput="handleSearchQuery(this.value)" onkeydown="if(event.key==='Enter'){window.location.href='<?= base_url('search?q=') ?>'+encodeURIComponent(this.value);}">
-      <button type="button" onclick="toggleSearchModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-stone-400 hover:text-black hover:bg-stone-100 transition-colors cursor-pointer" aria-label="Close search">
+<!-- ── Instant Search Modal (Ctrl+K) ── -->
+<div id="searchModal" data-lenis-prevent="true" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] hidden items-start justify-center pt-24 px-4" onclick="if(event.target===this)toggleSearchModal()" style="overscroll-behavior: contain;">
+  <div data-lenis-prevent="true" class="liquid-glass p-6 rounded-DEFAULT max-w-xl w-full ambient-elevation relative bg-surface border border-outline-variant/60" style="overscroll-behavior: contain;">
+    <div class="flex items-center gap-3 border-b border-outline-variant/40 pb-3 mb-4">
+      <span class="material-symbols-outlined text-accent text-xl">search</span>
+      <input type="text" id="liveSearchInput" placeholder="Search curated garments &amp; artifacts..." class="w-full bg-transparent border-none focus:ring-0 text-body-lg text-primary outline-none" oninput="handleSearchQuery(this.value)">
+      <button type="button" onclick="toggleSearchModal()" class="text-on-surface-variant hover:text-primary p-1">
         <span class="material-symbols-outlined text-xl">close</span>
       </button>
     </div>
-
-    <!-- Quick Trend Suggestions -->
-    <div class="mb-4">
-      <span class="text-[10px] font-mono uppercase tracking-widest text-stone-400 font-bold block mb-2">Curated Search Capsules</span>
-      <div class="flex flex-wrap gap-1.5 sm:gap-2">
-        <button type="button" onclick="document.getElementById('liveSearchInput').value='Silk'; handleSearchQuery('Silk');" class="px-3 py-1 bg-amber-50 hover:bg-amber-100 text-[#a16207] border border-amber-200 text-xs font-mono rounded-full transition-all">✨ Mulberry Silk</button>
-        <button type="button" onclick="document.getElementById('liveSearchInput').value='Cashmere'; handleSearchQuery('Cashmere');" class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 text-xs font-mono rounded-full transition-all">🧥 Cashmere Coat</button>
-        <button type="button" onclick="document.getElementById('liveSearchInput').value='Denim'; handleSearchQuery('Denim');" class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 text-xs font-mono rounded-full transition-all">👖 Selvedge Denim</button>
-        <button type="button" onclick="document.getElementById('liveSearchInput').value='Boot'; handleSearchQuery('Boot');" class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 text-xs font-mono rounded-full transition-all">👞 Chelsea Boots</button>
-        <button type="button" onclick="document.getElementById('liveSearchInput').value='Trench'; handleSearchQuery('Trench');" class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 text-xs font-mono rounded-full transition-all">🧥 Atelier Trench</button>
-      </div>
-    </div>
-
-    <!-- Results Container -->
-    <div id="searchResultsList" class="max-h-80 sm:max-h-96 overflow-y-auto custom-scrollbar flex flex-col gap-2 pt-1">
-      <div class="py-6 text-center text-xs font-mono tracking-wider uppercase text-stone-400">Type keywords or select a capsule above...</div>
-    </div>
-
-    <!-- Modal Footer -->
-    <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-[11px] font-mono text-stone-400">
-      <span>Press <kbd class="px-1.5 py-0.5 bg-stone-100 rounded border border-stone-200 text-stone-700">ESC</kbd> to exit</span>
-      <a href="<?= base_url('shop') ?>" class="text-[#a16207] hover:underline font-bold">Browse All Creations →</a>
+    <div id="searchResultsList" class="max-h-80 overflow-y-auto custom-scrollbar text-sm text-on-surface-variant flex flex-col gap-2">
+      <div class="py-6 text-center text-xs tracking-widest uppercase text-on-surface-variant">Type keywords to discover pieces...</div>
     </div>
   </div>
 </div>
@@ -1805,35 +1786,32 @@ window.closeMysteryDropModal = function() {
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
 <!-- 5. ❤️ CLIENT SAVED WARDROBE (WISHLIST SLIDE-OUT DRAWER)                      -->
 <!-- ════════════════════════════════════════════════════════════════════════════ -->
-<div id="wishlistDrawerOverlay" class="fixed inset-0 bg-black/65 backdrop-blur-sm z-[9999] hidden transition-opacity duration-300" onclick="if(event.target===this)closeWishlistDrawer()" data-lenis-prevent="true" style="overscroll-behavior: contain;">
-  <div class="fixed inset-y-0 right-0 max-w-[92vw] sm:max-w-md w-full bg-white text-stone-900 border-l border-stone-200 shadow-2xl p-5 sm:p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out will-change-transform transform-gpu" id="wishlistPanel" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+<div id="wishlistDrawerOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[115] hidden transition-opacity duration-300" onclick="if(event.target===this)closeWishlistDrawer()" data-lenis-prevent="true" style="overscroll-behavior: contain;">
+  <div class="fixed inset-y-0 right-0 max-w-[90vw] sm:max-w-md w-full liquid-glass bg-surface shadow-2xl p-5 sm:p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out" id="wishlistPanel" data-lenis-prevent="true" style="overscroll-behavior: contain;">
     <div>
-      <div class="flex justify-between items-center pb-4 border-b border-stone-200">
+      <div class="flex justify-between items-center pb-4 border-b border-outline-variant/40">
         <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-rose-500 text-2xl">favorite</span>
-          <h3 class="font-serif font-bold text-xl text-stone-950">Saved Wardrobe</h3>
+          <span class="material-symbols-outlined text-rose-500">favorite</span>
+          <h3 class="font-headline-sm text-xl text-primary font-serif">Saved Wardrobe</h3>
         </div>
-        <button type="button" onclick="closeWishlistDrawer()" class="w-8 h-8 rounded-full flex items-center justify-center text-stone-400 hover:text-black hover:bg-stone-100 transition-colors cursor-pointer" aria-label="Close">
+        <button type="button" onclick="closeWishlistDrawer()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors cursor-pointer" aria-label="Close">
           <span class="material-symbols-outlined text-xl">close</span>
         </button>
       </div>
 
       <div class="py-4 flex flex-col gap-3 max-h-[65vh] overflow-y-auto custom-scrollbar" id="wishlistItemsList" data-lenis-prevent="true" style="overscroll-behavior: contain;">
-        <div class="py-12 text-center text-stone-400 text-sm flex flex-col items-center">
-          <span class="material-symbols-outlined text-4xl mb-2 text-stone-300">favorite_border</span>
-          <p class="font-light">Your saved wardrobe is empty.</p>
-          <a href="<?= base_url('shop') ?>" class="mt-3 text-xs text-[#a16207] underline font-bold uppercase tracking-wider">Explore Haute Couture</a>
+        <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
+          <p>Your saved wardrobe is empty.</p>
+          <a href="<?= base_url('shop') ?>" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
         </div>
       </div>
     </div>
 
-    <div class="border-t border-stone-200 pt-4 space-y-2">
-      <button type="button" onclick="moveAllWishlistToBag()" class="w-full py-3 bg-stone-950 hover:bg-stone-800 text-white font-button text-xs uppercase tracking-widest text-center rounded-xl transition-all shadow-md block cursor-pointer font-bold">
+    <div class="border-t border-outline-variant/40 pt-4">
+      <button type="button" onclick="moveAllWishlistToBag()" class="w-full py-3 bg-primary text-on-primary font-button text-xs uppercase tracking-widest text-center rounded hover:bg-secondary transition-colors shadow-md block cursor-pointer">
         Move All to Curated Bag
       </button>
-      <a href="<?= base_url('shop') ?>" class="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-mono text-[11px] uppercase tracking-wider text-center rounded-xl transition-all block text-center font-semibold">
-        Continue Shopping →
-      </a>
     </div>
   </div>
 </div>
@@ -3156,26 +3134,10 @@ window.getWishlistItems = function() {
 window.syncWishlistCheckboxes = function() {
   const items = getWishlistItems();
   const ids = new Set(items.map(i => Number(i.id)));
-  document.querySelectorAll('[data-wishlist-id]').forEach(el => {
-    const id = Number(el.getAttribute('data-wishlist-id'));
-    const isSaved = ids.has(id);
-    if (el.tagName === 'INPUT' && el.type === 'checkbox') {
-      el.checked = isSaved;
-    }
-    const container = el.closest('.heart-container') || (el.classList.contains('heart-container') ? el : null);
-    if (container) {
-      if (isSaved) container.classList.add('is-saved');
-      else container.classList.remove('is-saved');
-    }
+  document.querySelectorAll('.heart-container .checkbox[data-wishlist-id]').forEach(cb => {
+    const id = Number(cb.getAttribute('data-wishlist-id'));
+    cb.checked = ids.has(id);
   });
-};
-
-window.handleHeartClick = function(el, prod, event) {
-  if (event) {
-    if (event.preventDefault) event.preventDefault();
-    if (event.stopPropagation) event.stopPropagation();
-  }
-  toggleWishlistItem(prod, event);
 };
 
 window.toggleWishlistItem = function(prod, event) {
@@ -3198,14 +3160,17 @@ window.toggleWishlistItem = function(prod, event) {
   localStorage.setItem('lumina_wishlist', JSON.stringify(items));
   updateWishlistBadge();
   renderWishlistItems();
-  syncWishlistCheckboxes();
+  
+  // Sync all heart checkboxes for this item
+  document.querySelectorAll(`.heart-container .checkbox[data-wishlist-id="${prodId}"]`).forEach(cb => {
+    cb.checked = isLiked;
+  });
 };
 
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof window.syncWishlistCheckboxes === 'function') {
     window.syncWishlistCheckboxes();
   }
-  updateWishlistBadge();
 });
 
 window.updateWishlistBadge = function() {
@@ -3238,8 +3203,8 @@ window.openWishlistDrawer = function() {
   if (panel) {
     setTimeout(() => {
       panel.classList.remove('translate-x-full');
-      panel.style.transform = 'translateX(0)';
-    }, 20);
+      panel.classList.add('translate-x-0');
+    }, 15);
   }
 };
 
@@ -3247,8 +3212,8 @@ window.closeWishlistDrawer = function() {
   const overlay = document.getElementById('wishlistDrawerOverlay');
   const panel = document.getElementById('wishlistPanel');
   if (panel) {
+    panel.classList.remove('translate-x-0');
     panel.classList.add('translate-x-full');
-    panel.style.transform = 'translateX(100%)';
   }
   setTimeout(() => {
     if (overlay) {
@@ -3257,7 +3222,7 @@ window.closeWishlistDrawer = function() {
       overlay.style.display = 'none';
     }
     if (typeof unlockStorefrontScroll === 'function') unlockStorefrontScroll();
-  }, 280);
+  }, 250);
 };
 
 window.renderWishlistItems = function() {
@@ -3267,28 +3232,25 @@ window.renderWishlistItems = function() {
 
   if (items.length === 0) {
     list.innerHTML = `
-      <div class="py-12 text-center text-stone-400 text-sm flex flex-col items-center">
-        <span class="material-symbols-outlined text-4xl mb-2 text-stone-300">favorite_border</span>
-        <p class="font-light">Your saved wardrobe is empty.</p>
-        <a href="<?= base_url('shop') ?>" class="mt-3 text-xs text-[#a16207] underline font-bold uppercase tracking-wider">Explore Haute Couture</a>
+      <div class="py-12 text-center text-on-surface-variant text-sm flex flex-col items-center">
+        <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">favorite_border</span>
+        <p>Your saved wardrobe is empty.</p>
+        <a href="<?= base_url('shop') ?>" class="mt-3 text-xs text-accent underline font-semibold">Explore Haute Couture</a>
       </div>`;
     return;
   }
 
   let html = '';
   items.forEach(item => {
-    const rawPrice = parseFloat(item.price || 0);
-    const itemTitle = (item.title || 'Curated Garment').replace(/'/g, "\\'");
-    const itemImg = (item.image || '<?= base_url('assets/images/placeholder.jpg') ?>').replace(/'/g, "\\'");
     html += `
-      <div class="flex items-center gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-200 hover:border-[#a16207]/30 transition-all">
-        <img src="${item.image}" class="w-14 h-16 object-cover rounded-xl bg-stone-200 border border-stone-200 flex-shrink-0" loading="lazy">
+      <div class="flex items-center gap-3 p-3 bg-surface-container rounded-xl border border-outline-variant/40">
+        <img src="${item.image}" class="w-14 h-16 object-cover rounded-lg bg-black/10">
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif font-bold text-xs text-stone-900 truncate">${item.title}</h4>
-          <span class="text-xs font-serif font-bold text-[#a16207] block mt-0.5" data-price-inr="${rawPrice}">${formatPrice(rawPrice)}</span>
-          <div class="flex items-center gap-2 mt-2">
-            <button type="button" onclick="addToCart({id:${item.id}, title:'${itemTitle}', price:${rawPrice}, image:'${itemImg}'}, 1); ndToast('Moved to bag!', 'success');" class="text-[10px] px-2.5 py-1 bg-stone-950 text-[#e9c176] rounded-lg font-mono font-bold uppercase tracking-wider hover:bg-stone-800 transition-all cursor-pointer">Move to Bag</button>
-            <button type="button" onclick="toggleWishlistItem({id:${item.id}})" class="text-[10px] text-rose-500 hover:underline cursor-pointer">Remove</button>
+          <h4 class="font-serif font-bold text-xs text-primary truncate">${item.title}</h4>
+          <span class="text-xs font-serif font-bold text-primary" data-price-inr="${item.price}">${formatPrice(item.price)}</span>
+          <div class="flex gap-2 mt-2">
+            <button onclick="addToCart({id:${item.id}, title:'${item.title.replace(/'/g, "\\'")}', price:${item.price}, image:'${item.image}'}, 1); ndToast('Moved to bag!', 'success');" class="text-[10px] px-2 py-1 bg-primary text-white rounded font-button uppercase tracking-wider">Move to Bag</button>
+            <button onclick="toggleWishlistItem({id:${item.id}})" class="text-[10px] text-rose-500 hover:underline">Remove</button>
           </div>
         </div>
       </div>
@@ -4261,51 +4223,16 @@ document.addEventListener('keydown', e => {
 function handleSearchQuery(q) {
   var box = document.getElementById('searchResultsList');
   if (!box) return;
-  var term = q.trim();
-  if (term.length < 2) {
-    box.innerHTML = '<div class="py-6 text-center text-xs font-mono tracking-wider uppercase text-stone-400">Type at least 2 characters or select a capsule above...</div>';
+  if (q.trim().length < 2) {
+    box.innerHTML = '<div class="py-6 text-center text-xs tracking-widest uppercase text-on-surface-variant">Type at least 2 characters...</div>';
     return;
   }
-  box.innerHTML = '<div class="py-6 text-center text-xs font-mono text-[#a16207] animate-pulse">✦ Searching Atelier Archives...</div>';
-  fetch('<?= base_url('search?json=1&q=') ?>' + encodeURIComponent(term))
-    .then(r => r.json())
-    .then(data => {
-      if (!data || !data.products || data.products.length === 0) {
-        box.innerHTML = `
-          <div class="py-6 text-center text-xs font-mono text-stone-500">
-            No exact creations for "<strong>${term}</strong>".
-            <a href="<?= base_url('shop') ?>" class="text-[#a16207] underline block mt-2 font-bold">Explore Full Boutique</a>
-          </div>
-        `;
-        return;
-      }
-      let html = '<div class="space-y-2">';
-      data.products.slice(0, 6).forEach(p => {
-        html += `
-          <a href="${p.url}" class="p-2.5 bg-stone-50 hover:bg-amber-50/70 border border-stone-200 hover:border-[#a16207]/40 rounded-2xl flex items-center justify-between gap-3 transition-all duration-200 group">
-            <div class="flex items-center gap-3 min-w-0">
-              <img src="${p.image}" class="w-12 h-14 object-cover rounded-xl bg-stone-200 border border-stone-200 flex-shrink-0" loading="lazy">
-              <div class="min-w-0">
-                <span class="text-[9px] font-mono text-[#a16207] font-bold uppercase tracking-wider block">${p.vendor || 'NOVADROP'}</span>
-                <h4 class="font-serif text-xs font-bold text-stone-900 group-hover:text-[#a16207] truncate">${p.title}</h4>
-                <span class="text-xs font-serif font-bold text-stone-950">${formatPrice(p.price)}</span>
-              </div>
-            </div>
-            <span class="material-symbols-outlined text-sm text-stone-400 group-hover:text-[#a16207] mr-1 group-hover:translate-x-1 transition-all">arrow_forward</span>
-          </a>
-        `;
-      });
-      html += `
-        <a href="<?= base_url('search?q=') ?>${encodeURIComponent(term)}" class="mt-2 p-3 bg-stone-950 text-[#e9c176] rounded-2xl flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider hover:bg-stone-800 transition-all text-center">
-          <span>View All ${data.total || data.products.length} Results for "${term}"</span>
-          <span class="material-symbols-outlined text-sm">north_east</span>
-        </a>
-      </div>`;
-      box.innerHTML = html;
+  fetch('<?= base_url('search?q=') ?>' + encodeURIComponent(q), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(r => r.text())
+    .then(() => {
+      box.innerHTML = '<a href="<?= base_url('search?q=') ?>' + encodeURIComponent(q) + '" class="p-3 bg-surface-container hover:bg-surface-container-high transition-colors rounded-DEFAULT flex justify-between items-center text-primary font-medium"><span>View curated results for "<strong>' + q + '</strong>"</span><span class="material-symbols-outlined text-sm">arrow_forward</span></a>';
     })
-    .catch(() => {
-      box.innerHTML = `<a href="<?= base_url('search?q=') ?>${encodeURIComponent(term)}" class="p-3 bg-stone-100 rounded-xl flex justify-between items-center text-xs font-mono"><span>Search for "<strong>${term}</strong>"</span><span class="material-symbols-outlined text-sm">arrow_forward</span></a>`;
-    });
+    .catch(() => {});
 }
 
 // ── 🔔 Luxury Glassmorphic Toast System (Bottom-Centered Non-Intrusive) ──

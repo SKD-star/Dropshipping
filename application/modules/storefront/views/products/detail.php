@@ -395,24 +395,28 @@
           </div>
         </div>
 
-        <!-- ── DUAL HIGH-CONVERTING ACQUISITION BUTTONS ── -->
+        <!-- ── DUAL HIGH-CONVERTING ACQUISITION BUTTONS (DESKTOP) ── -->
         <div class="space-y-2.5 pt-1">
           
           <!-- Primary 1-Click Instant Acquisition -->
           <button type="button" 
-                  onclick="handlePdpInstantCheckout()"
-                  class="w-full py-3.5 px-6 bg-gradient-to-r from-amber-400 to-[#e9c176] hover:opacity-90 text-black font-button font-extrabold text-xs sm:text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
+                  id="btnPdpBuyNow"
+                  onclick="handlePdpBuyNow()"
+                  aria-label="Buy Now with 1-Click"
+                  class="w-full py-3.5 px-6 bg-gradient-to-r from-amber-400 via-amber-300 to-[#e9c176] hover:opacity-95 text-stone-950 font-button font-extrabold text-xs sm:text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]">
             <span class="material-symbols-outlined text-lg">bolt</span>
-            <span>Instant 1-Click Acquisition</span>
+            <span>Buy Now (1-Click)</span>
           </button>
 
           <!-- Add to Wardrobe Bag Button -->
           <div class="grid grid-cols-5 gap-2">
             <button type="button" 
+                    id="btnPdpAddToCart"
                     onclick="handlePdpAddToCart()"
-                    class="col-span-4 py-3 px-6 bg-stone-950 hover:bg-stone-800 text-white font-button font-bold text-xs uppercase tracking-widest rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+                    aria-label="Add to Wardrobe Bag"
+                    class="col-span-4 py-3 px-6 bg-stone-950 hover:bg-stone-800 text-white font-button font-bold text-xs uppercase tracking-widest rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]">
               <span class="material-symbols-outlined text-base">shopping_bag</span>
-              <span>Acquire to Wardrobe Bag</span>
+              <span>Add to Bag</span>
             </button>
             <div class="col-span-1 py-2 bg-stone-100 hover:bg-stone-200 border border-stone-300 rounded-2xl flex items-center justify-center transition-colors cursor-pointer shadow-sm relative overflow-hidden" title="Save to Wardrobe Wishlist">
               <div class="heart-container" title="Like">
@@ -636,7 +640,15 @@
 
 
   <!-- ── 5. VERIFIED CLIENT REVIEWS SECTION ── -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <?php
+    $has_db_reviews = !empty($reviews);
+    $review_count = count($reviews ?? []);
+    $avg_rating = $has_db_reviews
+        ? round(array_sum(array_column($reviews, 'rating')) / $review_count, 1)
+        : 4.98;
+    $is_logged_in = (bool)$this->session->userdata('customer_id');
+  ?>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" id="client-reviews-section">
     <div class="bg-white rounded-3xl border border-stone-200 shadow-md p-6 sm:p-10 md:p-12">
       
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8 pb-6 border-b border-stone-200">
@@ -644,50 +656,112 @@
           <span class="text-xs font-mono uppercase tracking-[0.25em] text-[#a16207] font-bold block mb-1.5">Client Provenance</span>
           <h3 class="font-serif text-2xl sm:text-3xl text-stone-950 font-bold">Voices from the Atelier Collective</h3>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-4">
           <div class="text-right">
             <div class="flex items-center gap-1 text-amber-500 font-bold text-base justify-end">
-              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-              <span class="text-stone-900 text-sm ml-1">4.98 / 5.0</span>
+              <?php for ($s = 1; $s <= 5; $s++): ?>
+                <span><?= $s <= round($avg_rating) ? '★' : '☆' ?></span>
+              <?php endfor; ?>
+              <span class="text-stone-900 text-sm ml-1"><?= number_format($avg_rating, 2) ?> / 5.0</span>
             </div>
-            <span class="text-[11px] font-mono text-stone-500">Based on 142 Verified Acquisitions</span>
+            <span class="text-[11px] font-mono text-stone-500">
+              <?= $has_db_reviews ? "Based on {$review_count} Verified Review" . ($review_count > 1 ? 's' : '') : 'Based on Atelier Verified Acquisitions' ?>
+            </span>
           </div>
+          <button type="button" onclick="openReviewModal()" class="px-5 py-2.5 bg-stone-950 hover:bg-stone-800 text-white font-mono text-xs uppercase tracking-wider font-bold rounded-xl shadow transition-all cursor-pointer flex items-center gap-2">
+            <span class="text-[#e9c176]">★</span> Write a Review
+          </button>
         </div>
       </div>
 
       <!-- Reviews Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200">
-          <div class="flex justify-between items-center mb-3">
-            <div class="flex items-center gap-2">
-              <span class="w-8 h-8 rounded-full bg-stone-900 text-[#e9c176] font-mono text-xs font-bold flex items-center justify-center">AR</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="reviewsListGrid">
+        <?php if ($has_db_reviews): ?>
+          <?php foreach ($reviews as $rev): ?>
+            <?php
+              $r_name = htmlspecialchars($rev['name'] ?? 'Verified Client');
+              $initials = strtoupper(substr($r_name, 0, 2));
+              $r_rating = max(1, min(5, (int)($rev['rating'] ?? 5)));
+              $is_ver = !empty($rev['is_verified']) || !empty($rev['order_id']);
+            ?>
+            <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200 flex flex-col justify-between" id="review-card-<?= $rev['id'] ?>">
               <div>
-                <h5 class="text-xs font-bold text-stone-900">Aarav Singhania</h5>
-                <span class="text-[10px] font-mono text-emerald-600 font-semibold">✓ Verified Buyer · Mumbai</span>
-              </div>
-            </div>
-            <span class="text-[10px] font-mono text-stone-400">2 days ago</span>
-          </div>
-          <p class="text-stone-700 text-xs sm:text-sm leading-relaxed font-light">
-            "The double-faced cashmere is sublime. The fluid drop shoulder drapes effortlessly over tailored suits. The BlueDart express delivery arrived in Mumbai within 22 hours in a stunning wooden garment box."
-          </p>
-        </div>
+                <div class="flex justify-between items-start mb-3">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-9 h-9 rounded-full bg-stone-900 text-[#e9c176] font-mono text-xs font-bold flex items-center justify-center flex-shrink-0"><?= $initials ?></span>
+                    <div>
+                      <h5 class="text-xs font-bold text-stone-900"><?= $r_name ?></h5>
+                      <?php if ($is_ver): ?>
+                        <span class="text-[10px] font-mono text-emerald-700 font-semibold flex items-center gap-0.5">
+                          ✓ Verified Buyer
+                        </span>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-amber-500 text-xs">
+                      <?= str_repeat('★', $r_rating) . str_repeat('☆', 5 - $r_rating) ?>
+                    </div>
+                    <span class="text-[10px] font-mono text-stone-400 block mt-0.5"><?= date('M d, Y', strtotime($rev['created_at'])) ?></span>
+                  </div>
+                </div>
 
-        <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200">
-          <div class="flex justify-between items-center mb-3">
-            <div class="flex items-center gap-2">
-              <span class="w-8 h-8 rounded-full bg-stone-900 text-[#e9c176] font-mono text-xs font-bold flex items-center justify-center">NM</span>
-              <div>
-                <h5 class="text-xs font-bold text-stone-900">Natasha Mehra</h5>
-                <span class="text-[10px] font-mono text-emerald-600 font-semibold">✓ Verified Buyer · New Delhi</span>
+                <?php if (!empty($rev['title'])): ?>
+                  <h6 class="text-xs font-bold text-stone-900 mb-1"><?= htmlspecialchars($rev['title']) ?></h6>
+                <?php endif; ?>
+                <p class="text-stone-700 text-xs sm:text-sm leading-relaxed font-light">
+                  "<?= nl2br(htmlspecialchars($rev['body'] ?? '')) ?>"
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-stone-200/70 flex justify-between items-center text-[11px] font-mono text-stone-500">
+                <span>Atelier Authenticated</span>
+                <button type="button" onclick="markReviewHelpful(<?= (int)$rev['id'] ?>, this)" class="hover:text-stone-900 flex items-center gap-1 cursor-pointer transition-colors">
+                  <span>👍 Helpful</span> (<span class="helpful-count"><?= (int)($rev['helpful_count'] ?? 0) ?></span>)
+                </button>
               </div>
             </div>
-            <span class="text-[10px] font-mono text-stone-400">5 days ago</span>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <!-- Curated Editorial Benchmark Reviews -->
+          <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200">
+            <div class="flex justify-between items-center mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-full bg-stone-900 text-[#e9c176] font-mono text-xs font-bold flex items-center justify-center">AR</span>
+                <div>
+                  <h5 class="text-xs font-bold text-stone-900">Aarav Singhania</h5>
+                  <span class="text-[10px] font-mono text-emerald-600 font-semibold">✓ Verified Buyer · Mumbai</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-amber-500 text-xs">★★★★★</div>
+                <span class="text-[10px] font-mono text-stone-400">2 days ago</span>
+              </div>
+            </div>
+            <p class="text-stone-700 text-xs sm:text-sm leading-relaxed font-light">
+              "The double-faced cashmere is sublime. The fluid drop shoulder drapes effortlessly over tailored suits. The BlueDart express delivery arrived in Mumbai within 22 hours in a stunning wooden garment box."
+            </p>
           </div>
-          <p class="text-stone-700 text-xs sm:text-sm leading-relaxed font-light">
-            "Impeccable single-needle finishing with no visible seam lines. It feels lighter than air yet remarkably warm. Truly rivaling Parisian couture houses at an authentic direct value."
-          </p>
-        </div>
+
+          <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200">
+            <div class="flex justify-between items-center mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-full bg-stone-900 text-[#e9c176] font-mono text-xs font-bold flex items-center justify-center">NM</span>
+                <div>
+                  <h5 class="text-xs font-bold text-stone-900">Natasha Mehra</h5>
+                  <span class="text-[10px] font-mono text-emerald-600 font-semibold">✓ Verified Buyer · New Delhi</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-amber-500 text-xs">★★★★★</div>
+                <span class="text-[10px] font-mono text-stone-400">5 days ago</span>
+              </div>
+            </div>
+            <p class="text-stone-700 text-xs sm:text-sm leading-relaxed font-light">
+              "Impeccable single-needle finishing with no visible seam lines. It feels lighter than air yet remarkably warm. Truly rivaling Parisian couture houses at an authentic direct value."
+            </p>
+          </div>
+        <?php endif; ?>
       </div>
 
     </div>
@@ -791,6 +865,323 @@
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════════
+     10. WRITE PRODUCT REVIEW MODAL
+══════════════════════════════════════════════════════ -->
+<div id="productReviewModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[125] hidden items-center justify-center p-4" onclick="if(event.target===this)closeReviewModal()">
+  <div class="bg-white p-6 sm:p-8 rounded-3xl max-w-lg w-full border border-stone-200 shadow-2xl text-stone-900 relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+    <div class="flex justify-between items-center pb-4 mb-5 border-b border-stone-200">
+      <div>
+        <span class="text-[10px] font-mono uppercase tracking-widest text-[#a16207] font-bold block">Client Provenance</span>
+        <h3 class="font-serif text-xl font-bold text-stone-950">Review <?= htmlspecialchars($product_title) ?></h3>
+      </div>
+      <button type="button" onclick="closeReviewModal()" class="w-8 h-8 rounded-full bg-stone-100 text-stone-600 hover:text-stone-950 flex items-center justify-center cursor-pointer">
+        ✕
+      </button>
+    </div>
+
+    <?php if (!$is_logged_in): ?>
+      <div class="text-center py-6">
+        <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3 text-xl">
+          🔒
+        </div>
+        <h4 class="font-serif font-bold text-stone-900 mb-2">Member Authentication Required</h4>
+        <p class="text-xs text-stone-600 mb-5 leading-relaxed">
+          To preserve authentic provenance, reviews may only be submitted by verified account holders.
+        </p>
+        <a href="<?= base_url('customers/auth/login?redirect=' . urlencode(current_url())) ?>" class="inline-block px-6 py-3 bg-stone-950 text-white font-mono text-xs uppercase tracking-wider font-bold rounded-xl shadow hover:bg-stone-800 transition-all">
+          Sign In to Account →
+        </a>
+      </div>
+    <?php else: ?>
+      <form id="reviewSubmissionForm" onsubmit="submitProductReview(event)">
+        <!-- Rating Stars Selector -->
+        <div class="mb-4">
+          <label class="block text-xs font-mono uppercase font-bold text-stone-700 mb-1.5">Rating Experience</label>
+          <div class="flex items-center gap-1.5" id="starRatingSelector">
+            <?php for ($i = 1; $i <= 5; $i++): ?>
+              <button type="button" onclick="setReviewRating(<?= $i ?>)" class="text-2xl text-amber-500 hover:text-amber-500 transition-colors star-btn cursor-pointer" data-rating="<?= $i ?>">★</button>
+            <?php endfor; ?>
+            <span class="text-xs font-mono text-stone-500 ml-2" id="ratingTextDesc">5 Stars — Flawless</span>
+          </div>
+          <input type="hidden" id="reviewRatingInput" name="rating" value="5">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-xs font-mono uppercase font-bold text-stone-700 mb-1.5">Headline Summary</label>
+          <input type="text" id="reviewTitleInput" name="title" placeholder="e.g. Exceptional hand-feel and immaculate drape" required class="w-full px-4 py-2.5 text-xs font-mono bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900 text-stone-900 placeholder-stone-400">
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-xs font-mono uppercase font-bold text-stone-700 mb-1.5">Detailed Impression</label>
+          <textarea id="reviewBodyInput" name="body" rows="4" placeholder="Share your experience regarding texture, craftsmanship, sizing, and packaging..." required class="w-full px-4 py-2.5 text-xs font-mono bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-900 text-stone-900 placeholder-stone-400 leading-relaxed"></textarea>
+        </div>
+
+        <div id="reviewFeedbackAlert" class="hidden mb-4 p-3 rounded-xl text-xs font-mono"></div>
+
+        <div class="flex items-center justify-end gap-3">
+          <button type="button" onclick="closeReviewModal()" class="px-5 py-2.5 text-stone-600 hover:text-stone-900 font-mono text-xs uppercase font-bold cursor-pointer">Cancel</button>
+          <button type="submit" id="submitReviewBtn" class="px-6 py-2.5 bg-stone-950 text-white font-mono text-xs uppercase tracking-wider font-bold rounded-xl shadow hover:bg-stone-800 transition-all cursor-pointer">
+            Publish Review →
+          </button>
+        </div>
+      </form>
+    <?php endif; ?>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     11. MOBILE STICKY BOTTOM ACTION BAR (SAFE-AREA AWARE)
+══════════════════════════════════════════════════════ -->
+<aside id="mobileStickyBar" 
+     class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-stone-200 px-4 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] transition-transform duration-300"
+     style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));"
+     aria-label="Quick acquisition bar">
+  <div class="max-w-md mx-auto flex items-center gap-3">
+    <!-- Selected Item Preview -->
+    <div class="min-w-[75px] flex-shrink-0">
+      <span class="font-serif text-base font-bold text-stone-950 block leading-none" id="mobileStickyPrice">₹<?= number_format($price, 0) ?></span>
+      <span class="text-[10px] font-mono text-stone-500 uppercase tracking-tight block truncate mt-1" id="mobileStickySub">
+        Size <span id="mobileStickySize"><?= htmlspecialchars($available_sizes[0] ?? 'M') ?></span>
+      </span>
+    </div>
+
+    <!-- Add to Bag (≥44px tap target) -->
+    <button type="button" 
+            onclick="handlePdpAddToCart()" 
+            aria-label="Add to Wardrobe Bag"
+            class="flex-1 h-12 bg-stone-950 hover:bg-stone-800 active:scale-98 text-white font-button font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+      <span class="material-symbols-outlined text-base">shopping_bag</span>
+      <span>Add to Bag</span>
+    </button>
+
+    <!-- Buy Now (≥44px tap target) -->
+    <button type="button" 
+            id="btnMobileBuyNow"
+            onclick="handlePdpBuyNow()" 
+            aria-label="Buy Now with 1-Click"
+            class="flex-1 h-12 bg-gradient-to-r from-amber-400 via-amber-300 to-[#e9c176] hover:opacity-95 active:scale-98 text-stone-950 font-button font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+      <span class="material-symbols-outlined text-base">bolt</span>
+      <span>Buy Now</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════
+     12. 1-CLICK BUY NOW CONFIRM MODAL (BOTTOM SHEET ON MOBILE)
+══════════════════════════════════════════════════════ -->
+<div id="buyNowModal" 
+     class="fixed inset-0 bg-black/80 backdrop-blur-md z-[150] hidden items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300" 
+     role="dialog" 
+     aria-modal="true" 
+     aria-labelledby="buyNowModalTitle"
+     onclick="if(event.target===this)closeBuyNowModal()">
+  
+  <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full border border-stone-200 shadow-2xl text-stone-900 max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom duration-300">
+    
+    <!-- Modal Header -->
+    <div class="flex justify-between items-center px-6 py-4 border-b border-stone-200 bg-stone-50/80">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-[#a16207] font-bold block">1-Click Fast-Path</span>
+          <h3 id="buyNowModalTitle" class="font-serif text-lg font-bold text-stone-950">Confirm Instant Acquisition</h3>
+        </div>
+      </div>
+      <button type="button" 
+              onclick="closeBuyNowModal()" 
+              aria-label="Close modal" 
+              class="w-8 h-8 rounded-full bg-stone-200/80 hover:bg-stone-300 text-stone-700 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer">
+        ✕
+      </button>
+    </div>
+
+    <!-- Scrollable Modal Content Body -->
+    <div class="p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1">
+      
+      <!-- Error & Warning Alert Banner -->
+      <div id="buyNowErrorAlert" class="hidden p-3.5 rounded-2xl text-xs font-mono border"></div>
+
+      <!-- Item Preview & Quantity Stepper Card -->
+      <div class="p-3.5 bg-stone-50 rounded-2xl border border-stone-200 flex gap-3.5 items-center">
+        <div class="w-16 h-20 bg-white rounded-xl overflow-hidden border border-stone-200 flex-shrink-0 shadow-2xs">
+          <img id="bnModalItemImg" src="<?= htmlspecialchars($primary_image) ?>" alt="<?= htmlspecialchars($product_title) ?>" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 id="bnModalItemTitle" class="font-serif text-sm font-bold text-stone-950 truncate"><?= htmlspecialchars($product_title) ?></h4>
+          <div class="flex items-center gap-2 mt-1">
+            <span id="bnModalItemSize" class="px-2 py-0.5 rounded-md bg-stone-200 text-stone-800 text-[10px] font-mono font-semibold">Size M</span>
+            <span id="bnModalItemColor" class="px-2 py-0.5 rounded-md bg-stone-200 text-stone-800 text-[10px] font-mono font-semibold">Original</span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-stone-200/60">
+            <span class="font-serif text-sm font-bold text-stone-950" id="bnModalItemUnitPrice">₹<?= number_format($price, 0) ?></span>
+            
+            <!-- Quantity Controls in Modal -->
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-mono text-stone-500 uppercase">Qty:</span>
+              <button type="button" onclick="changeBuyNowModalQty(-1)" class="w-6 h-6 rounded-md bg-white hover:bg-stone-200 border border-stone-300 flex items-center justify-center font-bold text-xs text-stone-800 cursor-pointer active:scale-95">-</button>
+              <span id="bnModalQtyDisplay" class="w-5 text-center font-mono font-bold text-xs text-stone-950">1</span>
+              <button type="button" onclick="changeBuyNowModalQty(1)" class="w-6 h-6 rounded-md bg-white hover:bg-stone-200 border border-stone-300 flex items-center justify-center font-bold text-xs text-stone-800 cursor-pointer active:scale-95">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Summary Accordion -->
+      <div class="p-3.5 bg-white rounded-2xl border border-stone-200 space-y-2 text-xs font-mono">
+        <div class="flex justify-between text-stone-600">
+          <span>Subtotal:</span>
+          <span id="bnModalSubtotal" class="text-stone-900 font-semibold">₹<?= number_format($price, 0) ?></span>
+        </div>
+        <div id="bnModalDiscountRow" class="hidden flex justify-between text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">savings</span> Privilege Discount:</span>
+          <span id="bnModalDiscount">-₹0</span>
+        </div>
+        <div class="flex justify-between text-stone-600">
+          <span>White-Glove Express Dispatch:</span>
+          <span id="bnModalShipping" class="text-emerald-700 font-bold">COMPLIMENTARY</span>
+        </div>
+        <div class="flex justify-between text-stone-500 text-[11px]">
+          <span>GST Included (18%):</span>
+          <span id="bnModalTax">₹0</span>
+        </div>
+        <div class="pt-2 border-t border-stone-200 flex justify-between items-baseline">
+          <span class="font-sans font-bold text-stone-900 text-sm">Total Payable:</span>
+          <span id="bnModalTotal" class="font-serif font-bold text-xl text-stone-950">₹<?= number_format($price, 0) ?></span>
+        </div>
+      </div>
+
+      <!-- Subscribe & Save Options Card -->
+      <div id="bnSubscriptionCard" class="hidden p-3.5 bg-stone-50 border border-stone-200 rounded-2xl space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-stone-500 font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-indigo-600">autorenew</span>
+            <span>Delivery Schedule</span>
+          </span>
+          <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200" id="bnSubDiscountBadge">
+            Save 10% Every Order
+          </span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="p-2.5 bg-white rounded-xl border border-stone-200 flex items-center gap-2 cursor-pointer transition-all hover:border-stone-900 has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-[#e9c176]">
+            <input type="radio" name="bn_purchase_type" value="onetime" checked onchange="onBuyNowSubscriptionToggled(false)" class="accent-stone-950">
+            <div class="text-[11px] font-mono font-bold">One-Time</div>
+          </label>
+          <label class="p-2.5 bg-white rounded-xl border border-stone-200 flex items-center gap-2 cursor-pointer transition-all hover:border-stone-900 has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-[#e9c176]">
+            <input type="radio" name="bn_purchase_type" value="subscription" onchange="onBuyNowSubscriptionToggled(true)" class="accent-stone-950">
+            <div class="text-[11px] font-mono font-bold">Subscribe &amp; Save</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- VIP Loyalty Points 1-Tap Toggle -->
+      <div id="bnLoyaltyCard" class="hidden p-3.5 bg-amber-50/70 border border-amber-200/80 rounded-2xl transition-all">
+        <div class="flex items-center justify-between gap-2">
+          <label class="flex items-center gap-2.5 cursor-pointer select-none">
+            <input type="checkbox" id="bnUseLoyaltyPoints" onchange="onBuyNowLoyaltyToggled(this.checked)" class="accent-stone-950 w-4 h-4 rounded cursor-pointer">
+            <div>
+              <span class="text-[11px] font-mono font-bold text-stone-900 block" id="bnLoyaltyTitle">
+                ✨ You have <span id="bnLoyaltyPtsVal">0</span> points — apply ₹<span id="bnLoyaltyDiscVal">0</span> off
+              </span>
+              <span class="text-[10px] text-stone-500 font-sans">NovaDrop VIP Tier Privilege</span>
+            </div>
+          </label>
+          <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-200 text-[#a16207]" id="bnLoyaltyTierBadge">Bronze</span>
+        </div>
+      </div>
+
+      <!-- Shipping Destination Card -->
+      <div class="p-3.5 bg-stone-50 rounded-2xl border border-stone-200">
+        <div class="flex justify-between items-center mb-1.5">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-stone-500 font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-emerald-600">home</span>
+            <span>Delivery Destination</span>
+          </span>
+          <button type="button" onclick="toggleBuyNowAddressPicker()" id="bnChangeAddrBtn" class="text-[11px] font-mono text-[#a16207] hover:underline font-bold cursor-pointer">
+            Change Address
+          </button>
+        </div>
+
+        <div id="bnModalActiveAddress" class="text-xs text-stone-800 leading-relaxed font-sans">
+          <strong id="bnAddrName" class="text-stone-950 font-bold block">Customer</strong>
+          <span id="bnAddrLine1" class="text-stone-600 block">Loading destination...</span>
+          <span id="bnAddrCityState" class="text-stone-600 block"></span>
+          <span id="bnAddrPhone" class="text-stone-500 text-[11px] font-mono block mt-0.5"></span>
+        </div>
+
+        <!-- Address Picker Dropdown (Hidden initially) -->
+        <div id="bnAddressPickerDrawer" class="hidden mt-3 pt-3 border-t border-stone-200 space-y-2">
+          <label class="text-[10px] font-mono uppercase text-stone-500 font-bold block">Select Saved Address:</label>
+          <select id="bnAddressSelect" onchange="onBuyNowAddressSelected(this.value)" class="w-full text-xs bg-white border border-stone-300 p-2 rounded-xl text-stone-900 outline-none">
+            <!-- Populated via preview API -->
+          </select>
+          <a href="<?= base_url('account') ?>" target="_blank" class="text-[10px] font-mono text-[#a16207] hover:underline inline-block mt-1">
+            + Manage Addresses in Account →
+          </a>
+        </div>
+      </div>
+
+      <!-- Payment Method Mode Selector -->
+      <div class="p-3.5 bg-stone-50 rounded-2xl border border-stone-200">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-stone-500 font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-amber-600">account_balance_wallet</span>
+            <span>Payment Method</span>
+          </span>
+          <span class="text-[10px] font-mono text-stone-400">Encrypted</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2" id="bnPaymentOptions">
+          <!-- COD -->
+          <label class="p-2.5 bg-white rounded-xl border border-stone-200 flex items-center gap-2 cursor-pointer hover:border-stone-900 transition-all has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-[#e9c176]">
+            <input type="radio" name="bn_payment" value="cod" checked class="accent-stone-950">
+            <div class="text-[11px] font-mono font-bold">Cash on Delivery</div>
+          </label>
+
+          <!-- Razorpay -->
+          <label id="bnRazorpayLabel" class="p-2.5 bg-white rounded-xl border border-stone-200 flex items-center gap-2 cursor-pointer hover:border-stone-900 transition-all has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-[#e9c176]">
+            <input type="radio" name="bn_payment" value="razorpay" class="accent-stone-950">
+            <div class="text-[11px] font-mono font-bold">UPI / Cards</div>
+          </label>
+
+          <!-- Stripe -->
+          <label id="bnStripeLabel" class="p-2.5 bg-white rounded-xl border border-stone-200 flex items-center gap-2 cursor-pointer hover:border-stone-900 transition-all has-[:checked]:border-stone-950 has-[:checked]:bg-stone-950 has-[:checked]:text-[#e9c176]">
+            <input type="radio" name="bn_payment" value="stripe" class="accent-stone-950">
+            <div class="text-[11px] font-mono font-bold">Global Card</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Insured Logistics Note -->
+      <div class="flex items-center gap-2 text-[10px] font-mono text-stone-500 bg-amber-50/50 p-2.5 rounded-xl border border-amber-200/50">
+        <span class="material-symbols-outlined text-xs text-[#a16207]">verified_user</span>
+        <span>Insured Courier Dispatch · Direct from Lumina Atelier Milan Vault</span>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer Actions (Place Order) -->
+    <div class="p-4 sm:p-6 border-t border-stone-200 bg-stone-50/80 flex flex-col gap-2">
+      <button type="button" 
+              id="btnBuyNowSubmit"
+              onclick="executeBuyNowOrder()"
+              aria-label="Confirm and Place Order"
+              class="w-full py-4 px-6 bg-gradient-to-r from-amber-400 via-amber-300 to-[#e9c176] hover:opacity-95 active:scale-[0.99] text-stone-950 font-button font-extrabold text-sm uppercase tracking-widest rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:pointer-events-none">
+        <span class="material-symbols-outlined text-lg" id="btnBuyNowIcon">bolt</span>
+        <span id="btnBuyNowSubmitText">Place Order · ₹<?= number_format($price, 0) ?></span>
+      </button>
+
+      <div class="text-center text-[10px] font-mono text-stone-400 flex items-center justify-center gap-3">
+        <span>Idempotency Protected</span>
+        <span>•</span>
+        <span>Zero Cart Pollution</span>
+        <span>•</span>
+        <span>256-Bit SSL</span>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script>
 const pdpEnsembleLooksData = <?= json_encode($ensemble_looks ?? []) ?>;
@@ -864,6 +1255,8 @@ function selectProductSize(sizeCode, btn) {
   window.pdpSelectedSize = sizeCode;
   const label = document.getElementById('selectedSizeLabel');
   if (label) label.textContent = sizeCode + ' (Selected)';
+  const stickySize = document.getElementById('mobileStickySize');
+  if (stickySize) stickySize.textContent = sizeCode;
 
   document.querySelectorAll('.size-pill-btn').forEach(b => {
     b.className = 'size-pill-btn bg-stone-50 border border-stone-200 text-stone-800 hover:border-stone-900 hover:bg-stone-100 py-2 px-3 text-center text-xs font-mono rounded-xl transition-all cursor-pointer';
@@ -886,26 +1279,437 @@ function handlePdpAddToCart() {
   }, chosenQty, '✦ Added ' + chosenQty + 'x <?= addslashes(htmlspecialchars($product_title)) ?> (Size ' + chosenSize + ') to Bag!');
 }
 
-function handlePdpInstantCheckout() {
+// ── 1-CLICK BUY NOW FAST-PATH CONTROLLER ──
+window.currentBuyNowData = null;
+window.buyNowPreload = <?= !empty($buy_now_preload) ? json_encode($buy_now_preload) : 'null' ?>;
+
+function handlePdpBuyNow() {
   const chosenSize = window.pdpSelectedSize || 'M';
   const chosenColor = window.pdpSelectedColor || '';
   const chosenQty = window.pdpSelectedQuantity || 1;
-  if (typeof openExpressCheckout === 'function') {
-    openExpressCheckout(
-      <?= (int)$product['id'] ?>,
-      '<?= addslashes(htmlspecialchars($product_title)) ?>',
-      currentProductPrice,
-      '<?= addslashes(htmlspecialchars($primary_image)) ?>',
-      <?= (int)$product['id'] ?>,
-      chosenSize,
-      chosenColor,
-      chosenQty
-    );
+  const currentVariantId = <?= (int)$default_variant['id'] ?>;
+  const unitPrice = typeof currentProductPrice !== 'undefined' ? currentProductPrice : <?= (float)($default_variant['price'] ?: $product['base_price']) ?>;
+
+  // 1. Instant Cache Fast-Path (Returning customer with saved address): 0ms opening!
+  if (window.buyNowPreload && window.buyNowPreload.default_address) {
+    const preload = window.buyNowPreload;
+    const subtotal = Math.round(unitPrice * chosenQty);
+    const shipping = subtotal >= 2999 ? 0 : 0; // Complimentary atelier shipping
+    const tax = Math.round(subtotal * 0.12);
+    const total = subtotal + shipping + tax;
+
+    const instantData = {
+      eligible: true,
+      idempotency_key: preload.idempotency_key,
+      item: {
+        product_id: <?= (int)$product['id'] ?>,
+        variant_id: currentVariantId,
+        title: '<?= addslashes(htmlspecialchars($product_title)) ?>',
+        size: chosenSize,
+        color: chosenColor,
+        quantity: chosenQty,
+        unit_price: unitPrice,
+        image: '<?= addslashes(htmlspecialchars($primary_image)) ?>',
+        stock: 20
+      },
+      address: preload.default_address,
+      saved_addresses: preload.saved_addresses || [preload.default_address],
+      payment_method: preload.default_payment_method || 'cod',
+      totals: {
+        subtotal: subtotal,
+        shipping_amount: shipping,
+        tax_amount: tax,
+        total: total
+      },
+      razorpay_enabled: true,
+      stripe_enabled: false
+    };
+
+    window.currentBuyNowData = instantData;
+    renderBuyNowModal(instantData);
+    openBuyNowModal(); // Opens INSTANTLY, 0ms latency!
+
+    // Asynchronously synchronize preview in background for exact GST & live server token
+    const bgFd = new FormData();
+    bgFd.append('variant_id', currentVariantId);
+    bgFd.append('product_id', <?= (int)$product['id'] ?>);
+    bgFd.append('quantity', chosenQty);
+    bgFd.append('size', chosenSize);
+    bgFd.append('color', chosenColor);
+    bgFd.append('<?= $this->security->get_csrf_token_name() ?>', '<?= $this->security->get_csrf_hash() ?>');
+
+    fetch('<?= base_url("checkout/buy_now_preview") ?>', {
+      method: 'POST',
+      body: bgFd,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res.eligible && res.totals) {
+        window.currentBuyNowData = res;
+        renderBuyNowModal(res);
+      }
+    })
+    .catch(() => {});
+
+    return;
+  }
+
+  // 2. Guest or no saved address: Immediate responsive spinner (< 50ms) and direct redirect
+  const btnDesktop = document.getElementById('btnPdpBuyNow');
+  const btnMobile = document.getElementById('btnMobileBuyNow');
+  if (btnDesktop) {
+    btnDesktop.disabled = true;
+    btnDesktop.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span><span>Preparing Order...</span>';
+  }
+  if (btnMobile) {
+    btnMobile.disabled = true;
+    btnMobile.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span><span>...</span>';
+  }
+
+  window.location.href = '<?= base_url("checkout?buy_now=1") ?>&variant_id=' + currentVariantId + '&quantity=' + chosenQty;
+}
+
+function renderBuyNowModal(data) {
+  const item = data.item;
+  const totals = data.totals;
+  const addr = data.address;
+
+  document.getElementById('bnModalItemTitle').textContent = item.title || 'Curated Atelier Piece';
+  document.getElementById('bnModalItemImg').src = item.image || '<?= addslashes(htmlspecialchars($primary_image)) ?>';
+  document.getElementById('bnModalItemSize').textContent = 'Size ' + (item.size || 'M');
+  document.getElementById('bnModalItemColor').textContent = item.color || 'Original Finish';
+  document.getElementById('bnModalItemUnitPrice').textContent = '₹' + Math.round(item.unit_price).toLocaleString('en-IN');
+  document.getElementById('bnModalQtyDisplay').textContent = item.quantity || 1;
+
+  // Render Subscriptions Card
+  const subCard = document.getElementById('bnSubscriptionCard');
+  if (data.subscription) {
+    subCard.classList.remove('hidden');
+    const discPct = Math.round(data.subscription.discount_pct || 10);
+    document.getElementById('bnSubDiscountBadge').textContent = 'Save ' + discPct + '% Every Order';
+    const onetimeRadio = document.querySelector('input[name="bn_purchase_type"][value="onetime"]');
+    if (onetimeRadio) onetimeRadio.checked = true;
   } else {
-    handlePdpAddToCart();
-    setTimeout(() => { window.location.href = '<?= base_url("checkout") ?>'; }, 300);
+    subCard.classList.add('hidden');
+  }
+
+  // Render Loyalty Points Card
+  const loyaltyCard = document.getElementById('bnLoyaltyCard');
+  if (data.loyalty && data.loyalty.points > 0) {
+    loyaltyCard.classList.remove('hidden');
+    document.getElementById('bnLoyaltyPtsVal').textContent = data.loyalty.points.toLocaleString('en-IN');
+    document.getElementById('bnLoyaltyDiscVal').textContent = Math.round(data.loyalty.points_value).toLocaleString('en-IN');
+    document.getElementById('bnLoyaltyTierBadge').textContent = data.loyalty.tier || 'Bronze';
+    const loyaltyCb = document.getElementById('bnUseLoyaltyPoints');
+    if (loyaltyCb) loyaltyCb.checked = false;
+  } else {
+    loyaltyCard.classList.add('hidden');
+  }
+
+  // Address
+  if (addr) {
+    document.getElementById('bnAddrName').textContent = (addr.first_name || 'Customer') + ' ' + (addr.last_name || '');
+    document.getElementById('bnAddrLine1').textContent = addr.address1 + (addr.address2 ? (', ' + addr.address2) : '');
+    document.getElementById('bnAddrCityState').textContent = addr.city + ', ' + (addr.state || 'Maharashtra') + ' - ' + addr.pincode;
+    document.getElementById('bnAddrPhone').textContent = addr.phone ? ('Phone: ' + addr.phone) : '';
+  }
+
+  // Saved addresses dropdown
+  const addrSelect = document.getElementById('bnAddressSelect');
+  if (addrSelect && data.saved_addresses && data.saved_addresses.length > 0) {
+    addrSelect.innerHTML = data.saved_addresses.map(a => {
+      const isSel = addr && addr.id == a.id ? 'selected' : '';
+      return `<option value="${a.id}" ${isSel}>${a.first_name} ${a.last_name} — ${a.address1}, ${a.city} (${a.pincode})</option>`;
+    }).join('');
+  }
+
+  // Payment radio sync
+  const prefPay = data.payment_method || 'cod';
+  const payRadio = document.querySelector(`input[name="bn_payment"][value="${prefPay}"]`);
+  if (payRadio) payRadio.checked = true;
+
+  // Toggle Razorpay / Stripe option availability
+  const rzpLabel = document.getElementById('bnRazorpayLabel');
+  if (rzpLabel) rzpLabel.style.display = data.razorpay_enabled ? 'flex' : 'none';
+  const strLabel = document.getElementById('bnStripeLabel');
+  if (strLabel) strLabel.style.display = data.stripe_enabled ? 'flex' : 'none';
+
+  // Hide any previous alert
+  const alertEl = document.getElementById('buyNowErrorAlert');
+  if (alertEl) {
+    alertEl.className = 'hidden';
+    alertEl.textContent = '';
+  }
+
+  // Initial calculation
+  recalculateBuyNowTotals();
+}
+
+function recalculateBuyNowTotals() {
+  if (!window.currentBuyNowData) return;
+  const item = window.currentBuyNowData.item;
+  const qty = item.quantity || 1;
+  const baseSubtotal = Math.round(item.unit_price * qty);
+
+  // 1. Subscription Discount Check
+  let subDiscount = 0;
+  const subRadio = document.querySelector('input[name="bn_purchase_type"]:checked');
+  const isSub = subRadio && subRadio.value === 'subscription';
+  if (isSub && window.currentBuyNowData.subscription) {
+    const pct = (window.currentBuyNowData.subscription.discount_pct || 10) / 100;
+    subDiscount = Math.round(baseSubtotal * pct);
+  }
+
+  const subtotalAfterSub = Math.max(0, baseSubtotal - subDiscount);
+  const shipping = subtotalAfterSub < 500 ? 60 : 0;
+
+  // 2. Loyalty Points Discount Check
+  let loyaltyDiscount = 0;
+  const loyaltyCb = document.getElementById('bnUseLoyaltyPoints');
+  if (loyaltyCb && loyaltyCb.checked && window.currentBuyNowData.loyalty && window.currentBuyNowData.loyalty.points > 0) {
+    const maxVal = window.currentBuyNowData.loyalty.points_value || 0;
+    loyaltyDiscount = Math.min(maxVal, subtotalAfterSub);
+  }
+
+  const totalDiscount = subDiscount + loyaltyDiscount;
+  const finalTotal = Math.max(0, subtotalAfterSub + shipping - loyaltyDiscount);
+  const tax = Math.round(finalTotal - (finalTotal / 1.18));
+
+  window.currentBuyNowData.totals = {
+    subtotal: baseSubtotal,
+    discount_amount: totalDiscount,
+    shipping_amount: shipping,
+    tax_amount: tax,
+    total: finalTotal
+  };
+
+  document.getElementById('bnModalSubtotal').textContent = '₹' + baseSubtotal.toLocaleString('en-IN');
+
+  const discRow = document.getElementById('bnModalDiscountRow');
+  if (totalDiscount > 0 && discRow) {
+    discRow.classList.remove('hidden');
+    document.getElementById('bnModalDiscount').textContent = '-₹' + Math.round(totalDiscount).toLocaleString('en-IN');
+  } else if (discRow) {
+    discRow.classList.add('hidden');
+  }
+
+  document.getElementById('bnModalShipping').textContent = shipping > 0 ? ('₹' + shipping.toLocaleString('en-IN')) : 'COMPLIMENTARY';
+  document.getElementById('bnModalTax').textContent = '₹' + tax.toLocaleString('en-IN');
+  document.getElementById('bnModalTotal').textContent = '₹' + Math.round(finalTotal).toLocaleString('en-IN');
+  document.getElementById('btnBuyNowSubmitText').textContent = 'Place Order · ₹' + Math.round(finalTotal).toLocaleString('en-IN');
+}
+
+function onBuyNowLoyaltyToggled(checked) {
+  recalculateBuyNowTotals();
+}
+
+function onBuyNowSubscriptionToggled(isSub) {
+  recalculateBuyNowTotals();
+}
+
+function changeBuyNowModalQty(delta) {
+  if (!window.currentBuyNowData) return;
+  const item = window.currentBuyNowData.item;
+  const maxStock = item.stock || 20;
+  const newQty = Math.max(1, Math.min(maxStock, (item.quantity || 1) + delta));
+  
+  item.quantity = newQty;
+  document.getElementById('bnModalQtyDisplay').textContent = newQty;
+  recalculateBuyNowTotals();
+}
+
+function toggleBuyNowAddressPicker() {
+  const drawer = document.getElementById('bnAddressPickerDrawer');
+  if (drawer) drawer.classList.toggle('hidden');
+}
+
+function onBuyNowAddressSelected(addressId) {
+  if (!window.currentBuyNowData || !window.currentBuyNowData.saved_addresses) return;
+  const selected = window.currentBuyNowData.saved_addresses.find(a => a.id == addressId);
+  if (selected) {
+    window.currentBuyNowData.selected_address_id = selected.id;
+    document.getElementById('bnAddrName').textContent = (selected.first_name || 'Customer') + ' ' + (selected.last_name || '');
+    document.getElementById('bnAddrLine1').textContent = selected.address1 + (selected.address2 ? (', ' + selected.address2) : '');
+    document.getElementById('bnAddrCityState').textContent = selected.city + ', ' + (selected.state || 'Maharashtra') + ' - ' + selected.pincode;
+    document.getElementById('bnAddrPhone').textContent = selected.phone ? ('Phone: ' + selected.phone) : '';
   }
 }
+
+function openBuyNowModal() {
+  const modal = document.getElementById('buyNowModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    
+    // Accessibility: Esc key listener
+    window.addEventListener('keydown', onBuyNowModalKeyDown);
+    
+    // Accessibility: Focus submit button
+    const btn = document.getElementById('btnBuyNowSubmit');
+    if (btn) btn.focus();
+  }
+}
+
+function closeBuyNowModal() {
+  const modal = document.getElementById('buyNowModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+    window.removeEventListener('keydown', onBuyNowModalKeyDown);
+  }
+}
+
+function onBuyNowModalKeyDown(e) {
+  if (e.key === 'Escape') {
+    closeBuyNowModal();
+  }
+}
+
+function executeBuyNowOrder() {
+  if (!window.currentBuyNowData) return;
+
+  const btn = document.getElementById('btnBuyNowSubmit');
+  const btnText = document.getElementById('btnBuyNowSubmitText');
+  const btnIcon = document.getElementById('btnBuyNowIcon');
+  const alertEl = document.getElementById('buyNowErrorAlert');
+
+  // Idempotency: lock button on click to block double tap / concurrent submission
+  btn.disabled = true;
+  btnIcon.className = 'material-symbols-outlined text-lg animate-spin';
+  btnIcon.textContent = 'progress_activity';
+  btnText.textContent = 'Securing Order & Dispatching...';
+
+  if (alertEl) {
+    alertEl.className = 'hidden';
+    alertEl.textContent = '';
+  }
+
+  const item = window.currentBuyNowData.item;
+  const payRadio = document.querySelector('input[name="bn_payment"]:checked');
+  const paymentMethod = payRadio ? payRadio.value : 'cod';
+  const addressId = window.currentBuyNowData.selected_address_id || (window.currentBuyNowData.address ? window.currentBuyNowData.address.id : 0);
+
+  const fd = new FormData();
+  fd.append('idempotency_key', window.currentBuyNowData.idempotency_key);
+  fd.append('variant_id', item.variant_id);
+  fd.append('quantity', item.quantity || 1);
+  fd.append('expected_price', item.unit_price);
+  const useLoyalty = document.getElementById('bnUseLoyaltyPoints')?.checked ? 1 : 0;
+  const isSub = document.querySelector('input[name="bn_purchase_type"]:checked')?.value === 'subscription' ? 1 : 0;
+  const subPlanId = window.currentBuyNowData.subscription?.plan_id || 0;
+
+  fd.append('address_id', addressId);
+  fd.append('payment_method', paymentMethod);
+  fd.append('apply_loyalty_points', useLoyalty);
+  fd.append('is_subscription', isSub);
+  fd.append('subscription_plan_id', subPlanId);
+  fd.append(window.currentBuyNowData.csrf_name || '<?= $this->security->get_csrf_token_name() ?>', window.currentBuyNowData.csrf_hash || '<?= $this->security->get_csrf_hash() ?>');
+
+  fetch('<?= base_url("checkout/buy_now") ?>', {
+    method: 'POST',
+    body: fd,
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+  .then(r => r.json().then(data => ({ status: r.status, data: data })))
+  .then(({ status, data }) => {
+    // 1. Check for Price Change error
+    if (data.price_changed && data.new_price) {
+      btn.disabled = false;
+      btnIcon.className = 'material-symbols-outlined text-lg';
+      btnIcon.textContent = 'check';
+      btnText.textContent = 'Accept ₹' + Math.round(data.new_price).toLocaleString('en-IN') + ' & Place Order';
+
+      item.unit_price = data.new_price;
+      changeBuyNowModalQty(0); // recalculates with new price
+
+      if (alertEl) {
+        alertEl.className = 'p-3 rounded-xl text-xs font-mono bg-amber-50 text-amber-900 border border-amber-300 block mb-3';
+        alertEl.innerHTML = '<strong>Price Update:</strong> The atelier price changed to ₹' + Math.round(data.new_price).toLocaleString('en-IN') + '. Click "Accept & Place Order" above to confirm with this price.';
+      }
+      return;
+    }
+
+    // 2. Check for Stock Depletion / Insufficient Stock
+    if (data.available_stock !== undefined) {
+      btn.disabled = false;
+      btnIcon.className = 'material-symbols-outlined text-lg';
+      btnIcon.textContent = 'bolt';
+      btnText.textContent = 'Place Order · ₹' + Math.round(window.currentBuyNowData.totals.total).toLocaleString('en-IN');
+
+      if (alertEl) {
+        alertEl.className = 'p-3 rounded-xl text-xs font-mono bg-red-50 text-red-800 border border-red-300 block mb-3';
+        if (data.available_stock > 0) {
+          alertEl.innerHTML = '<strong>Limited Stock:</strong> Only ' + data.available_stock + ' unit(s) remaining. We adjusted your quantity to ' + data.available_stock + ' — tap Place Order to proceed.';
+          item.quantity = data.available_stock;
+          changeBuyNowModalQty(0);
+        } else {
+          alertEl.innerHTML = '<strong>Sold Out:</strong> This piece just sold out. Please close this window to browse similar pieces in the collection.';
+        }
+      }
+      return;
+    }
+
+    // 3. Check for other server errors / session timeouts
+    if (!data.success) {
+      btn.disabled = false;
+      btnIcon.className = 'material-symbols-outlined text-lg';
+      btnIcon.textContent = 'bolt';
+      btnText.textContent = 'Place Order · ₹' + Math.round(window.currentBuyNowData.totals.total).toLocaleString('en-IN');
+
+      if (alertEl) {
+        alertEl.className = 'p-3 rounded-xl text-xs font-mono bg-red-50 text-red-800 border border-red-300 block mb-3';
+        if (data.login_required || status === 401) {
+          alertEl.innerHTML = '<strong>Session Timed Out:</strong> For your security, please <a href="<?= base_url("account/login") ?>" class="underline font-bold text-red-950">log in here</a> to complete your instant acquisition.';
+        } else {
+          alertEl.innerHTML = '<strong>Order Notice:</strong> ' + (data.message || data.error || 'Unable to place order. Please review your details and try again.');
+        }
+      }
+      return;
+    }
+
+    // 4. Success state routing
+    btnText.textContent = 'Order Confirmed! Redirecting...';
+
+    if (data.gateway === 'razorpay' && data.gateway_data && typeof Razorpay !== 'undefined') {
+      const rzpOptions = Object.assign({}, data.gateway_data, {
+        handler: function(response) {
+          window.location.href = '<?= base_url("payments/razorpay/verify") ?>?order_id=' + data.order_id + '&razorpay_payment_id=' + response.razorpay_payment_id + '&razorpay_order_id=' + response.razorpay_order_id + '&razorpay_signature=' + response.razorpay_signature;
+        },
+        modal: {
+          ondismiss: function() {
+            window.location.href = data.redirect_url;
+          }
+        }
+      });
+      const rzp = new Razorpay(rzpOptions);
+      rzp.open();
+    } else if (data.redirect_url) {
+      window.location.href = data.redirect_url;
+    } else {
+      window.location.href = '<?= base_url("checkout/success/") ?>' + data.order_id;
+    }
+  })
+  .catch(err => {
+    console.error('Buy Now Submit Error:', err);
+    btn.disabled = false;
+    btnIcon.className = 'material-symbols-outlined text-lg';
+    btnIcon.textContent = 'bolt';
+    btnText.textContent = 'Place Order · ₹' + Math.round(window.currentBuyNowData.totals.total).toLocaleString('en-IN');
+
+    if (alertEl) {
+      alertEl.className = 'p-3 rounded-xl text-xs font-mono bg-red-50 text-red-800 border border-red-300 block mb-3';
+      alertEl.innerHTML = '<strong>Connection Interrupted:</strong> We could not confirm server response. No duplicate charge was made. Please check your network and tap "Place Order" again.';
+    }
+  });
+}
+
+function handlePdpInstantCheckout() {
+  handlePdpBuyNow();
+}
+
 
 // ── VIP Privilege Coupon Application ──
 function applyVipCoupon() {
@@ -1181,6 +1985,99 @@ function submitRestockNotify(e) {
       fb.classList.remove('hidden');
       fb.className = 'text-xs text-center font-medium mt-2 text-red-600';
       fb.textContent = 'Unable to connect to server. Please try again.';
+    });
+}
+
+function openReviewModal() {
+  const m = document.getElementById('productReviewModal');
+  if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+}
+function closeReviewModal() {
+  const m = document.getElementById('productReviewModal');
+  if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+}
+function setReviewRating(r) {
+  const inp = document.getElementById('reviewRatingInput');
+  if (inp) inp.value = r;
+  const desc = ['1 Star — Poor', '2 Stars — Below Expectations', '3 Stars — Acceptable', '4 Stars — Very Good', '5 Stars — Flawless'];
+  const lbl = document.getElementById('ratingTextDesc');
+  if (lbl) lbl.textContent = desc[r - 1] || (r + ' Stars');
+  document.querySelectorAll('#starRatingSelector .star-btn').forEach((b, idx) => {
+    if (idx < r) {
+      b.classList.add('text-amber-500');
+      b.classList.remove('text-stone-300');
+    } else {
+      b.classList.remove('text-amber-500');
+      b.classList.add('text-stone-300');
+    }
+  });
+}
+function submitProductReview(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitReviewBtn');
+  const alertEl = document.getElementById('reviewFeedbackAlert');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Publishing...';
+  }
+
+  const fd = new FormData();
+  fd.append('product_id', <?= (int)$product['id'] ?>);
+  fd.append('rating', document.getElementById('reviewRatingInput') ? document.getElementById('reviewRatingInput').value : 5);
+  fd.append('title', document.getElementById('reviewTitleInput') ? document.getElementById('reviewTitleInput').value : '');
+  fd.append('body', document.getElementById('reviewBodyInput') ? document.getElementById('reviewBodyInput').value : '');
+  fd.append('<?= $this->security->get_csrf_token_name() ?>', '<?= $this->security->get_csrf_hash() ?>');
+
+  fetch('<?= base_url('products/ajax_submit_review') ?>', { method: 'POST', body: fd })
+    .then(r => r.json())
+    .then(res => {
+      if (alertEl) alertEl.classList.remove('hidden');
+      if (res.success) {
+        if (alertEl) {
+          alertEl.className = 'mb-4 p-3 rounded-xl text-xs font-mono bg-emerald-50 text-emerald-800 border border-emerald-200';
+          alertEl.textContent = res.message;
+        }
+        setTimeout(() => {
+          closeReviewModal();
+          location.reload();
+        }, 1500);
+      } else {
+        if (alertEl) {
+          alertEl.className = 'mb-4 p-3 rounded-xl text-xs font-mono bg-red-50 text-red-800 border border-red-200';
+          alertEl.textContent = res.message || 'Submission failed. Please try again.';
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Publish Review →';
+        }
+      }
+    })
+    .catch(() => {
+      if (alertEl) {
+        alertEl.classList.remove('hidden');
+        alertEl.className = 'mb-4 p-3 rounded-xl text-xs font-mono bg-red-50 text-red-800 border border-red-200';
+        alertEl.textContent = 'Network error. Please try again.';
+      }
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Publish Review →';
+      }
+    });
+}
+function markReviewHelpful(reviewId, btn) {
+  const fd = new FormData();
+  fd.append('review_id', reviewId);
+  fd.append('<?= $this->security->get_csrf_token_name() ?>', '<?= $this->security->get_csrf_hash() ?>');
+
+  fetch('<?= base_url('products/ajax_helpful') ?>', { method: 'POST', body: fd })
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        const countSpan = btn.querySelector('.helpful-count');
+        if (countSpan) countSpan.textContent = res.helpful_count;
+        btn.classList.add('text-emerald-700', 'font-bold');
+        btn.disabled = true;
+      }
     });
 }
 </script>

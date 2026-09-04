@@ -1,6 +1,11 @@
 RewriteEngine On
 RewriteBase /Dropshipping/
 
+# ── HTTPS Enforcement (skip for localhost / 127.0.0.1 in dev) ─────────
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1|::1) [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
 # ── Deny access to sensitive files ───────────────────────────────
 RewriteRule ^\.env - [F,L]
 RewriteRule ^\.env\..* - [F,L]
@@ -34,6 +39,11 @@ Header always set X-Frame-Options "SAMEORIGIN"
 Header always set X-XSS-Protection "1; mode=block"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
 Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+
+# Turn off PHP error display via Apache (production safety net)
+php_flag display_errors Off
+php_flag log_errors On
 
 # Cache static assets
 <FilesMatch "\.(jpg|jpeg|png|gif|svg|webp|ico|woff|woff2|ttf|css|js)$">

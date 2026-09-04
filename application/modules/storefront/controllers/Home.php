@@ -116,6 +116,16 @@ class Home extends MY_Controller
                 ->limit(1)->get()->row_array();
             if (empty($sticky_product) && !empty($featured[0])) $sticky_product = $featured[0];
 
+            // 9. Hero Slides (multi-slide interactive carousel with background video & image support)
+            $hero_slides = [];
+            if ($this->db->table_exists('hero_slides')) {
+                $sq = $this->db->where('is_active', 1)->order_by('sort_order', 'ASC')->order_by('id', 'ASC');
+                if ($this->db->field_exists('store_id', 'hero_slides')) {
+                    $sq->where('store_id', $this->store_id);
+                }
+                $hero_slides = $sq->get('hero_slides')->result_array();
+            }
+
             $data = [
                 'title'            => env('APP_NAME', 'NovaDrop') . ' — Autonomous Performance Haute Couture',
                 'round_categories' => $round_categories,
@@ -126,6 +136,7 @@ class Home extends MY_Controller
                 'reviews'          => $reviews,
                 'announcement'     => $announcement,
                 'home_settings'    => $home_settings,
+                'hero_slides'      => $hero_slides,
                 'sticky_product'   => $sticky_product ?? [],
                 'cart_count'       => $this->_get_cart_count(),
             ];

@@ -319,10 +319,16 @@ class Order_model extends MY_Model
             // Execute synchronously if class exists for real-time dispatch
             if (file_exists(APPPATH . 'jobs/VendorOrderRoutingJob.php')) {
                 require_once APPPATH . 'jobs/VendorOrderRoutingJob.php';
+                $db_host = function_exists('_env') ? _env('DB_HOST', '127.0.0.1') : (getenv('DB_HOST') ?: '127.0.0.1');
+                $db_port = function_exists('_env') ? _env('DB_PORT', '3306') : (getenv('DB_PORT') ?: '3306');
+                $db_name = function_exists('_env') ? _env('DB_NAME', 'novadrop') : (getenv('DB_NAME') ?: 'novadrop');
+                $db_user = function_exists('_env') ? _env('DB_USER', 'root') : (getenv('DB_USER') ?: 'root');
+                $db_pass = function_exists('_env') ? _env('DB_PASS', '') : (getenv('DB_PASS') ?: '');
+
                 $pdo = new PDO(
-                    sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', getenv('DB_HOST') ?: '127.0.0.1', getenv('DB_PORT') ?: '3306', getenv('DB_NAME') ?: 'novadrop'),
-                    getenv('DB_USER') ?: 'root',
-                    getenv('DB_PASS') ?: '',
+                    "mysql:host={$db_host};port={$db_port};dbname={$db_name};charset=utf8mb4",
+                    $db_user,
+                    $db_pass,
                     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
                 );
                 $job = new \App\Jobs\VendorOrderRoutingJob($pdo, $this->store_id);

@@ -773,5 +773,111 @@ class Settings extends MY_Controller
         $this->load->view('admin/settings/health', $data);
         $this->load->view('admin/layout/footer', $data);
     }
+
+    // ─── Hero Slider & Video Background Manager ──────────────
+    public function hero()
+    {
+        if ($this->input->method() === 'post') {
+            $act = $this->input->post('action');
+            if ($act === 'create' || $act === 'update') {
+                $id = (int)$this->input->post('id');
+                
+                $title_main   = trim($this->input->post('title_main', true) ?: 'Couture in Motion.');
+                $title_accent = trim($this->input->post('title_accent', true) ?: 'Bespoke Form.');
+                $badge        = trim($this->input->post('badge', true) ?: 'Autumn / Winter 2026 Archive · Runway Edition');
+                $subtitle     = trim($this->input->post('subtitle', true) ?: '');
+                $media_type   = $this->input->post('media_type') === 'video' ? 'video' : 'image';
+                $cta_text     = trim($this->input->post('cta_text', true) ?: 'Explore Boutique');
+                $cta_url      = trim($this->input->post('cta_url', true) ?: 'shop');
+                $sec_text     = trim($this->input->post('secondary_text', true) ?: 'AI Stylist');
+                $sec_act      = trim($this->input->post('secondary_action', true) ?: 'openStylistModal()');
+                $sort_order   = (int)$this->input->post('sort_order');
+                $is_active    = $this->input->post('is_active') !== null ? 1 : 0;
+                
+                $video_url = trim($this->input->post('video_url', true));
+                $image_url = trim($this->input->post('image_url', true));
+                
+                // Direct video file upload
+                if (!empty($_FILES['video_file']['name']) && $_FILES['video_file']['error'] === UPLOAD_ERR_OK) {
+                    $ext = strtolower(pathinfo($_FILES['video_file']['name'], PATHINFO_EXTENSION));
+                    if (in_array($ext, ['mp4', 'webm', 'ogg', 'mov'])) {
+                        $up_dir = FCPATH . 'assets/videos/';
+                        if (!is_dir($up_dir)) @mkdir($up_dir, 0755, true);
+                        $fname = 'hero_vid_' . time() . '.' . $ext;
+                        if (move_uploaded_file($_FILES['video_file']['tmp_name'], $up_dir . $fname)) {
+                            $video_url = 'assets/videos/' . $fname;
+                        }
+                    }
+                }
+                
+                // Direct image file upload
+                if (!empty($_FILES['image_file']['name']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
+                    $ext = strtolower(pathinfo($_FILES['image_file']['name'], PATHINFO_EXTENSION));
+                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                        $up_dir = FCPATH . 'assets/img/';
+                        if (!is_dir($up_dir)) @mkdir($up_dir, 0755, true);
+                        $fname = 'hero_img_' . time() . '.' . $ext;
+                        if (move_uploaded_file($_FILES['image_file']['tmp_name'], $up_dir . $fname)) {
+                            $image_url = 'assets/img/' . $fname;
+                        }
+                    }
+                }
+                
+                $slide_data = [
+                    'store_id'         => $this->store_id,
+                    'badge'            => $badge,
+                    'title_main'       => $title_main,
+                    'title_accent'     => $title_accent,
+                    'subtitle'         => $subtitle,
+                    'media_type'       => $media_type,
+                    'video_url'        => $video_url,
+                    'image_url'        => $image_url,
+                    'cta_text'         => $cta_text,
+                    'cta_url'          => $cta_url,
+                    'secondary_text'   => $sec_text,
+                    'secondary_action' => $sec_act,
+                    'sort_order'       => $sort_order,
+                    'is_active'        => $is_active,
+                    'updated_at'       => date('Y-m-d H:i:s'),
+                ];
+                
+                if ($id > 0) {
+                    $this->db->where('id', $id)->update('hero_slides', $slide_data);
+                    $this->session->set_flashdata('success', '✨ Hero Slide updated successfully!');
+                } else {
+                    $slide_data['created_at'] = date('Y-m-d H:i:s');
+                    $this->db->insert('hero_slides', $slide_data);
+                    $this->session->set_flashdata('success', '✨ New Hero Slide created and published to live storefront!');
+                }
+            } elseif ($act === 'toggle') {
+                $id  = (int)$this->input->post('id');
+                $cur = $this->db->where('id', $id)->get('hero_slides')->row_array();
+                if ($cur) {
+                    $new_state = $cur['is_active'] ? 0 : 1;
+                    $this->db->where('id', $id)->update('hero_slides', ['is_active' => $new_state]);
+                    $this->session->set_flashdata('success', 'Slide visibility status updated.');
+                }
+            } elseif ($act === 'delete') {
+                $id = (int)$this->input->post('id');
+                $this->db->where('id', $id)->delete('hero_slides');
+                $this->session->set_flashdata('success', 'Slide removed from hero carousel.');
+            }
+            redirect('admin/settings/hero');
+        }
+
+        $slides = $this->db->where('store_id', $this->store_id)
+            ->order_by('sort_order', 'ASC')
+            ->order_by('id', 'ASC')
+            ->get('hero_slides')
+            ->result_array();
+
+        $data = [
+            'title'  => 'Hero Slider & Video Background — NovaDrop Admin',
+            'slides' => $slides
+        ];
+        $this->load->view('admin/layout/header', $data);
+        $this->load->view('admin/settings/hero', $data);
+        $this->load->view('admin/layout/footer', $data);
+    }
 }
 

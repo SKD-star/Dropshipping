@@ -101,6 +101,9 @@
       <p class="mb-0 small" style="opacity:.85;">Customize brand colors, store typography, hero banners, and announcement identity across the live store</p>
     </div>
     <div class="d-flex gap-2">
+      <a href="<?= base_url('admin/settings/hero') ?>" class="btn btn-warning btn-sm font-weight-bold px-3 shadow-sm text-dark" style="border-radius:8px;background:#e9c176;border-color:#e9c176;">
+        <i class="fa fa-film mr-1"></i> 🎬 Hero Slider &amp; Video Backgrounds
+      </a>
       <a href="<?= base_url() ?>" target="_blank" class="btn btn-light btn-sm font-weight-bold px-3 shadow-sm" style="border-radius:8px;">
         <i class="fa fa-external-link-alt mr-1"></i> View Live Store
       </a>

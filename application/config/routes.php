@@ -27,6 +27,9 @@ $route['gallery']                                   = 'storefront/shop/index';
 $route['collections']                               = 'storefront/collections/index';
 $route['collections/(:any)']                        = 'storefront/shop/collection/$1';
 $route['shop/(:any)']                               = 'storefront/shop/collection/$1';
+$route['products/ajax_submit_review']                  = 'storefront/products/ajax_submit_review';
+$route['products/ajax_notify_restock']                 = 'storefront/products/ajax_notify_restock';
+$route['products/ajax_helpful']                        = 'storefront/products/ajax_helpful';
 $route['products/(:any)']                           = 'storefront/products/detail/$1';
 $route['product/(:any)']                            = 'storefront/products/detail/$1';
 $route['tracking']                                  = 'storefront/pages/tracking';
@@ -50,6 +53,9 @@ $route['cart/apply-discount']                       = 'cart/index/apply_discount
 
 // ─── Checkout ───────────────────────────────────────────────
 $route['checkout']                                  = 'checkout/index/start';
+$route['checkout/buy_now_preview']                  = 'checkout/index/buy_now_preview';
+$route['checkout/buy_now']                          = 'checkout/index/buy_now';
+$route['checkout/buy_again']                        = 'checkout/index/buy_again';
 $route['checkout/shipping']                         = 'checkout/index/shipping';
 $route['checkout/payment']                          = 'checkout/index/payment';
 $route['checkout/confirm']                          = 'checkout/index/confirm';
@@ -81,6 +87,8 @@ $route['account/orders/(:num)']                     = 'customers/account/order_d
 $route['account/wishlist']                          = 'customers/account/wishlist';
 $route['account/addresses']                         = 'customers/account/addresses';
 $route['account/profile']                           = 'customers/account/profile';
+$route['account/set_default_preferences']           = 'customers/account/set_default_preferences';
+$route['account/save_address']                      = 'customers/account/save_address';
 
 // ─── Admin (Unified Modern UI) ──────────────────────────────
 $route['admin']                                     = 'admin/dashboard/index';

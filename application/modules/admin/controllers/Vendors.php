@@ -172,19 +172,35 @@ class Vendors extends MY_Controller
         $has_payout_col = $this->db->field_exists('payout_status', 'order_items');
         $has_comm_col   = $this->db->field_exists('vendor_commission_amount', 'order_items');
         $payout_cols    = $this->db->list_fields('vendor_payouts');
+        $period_start   = date('Y-m-01');
+        $period_end     = date('Y-m-d');
 
         foreach ($approved as $v) {
-            // Calculate unpaid payable balance for this vendor
-            $comm_sql = $has_comm_col ? 'COALESCE(vendor_commission_amount, 0)' : '0';
-            $this->db->select("COALESCE(SUM(total_price - {$comm_sql}), 0) AS total", false)
-                     ->where('vendor_id', $v['id']);
-            
-            if ($has_payout_col) {
-                $this->db->where('payout_status', 'pending');
+            // Prevent duplicate payout for same vendor / same period
+            $dup = $this->db->where('vendor_id', $v['id'])
+                            ->where('period_start', $period_start)
+                            ->where('period_end', $period_end)
+                            ->where_in('status', ['pending', 'paid'])
+                            ->count_all_results('vendor_payouts');
+            if ($dup > 0) {
+                continue; // Already generated for this period
             }
-            $unpaid = $this->db->get('order_items')->row_array();
 
-            $amount = (float)($unpaid['total'] ?? 0);
+            // CRITICAL: Only include items from PAID orders that are not cancelled/refunded
+            // Join orders to verify payment_status — never pay out on unverified revenue
+            $comm_sql = $has_comm_col ? 'COALESCE(oi.vendor_commission_amount, 0)' : '0';
+            $payout_status_filter = $has_payout_col ? "AND oi.payout_status = 'pending'" : '';
+            $row = $this->db->query("
+                SELECT COALESCE(SUM(oi.total_price - {$comm_sql}), 0) AS total
+                FROM order_items oi
+                INNER JOIN orders o ON o.id = oi.order_id
+                WHERE oi.vendor_id = ?
+                  AND o.payment_status = 'paid'
+                  AND o.status NOT IN ('cancelled', 'refunded')
+                  {$payout_status_filter}
+            ", [$v['id']])->row_array();
+
+            $amount = (float)($row['total'] ?? 0);
             if ($amount > 0) {
                 $p_row = [
                     'vendor_id'    => $v['id'],
@@ -192,24 +208,31 @@ class Vendors extends MY_Controller
                     'net_payable'  => $amount,
                     'amount'       => $amount,
                     'status'       => 'pending',
-                    'period_start' => date('Y-m-01'),
-                    'period_end'   => date('Y-m-d'),
+                    'period_start' => $period_start,
+                    'period_end'   => $period_end,
                     'created_at'   => date('Y-m-d H:i:s'),
                 ];
                 $clean_payout = array_intersect_key($p_row, array_flip($payout_cols));
                 $this->db->insert('vendor_payouts', $clean_payout);
 
                 if ($has_payout_col) {
-                    $this->db->where('vendor_id', $v['id'])
-                             ->where('payout_status', 'pending')
-                             ->update('order_items', ['payout_status' => 'in_payout']);
+                    // Mark items as in_payout so they can't be counted again next run
+                    $this->db->query("
+                        UPDATE order_items oi
+                        INNER JOIN orders o ON o.id = oi.order_id
+                        SET oi.payout_status = 'in_payout'
+                        WHERE oi.vendor_id = ?
+                          AND oi.payout_status = 'pending'
+                          AND o.payment_status = 'paid'
+                          AND o.status NOT IN ('cancelled', 'refunded')
+                    ", [$v['id']]);
                 }
                 $generated++;
             }
         }
 
         $this->audit('vendor.batch_payouts_run', 'vendors', 0, [], ['generated' => $generated]);
-        $this->session->set_flashdata('success', "Generated {$generated} pending payout settlements.");
+        $this->session->set_flashdata('success', "Generated {$generated} pending payout settlements (paid orders only).");
         redirect('admin/vendors/payouts');
     }
 
@@ -274,6 +297,71 @@ class Vendors extends MY_Controller
 
         $this->load->view('admin/layout/header', $data);
         $this->load->view('admin/vendors/detail', $data);
+        $this->load->view('admin/layout/footer', $data);
+    }
+
+    // ─── Marketplace Analytics ───────────────────────────────
+    public function analytics()
+    {
+        // 1. Overall Marketplace Metrics
+        $gmv_res = $this->db->query("
+            SELECT 
+                COALESCE(SUM(oi.total_price), 0) AS total_gmv,
+                COALESCE(SUM(oi.vendor_commission_amount), 0) AS total_commission,
+                COUNT(DISTINCT oi.order_id) AS total_orders,
+                COUNT(oi.id) AS total_units_sold
+            FROM order_items oi
+            INNER JOIN orders o ON o.id = oi.order_id
+            WHERE oi.vendor_id IS NOT NULL
+              AND o.payment_status = 'paid'
+              AND o.status NOT IN ('cancelled', 'refunded')
+        ")->row_array();
+
+        $payout_stats = $this->db->query("
+            SELECT 
+                COALESCE(SUM(CASE WHEN status = 'paid' THEN net_payable ELSE 0 END), 0) AS total_paid_out,
+                COALESCE(SUM(CASE WHEN status = 'pending' THEN net_payable ELSE 0 END), 0) AS pending_settlements,
+                COUNT(CASE WHEN status = 'paid' THEN 1 END) AS paid_cycles_count,
+                COUNT(CASE WHEN status = 'pending' THEN 1 END) AS pending_cycles_count
+            FROM vendor_payouts
+        ")->row_array();
+
+        // 2. Vendor Performance Breakdown
+        $vendor_perf = $this->db->query("
+            SELECT 
+                v.id, v.business_name, v.contact_name, v.email, v.rating, v.status,
+                v.commission_type, v.commission_value,
+                (SELECT COUNT(*) FROM vendor_products vp WHERE vp.vendor_id = v.id) AS active_products,
+                COALESCE(SUM(CASE WHEN o.payment_status = 'paid' AND o.status NOT IN ('cancelled','refunded') THEN oi.total_price ELSE 0 END), 0) AS vendor_gmv,
+                COALESCE(SUM(CASE WHEN o.payment_status = 'paid' AND o.status NOT IN ('cancelled','refunded') THEN oi.vendor_commission_amount ELSE 0 END), 0) AS platform_commission,
+                COALESCE(SUM(CASE WHEN o.payment_status = 'paid' AND o.status NOT IN ('cancelled','refunded') THEN (oi.total_price - COALESCE(oi.vendor_commission_amount,0)) ELSE 0 END), 0) AS net_earned,
+                COUNT(DISTINCT CASE WHEN o.payment_status = 'paid' THEN oi.order_id END) AS paid_orders_count
+            FROM vendors v
+            LEFT JOIN order_items oi ON oi.vendor_id = v.id
+            LEFT JOIN orders o ON o.id = oi.order_id
+            GROUP BY v.id
+            ORDER BY vendor_gmv DESC
+        ")->result_array();
+
+        // 3. Recent settlements
+        $recent_payouts = $this->db
+            ->select('vp.*, v.business_name')
+            ->from('vendor_payouts vp')
+            ->join('vendors v', 'v.id = vp.vendor_id', 'left')
+            ->order_by('vp.id', 'DESC')
+            ->limit(10)
+            ->get()->result_array();
+
+        $data = [
+            'title'          => 'Vendor Marketplace Analytics — NovaDrop Admin',
+            'gmv'            => $gmv_res,
+            'payouts'        => $payout_stats,
+            'vendor_perf'    => $vendor_perf,
+            'recent_payouts' => $recent_payouts,
+        ];
+
+        $this->load->view('admin/layout/header', $data);
+        $this->load->view('admin/vendors/analytics', $data);
         $this->load->view('admin/layout/footer', $data);
     }
 }

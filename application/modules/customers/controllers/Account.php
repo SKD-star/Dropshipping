@@ -45,14 +45,23 @@ class Account extends MY_Controller
     {
         $orders = $this->Order_model->get_for_customer($this->customer_id, 1, 5);
         $wishlist = $this->Customer_model->get_wishlist($this->customer_id);
+        $addresses = $this->Customer_model->get_saved_addresses($this->customer_id);
+        $default_address = $this->Customer_model->get_default_address($this->customer_id);
+
+        $customer_row = $this->Customer_model->get_by_id($this->customer_id);
+        $default_payment_method = $customer_row['default_payment_method'] ?? 'cod';
 
         $data = [
-            'title'         => 'My Account — ' . env('APP_NAME', 'NovaDrop'),
-            'customer'      => $this->session->userdata('customer'),
-            'orders'        => $orders['items'],
-            'wishlist'      => $wishlist,
-            'home_settings' => $this->_get_home_settings(),
-            'cart_count'    => $this->_get_cart_count(),
+            'title'                  => 'My Account — ' . env('APP_NAME', 'NovaDrop'),
+            'customer'               => $this->session->userdata('customer'),
+            'customer_record'        => $customer_row,
+            'orders'                 => $orders['items'],
+            'wishlist'               => $wishlist,
+            'addresses'              => $addresses,
+            'default_address'        => $default_address,
+            'default_payment_method' => $default_payment_method,
+            'home_settings'          => $this->_get_home_settings(),
+            'cart_count'             => $this->_get_cart_count(),
         ];
 
         $this->load->view('storefront/layout/header', $data);
@@ -130,4 +139,64 @@ class Account extends MY_Controller
         $added = $this->Customer_model->toggle_wishlist($this->customer_id, $product_id);
         $this->json_success($added ? 'Added to wishlist!' : 'Removed from wishlist', ['added' => $added]);
     }
+
+    /**
+     * Set 1-Click Buy Now default address and preferred payment method
+     */
+    public function set_default_preferences()
+    {
+        $address_id = $this->input->post('default_address_id') !== null ? (int)$this->input->post('default_address_id') : null;
+        $payment_method = $this->input->post('default_payment_method', true);
+
+        if ($payment_method !== null && !in_array(strtolower($payment_method), ['cod', 'razorpay', 'stripe'])) {
+            $this->json_error('Invalid payment method selected.');
+            return;
+        }
+
+        $ok = $this->Customer_model->set_default_preferences($this->customer_id, $address_id, $payment_method);
+        if ($ok) {
+            $this->json_success('1-Click Buy Now preferences updated successfully!');
+        } else {
+            $this->json_error('Failed to update preferences.');
+        }
+    }
+
+    /**
+     * Save customer address via AJAX or form
+     */
+    public function save_address()
+    {
+        $first_name = $this->input->post('first_name', true);
+        $last_name  = $this->input->post('last_name', true);
+        $phone      = $this->input->post('phone', true);
+        $address1   = $this->input->post('address1', true);
+        $city       = $this->input->post('city', true);
+        $state      = $this->input->post('state', true) ?: 'Maharashtra';
+        $pincode    = $this->input->post('pincode', true);
+        $is_default = (bool)$this->input->post('is_default');
+
+        if (empty($first_name) || empty($phone) || empty($address1) || empty($city) || empty($pincode)) {
+            $this->json_error('Please fill in all required address fields.');
+            return;
+        }
+
+        $new_id = $this->Customer_model->save_customer_address($this->customer_id, [
+            'first_name' => $first_name,
+            'last_name'  => $last_name,
+            'phone'      => $phone,
+            'address1'   => $address1,
+            'address2'   => $this->input->post('address2', true),
+            'city'       => $city,
+            'state'      => $state,
+            'pincode'    => $pincode,
+            'country'    => 'IN',
+        ], $is_default);
+
+        if ($new_id) {
+            $this->json_success('Address saved successfully!', ['address_id' => $new_id]);
+        } else {
+            $this->json_error('Failed to save address.');
+        }
+    }
 }
+

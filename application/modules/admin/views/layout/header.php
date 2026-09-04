@@ -360,6 +360,7 @@ $seg3 = $this->uri->segment(3) ?: '';
             <div class="dropdown-divider-luxury"></div>
             <h6 class="dropdown-header text-uppercase font-weight-bold" style="font-size:0.68rem; letter-spacing:0.05em; color:#94a3b8;">System Configuration</h6>
             <a class="dropdown-item" href="<?= base_url('admin/settings') ?>"><i class="fas fa-cog"></i> Storefront Settings & Theme</a>
+            <a class="dropdown-item" href="<?= base_url('admin/settings/hero') ?>"><i class="fas fa-film text-warning"></i> Hero Slider &amp; Video Background</a>
             <a class="dropdown-item" href="<?= base_url('admin/settings/pages') ?>"><i class="fas fa-file-alt"></i> CMS Pages & Policies</a>
             <a class="dropdown-item" href="<?= base_url('admin/settings/faq') ?>"><i class="fas fa-question-circle"></i> FAQ Knowledge Base</a>
             <a class="dropdown-item" href="<?= base_url('admin/settings/announcements') ?>"><i class="fas fa-scroll"></i> Storefront Announcement Bar</a>

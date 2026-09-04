@@ -54,13 +54,38 @@ class Stripe extends MY_Controller
     public function verify()
     {
         $session_id = $this->input->get('session_id', true);
-        $order_id   = (int)$this->input->get('order_id');
+
+        if (empty($session_id)) {
+            $this->session->set_flashdata('error', 'Invalid payment session.');
+            redirect('checkout');
+            return;
+        }
+
+        // Authoritative: look up which order this session_id actually belongs to
+        // The payment row was inserted at init() time when we controlled the data
+        $payment = $this->db->where('gateway_order_id', $session_id)
+                            ->where('gateway', 'stripe')
+                            ->get('payments')->row_array();
+
+        if (!$payment) {
+            $this->session->set_flashdata('error', 'Payment session not found.');
+            redirect('checkout');
+            return;
+        }
+
+        $order_id = (int)$payment['order_id'];
+
+        // Idempotency guard: if already captured, don't re-process
+        if ($payment['status'] === 'captured') {
+            redirect('checkout/success/' . $order_id);
+            return;
+        }
 
         $res = $this->adapter->verify_payment(['session_id' => $session_id]);
 
         if ($res['success']) {
-            $this->db->where('order_id', $order_id)
-                     ->where('gateway', 'stripe')
+            $this->db->where('id', $payment['id'])
+                     ->where('status', 'created')   // Prevent double-capture
                      ->update('payments', [
                          'gateway_payment_id' => $res['gateway_payment_id'],
                          'status'             => 'captured',
