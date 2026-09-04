@@ -8,12 +8,12 @@
 <meta property="og:title" content="NovaDrop — Autonomous Performance Haute Couture">
 <meta property="og:description" content="Curated garments and architectural objects. Designed with intention, crafted to last.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="manifest" href="./index.htmlmanifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#1A1815">
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./index.htmlsw.js').catch(() => {});
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
   });
 }
 </script>
@@ -837,7 +837,7 @@ if ('serviceWorker' in navigator) {
       </div>
 
       <!-- ── Search Button ── -->
-      <a href="./index.htmlsearch" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-stone-800 hover:text-[#a16207] hover:bg-stone-100/80 border border-transparent hover:border-stone-200 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs" aria-label="Search Collection" title="Search">
+      <a href="./shop.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-stone-800 hover:text-[#a16207] hover:bg-stone-100/80 border border-transparent hover:border-stone-200 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs" aria-label="Search Collection" title="Search">
         <span class="material-symbols-outlined text-[19px]">search</span>
       </a>
 
@@ -848,7 +848,7 @@ if ('serviceWorker' in navigator) {
       </button>
 
       <!-- ── Account Link ── -->
-      <a href="./index.htmlaccount" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full hidden md:flex items-center justify-center text-stone-800 hover:text-[#a16207] hover:bg-amber-50/80 border border-transparent hover:border-amber-200 transition-all hover:scale-105 active:scale-95 shadow-2xs" aria-label="Account Profile" title="Atelier Profile">
+      <a href="./login.html" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full hidden md:flex items-center justify-center text-stone-800 hover:text-[#a16207] hover:bg-amber-50/80 border border-transparent hover:border-amber-200 transition-all hover:scale-105 active:scale-95 shadow-2xs" aria-label="Account Profile" title="Atelier Profile">
         <span class="material-symbols-outlined text-[19px]">person</span>
       </a>
 
@@ -1051,7 +1051,7 @@ if ('serviceWorker' in navigator) {
           <span class="material-symbols-outlined text-lg text-accent">checkroom</span>
           <span>Boutique Catalog</span>
         </a>
-        <a href="./index.htmltracking" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
+        <a href="./shop.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-label-caps text-xs uppercase tracking-widest text-primary hover:bg-surface-container transition-colors ">
           <span class="material-symbols-outlined text-lg text-accent">local_shipping</span>
           <span>Track Order</span>
         </a>
@@ -1063,11 +1063,11 @@ if ('serviceWorker' in navigator) {
               <span class="text-[#a16207]">15% Privilege</span>
             </div>
             <div class="grid grid-cols-2 gap-2">
-              <a href="./index.htmlaccount/login" class="py-2.5 px-3 bg-stone-950 hover:bg-stone-850 text-white rounded-xl text-center font-mono text-xs uppercase tracking-wider font-extrabold shadow-sm active:scale-95 transition-all flex items-center justify-center gap-1.5">
+              <a href="./login.html" class="py-2.5 px-3 bg-stone-950 hover:bg-stone-850 text-white rounded-xl text-center font-mono text-xs uppercase tracking-wider font-extrabold shadow-sm active:scale-95 transition-all flex items-center justify-center gap-1.5">
                 <span class="material-symbols-outlined text-sm text-[#e9c176]">login</span>
                 <span>Sign In</span>
               </a>
-              <a href="./index.htmlaccount/register" class="py-2.5 px-3 bg-white hover:bg-stone-100 text-stone-950 border border-stone-300 hover:border-stone-900 rounded-xl text-center font-mono text-xs uppercase tracking-wider font-extrabold shadow-2xs active:scale-95 transition-all flex items-center justify-center gap-1.5">
+              <a href="./login.html/register" class="py-2.5 px-3 bg-white hover:bg-stone-100 text-stone-950 border border-stone-300 hover:border-stone-900 rounded-xl text-center font-mono text-xs uppercase tracking-wider font-extrabold shadow-2xs active:scale-95 transition-all flex items-center justify-center gap-1.5">
                 <span class="material-symbols-outlined text-sm text-stone-700">person_add</span>
                 <span>Sign Up</span>
               </a>
@@ -1442,7 +1442,7 @@ window.openExpressCheckout = function(productId, title, priceInr, imgUrl, varian
   document.getElementById('ecVariantId').value = variantId || productId || '';
   document.getElementById('ecBaseInr').value = priceInr || 0;
   document.getElementById('ecProductTitle').textContent = title || 'Atelier Masterpiece';
-  document.getElementById('ecProductImg').src = imgUrl || './index.htmlimg/cashmere_cocoon_coat.jpg';
+  document.getElementById('ecProductImg').src = imgUrl || './img/cashmere_cocoon_coat.jpg';
   
   var priceEl = document.getElementById('ecProductPrice');
   priceEl.setAttribute('data-price-inr', priceInr);
@@ -2230,7 +2230,7 @@ body.sticky-active #socialProofFeed {
       <!-- Perfectly Round Circular Story Frame -->
       <div class="relative w-14 h-14 min-w-[56px] min-h-[56px] rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-[#e9c176] to-amber-600 shadow-[0_0_10px_rgba(233,193,118,0.3)] transition-transform group-active:scale-95 duration-200">
         <div class="w-full h-full rounded-full overflow-hidden bg-stone-950 p-[1px] aspect-square flex items-center justify-center">
-          <img src="./index.htmlimg/cashmere_cocoon_coat.jpg" alt="Outerwear &amp; Cashmere" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./index.htmlimg/cashmere_cocoon_coat.jpg'">
+          <img src="./img/cashmere_cocoon_coat.jpg" alt="Outerwear &amp; Cashmere" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./img/cashmere_cocoon_coat.jpg'">
         </div>
         <!-- Micro Tag Badge -->
         <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#a16207] text-white text-[7.5px] font-mono font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
@@ -2243,7 +2243,7 @@ body.sticky-active #socialProofFeed {
       <!-- Perfectly Round Circular Story Frame -->
       <div class="relative w-14 h-14 min-w-[56px] min-h-[56px] rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-[#e9c176] to-amber-600 shadow-[0_0_10px_rgba(233,193,118,0.3)] transition-transform group-active:scale-95 duration-200">
         <div class="w-full h-full rounded-full overflow-hidden bg-stone-950 p-[1px] aspect-square flex items-center justify-center">
-          <img src="./index.htmlimg/okayama_selvedge_denim.jpg" alt="Okayama Selvedge Denim" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./index.htmlimg/cashmere_cocoon_coat.jpg'">
+          <img src="./img/okayama_selvedge_denim.jpg" alt="Okayama Selvedge Denim" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./img/cashmere_cocoon_coat.jpg'">
         </div>
         <!-- Micro Tag Badge -->
         <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#a16207] text-white text-[7.5px] font-mono font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
@@ -2256,7 +2256,7 @@ body.sticky-active #socialProofFeed {
       <!-- Perfectly Round Circular Story Frame -->
       <div class="relative w-14 h-14 min-w-[56px] min-h-[56px] rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-[#e9c176] to-amber-600 shadow-[0_0_10px_rgba(233,193,118,0.3)] transition-transform group-active:scale-95 duration-200">
         <div class="w-full h-full rounded-full overflow-hidden bg-stone-950 p-[1px] aspect-square flex items-center justify-center">
-          <img src="./index.htmlimg/mulberry_silk_dress.jpg" alt="Mulberry Silk Eveningwear" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./index.htmlimg/cashmere_cocoon_coat.jpg'">
+          <img src="./img/mulberry_silk_dress.jpg" alt="Mulberry Silk Eveningwear" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./img/cashmere_cocoon_coat.jpg'">
         </div>
         <!-- Micro Tag Badge -->
         <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#a16207] text-white text-[7.5px] font-mono font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
@@ -2269,7 +2269,7 @@ body.sticky-active #socialProofFeed {
       <!-- Perfectly Round Circular Story Frame -->
       <div class="relative w-14 h-14 min-w-[56px] min-h-[56px] rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-[#e9c176] to-amber-600 shadow-[0_0_10px_rgba(233,193,118,0.3)] transition-transform group-active:scale-95 duration-200">
         <div class="w-full h-full rounded-full overflow-hidden bg-stone-950 p-[1px] aspect-square flex items-center justify-center">
-          <img src="./index.htmlimg/wool_blazer_luxury.jpg" alt="Tailored Blazers &amp; Suiting" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./index.htmlimg/cashmere_cocoon_coat.jpg'">
+          <img src="./img/wool_blazer_luxury.jpg" alt="Tailored Blazers &amp; Suiting" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./img/cashmere_cocoon_coat.jpg'">
         </div>
         <!-- Micro Tag Badge -->
         <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#a16207] text-white text-[7.5px] font-mono font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
@@ -2282,7 +2282,7 @@ body.sticky-active #socialProofFeed {
       <!-- Perfectly Round Circular Story Frame -->
       <div class="relative w-14 h-14 min-w-[56px] min-h-[56px] rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-[#e9c176] to-amber-600 shadow-[0_0_10px_rgba(233,193,118,0.3)] transition-transform group-active:scale-95 duration-200">
         <div class="w-full h-full rounded-full overflow-hidden bg-stone-950 p-[1px] aspect-square flex items-center justify-center">
-          <img src="./index.htmlimg/terry_hoodie_luxury.jpg" alt="Heavyweight French Terry" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./index.htmlimg/cashmere_cocoon_coat.jpg'">
+          <img src="./img/terry_hoodie_luxury.jpg" alt="Heavyweight French Terry" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./img/cashmere_cocoon_coat.jpg'">
         </div>
         <!-- Micro Tag Badge -->
         <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#a16207] text-white text-[7.5px] font-mono font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
@@ -2295,7 +2295,7 @@ body.sticky-active #socialProofFeed {
       <!-- Perfectly Round Circular Story Frame -->
       <div class="relative w-14 h-14 min-w-[56px] min-h-[56px] rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-[#e9c176] to-amber-600 shadow-[0_0_10px_rgba(233,193,118,0.3)] transition-transform group-active:scale-95 duration-200">
         <div class="w-full h-full rounded-full overflow-hidden bg-stone-950 p-[1px] aspect-square flex items-center justify-center">
-          <img src="./index.htmlimg/cashmere_turtleneck_knit.jpg" alt="Fine Knitwear &amp; Cashmere" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./index.htmlimg/cashmere_cocoon_coat.jpg'">
+          <img src="./img/cashmere_turtleneck_knit.jpg" alt="Fine Knitwear &amp; Cashmere" class="w-full h-full object-cover rounded-full aspect-square group-hover:scale-115 transition-transform duration-500" loading="lazy" onerror="this.src='./img/cashmere_cocoon_coat.jpg'">
         </div>
         <!-- Micro Tag Badge -->
         <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[#a16207] text-white text-[7.5px] font-mono font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
@@ -2791,7 +2791,7 @@ body.sticky-active #socialProofFeed {
           <!-- Metallic Inner Border -->
           <div class="relative w-full h-full rounded-full p-[2px] bg-gradient-to-tr from-amber-500/60 via-yellow-200 to-amber-600/60 group-hover:from-amber-300 group-hover:to-yellow-100 transition-all duration-300 shadow-md">
             <div class="w-full h-full rounded-full overflow-hidden bg-stone-100 relative">
-              <img src="./index.htmlimg/cashmere_cocoon_coat.jpg" alt="Outerwear &amp; Cashmere" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
+              <img src="./img/cashmere_cocoon_coat.jpg" alt="Outerwear &amp; Cashmere" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
               <!-- Specular Light Glare on Hover -->
               <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
@@ -2815,7 +2815,7 @@ body.sticky-active #socialProofFeed {
           <!-- Metallic Inner Border -->
           <div class="relative w-full h-full rounded-full p-[2px] bg-gradient-to-tr from-amber-500/60 via-yellow-200 to-amber-600/60 group-hover:from-amber-300 group-hover:to-yellow-100 transition-all duration-300 shadow-md">
             <div class="w-full h-full rounded-full overflow-hidden bg-stone-100 relative">
-              <img src="./index.htmlimg/okayama_selvedge_denim.jpg" alt="Okayama Selvedge Denim" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
+              <img src="./img/okayama_selvedge_denim.jpg" alt="Okayama Selvedge Denim" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
               <!-- Specular Light Glare on Hover -->
               <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
@@ -2839,7 +2839,7 @@ body.sticky-active #socialProofFeed {
           <!-- Metallic Inner Border -->
           <div class="relative w-full h-full rounded-full p-[2px] bg-gradient-to-tr from-amber-500/60 via-yellow-200 to-amber-600/60 group-hover:from-amber-300 group-hover:to-yellow-100 transition-all duration-300 shadow-md">
             <div class="w-full h-full rounded-full overflow-hidden bg-stone-100 relative">
-              <img src="./index.htmlimg/mulberry_silk_dress.jpg" alt="Mulberry Silk Eveningwear" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
+              <img src="./img/mulberry_silk_dress.jpg" alt="Mulberry Silk Eveningwear" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
               <!-- Specular Light Glare on Hover -->
               <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
@@ -2863,7 +2863,7 @@ body.sticky-active #socialProofFeed {
           <!-- Metallic Inner Border -->
           <div class="relative w-full h-full rounded-full p-[2px] bg-gradient-to-tr from-amber-500/60 via-yellow-200 to-amber-600/60 group-hover:from-amber-300 group-hover:to-yellow-100 transition-all duration-300 shadow-md">
             <div class="w-full h-full rounded-full overflow-hidden bg-stone-100 relative">
-              <img src="./index.htmlimg/wool_blazer_luxury.jpg" alt="Tailored Blazers &amp; Suiting" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
+              <img src="./img/wool_blazer_luxury.jpg" alt="Tailored Blazers &amp; Suiting" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
               <!-- Specular Light Glare on Hover -->
               <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
@@ -2887,7 +2887,7 @@ body.sticky-active #socialProofFeed {
           <!-- Metallic Inner Border -->
           <div class="relative w-full h-full rounded-full p-[2px] bg-gradient-to-tr from-amber-500/60 via-yellow-200 to-amber-600/60 group-hover:from-amber-300 group-hover:to-yellow-100 transition-all duration-300 shadow-md">
             <div class="w-full h-full rounded-full overflow-hidden bg-stone-100 relative">
-              <img src="./index.htmlimg/terry_hoodie_luxury.jpg" alt="Heavyweight French Terry" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
+              <img src="./img/terry_hoodie_luxury.jpg" alt="Heavyweight French Terry" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
               <!-- Specular Light Glare on Hover -->
               <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
@@ -2911,7 +2911,7 @@ body.sticky-active #socialProofFeed {
           <!-- Metallic Inner Border -->
           <div class="relative w-full h-full rounded-full p-[2px] bg-gradient-to-tr from-amber-500/60 via-yellow-200 to-amber-600/60 group-hover:from-amber-300 group-hover:to-yellow-100 transition-all duration-300 shadow-md">
             <div class="w-full h-full rounded-full overflow-hidden bg-stone-100 relative">
-              <img src="./index.htmlimg/cashmere_turtleneck_knit.jpg" alt="Fine Knitwear &amp; Cashmere" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
+              <img src="./img/cashmere_turtleneck_knit.jpg" alt="Fine Knitwear &amp; Cashmere" class="w-full h-full object-cover group-hover:scale-120 transition-transform duration-700 ease-out" loading="lazy">
               <!-- Specular Light Glare on Hover -->
               <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </div>
@@ -2972,8 +2972,8 @@ body.sticky-active #socialProofFeed {
 
   <div class="w-full overflow-hidden py-2 sm:py-4">
     <div class="filmstrip-track" id="filmstripReel">
-            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./index.htmlproducts/the-atelier-cashmere-cocoon-coat'">
-        <img src="./index.htmlimg/cashmere_cocoon_coat.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="The Atelier Cashmere Cocoon Coat">
+            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./product.html?slug=the-atelier-cashmere-cocoon-coat'">
+        <img src="./img/cashmere_cocoon_coat.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="The Atelier Cashmere Cocoon Coat">
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-end">
           <div class="max-w-[70%]">
@@ -2983,8 +2983,8 @@ body.sticky-active #socialProofFeed {
           <span class="text-[11px] sm:text-xs font-bold text-white bg-white/10 px-2 py-1 rounded whitespace-nowrap" data-price-inr="4840.00">₹4,840</span>
         </div>
       </div>
-            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./index.htmlproducts/vintage-okayama-selvedge-trousers'">
-        <img src="./index.htmlimg/okayama_selvedge_denim.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Vintage Okayama 14.5oz Selvedge Trousers">
+            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./product.html?slug=vintage-okayama-selvedge-trousers'">
+        <img src="./img/okayama_selvedge_denim.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Vintage Okayama 14.5oz Selvedge Trousers">
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-end">
           <div class="max-w-[70%]">
@@ -2994,8 +2994,8 @@ body.sticky-active #socialProofFeed {
           <span class="text-[11px] sm:text-xs font-bold text-white bg-white/10 px-2 py-1 rounded whitespace-nowrap" data-price-inr="4730.00">₹4,730</span>
         </div>
       </div>
-            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./index.htmlproducts/sculpted-heavyweight-terry-hoodie'">
-        <img src="./index.htmlimg/terry_hoodie_luxury.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Sculpted 500 GSM Terry Hoodie">
+            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./product.html?slug=sculpted-heavyweight-terry-hoodie'">
+        <img src="./img/terry_hoodie_luxury.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Sculpted 500 GSM Terry Hoodie">
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-end">
           <div class="max-w-[70%]">
@@ -3005,8 +3005,8 @@ body.sticky-active #socialProofFeed {
           <span class="text-[11px] sm:text-xs font-bold text-white bg-white/10 px-2 py-1 rounded whitespace-nowrap" data-price-inr="3190.00">₹3,190</span>
         </div>
       </div>
-            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./index.htmlproducts/mulberry-silk-bias-slip-dress'">
-        <img src="./index.htmlimg/mulberry_silk_dress.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="22-Momme Mulberry Silk Bias Slip Dress">
+            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./product.html?slug=mulberry-silk-bias-slip-dress'">
+        <img src="./img/mulberry_silk_dress.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="22-Momme Mulberry Silk Bias Slip Dress">
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-end">
           <div class="max-w-[70%]">
@@ -3016,8 +3016,8 @@ body.sticky-active #socialProofFeed {
           <span class="text-[11px] sm:text-xs font-bold text-white bg-white/10 px-2 py-1 rounded whitespace-nowrap" data-price-inr="5500.00">₹5,500</span>
         </div>
       </div>
-            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./index.htmlproducts/super-150s-double-breasted-blazer'">
-        <img src="./index.htmlimg/wool_blazer_luxury.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Super 150s Double-Breasted Wool Blazer">
+            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./product.html?slug=super-150s-double-breasted-blazer'">
+        <img src="./img/wool_blazer_luxury.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Super 150s Double-Breasted Wool Blazer">
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-end">
           <div class="max-w-[70%]">
@@ -3027,8 +3027,8 @@ body.sticky-active #socialProofFeed {
           <span class="text-[11px] sm:text-xs font-bold text-white bg-white/10 px-2 py-1 rounded whitespace-nowrap" data-price-inr="7700.00">₹7,700</span>
         </div>
       </div>
-            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./index.htmlproducts/double-breasted-melton-wool-peacoat'">
-        <img src="./index.htmlimg/melton_wool_peacoat.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Double-Breasted Melton Wool Peacoat">
+            <div class="w-[260px] sm:w-[340px] md:w-[380px] flex-shrink-0 aspect-[3/4] relative rounded-xl overflow-hidden ambient-elevation border border-stone-200 group cursor-pointer" data-cursor="VIEW PIECE" onclick="window.location.href='./product.html?slug=double-breasted-melton-wool-peacoat'">
+        <img src="./img/melton_wool_peacoat.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Double-Breasted Melton Wool Peacoat">
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
         <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex justify-between items-end">
           <div class="max-w-[70%]">
@@ -3107,7 +3107,7 @@ body.sticky-active #socialProofFeed {
       <!-- Right: Spring-Animated Motion Visual Stage with Zoom On Hover -->
       <div class="lg:col-span-6 relative mt-6 lg:mt-0">
         <div class="zoom-loupe-target relative aspect-[4/3] rounded-xl overflow-hidden ambient-elevation border border-white/15 bg-stone-900 group cursor-pointer" data-cursor="ZOOM" onclick="openMacroViewer(document.getElementById('motionStageTitle').textContent, 'Tactile Macro Texture Inspection', document.getElementById('motionStageImage').src)">
-          <img id="motionStageImage" src="./index.htmlimg/cashmere_cocoon_coat.jpg" alt="Motion Tile Artwork" class="w-full h-full object-cover motion-stage-visual"/>
+          <img id="motionStageImage" src="./img/cashmere_cocoon_coat.jpg" alt="Motion Tile Artwork" class="w-full h-full object-cover motion-stage-visual"/>
           
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
@@ -3212,8 +3212,8 @@ body.sticky-active #socialProofFeed {
                               <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="cashmere">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/the-atelier-cashmere-cocoon-coat'">
-            <img src="./index.htmlimg/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=the-atelier-cashmere-cocoon-coat'">
+            <img src="./img/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -3226,7 +3226,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="1" onchange="toggleWishlistItem({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./index.htmlimg/cashmere_cocoon_coat.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="1" onchange="toggleWishlistItem({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./img/cashmere_cocoon_coat.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -3244,7 +3244,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './index.htmlimg/cashmere_cocoon_coat.jpg', 1);" 
+              <button onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './img/cashmere_cocoon_coat.jpg', 1);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -3271,7 +3271,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/the-atelier-cashmere-cocoon-coat">The Atelier Cashmere Cocoon Coat</a>
+                <a href="./product.html?slug=the-atelier-cashmere-cocoon-coat">The Atelier Cashmere Cocoon Coat</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -3314,7 +3314,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹4,399" 
-                        onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './index.htmlimg/cashmere_cocoon_coat.jpg', 1);" 
+                        onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './img/cashmere_cocoon_coat.jpg', 1);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -3336,8 +3336,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="denim">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/vintage-okayama-selvedge-trousers'">
-            <img src="./index.htmlimg/okayama_selvedge_denim.jpg" alt="Vintage Okayama 14.5oz Selvedge Trousers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=vintage-okayama-selvedge-trousers'">
+            <img src="./img/okayama_selvedge_denim.jpg" alt="Vintage Okayama 14.5oz Selvedge Trousers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -3350,7 +3350,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="2" onchange="toggleWishlistItem({id:2, title:'Vintage Okayama 14.5oz Selvedge Trousers', price:4299, image:'./index.htmlimg/okayama_selvedge_denim.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="2" onchange="toggleWishlistItem({id:2, title:'Vintage Okayama 14.5oz Selvedge Trousers', price:4299, image:'./img/okayama_selvedge_denim.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -3368,7 +3368,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(2, 'Vintage Okayama 14.5oz Selvedge Trousers', 4299, './index.htmlimg/okayama_selvedge_denim.jpg', 2);" 
+              <button onclick="openExpressCheckout(2, 'Vintage Okayama 14.5oz Selvedge Trousers', 4299, './img/okayama_selvedge_denim.jpg', 2);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -3395,7 +3395,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/vintage-okayama-selvedge-trousers">Vintage Okayama 14.5oz Selvedge Trousers</a>
+                <a href="./product.html?slug=vintage-okayama-selvedge-trousers">Vintage Okayama 14.5oz Selvedge Trousers</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -3438,7 +3438,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹4,299" 
-                        onclick="openExpressCheckout(2, 'Vintage Okayama 14.5oz Selvedge Trousers', 4299, './index.htmlimg/okayama_selvedge_denim.jpg', 2);" 
+                        onclick="openExpressCheckout(2, 'Vintage Okayama 14.5oz Selvedge Trousers', 4299, './img/okayama_selvedge_denim.jpg', 2);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -3460,8 +3460,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="terry">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/sculpted-heavyweight-terry-hoodie'">
-            <img src="./index.htmlimg/terry_hoodie_luxury.jpg" alt="Sculpted 500 GSM Terry Hoodie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=sculpted-heavyweight-terry-hoodie'">
+            <img src="./img/terry_hoodie_luxury.jpg" alt="Sculpted 500 GSM Terry Hoodie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -3474,7 +3474,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="3" onchange="toggleWishlistItem({id:3, title:'Sculpted 500 GSM Terry Hoodie', price:2899, image:'./index.htmlimg/terry_hoodie_luxury.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="3" onchange="toggleWishlistItem({id:3, title:'Sculpted 500 GSM Terry Hoodie', price:2899, image:'./img/terry_hoodie_luxury.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -3492,7 +3492,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, './index.htmlimg/terry_hoodie_luxury.jpg', 3);" 
+              <button onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, './img/terry_hoodie_luxury.jpg', 3);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -3519,7 +3519,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/sculpted-heavyweight-terry-hoodie">Sculpted 500 GSM Terry Hoodie</a>
+                <a href="./product.html?slug=sculpted-heavyweight-terry-hoodie">Sculpted 500 GSM Terry Hoodie</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -3562,7 +3562,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹2,899" 
-                        onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, './index.htmlimg/terry_hoodie_luxury.jpg', 3);" 
+                        onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 2899, './img/terry_hoodie_luxury.jpg', 3);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -3584,8 +3584,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="silk">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/mulberry-silk-bias-slip-dress'">
-            <img src="./index.htmlimg/mulberry_silk_dress.jpg" alt="22-Momme Mulberry Silk Bias Slip Dress" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=mulberry-silk-bias-slip-dress'">
+            <img src="./img/mulberry_silk_dress.jpg" alt="22-Momme Mulberry Silk Bias Slip Dress" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -3598,7 +3598,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="4" onchange="toggleWishlistItem({id:4, title:'22-Momme Mulberry Silk Bias Slip Dress', price:4999, image:'./index.htmlimg/mulberry_silk_dress.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="4" onchange="toggleWishlistItem({id:4, title:'22-Momme Mulberry Silk Bias Slip Dress', price:4999, image:'./img/mulberry_silk_dress.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -3616,7 +3616,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(4, '22-Momme Mulberry Silk Bias Slip Dress', 4999, './index.htmlimg/mulberry_silk_dress.jpg', 4);" 
+              <button onclick="openExpressCheckout(4, '22-Momme Mulberry Silk Bias Slip Dress', 4999, './img/mulberry_silk_dress.jpg', 4);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -3643,7 +3643,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/mulberry-silk-bias-slip-dress">22-Momme Mulberry Silk Bias Slip Dress</a>
+                <a href="./product.html?slug=mulberry-silk-bias-slip-dress">22-Momme Mulberry Silk Bias Slip Dress</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -3686,7 +3686,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹4,999" 
-                        onclick="openExpressCheckout(4, '22-Momme Mulberry Silk Bias Slip Dress', 4999, './index.htmlimg/mulberry_silk_dress.jpg', 4);" 
+                        onclick="openExpressCheckout(4, '22-Momme Mulberry Silk Bias Slip Dress', 4999, './img/mulberry_silk_dress.jpg', 4);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -3708,8 +3708,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="suiting">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/super-150s-double-breasted-blazer'">
-            <img src="./index.htmlimg/wool_blazer_luxury.jpg" alt="Super 150s Double-Breasted Wool Blazer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=super-150s-double-breasted-blazer'">
+            <img src="./img/wool_blazer_luxury.jpg" alt="Super 150s Double-Breasted Wool Blazer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -3722,7 +3722,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="5" onchange="toggleWishlistItem({id:5, title:'Super 150s Double-Breasted Wool Blazer', price:6999, image:'./index.htmlimg/wool_blazer_luxury.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="5" onchange="toggleWishlistItem({id:5, title:'Super 150s Double-Breasted Wool Blazer', price:6999, image:'./img/wool_blazer_luxury.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -3740,7 +3740,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(5, 'Super 150s Double-Breasted Wool Blazer', 6999, './index.htmlimg/wool_blazer_luxury.jpg', 5);" 
+              <button onclick="openExpressCheckout(5, 'Super 150s Double-Breasted Wool Blazer', 6999, './img/wool_blazer_luxury.jpg', 5);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -3767,7 +3767,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/super-150s-double-breasted-blazer">Super 150s Double-Breasted Wool Blazer</a>
+                <a href="./product.html?slug=super-150s-double-breasted-blazer">Super 150s Double-Breasted Wool Blazer</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -3810,7 +3810,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹6,999" 
-                        onclick="openExpressCheckout(5, 'Super 150s Double-Breasted Wool Blazer', 6999, './index.htmlimg/wool_blazer_luxury.jpg', 5);" 
+                        onclick="openExpressCheckout(5, 'Super 150s Double-Breasted Wool Blazer', 6999, './img/wool_blazer_luxury.jpg', 5);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -3832,8 +3832,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="cashmere">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/double-breasted-melton-wool-peacoat'">
-            <img src="./index.htmlimg/melton_wool_peacoat.jpg" alt="Double-Breasted Melton Wool Peacoat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=double-breasted-melton-wool-peacoat'">
+            <img src="./img/melton_wool_peacoat.jpg" alt="Double-Breasted Melton Wool Peacoat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -3846,7 +3846,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="6" onchange="toggleWishlistItem({id:6, title:'Double-Breasted Melton Wool Peacoat', price:5699, image:'./index.htmlimg/melton_wool_peacoat.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="6" onchange="toggleWishlistItem({id:6, title:'Double-Breasted Melton Wool Peacoat', price:5699, image:'./img/melton_wool_peacoat.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -3864,7 +3864,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(6, 'Double-Breasted Melton Wool Peacoat', 5699, './index.htmlimg/melton_wool_peacoat.jpg', 6);" 
+              <button onclick="openExpressCheckout(6, 'Double-Breasted Melton Wool Peacoat', 5699, './img/melton_wool_peacoat.jpg', 6);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -3891,7 +3891,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/double-breasted-melton-wool-peacoat">Double-Breasted Melton Wool Peacoat</a>
+                <a href="./product.html?slug=double-breasted-melton-wool-peacoat">Double-Breasted Melton Wool Peacoat</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -3934,7 +3934,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹5,699" 
-                        onclick="openExpressCheckout(6, 'Double-Breasted Melton Wool Peacoat', 5699, './index.htmlimg/melton_wool_peacoat.jpg', 6);" 
+                        onclick="openExpressCheckout(6, 'Double-Breasted Melton Wool Peacoat', 5699, './img/melton_wool_peacoat.jpg', 6);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -3956,8 +3956,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="suiting">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/mongolian-ribbed-turtleneck-knit'">
-            <img src="./index.htmlimg/cashmere_turtleneck_knit.jpg" alt="Mongolian Ribbed Turtleneck Knit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=mongolian-ribbed-turtleneck-knit'">
+            <img src="./img/cashmere_turtleneck_knit.jpg" alt="Mongolian Ribbed Turtleneck Knit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -3970,7 +3970,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="7" onchange="toggleWishlistItem({id:7, title:'Mongolian Ribbed Turtleneck Knit', price:3499, image:'./index.htmlimg/cashmere_turtleneck_knit.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="7" onchange="toggleWishlistItem({id:7, title:'Mongolian Ribbed Turtleneck Knit', price:3499, image:'./img/cashmere_turtleneck_knit.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -3988,7 +3988,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(7, 'Mongolian Ribbed Turtleneck Knit', 3499, './index.htmlimg/cashmere_turtleneck_knit.jpg', 7);" 
+              <button onclick="openExpressCheckout(7, 'Mongolian Ribbed Turtleneck Knit', 3499, './img/cashmere_turtleneck_knit.jpg', 7);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -4015,7 +4015,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/mongolian-ribbed-turtleneck-knit">Mongolian Ribbed Turtleneck Knit</a>
+                <a href="./product.html?slug=mongolian-ribbed-turtleneck-knit">Mongolian Ribbed Turtleneck Knit</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4058,7 +4058,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹3,499" 
-                        onclick="openExpressCheckout(7, 'Mongolian Ribbed Turtleneck Knit', 3499, './index.htmlimg/cashmere_turtleneck_knit.jpg', 7);" 
+                        onclick="openExpressCheckout(7, 'Mongolian Ribbed Turtleneck Knit', 3499, './img/cashmere_turtleneck_knit.jpg', 7);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -4080,8 +4080,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="cashmere">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/type-ii-shuttle-loom-denim-jacket'">
-            <img src="./index.htmlimg/denim_jacket_type2.jpg" alt="Type II Shuttle-Loom Denim Jacket" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=type-ii-shuttle-loom-denim-jacket'">
+            <img src="./img/denim_jacket_type2.jpg" alt="Type II Shuttle-Loom Denim Jacket" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -4094,7 +4094,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="8" onchange="toggleWishlistItem({id:8, title:'Type II Shuttle-Loom Denim Jacket', price:5299, image:'./index.htmlimg/denim_jacket_type2.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="8" onchange="toggleWishlistItem({id:8, title:'Type II Shuttle-Loom Denim Jacket', price:5299, image:'./img/denim_jacket_type2.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -4112,7 +4112,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(8, 'Type II Shuttle-Loom Denim Jacket', 5299, './index.htmlimg/denim_jacket_type2.jpg', 8);" 
+              <button onclick="openExpressCheckout(8, 'Type II Shuttle-Loom Denim Jacket', 5299, './img/denim_jacket_type2.jpg', 8);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -4139,7 +4139,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/type-ii-shuttle-loom-denim-jacket">Type II Shuttle-Loom Denim Jacket</a>
+                <a href="./product.html?slug=type-ii-shuttle-loom-denim-jacket">Type II Shuttle-Loom Denim Jacket</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4182,7 +4182,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹5,299" 
-                        onclick="openExpressCheckout(8, 'Type II Shuttle-Loom Denim Jacket', 5299, './index.htmlimg/denim_jacket_type2.jpg', 8);" 
+                        onclick="openExpressCheckout(8, 'Type II Shuttle-Loom Denim Jacket', 5299, './img/denim_jacket_type2.jpg', 8);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -4204,8 +4204,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="silk">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/sandwashed-silk-charmeuse-blouse'">
-            <img src="./index.htmlimg/silk_charmeuse_blouse.jpg" alt="Sandwashed Silk Charmeuse Blouse" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=sandwashed-silk-charmeuse-blouse'">
+            <img src="./img/silk_charmeuse_blouse.jpg" alt="Sandwashed Silk Charmeuse Blouse" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -4218,7 +4218,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="9" onchange="toggleWishlistItem({id:9, title:'Sandwashed Silk Charmeuse Blouse', price:3799, image:'./index.htmlimg/silk_charmeuse_blouse.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="9" onchange="toggleWishlistItem({id:9, title:'Sandwashed Silk Charmeuse Blouse', price:3799, image:'./img/silk_charmeuse_blouse.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -4236,7 +4236,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(9, 'Sandwashed Silk Charmeuse Blouse', 3799, './index.htmlimg/silk_charmeuse_blouse.jpg', 9);" 
+              <button onclick="openExpressCheckout(9, 'Sandwashed Silk Charmeuse Blouse', 3799, './img/silk_charmeuse_blouse.jpg', 9);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -4263,7 +4263,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/sandwashed-silk-charmeuse-blouse">Sandwashed Silk Charmeuse Blouse</a>
+                <a href="./product.html?slug=sandwashed-silk-charmeuse-blouse">Sandwashed Silk Charmeuse Blouse</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4306,7 +4306,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹3,799" 
-                        onclick="openExpressCheckout(9, 'Sandwashed Silk Charmeuse Blouse', 3799, './index.htmlimg/silk_charmeuse_blouse.jpg', 9);" 
+                        onclick="openExpressCheckout(9, 'Sandwashed Silk Charmeuse Blouse', 3799, './img/silk_charmeuse_blouse.jpg', 9);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -4328,8 +4328,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="denim">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/italian-pleated-wool-trousers'">
-            <img src="./index.htmlimg/italian_pleated_trousers.jpg" alt="Italian Pleated Wool Trousers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=italian-pleated-wool-trousers'">
+            <img src="./img/italian_pleated_trousers.jpg" alt="Italian Pleated Wool Trousers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -4342,7 +4342,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="10" onchange="toggleWishlistItem({id:10, title:'Italian Pleated Wool Trousers', price:3499, image:'./index.htmlimg/italian_pleated_trousers.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="10" onchange="toggleWishlistItem({id:10, title:'Italian Pleated Wool Trousers', price:3499, image:'./img/italian_pleated_trousers.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -4360,7 +4360,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(10, 'Italian Pleated Wool Trousers', 3499, './index.htmlimg/italian_pleated_trousers.jpg', 10);" 
+              <button onclick="openExpressCheckout(10, 'Italian Pleated Wool Trousers', 3499, './img/italian_pleated_trousers.jpg', 10);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -4387,7 +4387,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/italian-pleated-wool-trousers">Italian Pleated Wool Trousers</a>
+                <a href="./product.html?slug=italian-pleated-wool-trousers">Italian Pleated Wool Trousers</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4430,7 +4430,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹3,499" 
-                        onclick="openExpressCheckout(10, 'Italian Pleated Wool Trousers', 3499, './index.htmlimg/italian_pleated_trousers.jpg', 10);" 
+                        onclick="openExpressCheckout(10, 'Italian Pleated Wool Trousers', 3499, './img/italian_pleated_trousers.jpg', 10);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -4452,8 +4452,8 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="suiting">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/handcrafted-italian-chelsea-boots-11'">
-            <img src="./index.htmlimg/chelsea_leather_boots.jpg" alt="Handcrafted Italian Chelsea Boots" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=handcrafted-italian-chelsea-boots-11'">
+            <img src="./img/chelsea_leather_boots.jpg" alt="Handcrafted Italian Chelsea Boots" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
             <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -4466,7 +4466,7 @@ body.sticky-active #socialProofFeed {
             <!-- Quick Direct Actions -->
             <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
               <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-                <input type="checkbox" class="checkbox" data-wishlist-id="11" onchange="toggleWishlistItem({id:11, title:'Handcrafted Italian Chelsea Boots', price:5999, image:'./index.htmlimg/chelsea_leather_boots.jpg'}, event)">
+                <input type="checkbox" class="checkbox" data-wishlist-id="11" onchange="toggleWishlistItem({id:11, title:'Handcrafted Italian Chelsea Boots', price:5999, image:'./img/chelsea_leather_boots.jpg'}, event)">
                 <div class="svg-container">
                   <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -4484,7 +4484,7 @@ body.sticky-active #socialProofFeed {
                   </svg>
                 </div>
               </div>
-              <button onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './index.htmlimg/chelsea_leather_boots.jpg', 11);" 
+              <button onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './img/chelsea_leather_boots.jpg', 11);" 
                  class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                  title="1-Click Instant Acquisition">
                 <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -4511,7 +4511,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/handcrafted-italian-chelsea-boots-11">Handcrafted Italian Chelsea Boots</a>
+                <a href="./product.html?slug=handcrafted-italian-chelsea-boots-11">Handcrafted Italian Chelsea Boots</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4554,7 +4554,7 @@ body.sticky-active #socialProofFeed {
                 </button>
                 <button type="button" 
                         data-tooltip="Instant: ₹5,999" 
-                        onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './index.htmlimg/chelsea_leather_boots.jpg', 11);" 
+                        onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './img/chelsea_leather_boots.jpg', 11);" 
                         class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                   <div class="uiverse-btn-wrapper">
                     <div class="uiverse-btn-text">
@@ -4576,7 +4576,7 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="cashmere">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/italian-melton-wool-dropped-shoulder-overcoat'">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=italian-melton-wool-dropped-shoulder-overcoat'">
             <img src="https://images.unsplash.com/photo-1544923246-77307dd654cb?w=600&amp;auto=format&amp;fit=crop&amp;q=80" alt="Italian Melton Wool Dropped-Shoulder Overcoat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
@@ -4635,7 +4635,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/italian-melton-wool-dropped-shoulder-overcoat">Italian Melton Wool Dropped-Shoulder Overcoat</a>
+                <a href="./product.html?slug=italian-melton-wool-dropped-shoulder-overcoat">Italian Melton Wool Dropped-Shoulder Overcoat</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4700,7 +4700,7 @@ body.sticky-active #socialProofFeed {
                         <div class="store-product-card group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl" data-category="terry">
           
           <!-- Image & Scarcity Badge -->
-          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea'">
+          <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea'">
             <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&amp;auto=format&amp;fit=crop&amp;q=80" alt="Men&#039;s mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             
             <!-- Top Badges -->
@@ -4759,7 +4759,7 @@ body.sticky-active #socialProofFeed {
                               </div>
 
               <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-                <a href="./index.htmlproducts/mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea">Men&#039;s mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style</a>
+                <a href="./product.html?slug=mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea">Men&#039;s mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style</a>
               </h3>
 
               <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4854,8 +4854,8 @@ body.sticky-active #socialProofFeed {
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                   <div class="group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl">
         
-        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/handcrafted-italian-chelsea-boots-11'">
-          <img src="./index.htmlimg/chelsea_leather_boots.jpg" alt="Handcrafted Italian Chelsea Boots" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=handcrafted-italian-chelsea-boots-11'">
+          <img src="./img/chelsea_leather_boots.jpg" alt="Handcrafted Italian Chelsea Boots" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           
           <!-- Top Scarcity Badge -->
           <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -4868,7 +4868,7 @@ body.sticky-active #socialProofFeed {
           <!-- Top-Right Actions -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="11" onchange="toggleWishlistItem({id:11, title:'Handcrafted Italian Chelsea Boots', price:5999, image:'./index.htmlimg/chelsea_leather_boots.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="11" onchange="toggleWishlistItem({id:11, title:'Handcrafted Italian Chelsea Boots', price:5999, image:'./img/chelsea_leather_boots.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -4886,7 +4886,7 @@ body.sticky-active #socialProofFeed {
                 </svg>
               </div>
             </div>
-            <button onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './index.htmlimg/chelsea_leather_boots.jpg', 11);" 
+            <button onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './img/chelsea_leather_boots.jpg', 11);" 
                class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                title="1-Click Instant Acquisition">
               <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -4912,7 +4912,7 @@ body.sticky-active #socialProofFeed {
                           </div>
 
             <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-              <a href="./index.htmlproducts/handcrafted-italian-chelsea-boots-11">Handcrafted Italian Chelsea Boots</a>
+              <a href="./product.html?slug=handcrafted-italian-chelsea-boots-11">Handcrafted Italian Chelsea Boots</a>
             </h3>
 
             <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -4954,7 +4954,7 @@ body.sticky-active #socialProofFeed {
               </button>
               <button type="button" 
                       data-tooltip="Instant: ₹5,999" 
-                      onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './index.htmlimg/chelsea_leather_boots.jpg', 11);" 
+                      onclick="openExpressCheckout(11, 'Handcrafted Italian Chelsea Boots', 5999, './img/chelsea_leather_boots.jpg', 11);" 
                       class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                 <div class="uiverse-btn-wrapper">
                   <div class="uiverse-btn-text">
@@ -4975,7 +4975,7 @@ body.sticky-active #socialProofFeed {
       </div>
                   <div class="group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl">
         
-        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea'">
+        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea'">
           <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&amp;auto=format&amp;fit=crop&amp;q=80" alt="Men&#039;s mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           
           <!-- Top Scarcity Badge -->
@@ -5033,7 +5033,7 @@ body.sticky-active #socialProofFeed {
                           </div>
 
             <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-              <a href="./index.htmlproducts/mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea">Men&#039;s mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style</a>
+              <a href="./product.html?slug=mens-mountain-peak-pattern-t-shirt-with-an-outdoor-adventure-theme-soft-and-brea">Men&#039;s mountain peak pattern T-shirt, with an outdoor adventure theme, soft and breathable, round-neck short-sleeved summer style</a>
             </h3>
 
             <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -5096,7 +5096,7 @@ body.sticky-active #socialProofFeed {
       </div>
                   <div class="group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl">
         
-        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/italian-melton-wool-dropped-shoulder-overcoat'">
+        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=italian-melton-wool-dropped-shoulder-overcoat'">
           <img src="https://images.unsplash.com/photo-1544923246-77307dd654cb?w=600&amp;auto=format&amp;fit=crop&amp;q=80" alt="Italian Melton Wool Dropped-Shoulder Overcoat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           
           <!-- Top Scarcity Badge -->
@@ -5154,7 +5154,7 @@ body.sticky-active #socialProofFeed {
                           </div>
 
             <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-              <a href="./index.htmlproducts/italian-melton-wool-dropped-shoulder-overcoat">Italian Melton Wool Dropped-Shoulder Overcoat</a>
+              <a href="./product.html?slug=italian-melton-wool-dropped-shoulder-overcoat">Italian Melton Wool Dropped-Shoulder Overcoat</a>
             </h3>
 
             <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -5217,8 +5217,8 @@ body.sticky-active #socialProofFeed {
       </div>
                   <div class="group bg-white text-stone-900 rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl">
         
-        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./index.htmlproducts/the-atelier-cashmere-cocoon-coat'">
-          <img src="./index.htmlimg/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        <div class="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer" onclick="window.location.href='./product.html?slug=the-atelier-cashmere-cocoon-coat'">
+          <img src="./img/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           
           <!-- Top Scarcity Badge -->
           <div class="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
@@ -5231,7 +5231,7 @@ body.sticky-active #socialProofFeed {
           <!-- Top-Right Actions -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex items-center gap-1 sm:gap-1.5 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="1" onchange="toggleWishlistItem({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./index.htmlimg/cashmere_cocoon_coat.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="1" onchange="toggleWishlistItem({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./img/cashmere_cocoon_coat.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -5249,7 +5249,7 @@ body.sticky-active #socialProofFeed {
                 </svg>
               </div>
             </div>
-            <button onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './index.htmlimg/cashmere_cocoon_coat.jpg', 1);" 
+            <button onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './img/cashmere_cocoon_coat.jpg', 1);" 
                class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/90 hover:bg-black text-[#e9c176] flex items-center justify-center border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
                title="1-Click Instant Acquisition">
               <svg class="w-3.5 h-3.5 fill-current text-[#e9c176]" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
@@ -5275,7 +5275,7 @@ body.sticky-active #socialProofFeed {
                           </div>
 
             <h3 class="font-serif text-xs sm:text-sm font-bold text-stone-900 mb-1 group-hover:text-[#a16207] transition-colors line-clamp-1">
-              <a href="./index.htmlproducts/the-atelier-cashmere-cocoon-coat">The Atelier Cashmere Cocoon Coat</a>
+              <a href="./product.html?slug=the-atelier-cashmere-cocoon-coat">The Atelier Cashmere Cocoon Coat</a>
             </h3>
 
             <div class="flex items-baseline justify-between gap-1 mb-1 sm:mb-1.5">
@@ -5317,7 +5317,7 @@ body.sticky-active #socialProofFeed {
               </button>
               <button type="button" 
                       data-tooltip="Instant: ₹4,399" 
-                      onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './index.htmlimg/cashmere_cocoon_coat.jpg', 1);" 
+                      onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4399, './img/cashmere_cocoon_coat.jpg', 1);" 
                       class="uiverse-action-btn uiverse-buy-btn active:scale-95">
                 <div class="uiverse-btn-wrapper">
                   <div class="uiverse-btn-text">
@@ -5723,7 +5723,7 @@ var motionTilesData = [
     tag: "Category 01 · Outerwear",
     title: "The Atelier Cashmere Cocoon Coat",
     desc: "100% Double-faced Mongolian cashmere with hand-stitched horn buttons.",
-    img: "./index.htmlimg/cashmere_cocoon_coat.jpg",
+    img: "./img/cashmere_cocoon_coat.jpg",
     id: 1,
     price: 4999
   },
@@ -5763,7 +5763,7 @@ var motionTilesData = [
     tag: "Category 06 · Tailoring",
     title: "Italian Pleated Wool Trousers",
     desc: "Unstructured drape designed for multi-seasonal layering.",
-    img: "./index.htmlimg/italian_pleated_trousers.jpg",
+    img: "./img/italian_pleated_trousers.jpg",
     id: 7,
     price: 3999
   },
@@ -5888,7 +5888,7 @@ function switchFeaturedGarment(title, price, slug, sub) {
   document.getElementById('heroGarmentTitle').textContent = title;
   document.getElementById('heroGarmentPrice').textContent = price;
   document.getElementById('heroGarmentSub').textContent = sub;
-  document.getElementById('heroGarmentLink').href = './index.htmlproducts/' + slug;
+  document.getElementById('heroGarmentLink').href = './product.html?slug=' + slug;
 }
 
 // ── Stylist AI Concierge Modal & Live Intelligence Engine ──
@@ -5970,7 +5970,7 @@ function askStylist(query) {
               <p class="text-[10px] font-mono text-stone-500">₹4,999 · Atelier Archival</p>
             </div>
           </div>
-          <button type="button" onclick="closeStylistModal(); openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4999, './index.htmlimg/cashmere_cocoon_coat.jpg', 1);" class="px-2.5 py-1 bg-stone-950 text-white rounded-lg text-[10px] font-mono font-bold uppercase hover:bg-stone-800 cursor-pointer">
+          <button type="button" onclick="closeStylistModal(); openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4999, './img/cashmere_cocoon_coat.jpg', 1);" class="px-2.5 py-1 bg-stone-950 text-white rounded-lg text-[10px] font-mono font-bold uppercase hover:bg-stone-800 cursor-pointer">
             Buy Now ⚡
           </button>
         </div>
@@ -6025,7 +6025,7 @@ function askStylist(query) {
         <p class="font-medium text-stone-950 mb-1.5">🚀 BlueDart Priority Express Logistics:</p>
         <p class="mb-1.5">All orders are dispatched in custom sealed garment luggage boxes with tamper-proof certification.</p>
         <p class="text-stone-600 mb-2">Transit time is <strong>24–48 hours across metro zones</strong> with real-time GPS tracking. Shipping is complimentary on orders above ₹2,999.</p>
-        <a href="./index.htmltracking" onclick="closeStylistModal()" class="inline-flex items-center gap-1 text-[11px] font-mono text-[#a16207] font-bold underline">
+        <a href="./shop.html" onclick="closeStylistModal()" class="inline-flex items-center gap-1 text-[11px] font-mono text-[#a16207] font-bold underline">
           Open Live GPS Tracking Feed →
         </a>
       `;
@@ -6512,7 +6512,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroTextiles = {
     cashmere: {
       title: 'The Atelier Cashmere Cocoon Coat',
-      img: './index.htmlimg/cashmere_cocoon_coat.jpg',
+      img: './img/cashmere_cocoon_coat.jpg',
       price: 4999,
       regularPrice: 8999,
       discount: 44,
@@ -6582,13 +6582,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Framer Motion Tiles Swapper ──
   const motionTileData = [
-    { tag: 'Category 01 · Outerwear', title: 'The Atelier Cashmere Cocoon Coat', desc: 'Relaxed drop shoulder with 700 GSM double-faced Mongolian cashmere.', img: './index.htmlimg/cashmere_cocoon_coat.jpg', id: 1 },
-    { tag: 'Category 02 · Japanese Denim', title: 'Okayama 14.5oz Selvedge Trousers', desc: 'Vintage shuttle-loomed selvedge denim rope-dyed in authentic natural indigo.', img: './index.htmlimg/okayama_selvedge_denim.jpg', id: 2 },
-    { tag: 'Category 03 · Knitwear', title: '500 GSM Loopback French Terry Hoodie', desc: 'Pre-shrunk custom knit French terry with double-needle flatlock construction.', img: './index.htmlimg/terry_hoodie_luxury.jpg', id: 3 },
-    { tag: 'Category 04 · Eveningwear', title: '22-Momme Mulberry Silk Bias Dress', desc: 'Fluid drape cut on the true bias with hand-rolled French seams.', img: './index.htmlimg/mulberry_silk_dress.jpg', id: 4 },
-    { tag: 'Category 05 · Suiting', title: 'Super 150s Italian Wool Blazer', desc: 'Architectural double-breasted cut with floating horsehair canvas.', img: './index.htmlimg/wool_blazer_luxury.jpg', id: 5 },
-    { tag: 'Category 06 · Haute Couture', title: 'Italian Pleated Virgin Wool Trousers', desc: 'Hand-tailored over 42 artisan hours with bespoke reverse pleats.', img: './index.htmlimg/italian_pleated_trousers.jpg', id: 10 },
-    { tag: 'Category 07 · Archival Drops', title: 'Limited Archival Edition Pieces', desc: 'Individually numbered master series with authenticated seal of provenance.', img: './index.htmlimg/melton_wool_peacoat.jpg', id: 6 }
+    { tag: 'Category 01 · Outerwear', title: 'The Atelier Cashmere Cocoon Coat', desc: 'Relaxed drop shoulder with 700 GSM double-faced Mongolian cashmere.', img: './img/cashmere_cocoon_coat.jpg', id: 1 },
+    { tag: 'Category 02 · Japanese Denim', title: 'Okayama 14.5oz Selvedge Trousers', desc: 'Vintage shuttle-loomed selvedge denim rope-dyed in authentic natural indigo.', img: './img/okayama_selvedge_denim.jpg', id: 2 },
+    { tag: 'Category 03 · Knitwear', title: '500 GSM Loopback French Terry Hoodie', desc: 'Pre-shrunk custom knit French terry with double-needle flatlock construction.', img: './img/terry_hoodie_luxury.jpg', id: 3 },
+    { tag: 'Category 04 · Eveningwear', title: '22-Momme Mulberry Silk Bias Dress', desc: 'Fluid drape cut on the true bias with hand-rolled French seams.', img: './img/mulberry_silk_dress.jpg', id: 4 },
+    { tag: 'Category 05 · Suiting', title: 'Super 150s Italian Wool Blazer', desc: 'Architectural double-breasted cut with floating horsehair canvas.', img: './img/wool_blazer_luxury.jpg', id: 5 },
+    { tag: 'Category 06 · Haute Couture', title: 'Italian Pleated Virgin Wool Trousers', desc: 'Hand-tailored over 42 artisan hours with bespoke reverse pleats.', img: './img/italian_pleated_trousers.jpg', id: 10 },
+    { tag: 'Category 07 · Archival Drops', title: 'Limited Archival Edition Pieces', desc: 'Individually numbered master series with authenticated seal of provenance.', img: './img/melton_wool_peacoat.jpg', id: 6 }
   ];
 
   window.activateMotionTile = function(idx) {
@@ -7025,9 +7025,9 @@ const AI_STYLE_ARCHETYPES = {
       'Leave the top two buttons open for an approachable executive look.'
     ],
     items: [
-      { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, compare_price: 5999, img: './index.htmlimg/cashmere_cocoon_coat.jpg', tag: 'Top Wear · 700 GSM', vendor: 'Lumina Atelier' },
-      { id: 9, title: 'Italian Pleated Wool Trousers', price: 4999, compare_price: 6499, img: './index.htmlimg/italian_pleated_trousers.jpg', tag: 'Bottom Wear · Virgin Wool', vendor: 'Lumina Sartoria' },
-      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, compare_price: 7499, img: './index.htmlimg/calfskin_penny_loafers.jpg', tag: 'Footwear · Tuscan Calf', vendor: 'Lumina Calzature' }
+      { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, compare_price: 5999, img: './img/cashmere_cocoon_coat.jpg', tag: 'Top Wear · 700 GSM', vendor: 'Lumina Atelier' },
+      { id: 9, title: 'Italian Pleated Wool Trousers', price: 4999, compare_price: 6499, img: './img/italian_pleated_trousers.jpg', tag: 'Bottom Wear · Virgin Wool', vendor: 'Lumina Sartoria' },
+      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, compare_price: 7499, img: './img/calfskin_penny_loafers.jpg', tag: 'Footwear · Tuscan Calf', vendor: 'Lumina Calzature' }
     ]
   },
   street: {
@@ -7042,9 +7042,9 @@ const AI_STYLE_ARCHETYPES = {
       'Keep accessories matte black or brushed antique silver.'
     ],
     items: [
-      { id: 6, title: 'Sculpted 500 GSM Terry Hoodie', price: 2899, compare_price: 3999, img: './index.htmlimg/sculpted_terry_hoodie.jpg', tag: 'Top Wear · 500 GSM', vendor: 'Lumina Atelier' },
-      { id: 2, title: 'Okayama 14.5oz Selvedge Denim', price: 4499, compare_price: 5999, img: './index.htmlimg/okayama_selvedge_denim.jpg', tag: 'Bottom Wear · Raw Indigo', vendor: 'Kojima Shuttle' },
-      { id: 11, title: 'Handcrafted Italian Chelsea Boots', price: 5999, compare_price: 7999, img: './index.htmlimg/chelsea_leather_boots.jpg', tag: 'Footwear · Box Calf', vendor: 'Lumina Calzature' }
+      { id: 6, title: 'Sculpted 500 GSM Terry Hoodie', price: 2899, compare_price: 3999, img: './img/sculpted_terry_hoodie.jpg', tag: 'Top Wear · 500 GSM', vendor: 'Lumina Atelier' },
+      { id: 2, title: 'Okayama 14.5oz Selvedge Denim', price: 4499, compare_price: 5999, img: './img/okayama_selvedge_denim.jpg', tag: 'Bottom Wear · Raw Indigo', vendor: 'Kojima Shuttle' },
+      { id: 11, title: 'Handcrafted Italian Chelsea Boots', price: 5999, compare_price: 7999, img: './img/chelsea_leather_boots.jpg', tag: 'Footwear · Box Calf', vendor: 'Lumina Calzature' }
     ]
   },
   evening: {
@@ -7059,9 +7059,9 @@ const AI_STYLE_ARCHETYPES = {
       'Keep footwear polished to mirror-shine.'
     ],
     items: [
-      { id: 5, title: 'Mulberry Silk Eveningwear', price: 3899, compare_price: 5499, img: './index.htmlimg/mulberry_silk_dress.jpg', tag: 'Top Wear · Pure Silk', vendor: 'Lumina Atelier' },
-      { id: 4, title: 'Tailored Melton Wool Peacoat', price: 4799, compare_price: 6499, img: './index.htmlimg/melton_wool_peacoat.jpg', tag: 'Outerwear · Melton Wool', vendor: 'Lumina Sartoria' },
-      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, compare_price: 7499, img: './index.htmlimg/calfskin_penny_loafers.jpg', tag: 'Footwear · Polished Noir', vendor: 'Lumina Calzature' }
+      { id: 5, title: 'Mulberry Silk Eveningwear', price: 3899, compare_price: 5499, img: './img/mulberry_silk_dress.jpg', tag: 'Top Wear · Pure Silk', vendor: 'Lumina Atelier' },
+      { id: 4, title: 'Tailored Melton Wool Peacoat', price: 4799, compare_price: 6499, img: './img/melton_wool_peacoat.jpg', tag: 'Outerwear · Melton Wool', vendor: 'Lumina Sartoria' },
+      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, compare_price: 7499, img: './img/calfskin_penny_loafers.jpg', tag: 'Footwear · Polished Noir', vendor: 'Lumina Calzature' }
     ]
   },
   weekend: {
@@ -7076,9 +7076,9 @@ const AI_STYLE_ARCHETYPES = {
       'Complete with matte minimalist suede derby shoes.'
     ],
     items: [
-      { id: 8, title: 'Cashmere Turtleneck Knit', price: 2999, compare_price: 4299, img: './index.htmlimg/cashmere_turtleneck_knit.jpg', tag: 'Top Wear · Cashmere', vendor: 'Lumina Atelier' },
-      { id: 2, title: 'Okayama 14.5oz Selvedge Denim', price: 4499, compare_price: 5999, img: './index.htmlimg/okayama_selvedge_denim.jpg', tag: 'Bottom Wear · Raw Indigo', vendor: 'Kojima Shuttle' },
-      { id: 13, title: 'Minimalist Suede Derby Shoes', price: 4899, compare_price: 6499, img: './index.htmlimg/minimalist_suede_derby.jpg', tag: 'Footwear · Italian Suede', vendor: 'Lumina Calzature' }
+      { id: 8, title: 'Cashmere Turtleneck Knit', price: 2999, compare_price: 4299, img: './img/cashmere_turtleneck_knit.jpg', tag: 'Top Wear · Cashmere', vendor: 'Lumina Atelier' },
+      { id: 2, title: 'Okayama 14.5oz Selvedge Denim', price: 4499, compare_price: 5999, img: './img/okayama_selvedge_denim.jpg', tag: 'Bottom Wear · Raw Indigo', vendor: 'Kojima Shuttle' },
+      { id: 13, title: 'Minimalist Suede Derby Shoes', price: 4899, compare_price: 6499, img: './img/minimalist_suede_derby.jpg', tag: 'Footwear · Italian Suede', vendor: 'Lumina Calzature' }
     ]
   },
   athleisure: {
@@ -7093,9 +7093,9 @@ const AI_STYLE_ARCHETYPES = {
       'Layer a fine cashmere scarf for brisk morning transit.'
     ],
     items: [
-      { id: 6, title: '480GSM French Terry Hoodie', price: 3499, compare_price: 4699, img: './index.htmlimg/terry_hoodie_luxury.jpg', tag: 'Top Wear · Heavyweight', vendor: 'Lumina Atelier' },
-      { id: 10, title: 'Tailored Cashmere Relaxed Pant', price: 4199, compare_price: 5899, img: './index.htmlimg/okayama_selvedge_denim.jpg', tag: 'Bottom Wear · Cashmere Blend', vendor: 'Lumina Sartoria' },
-      { id: 13, title: 'Minimalist Sand Suede Derby Shoes', price: 4899, compare_price: 6499, img: './index.htmlimg/minimalist_suede_derby.jpg', tag: 'Footwear · Sand Suede', vendor: 'Lumina Calzature' }
+      { id: 6, title: '480GSM French Terry Hoodie', price: 3499, compare_price: 4699, img: './img/terry_hoodie_luxury.jpg', tag: 'Top Wear · Heavyweight', vendor: 'Lumina Atelier' },
+      { id: 10, title: 'Tailored Cashmere Relaxed Pant', price: 4199, compare_price: 5899, img: './img/okayama_selvedge_denim.jpg', tag: 'Bottom Wear · Cashmere Blend', vendor: 'Lumina Sartoria' },
+      { id: 13, title: 'Minimalist Sand Suede Derby Shoes', price: 4899, compare_price: 6499, img: './img/minimalist_suede_derby.jpg', tag: 'Footwear · Sand Suede', vendor: 'Lumina Calzature' }
     ]
   }
 };
@@ -7453,7 +7453,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'The Atelier Cashmere Cocoon Coat',
       price: 4399,
       compare_price: 5999,
-      img: './index.htmlimg/cashmere_cocoon_coat.jpg',
+      img: './img/cashmere_cocoon_coat.jpg',
       tag: '700 GSM Mongolian Cashmere',
       vendor: 'Lumina Atelier',
       category: 'tops',
@@ -7464,7 +7464,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Sculpted 500 GSM Terry Hoodie',
       price: 2899,
       compare_price: 3999,
-      img: './index.htmlimg/sculpted_terry_hoodie.jpg',
+      img: './img/sculpted_terry_hoodie.jpg',
       tag: '500 GSM Loopback French Terry',
       vendor: 'Lumina Atelier',
       category: 'tops',
@@ -7475,7 +7475,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Mulberry Silk Eveningwear Shirt',
       price: 3899,
       compare_price: 5499,
-      img: './index.htmlimg/mulberry_silk_dress.jpg',
+      img: './img/mulberry_silk_dress.jpg',
       tag: 'Grade-6A Pure Mulberry Silk',
       vendor: 'Lumina Atelier',
       category: 'tops',
@@ -7486,7 +7486,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Cashmere Turtleneck Knit',
       price: 2999,
       compare_price: 4299,
-      img: './index.htmlimg/cashmere_turtleneck_knit.jpg',
+      img: './img/cashmere_turtleneck_knit.jpg',
       tag: '100% Cashmere Knitwear',
       vendor: 'Lumina Atelier',
       category: 'tops',
@@ -7497,7 +7497,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Tailored Melton Wool Peacoat',
       price: 4799,
       compare_price: 6499,
-      img: './index.htmlimg/melton_wool_peacoat.jpg',
+      img: './img/melton_wool_peacoat.jpg',
       tag: '850 GSM Melton Wool',
       vendor: 'Lumina Sartoria',
       category: 'tops',
@@ -7508,7 +7508,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Oversized Heavyweight Atelier Tee',
       price: 1499,
       compare_price: 2299,
-      img: './index.htmlimg/cashmere_cocoon_coat.jpg',
+      img: './img/cashmere_cocoon_coat.jpg',
       tag: '240 GSM Combed Jersey',
       vendor: 'Lumina Street',
       category: 'tops',
@@ -7519,7 +7519,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Double-Breasted Sartorial Blazer',
       price: 5299,
       compare_price: 7499,
-      img: './index.htmlimg/melton_wool_peacoat.jpg',
+      img: './img/melton_wool_peacoat.jpg',
       tag: 'Italian Super 130s Wool',
       vendor: 'Lumina Sartoria',
       category: 'tops',
@@ -7530,7 +7530,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Giza Cotton Poplin Overshirt',
       price: 2599,
       compare_price: 3699,
-      img: './index.htmlimg/mulberry_silk_dress.jpg',
+      img: './img/mulberry_silk_dress.jpg',
       tag: '120/2 Long-Staple Giza',
       vendor: 'Lumina Sartoria',
       category: 'tops',
@@ -7543,7 +7543,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Italian Pleated Wool Trousers',
       price: 4999,
       compare_price: 6499,
-      img: './index.htmlimg/italian_pleated_trousers.jpg',
+      img: './img/italian_pleated_trousers.jpg',
       tag: 'Virgin Wool · Double Pleat',
       vendor: 'Lumina Sartoria',
       category: 'bottoms',
@@ -7554,7 +7554,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Okayama 14.5oz Raw Selvedge Denim',
       price: 4499,
       compare_price: 5999,
-      img: './index.htmlimg/okayama_selvedge_denim.jpg',
+      img: './img/okayama_selvedge_denim.jpg',
       tag: '14.5oz Shuttle Loom Denim',
       vendor: 'Kojima Shuttle',
       category: 'bottoms',
@@ -7565,7 +7565,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Tailored Cashmere Relaxed Pant',
       price: 4199,
       compare_price: 5899,
-      img: './index.htmlimg/italian_pleated_trousers.jpg',
+      img: './img/italian_pleated_trousers.jpg',
       tag: 'Cashmere Blend · Drawstring',
       vendor: 'Lumina Sartoria',
       category: 'bottoms',
@@ -7576,7 +7576,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Wide-Leg Gurkha Sartorial Trousers',
       price: 4799,
       compare_price: 6299,
-      img: './index.htmlimg/italian_pleated_trousers.jpg',
+      img: './img/italian_pleated_trousers.jpg',
       tag: 'High-Rise Gurkha Wool',
       vendor: 'Lumina Sartoria',
       category: 'bottoms',
@@ -7587,7 +7587,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Heavy Cotton Carpenter Trousers',
       price: 3799,
       compare_price: 4999,
-      img: './index.htmlimg/okayama_selvedge_denim.jpg',
+      img: './img/okayama_selvedge_denim.jpg',
       tag: '380 GSM Duck Canvas',
       vendor: 'Lumina Street',
       category: 'bottoms',
@@ -7600,7 +7600,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Burnished Calfskin Penny Loafers',
       price: 5499,
       compare_price: 7499,
-      img: './index.htmlimg/calfskin_penny_loafers.jpg',
+      img: './img/calfskin_penny_loafers.jpg',
       tag: 'Tuscan Full-Grain Calf',
       vendor: 'Lumina Calzature',
       category: 'footwear',
@@ -7611,7 +7611,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Handcrafted Italian Chelsea Boots',
       price: 5999,
       compare_price: 7999,
-      img: './index.htmlimg/chelsea_leather_boots.jpg',
+      img: './img/chelsea_leather_boots.jpg',
       tag: 'Box Calf Leather',
       vendor: 'Lumina Calzature',
       category: 'footwear',
@@ -7622,7 +7622,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Minimalist Suede Derby Shoes',
       price: 4899,
       compare_price: 6499,
-      img: './index.htmlimg/minimalist_suede_derby.jpg',
+      img: './img/minimalist_suede_derby.jpg',
       tag: 'Italian Velour Suede',
       vendor: 'Lumina Calzature',
       category: 'footwear',
@@ -7633,7 +7633,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Polished Noir Double Monkstraps',
       price: 5799,
       compare_price: 7899,
-      img: './index.htmlimg/calfskin_penny_loafers.jpg',
+      img: './img/calfskin_penny_loafers.jpg',
       tag: 'French Box Calf',
       vendor: 'Lumina Calzature',
       category: 'footwear',
@@ -7644,7 +7644,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Vibram Low Court Leather Sneakers',
       price: 4699,
       compare_price: 6199,
-      img: './index.htmlimg/minimalist_suede_derby.jpg',
+      img: './img/minimalist_suede_derby.jpg',
       tag: 'Nappa Leather · Vibram Sole',
       vendor: 'Lumina Calzature',
       category: 'footwear',
@@ -7657,7 +7657,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Full-Grain Bridle Leather Dress Belt',
       price: 1899,
       compare_price: 2699,
-      img: './index.htmlimg/calfskin_penny_loafers.jpg',
+      img: './img/calfskin_penny_loafers.jpg',
       tag: 'English Bridle Leather',
       vendor: 'Lumina Pelletteria',
       category: 'accessories',
@@ -7668,7 +7668,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Mulberry Silk Pocket Square & Scarf',
       price: 1499,
       compare_price: 2199,
-      img: './index.htmlimg/mulberry_silk_dress.jpg',
+      img: './img/mulberry_silk_dress.jpg',
       tag: '100% Mulberry Silk',
       vendor: 'Lumina Atelier',
       category: 'accessories',
@@ -7679,7 +7679,7 @@ const ATELIER_STUDIO_CATALOG = {
       title: 'Saffiano Leather Weekender Bag',
       price: 6499,
       compare_price: 8999,
-      img: './index.htmlimg/chelsea_leather_boots.jpg',
+      img: './img/chelsea_leather_boots.jpg',
       tag: 'Textured Saffiano Leather',
       vendor: 'Lumina Pelletteria',
       category: 'accessories',
@@ -8211,7 +8211,7 @@ const PROVENANCE_FABRICS = [
     origin: 'Biella, Northern Italy',
     name: 'Double-Faced Mongolian Cashmere',
     desc: 'Micro-combed 14.5μ baby capra fibers unlined for weightless thermal insulation and fluid drape.',
-    img: './index.htmlimg/cashmere_cocoon_coat.jpg',
+    img: './img/cashmere_cocoon_coat.jpg',
     density: '700 GSM · Ultra-Heavy',
     densityPct: 95,
     drape: '99% Fluid Drape',
@@ -8223,7 +8223,7 @@ const PROVENANCE_FABRICS = [
     origin: 'Kojima, Okayama, Japan',
     name: 'Shuttle-Loom Okayama Selvedge Denim',
     desc: '24-dip rope-dyed botanical indigo woven slowly on vintage Toyoda shuttle looms with pink ID ticker.',
-    img: './index.htmlimg/vintage_okayama_14_5oz_selvedge_denim.jpg',
+    img: './img/vintage_okayama_14_5oz_selvedge_denim.jpg',
     density: '14.5 OZ · Structural Rigid',
     densityPct: 92,
     drape: '84% Architectural Break',
@@ -8235,7 +8235,7 @@ const PROVENANCE_FABRICS = [
     origin: 'Lake Como, Lombardy, Italy',
     name: 'Sand-Washed Mulberry Heavy Silk',
     desc: 'Grade 6A continuous long-filament silk with a bias cut that clings to contours with liquid sheen.',
-    img: './index.htmlimg/mulberry_silk_bias_slip_dress.jpg',
+    img: './img/mulberry_silk_bias_slip_dress.jpg',
     density: '22-Momme · Heavy Drape',
     densityPct: 82,
     drape: '100% Liquid Cascade',
@@ -8247,7 +8247,7 @@ const PROVENANCE_FABRICS = [
     origin: 'Santa Croce, Florence, Italy',
     name: 'Vegetable-Tanned Tuscan Calfskin',
     desc: 'Naturally cured in chestnut & mimosa bark extract, hand-burnished for rich heirloom patina.',
-    img: './index.htmlimg/burnished_calfskin_penny_loafers.jpg',
+    img: './img/burnished_calfskin_penny_loafers.jpg',
     density: 'Full-Grain Box Calf',
     densityPct: 98,
     drape: 'Structured Contoured Hold',
@@ -8333,14 +8333,14 @@ function renderEnsembleGroups(selectedProd) {
     id: selectedProd.id || 1,
     title: selectedProd.title || 'Selected Garment',
     price: (typeof selectedProd.price === 'number') ? selectedProd.price : (parseFloat(selectedProd.price) || 4999),
-    img: selectedProd.image || selectedProd.img || './index.htmlimg/cashmere_cocoon_coat.jpg',
+    img: selectedProd.image || selectedProd.img || './img/cashmere_cocoon_coat.jpg',
     tag: 'Selected Piece',
     category: garmentType,
     desc: 'Handcrafted masterwork designed for optimal layering ease and drape.',
     colors: [
-      { name: 'Original', hex: '#c19a6b', img: selectedProd.image || selectedProd.img || './index.htmlimg/cashmere_cocoon_coat.jpg' },
-      { name: 'Onyx Black', hex: '#18181b', img: './index.htmlimg/sculpted_500_gsm_terry_hoodie.jpg' },
-      { name: 'Slate Grey', hex: '#64748b', img: './index.htmlimg/heavyweight_linen_overshirt.jpg' }
+      { name: 'Original', hex: '#c19a6b', img: selectedProd.image || selectedProd.img || './img/cashmere_cocoon_coat.jpg' },
+      { name: 'Onyx Black', hex: '#18181b', img: './img/sculpted_500_gsm_terry_hoodie.jpg' },
+      { name: 'Slate Grey', hex: '#64748b', img: './img/heavyweight_linen_overshirt.jpg' }
     ]
   };
 
@@ -8804,7 +8804,7 @@ window.openProductQuickViewModal = function(item) {
   const titleEl = document.getElementById('apqvTitle');
   if (titleEl) titleEl.textContent = item.title || 'Curated Atelier Piece';
 
-  const baseImg = item.img || item.image || './index.htmlimg/cashmere_cocoon_coat.jpg';
+  const baseImg = item.img || item.image || './img/cashmere_cocoon_coat.jpg';
   const imgEl = document.getElementById('apqvImage');
   if (imgEl) imgEl.src = baseImg;
 
@@ -8821,22 +8821,22 @@ window.openProductQuickViewModal = function(item) {
   const colorCont = document.getElementById('apqvColorSwatches');
   let defaultColors = [
     { name: 'Raw Indigo', hex: '#1e3a8a', img: baseImg },
-    { name: 'Faded Stone', hex: '#64748b', img: './index.htmlimg/italian_pleated_wool_trousers.jpg' },
-    { name: 'Washed Black', hex: '#18181b', img: './index.htmlimg/burnished_calfskin_penny_loafers.jpg' }
+    { name: 'Faded Stone', hex: '#64748b', img: './img/italian_pleated_wool_trousers.jpg' },
+    { name: 'Washed Black', hex: '#18181b', img: './img/burnished_calfskin_penny_loafers.jpg' }
   ];
 
   if (/coat|jacket|cashmere/i.test(item.title || '')) {
     defaultColors = [
       { name: 'Signature Camel', hex: '#c19a6b', img: baseImg },
-      { name: 'Obsidian Black', hex: '#18181b', img: './index.htmlimg/sculpted_500_gsm_terry_hoodie.jpg' },
-      { name: 'Oatmeal Melange', hex: '#dcd0c0', img: './index.htmlimg/heavyweight_linen_overshirt.jpg' },
-      { name: 'Forest Emerald', hex: '#1b4332', img: './index.htmlimg/mulberry_silk_bias_slip_dress.jpg' }
+      { name: 'Obsidian Black', hex: '#18181b', img: './img/sculpted_500_gsm_terry_hoodie.jpg' },
+      { name: 'Oatmeal Melange', hex: '#dcd0c0', img: './img/heavyweight_linen_overshirt.jpg' },
+      { name: 'Forest Emerald', hex: '#1b4332', img: './img/mulberry_silk_bias_slip_dress.jpg' }
     ];
   } else if (/shoe|boot|loafer/i.test(item.title || '')) {
     defaultColors = [
       { name: 'Burnished Tan', hex: '#854d0e', img: baseImg },
-      { name: 'Obsidian Black', hex: '#18181b', img: './index.htmlimg/burnished_calfskin_penny_loafers.jpg' },
-      { name: 'Espresso Suede', hex: '#451a03', img: './index.htmlimg/handcrafted_italian_chelsea_boots.jpg' }
+      { name: 'Obsidian Black', hex: '#18181b', img: './img/burnished_calfskin_penny_loafers.jpg' },
+      { name: 'Espresso Suede', hex: '#451a03', img: './img/handcrafted_italian_chelsea_boots.jpg' }
     ];
   }
 
@@ -9184,8 +9184,8 @@ window.closeProductQuickViewModal = function() {
             <div class="group relative bg-white rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 hover:shadow-[0_20px_40px_rgba(161,98,7,0.14)] transition-all duration-300 overflow-hidden flex flex-col shadow-sm" style="animation-delay: 0s">
         
         <!-- Image Container -->
-        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./index.htmlproducts/the-atelier-cashmere-cocoon-coat'">
-          <img src="./index.htmlimg/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./product.html?slug=the-atelier-cashmere-cocoon-coat'">
+          <img src="./img/cashmere_cocoon_coat.jpg" alt="The Atelier Cashmere Cocoon Coat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
           
           <!-- Overlay gradient -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
@@ -9204,7 +9204,7 @@ window.closeProductQuickViewModal = function() {
           <!-- Wishlist top-right -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="1" onchange="toggleWishlistItem({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4840, image:'./index.htmlimg/cashmere_cocoon_coat.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="1" onchange="toggleWishlistItem({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4840, image:'./img/cashmere_cocoon_coat.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -9241,7 +9241,7 @@ window.closeProductQuickViewModal = function() {
         <div class="p-2.5 sm:p-5 flex flex-col gap-2 sm:gap-3 flex-1 bg-white">
           <div>
             <h3 class="font-serif text-xs sm:text-base font-bold text-stone-900 group-hover:text-[#a16207] transition-colors leading-tight line-clamp-1">
-              <a href="./index.htmlproducts/the-atelier-cashmere-cocoon-coat">The Atelier Cashmere Cocoon Coat</a>
+              <a href="./product.html?slug=the-atelier-cashmere-cocoon-coat">The Atelier Cashmere Cocoon Coat</a>
             </h3>
             <p class="hidden sm:block text-[11px] text-stone-500 mt-1 line-clamp-1 font-light">An architectural double-faced silhouette hand-cut from 700 GSM pure Mongolian cashmere with fluid drop shoulders, unlined horn button closures, and sculpted welt pockets.</p>
           </div>
@@ -9298,7 +9298,7 @@ window.closeProductQuickViewModal = function() {
             </button>
             <button type="button" 
                     data-tooltip="Flash: ₹4,840" 
-                    onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4840, './index.htmlimg/cashmere_cocoon_coat.jpg', 1)" 
+                    onclick="openExpressCheckout(1, 'The Atelier Cashmere Cocoon Coat', 4840, './img/cashmere_cocoon_coat.jpg', 1)" 
                     class="uiverse-action-btn uiverse-buy-btn active:scale-95">
               <div class="uiverse-btn-wrapper">
                 <div class="uiverse-btn-text">
@@ -9318,8 +9318,8 @@ window.closeProductQuickViewModal = function() {
             <div class="group relative bg-white rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 hover:shadow-[0_20px_40px_rgba(161,98,7,0.14)] transition-all duration-300 overflow-hidden flex flex-col shadow-sm" style="animation-delay: 0.12s">
         
         <!-- Image Container -->
-        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./index.htmlproducts/mulberry-silk-bias-slip-dress'">
-          <img src="./index.htmlimg/mulberry_silk_dress.jpg" alt="22-Momme Mulberry Silk Bias Slip Dress" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./product.html?slug=mulberry-silk-bias-slip-dress'">
+          <img src="./img/mulberry_silk_dress.jpg" alt="22-Momme Mulberry Silk Bias Slip Dress" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
           
           <!-- Overlay gradient -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
@@ -9338,7 +9338,7 @@ window.closeProductQuickViewModal = function() {
           <!-- Wishlist top-right -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="4" onchange="toggleWishlistItem({id:4, title:'22-Momme Mulberry Silk Bias Slip Dress', price:5500, image:'./index.htmlimg/mulberry_silk_dress.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="4" onchange="toggleWishlistItem({id:4, title:'22-Momme Mulberry Silk Bias Slip Dress', price:5500, image:'./img/mulberry_silk_dress.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -9375,7 +9375,7 @@ window.closeProductQuickViewModal = function() {
         <div class="p-2.5 sm:p-5 flex flex-col gap-2 sm:gap-3 flex-1 bg-white">
           <div>
             <h3 class="font-serif text-xs sm:text-base font-bold text-stone-900 group-hover:text-[#a16207] transition-colors leading-tight line-clamp-1">
-              <a href="./index.htmlproducts/mulberry-silk-bias-slip-dress">22-Momme Mulberry Silk Bias Slip Dress</a>
+              <a href="./product.html?slug=mulberry-silk-bias-slip-dress">22-Momme Mulberry Silk Bias Slip Dress</a>
             </h3>
             <p class="hidden sm:block text-[11px] text-stone-500 mt-1 line-clamp-1 font-light">Fluid bias-cut evening dresses crafted from certified 22-momme Mulberry silk with exquisite hand-rolled French seams.</p>
           </div>
@@ -9432,7 +9432,7 @@ window.closeProductQuickViewModal = function() {
             </button>
             <button type="button" 
                     data-tooltip="Flash: ₹5,500" 
-                    onclick="openExpressCheckout(4, '22-Momme Mulberry Silk Bias Slip Dress', 5500, './index.htmlimg/mulberry_silk_dress.jpg', 4)" 
+                    onclick="openExpressCheckout(4, '22-Momme Mulberry Silk Bias Slip Dress', 5500, './img/mulberry_silk_dress.jpg', 4)" 
                     class="uiverse-action-btn uiverse-buy-btn active:scale-95">
               <div class="uiverse-btn-wrapper">
                 <div class="uiverse-btn-text">
@@ -9452,8 +9452,8 @@ window.closeProductQuickViewModal = function() {
             <div class="group relative bg-white rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 hover:shadow-[0_20px_40px_rgba(161,98,7,0.14)] transition-all duration-300 overflow-hidden flex flex-col shadow-sm" style="animation-delay: 0.24s">
         
         <!-- Image Container -->
-        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./index.htmlproducts/vintage-okayama-selvedge-trousers'">
-          <img src="./index.htmlimg/okayama_selvedge_denim.jpg" alt="Vintage Okayama 14.5oz Selvedge Trousers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./product.html?slug=vintage-okayama-selvedge-trousers'">
+          <img src="./img/okayama_selvedge_denim.jpg" alt="Vintage Okayama 14.5oz Selvedge Trousers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
           
           <!-- Overlay gradient -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
@@ -9472,7 +9472,7 @@ window.closeProductQuickViewModal = function() {
           <!-- Wishlist top-right -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="2" onchange="toggleWishlistItem({id:2, title:'Vintage Okayama 14.5oz Selvedge Trousers', price:4730, image:'./index.htmlimg/okayama_selvedge_denim.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="2" onchange="toggleWishlistItem({id:2, title:'Vintage Okayama 14.5oz Selvedge Trousers', price:4730, image:'./img/okayama_selvedge_denim.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -9509,7 +9509,7 @@ window.closeProductQuickViewModal = function() {
         <div class="p-2.5 sm:p-5 flex flex-col gap-2 sm:gap-3 flex-1 bg-white">
           <div>
             <h3 class="font-serif text-xs sm:text-base font-bold text-stone-900 group-hover:text-[#a16207] transition-colors leading-tight line-clamp-1">
-              <a href="./index.htmlproducts/vintage-okayama-selvedge-trousers">Vintage Okayama 14.5oz Selvedge Trousers</a>
+              <a href="./product.html?slug=vintage-okayama-selvedge-trousers">Vintage Okayama 14.5oz Selvedge Trousers</a>
             </h3>
             <p class="hidden sm:block text-[11px] text-stone-500 mt-1 line-clamp-1 font-light">14.5oz shuttle-loomed selvedge denim from Okayama, Japan, rope-dyed in authentic natural indigo vats with red-line selvedge ID.</p>
           </div>
@@ -9566,7 +9566,7 @@ window.closeProductQuickViewModal = function() {
             </button>
             <button type="button" 
                     data-tooltip="Flash: ₹4,730" 
-                    onclick="openExpressCheckout(2, 'Vintage Okayama 14.5oz Selvedge Trousers', 4730, './index.htmlimg/okayama_selvedge_denim.jpg', 2)" 
+                    onclick="openExpressCheckout(2, 'Vintage Okayama 14.5oz Selvedge Trousers', 4730, './img/okayama_selvedge_denim.jpg', 2)" 
                     class="uiverse-action-btn uiverse-buy-btn active:scale-95">
               <div class="uiverse-btn-wrapper">
                 <div class="uiverse-btn-text">
@@ -9586,8 +9586,8 @@ window.closeProductQuickViewModal = function() {
             <div class="group relative bg-white rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 hover:shadow-[0_20px_40px_rgba(161,98,7,0.14)] transition-all duration-300 overflow-hidden flex flex-col shadow-sm" style="animation-delay: 0.36s">
         
         <!-- Image Container -->
-        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./index.htmlproducts/super-150s-double-breasted-blazer'">
-          <img src="./index.htmlimg/wool_blazer_luxury.jpg" alt="Super 150s Double-Breasted Wool Blazer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./product.html?slug=super-150s-double-breasted-blazer'">
+          <img src="./img/wool_blazer_luxury.jpg" alt="Super 150s Double-Breasted Wool Blazer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
           
           <!-- Overlay gradient -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
@@ -9606,7 +9606,7 @@ window.closeProductQuickViewModal = function() {
           <!-- Wishlist top-right -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="5" onchange="toggleWishlistItem({id:5, title:'Super 150s Double-Breasted Wool Blazer', price:7700, image:'./index.htmlimg/wool_blazer_luxury.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="5" onchange="toggleWishlistItem({id:5, title:'Super 150s Double-Breasted Wool Blazer', price:7700, image:'./img/wool_blazer_luxury.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -9643,7 +9643,7 @@ window.closeProductQuickViewModal = function() {
         <div class="p-2.5 sm:p-5 flex flex-col gap-2 sm:gap-3 flex-1 bg-white">
           <div>
             <h3 class="font-serif text-xs sm:text-base font-bold text-stone-900 group-hover:text-[#a16207] transition-colors leading-tight line-clamp-1">
-              <a href="./index.htmlproducts/super-150s-double-breasted-blazer">Super 150s Double-Breasted Wool Blazer</a>
+              <a href="./product.html?slug=super-150s-double-breasted-blazer">Super 150s Double-Breasted Wool Blazer</a>
             </h3>
             <p class="hidden sm:block text-[11px] text-stone-500 mt-1 line-clamp-1 font-light">Double-breasted blazers cut from Super 150s Italian virgin wool with floating horsehair canvas construction.</p>
           </div>
@@ -9700,7 +9700,7 @@ window.closeProductQuickViewModal = function() {
             </button>
             <button type="button" 
                     data-tooltip="Flash: ₹7,700" 
-                    onclick="openExpressCheckout(5, 'Super 150s Double-Breasted Wool Blazer', 7700, './index.htmlimg/wool_blazer_luxury.jpg', 5)" 
+                    onclick="openExpressCheckout(5, 'Super 150s Double-Breasted Wool Blazer', 7700, './img/wool_blazer_luxury.jpg', 5)" 
                     class="uiverse-action-btn uiverse-buy-btn active:scale-95">
               <div class="uiverse-btn-wrapper">
                 <div class="uiverse-btn-text">
@@ -9720,8 +9720,8 @@ window.closeProductQuickViewModal = function() {
             <div class="group relative bg-white rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 hover:shadow-[0_20px_40px_rgba(161,98,7,0.14)] transition-all duration-300 overflow-hidden flex flex-col shadow-sm" style="animation-delay: 0.48s">
         
         <!-- Image Container -->
-        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./index.htmlproducts/mongolian-ribbed-turtleneck-knit'">
-          <img src="./index.htmlimg/cashmere_turtleneck_knit.jpg" alt="Mongolian Ribbed Turtleneck Knit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./product.html?slug=mongolian-ribbed-turtleneck-knit'">
+          <img src="./img/cashmere_turtleneck_knit.jpg" alt="Mongolian Ribbed Turtleneck Knit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
           
           <!-- Overlay gradient -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
@@ -9740,7 +9740,7 @@ window.closeProductQuickViewModal = function() {
           <!-- Wishlist top-right -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="7" onchange="toggleWishlistItem({id:7, title:'Mongolian Ribbed Turtleneck Knit', price:3850, image:'./index.htmlimg/cashmere_turtleneck_knit.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="7" onchange="toggleWishlistItem({id:7, title:'Mongolian Ribbed Turtleneck Knit', price:3850, image:'./img/cashmere_turtleneck_knit.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -9777,7 +9777,7 @@ window.closeProductQuickViewModal = function() {
         <div class="p-2.5 sm:p-5 flex flex-col gap-2 sm:gap-3 flex-1 bg-white">
           <div>
             <h3 class="font-serif text-xs sm:text-base font-bold text-stone-900 group-hover:text-[#a16207] transition-colors leading-tight line-clamp-1">
-              <a href="./index.htmlproducts/mongolian-ribbed-turtleneck-knit">Mongolian Ribbed Turtleneck Knit</a>
+              <a href="./product.html?slug=mongolian-ribbed-turtleneck-knit">Mongolian Ribbed Turtleneck Knit</a>
             </h3>
             <p class="hidden sm:block text-[11px] text-stone-500 mt-1 line-clamp-1 font-light">Grade-A virgin cashmere knit with 7-gauge fisherman ribbing for plush, featherlight warmth.</p>
           </div>
@@ -9834,7 +9834,7 @@ window.closeProductQuickViewModal = function() {
             </button>
             <button type="button" 
                     data-tooltip="Flash: ₹3,850" 
-                    onclick="openExpressCheckout(7, 'Mongolian Ribbed Turtleneck Knit', 3850, './index.htmlimg/cashmere_turtleneck_knit.jpg', 7)" 
+                    onclick="openExpressCheckout(7, 'Mongolian Ribbed Turtleneck Knit', 3850, './img/cashmere_turtleneck_knit.jpg', 7)" 
                     class="uiverse-action-btn uiverse-buy-btn active:scale-95">
               <div class="uiverse-btn-wrapper">
                 <div class="uiverse-btn-text">
@@ -9854,8 +9854,8 @@ window.closeProductQuickViewModal = function() {
             <div class="group relative bg-white rounded-xl sm:rounded-2xl border border-stone-200 hover:border-[#a16207]/60 hover:shadow-[0_20px_40px_rgba(161,98,7,0.14)] transition-all duration-300 overflow-hidden flex flex-col shadow-sm" style="animation-delay: 0.6s">
         
         <!-- Image Container -->
-        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./index.htmlproducts/sculpted-heavyweight-terry-hoodie'">
-          <img src="./index.htmlimg/terry_hoodie_luxury.jpg" alt="Sculpted 500 GSM Terry Hoodie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+        <div class="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-black cursor-pointer" onclick="window.location.href='./product.html?slug=sculpted-heavyweight-terry-hoodie'">
+          <img src="./img/terry_hoodie_luxury.jpg" alt="Sculpted 500 GSM Terry Hoodie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
           
           <!-- Overlay gradient -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
@@ -9874,7 +9874,7 @@ window.closeProductQuickViewModal = function() {
           <!-- Wishlist top-right -->
           <div class="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 z-10" onclick="event.stopPropagation()">
             <div class="heart-container w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/70 hover:bg-black border border-white/20 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer" title="Save to Wardrobe">
-              <input type="checkbox" class="checkbox" data-wishlist-id="3" onchange="toggleWishlistItem({id:3, title:'Sculpted 500 GSM Terry Hoodie', price:3190, image:'./index.htmlimg/terry_hoodie_luxury.jpg'}, event)">
+              <input type="checkbox" class="checkbox" data-wishlist-id="3" onchange="toggleWishlistItem({id:3, title:'Sculpted 500 GSM Terry Hoodie', price:3190, image:'./img/terry_hoodie_luxury.jpg'}, event)">
               <div class="svg-container">
                 <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
@@ -9911,7 +9911,7 @@ window.closeProductQuickViewModal = function() {
         <div class="p-2.5 sm:p-5 flex flex-col gap-2 sm:gap-3 flex-1 bg-white">
           <div>
             <h3 class="font-serif text-xs sm:text-base font-bold text-stone-900 group-hover:text-[#a16207] transition-colors leading-tight line-clamp-1">
-              <a href="./index.htmlproducts/sculpted-heavyweight-terry-hoodie">Sculpted 500 GSM Terry Hoodie</a>
+              <a href="./product.html?slug=sculpted-heavyweight-terry-hoodie">Sculpted 500 GSM Terry Hoodie</a>
             </h3>
             <p class="hidden sm:block text-[11px] text-stone-500 mt-1 line-clamp-1 font-light">Substantial 500 GSM loopback cotton jersey garments, custom garment-dyed in muted architectural tones for effortless daily poise.</p>
           </div>
@@ -9968,7 +9968,7 @@ window.closeProductQuickViewModal = function() {
             </button>
             <button type="button" 
                     data-tooltip="Flash: ₹3,190" 
-                    onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 3190, './index.htmlimg/terry_hoodie_luxury.jpg', 3)" 
+                    onclick="openExpressCheckout(3, 'Sculpted 500 GSM Terry Hoodie', 3190, './img/terry_hoodie_luxury.jpg', 3)" 
                     class="uiverse-action-btn uiverse-buy-btn active:scale-95">
               <div class="uiverse-btn-wrapper">
                 <div class="uiverse-btn-text">
@@ -11295,26 +11295,26 @@ function claimOfferCoupon(code, amount, type) {
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.html">Runway Lookbook</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./collections.html">Editorial Collections</a></li>
         <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./shop.html">Boutique Catalog</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmltracking">Order Tracking</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./shop.html">Order Tracking</a></li>
       </ul>
     </div>
     
     <div class="md:col-span-2">
       <h4 class="font-label-caps text-xs text-[#e9c176] md:text-primary uppercase tracking-[0.2em] mb-6 font-bold">Concierge</h4>
       <ul class="space-y-3.5 font-body-md text-sm">
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmlshipping">Shipping &amp; Logistics</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmlaccount">Atelier Account</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmlstylist">AI Stylist Advice</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmladmin">Merchant Portal</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="#">Shipping &amp; Logistics</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./login.html">Atelier Account</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./stylist.html">AI Stylist Advice</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="#">Merchant Portal</a></li>
       </ul>
     </div>
     
     <div class="md:col-span-2">
       <h4 class="font-label-caps text-xs text-[#e9c176] md:text-primary uppercase tracking-[0.2em] mb-6 font-bold">Legal &amp; Trust</h4>
       <ul class="space-y-3.5 font-body-md text-sm">
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmlprovenance">Certified Provenance</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmlterms">Terms of Service</a></li>
-        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="./index.htmlmanifesto">Zero-Waste Manifesto</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="#">Certified Provenance</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="#">Terms of Service</a></li>
+        <li><a class="text-stone-300 md:text-on-surface-variant hover:text-[#e9c176] md:hover:text-accent transition-colors" href="#">Zero-Waste Manifesto</a></li>
       </ul>
     </div>
   </div>
@@ -12123,7 +12123,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-amber-300">₹799</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Atelier Silver Mystery Blind Box (3 Pieces)', 799, './index.htmlimg/cashmere_turtleneck_knit.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-amber-300 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Atelier Silver Mystery Blind Box (3 Pieces)', 799, './img/cashmere_turtleneck_knit.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-amber-300 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -12142,7 +12142,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-amber-300">₹1,299</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Lumina Gold Capsule Mystery Drop (5 Pieces)', 1299, './index.htmlimg/cashmere_cocoon_coat.jpg');" class="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:opacity-90 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Lumina Gold Capsule Mystery Drop (5 Pieces)', 1299, './img/cashmere_cocoon_coat.jpg');" class="px-3 py-1.5 bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:opacity-90 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -12160,7 +12160,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-purple-300">₹2,099</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Platinum Atelier Luxury Mystery Box (7 Pieces)', 2099, './index.htmlimg/wool_blazer_luxury.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-purple-300 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Platinum Atelier Luxury Mystery Box (7 Pieces)', 2099, './img/wool_blazer_luxury.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-purple-300 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -12178,7 +12178,7 @@ function launchWheelConfetti() {
         </div>
         <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between">
           <span class="font-serif text-base font-bold text-white">₹3,999</span>
-          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Black Diamond Vault Complete Wardrobe (10 Pieces)', 3999, './index.htmlimg/melton_wool_peacoat.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-stone-200 transition-all cursor-pointer">
+          <button type="button" onclick="closeMysteryDropModal(); openExpressCheckout(1, 'Black Diamond Vault Complete Wardrobe (10 Pieces)', 3999, './img/melton_wool_peacoat.jpg');" class="px-3 py-1.5 bg-white text-stone-950 font-mono text-[10px] font-extrabold uppercase rounded-lg hover:bg-stone-200 transition-all cursor-pointer">
             Acquire Tier
           </button>
         </div>
@@ -12263,7 +12263,7 @@ window.closeMysteryDropModal = function() {
     </button>
 
     <!-- Instant Search -->
-    <a href="./index.htmlsearch" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 text-stone-400 hover:text-[#e9c176]" title="Search">
+    <a href="./shop.html" class="flex-1 flex flex-col items-center justify-center py-1.5 px-1 rounded-xl transition-all duration-200 active:scale-90 text-stone-400 hover:text-[#e9c176]" title="Search">
       <span class="material-symbols-outlined text-[19px] leading-none mb-0.5">search</span>
       <span class="text-[8.5px] font-mono uppercase tracking-wider leading-tight">Search</span>
           </a>
@@ -12376,7 +12376,7 @@ window.closeMysteryDropModal = function() {
           <!-- Scalable / Morphable Body Silhouette Layer -->
           <div id="vtrBodyStageWrapper" class="w-full h-full relative transition-transform duration-150 origin-bottom flex items-center justify-center">
             <!-- Editorial Model / Mannequin Photo -->
-            <img id="vtrModelImage" src="./index.htmlimg/model_look_executive.jpg" alt="Model Garment" class="w-full h-full object-cover pointer-events-none">
+            <img id="vtrModelImage" src="./img/model_look_executive.jpg" alt="Model Garment" class="w-full h-full object-cover pointer-events-none">
             
             <!-- Neural Face Overlay — auto-positioned to model head -->
             <div id="vtrFaceOverlayContainer" class="absolute pointer-events-none transition-all duration-150" style="top: 4.5%; left: 50%; width: 26%; height: 22%; transform: translateX(-50%);">
@@ -12814,7 +12814,7 @@ window.closeMysteryDropModal = function() {
           <div class="bg-white p-3 rounded-xl border border-stone-200 shadow-2xs space-y-2.5">
             <div class="flex items-center justify-between gap-2.5">
               <div class="flex items-center gap-2.5 min-w-0 cursor-pointer" onclick="if(currentQvAiPair) openProductQuickViewModal(currentQvAiPair)">
-                <img id="qvAiPairImg" src="./index.htmlimg/okayama_selvedge_denim.jpg" class="w-12 h-13 object-cover rounded-xl bg-stone-100 flex-shrink-0 border border-stone-200 shadow-2xs hover:scale-105 transition-transform duration-300">
+                <img id="qvAiPairImg" src="./img/okayama_selvedge_denim.jpg" class="w-12 h-13 object-cover rounded-xl bg-stone-100 flex-shrink-0 border border-stone-200 shadow-2xs hover:scale-105 transition-transform duration-300">
                 <div class="min-w-0">
                   <span class="text-[8px] font-mono uppercase text-stone-500 font-bold block">Recommended Match</span>
                   <h5 id="qvAiPairTitle" class="font-serif text-xs font-bold text-stone-900 truncate hover:text-[#a16207] transition-colors">14.5oz Okayama Denim</h5>
@@ -13196,81 +13196,81 @@ const VTR_LOOKS_DATABASE = {
   executive: {
     key: 'executive',
     title: 'The Power Executive Look',
-    modelImg: './index.htmlimg/model_look_executive.jpg',
-    mannequinImg: './index.htmlimg/mannequin_look_executive.jpg',
+    modelImg: './img/model_look_executive.jpg',
+    mannequinImg: './img/mannequin_look_executive.jpg',
     modelCoords: { top: '4.5%', left: '50.0%', width: '25.5%', height: '22.5%' },
     mannequinCoords: { top: '5.5%', left: '50.0%', width: '24.0%', height: '21.5%' },
     price: 14197,
     compare_price: 19497,
     save: 5300,
     items: [
-      { id: 5, title: 'Super 150s Merino Wool Blazer', price: 4799, image: './index.htmlimg/wool_blazer_luxury.jpg', tag: 'Tailored Blazer' },
-      { id: 9, title: 'Italian Pleated Wool Trousers', price: 4999, image: './index.htmlimg/italian_pleated_trousers.jpg', tag: 'Virgin Wool Pant' },
-      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, image: './index.htmlimg/calfskin_penny_loafers.jpg', tag: 'Handcrafted Derby' }
+      { id: 5, title: 'Super 150s Merino Wool Blazer', price: 4799, image: './img/wool_blazer_luxury.jpg', tag: 'Tailored Blazer' },
+      { id: 9, title: 'Italian Pleated Wool Trousers', price: 4999, image: './img/italian_pleated_trousers.jpg', tag: 'Virgin Wool Pant' },
+      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, image: './img/calfskin_penny_loafers.jpg', tag: 'Handcrafted Derby' }
     ]
   },
   street: {
     key: 'street',
     title: 'The Monochrome Street Poise',
-    modelImg: './index.htmlimg/model_look_street.jpg',
-    mannequinImg: './index.htmlimg/mannequin_look_street.jpg',
+    modelImg: './img/model_look_street.jpg',
+    mannequinImg: './img/mannequin_look_street.jpg',
     modelCoords: { top: '4.2%', left: '50.0%', width: '25.0%', height: '22.0%' },
     mannequinCoords: { top: '5.8%', left: '50.0%', width: '24.0%', height: '21.0%' },
     price: 13397,
     compare_price: 18697,
     save: 5300,
     items: [
-      { id: 6, title: 'Sculpted 500 GSM Terry Hoodie', price: 2899, image: './index.htmlimg/sculpted_terry_hoodie.jpg', tag: '500 GSM Loopback' },
-      { id: 2, title: 'Okayama 14.5oz Selvedge Denim', price: 4499, image: './index.htmlimg/okayama_selvedge_denim.jpg', tag: 'Raw Japanese Indigo' },
-      { id: 11, title: 'Handcrafted Italian Chelsea Boots', price: 5999, image: './index.htmlimg/chelsea_leather_boots.jpg', tag: 'Tuscan Box Calf' }
+      { id: 6, title: 'Sculpted 500 GSM Terry Hoodie', price: 2899, image: './img/sculpted_terry_hoodie.jpg', tag: '500 GSM Loopback' },
+      { id: 2, title: 'Okayama 14.5oz Selvedge Denim', price: 4499, image: './img/okayama_selvedge_denim.jpg', tag: 'Raw Japanese Indigo' },
+      { id: 11, title: 'Handcrafted Italian Chelsea Boots', price: 5999, image: './img/chelsea_leather_boots.jpg', tag: 'Tuscan Box Calf' }
     ]
   },
   classic: {
     key: 'classic',
     title: 'The Milanese Classic Look',
-    modelImg: './index.htmlimg/model_look_classic.jpg',
-    mannequinImg: './index.htmlimg/mannequin_look_classic.jpg',
+    modelImg: './img/model_look_classic.jpg',
+    mannequinImg: './img/mannequin_look_classic.jpg',
     modelCoords: { top: '4.0%', left: '50.0%', width: '25.0%', height: '22.0%' },
     mannequinCoords: { top: '5.5%', left: '50.0%', width: '24.0%', height: '21.0%' },
     price: 12297,
     compare_price: 17597,
     save: 5300,
     items: [
-      { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, image: './index.htmlimg/cashmere_cocoon_coat.jpg', tag: '700 GSM Outerwear' },
-      { id: 8, title: 'Cashmere Turtleneck Knit', price: 2999, image: './index.htmlimg/cashmere_turtleneck_knit.jpg', tag: 'Grade-A Cashmere' },
-      { id: 13, title: 'Minimalist Suede Derby Shoes', price: 4899, image: './index.htmlimg/minimalist_suede_derby.jpg', tag: 'Italian Split Suede' }
+      { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, image: './img/cashmere_cocoon_coat.jpg', tag: '700 GSM Outerwear' },
+      { id: 8, title: 'Cashmere Turtleneck Knit', price: 2999, image: './img/cashmere_turtleneck_knit.jpg', tag: 'Grade-A Cashmere' },
+      { id: 13, title: 'Minimalist Suede Derby Shoes', price: 4899, image: './img/minimalist_suede_derby.jpg', tag: 'Italian Split Suede' }
     ]
   },
   peacoat: {
     key: 'peacoat',
     title: 'The Double-Breasted Peacoat',
-    modelImg: './index.htmlimg/melton_wool_peacoat.jpg',
-    mannequinImg: './index.htmlimg/melton_wool_peacoat.jpg',
+    modelImg: './img/melton_wool_peacoat.jpg',
+    mannequinImg: './img/melton_wool_peacoat.jpg',
     modelCoords: { top: '4.2%', left: '50.0%', width: '25.5%', height: '22.5%' },
     mannequinCoords: { top: '5.5%', left: '50.0%', width: '24.0%', height: '21.5%' },
     price: 15297,
     compare_price: 20497,
     save: 5200,
     items: [
-      { id: 4, title: 'Tailored Melton Wool Peacoat', price: 4799, image: './index.htmlimg/melton_wool_peacoat.jpg', tag: 'Melton Virgin Wool' },
-      { id: 9, title: 'Italian Pleated Wool Trousers', price: 4999, image: './index.htmlimg/italian_pleated_trousers.jpg', tag: 'Pleated Tailoring' },
-      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, image: './index.htmlimg/calfskin_penny_loafers.jpg', tag: 'Polished Noir' }
+      { id: 4, title: 'Tailored Melton Wool Peacoat', price: 4799, image: './img/melton_wool_peacoat.jpg', tag: 'Melton Virgin Wool' },
+      { id: 9, title: 'Italian Pleated Wool Trousers', price: 4999, image: './img/italian_pleated_trousers.jpg', tag: 'Pleated Tailoring' },
+      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, image: './img/calfskin_penny_loafers.jpg', tag: 'Polished Noir' }
     ]
   },
   silk: {
     key: 'silk',
     title: 'The Mulberry Silk Eveningwear',
-    modelImg: './index.htmlimg/mulberry_silk_dress.jpg',
-    mannequinImg: './index.htmlimg/mulberry_silk_dress.jpg',
+    modelImg: './img/mulberry_silk_dress.jpg',
+    mannequinImg: './img/mulberry_silk_dress.jpg',
     modelCoords: { top: '4.2%', left: '50.0%', width: '25.0%', height: '22.0%' },
     mannequinCoords: { top: '5.5%', left: '50.0%', width: '24.0%', height: '21.5%' },
     price: 14197,
     compare_price: 19497,
     save: 5300,
     items: [
-      { id: 5, title: 'Mulberry Silk Eveningwear', price: 3899, image: './index.htmlimg/mulberry_silk_dress.jpg', tag: 'Pure Mulberry Silk' },
-      { id: 4, title: 'Tailored Melton Wool Peacoat', price: 4799, image: './index.htmlimg/melton_wool_peacoat.jpg', tag: 'Outerwear Layer' },
-      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, image: './index.htmlimg/calfskin_penny_loafers.jpg', tag: 'Polished Loafers' }
+      { id: 5, title: 'Mulberry Silk Eveningwear', price: 3899, image: './img/mulberry_silk_dress.jpg', tag: 'Pure Mulberry Silk' },
+      { id: 4, title: 'Tailored Melton Wool Peacoat', price: 4799, image: './img/melton_wool_peacoat.jpg', tag: 'Outerwear Layer' },
+      { id: 12, title: 'Burnished Calfskin Penny Loafers', price: 5499, image: './img/calfskin_penny_loafers.jpg', tag: 'Polished Loafers' }
     ]
   }
 };
@@ -13771,12 +13771,12 @@ let currentQvAiPairSize = '32';
 let currentQvAiPairQuantity = 1;
 
 const atelierEnsemblePairings = [
-  { match: ['hoodie', 'terry', 'sweatshirt'], pair: { id: 2, title: '14.5oz Okayama Selvedge Denim', price: 3499, image: './index.htmlimg/okayama_selvedge_denim.jpg' } },
-  { match: ['coat', 'cashmere', 'peacoat', 'outerwear'], pair: { id: 3, title: 'Cashmere Turtleneck Knit', price: 2999, image: './index.htmlimg/cashmere_turtleneck_knit.jpg' } },
-  { match: ['denim', 'jeans', 'pant', 'trouser'], pair: { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, image: './index.htmlimg/cashmere_cocoon_coat.jpg' } },
-  { match: ['blazer', 'suiting', 'jacket'], pair: { id: 5, title: 'Mulberry Silk Eveningwear', price: 3899, image: './index.htmlimg/mulberry_silk_dress.jpg' } },
-  { match: ['silk', 'blouse', 'dress'], pair: { id: 4, title: 'Tailored Virgin Wool Blazer', price: 4799, image: './index.htmlimg/wool_blazer_luxury.jpg' } },
-  { match: ['shoe', 'loafer', 'boot', 'derby'], pair: { id: 6, title: 'Italian Pleated Trousers', price: 3199, image: './index.htmlimg/italian_pleated_trousers.jpg' } }
+  { match: ['hoodie', 'terry', 'sweatshirt'], pair: { id: 2, title: '14.5oz Okayama Selvedge Denim', price: 3499, image: './img/okayama_selvedge_denim.jpg' } },
+  { match: ['coat', 'cashmere', 'peacoat', 'outerwear'], pair: { id: 3, title: 'Cashmere Turtleneck Knit', price: 2999, image: './img/cashmere_turtleneck_knit.jpg' } },
+  { match: ['denim', 'jeans', 'pant', 'trouser'], pair: { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, image: './img/cashmere_cocoon_coat.jpg' } },
+  { match: ['blazer', 'suiting', 'jacket'], pair: { id: 5, title: 'Mulberry Silk Eveningwear', price: 3899, image: './img/mulberry_silk_dress.jpg' } },
+  { match: ['silk', 'blouse', 'dress'], pair: { id: 4, title: 'Tailored Virgin Wool Blazer', price: 4799, image: './img/wool_blazer_luxury.jpg' } },
+  { match: ['shoe', 'loafer', 'boot', 'derby'], pair: { id: 6, title: 'Italian Pleated Trousers', price: 3199, image: './img/italian_pleated_trousers.jpg' } }
 ];
 
 window.changeQvQuantity = function(delta) {
@@ -13830,7 +13830,7 @@ window.openQuickView = function(prodData) {
     id: 1,
     title: 'Sculpted 500 GSM Terry Hoodie',
     price: 2899,
-    image: './index.htmlimg/sculpted_terry_hoodie.jpg',
+    image: './img/sculpted_terry_hoodie.jpg',
     vendor: 'Lumina Atelier Milano',
     description: 'Substantial 500 GSM loopback cotton jersey garments, custom garment-dyed in muted architectural tones for effortless daily poise.'
   };
@@ -13843,7 +13843,7 @@ window.openQuickView = function(prodData) {
   if (qvBtnText) qvBtnText.textContent = 'Add to Curated Bag';
 
   const qvImg = document.getElementById('qvImg');
-  if (qvImg) qvImg.src = currentQvProduct.image || currentQvProduct.img || './index.htmlimg/cashmere_cocoon_coat.jpg';
+  if (qvImg) qvImg.src = currentQvProduct.image || currentQvProduct.img || './img/cashmere_cocoon_coat.jpg';
   
   // Dynamic accurate fabric badge on main image
   const qvTag = document.getElementById('qvTag');
@@ -13911,16 +13911,16 @@ window.openQuickView = function(prodData) {
   let pairingReason = "Handpicked by Milan AI Stylist to create a harmonious silhouette with perfectly balanced textures.";
 
   if (titleLower.includes('denim') || titleLower.includes('trouser') || titleLower.includes('selvedge') || currentQvProduct.id === 2) {
-    matchedPair = { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, image: './index.htmlimg/cashmere_cocoon_coat.jpg', category: 'coat' };
+    matchedPair = { id: 1, title: 'The Atelier Cashmere Cocoon Coat', price: 4399, image: './img/cashmere_cocoon_coat.jpg', category: 'coat' };
     pairingReason = "Hand-loomed 700 GSM Mongolian Cashmere drapes effortlessly over raw 14.5oz Okayama selvedge for a sharp tailored contrast.";
   } else if (titleLower.includes('coat') || titleLower.includes('jacket') || currentQvProduct.id === 1) {
-    matchedPair = { id: 2, title: 'Vintage Okayama 14.5oz Selvedge Trousers', price: 4299, image: './index.htmlimg/okayama_selvedge_denim.jpg', category: 'denim' };
+    matchedPair = { id: 2, title: 'Vintage Okayama 14.5oz Selvedge Trousers', price: 4299, image: './img/okayama_selvedge_denim.jpg', category: 'denim' };
     pairingReason = "Rigid shuttle-loomed Japanese denim grounds the fluid double-faced cashmere cocoon silhouette.";
   } else if (titleLower.includes('hoodie') || titleLower.includes('terry') || currentQvProduct.id === 3) {
-    matchedPair = { id: 2, title: 'Vintage Okayama 14.5oz Selvedge Trousers', price: 4299, image: './index.htmlimg/okayama_selvedge_denim.jpg', category: 'denim' };
+    matchedPair = { id: 2, title: 'Vintage Okayama 14.5oz Selvedge Trousers', price: 4299, image: './img/okayama_selvedge_denim.jpg', category: 'denim' };
     pairingReason = "500 GSM loopback drape elevated with architectural tapered selvedge trousers.";
   } else {
-    matchedPair = { id: 2, title: '14.5oz Okayama Selvedge Denim', price: 3499, image: './index.htmlimg/okayama_selvedge_denim.jpg', category: 'denim' };
+    matchedPair = { id: 2, title: '14.5oz Okayama Selvedge Denim', price: 3499, image: './img/okayama_selvedge_denim.jpg', category: 'denim' };
   }
 
   currentQvAiPair = matchedPair;
@@ -13997,7 +13997,7 @@ window.consultStylistOnQv = function() {
     if (typeof openAtelierFitModal === 'function') {
       openAtelierFitModal(prod);
     } else {
-      window.location.href = './index.htmlpages/stylist';
+      window.location.href = './stylist.html';
     }
   }, 240);
 };
@@ -14264,7 +14264,7 @@ function generateStylistAiResponse(query) {
           <span class="font-serif font-bold text-xs text-stone-900 block truncate">The Atelier Cashmere Cocoon Coat</span>
           <span class="font-mono text-[10px] text-stone-500">₹4,399 · 700 GSM</span>
         </div>
-        <button type="button" onclick="addToCart({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./index.htmlimg/cashmere_cocoon_coat.jpg'}, 1)" class="px-2.5 py-1.5 bg-stone-950 text-[#e9c176] rounded-lg font-mono text-[9px] uppercase font-bold flex-shrink-0 cursor-pointer hover:bg-stone-800">
+        <button type="button" onclick="addToCart({id:1, title:'The Atelier Cashmere Cocoon Coat', price:4399, image:'./img/cashmere_cocoon_coat.jpg'}, 1)" class="px-2.5 py-1.5 bg-stone-950 text-[#e9c176] rounded-lg font-mono text-[9px] uppercase font-bold flex-shrink-0 cursor-pointer hover:bg-stone-800">
           + Add to Bag
         </button>
       </div>
@@ -14310,7 +14310,7 @@ function generateStylistAiResponse(query) {
             <h6 class="font-serif font-bold text-xs text-stone-900">Mulberry Silk Eveningwear</h6>
             <span class="font-mono text-[10px] text-[#a16207]">₹3,899 · Pearl Luster</span>
           </div>
-          <button type="button" onclick="addToCart({id:5, title:'Mulberry Silk Eveningwear', price:3899, image:'./index.htmlimg/mulberry_silk_dress.jpg'}, 1)" class="px-2 py-1 bg-stone-950 text-[#e9c176] rounded-lg font-mono text-[9px] font-bold cursor-pointer">
+          <button type="button" onclick="addToCart({id:5, title:'Mulberry Silk Eveningwear', price:3899, image:'./img/mulberry_silk_dress.jpg'}, 1)" class="px-2 py-1 bg-stone-950 text-[#e9c176] rounded-lg font-mono text-[9px] font-bold cursor-pointer">
             + Add
           </button>
         </div>
@@ -14875,7 +14875,7 @@ function renderQuickBagItems(items, subtotal) {
       var currentSizeCode = cleanSize.toUpperCase();
 
       var itemPrice = parseFloat(item.unit_price || item.price || 0);
-      var itemImg = item.image_url || item.image || './index.htmlimg/cashmere_cocoon_coat.jpg';
+      var itemImg = item.image_url || item.image || './img/cashmere_cocoon_coat.jpg';
       var itemKey = item.variant_id || item.id;
       var itemQty = parseInt(item.quantity) || 1;
       comboKeys.push(itemKey);
@@ -14985,7 +14985,7 @@ function renderQuickBagItems(items, subtotal) {
       var currentSizeCode = cleanSize.toUpperCase();
 
       var itemPrice = parseFloat(item.unit_price || item.price || 0);
-      var itemImg = item.image_url || item.image || './index.htmlimg/cashmere_cocoon_coat.jpg';
+      var itemImg = item.image_url || item.image || './img/cashmere_cocoon_coat.jpg';
       var itemKey = item.variant_id || item.id;
       var itemQty = parseInt(item.quantity) || 1;
 
@@ -15465,10 +15465,10 @@ function handleSearchQuery(q) {
     box.innerHTML = '<div class="py-6 text-center text-xs tracking-widest uppercase text-on-surface-variant">Type at least 2 characters...</div>';
     return;
   }
-  fetch('./index.htmlsearch?q=' + encodeURIComponent(q), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+  fetch('./shop.html?q=' + encodeURIComponent(q), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.text())
     .then(() => {
-      box.innerHTML = '<a href="./index.htmlsearch?q=' + encodeURIComponent(q) + '" class="p-3 bg-surface-container hover:bg-surface-container-high transition-colors rounded-DEFAULT flex justify-between items-center text-primary font-medium"><span>View curated results for "<strong>' + q + '</strong>"</span><span class="material-symbols-outlined text-sm">arrow_forward</span></a>';
+      box.innerHTML = '<a href="./shop.html?q=' + encodeURIComponent(q) + '" class="p-3 bg-surface-container hover:bg-surface-container-high transition-colors rounded-DEFAULT flex justify-between items-center text-primary font-medium"><span>View curated results for "<strong>' + q + '</strong>"</span><span class="material-symbols-outlined text-sm">arrow_forward</span></a>';
     })
     .catch(() => {});
 }
@@ -15610,7 +15610,7 @@ window.animateFlyToCart = function(sourceEl, customImgUrl, qty, onArrival) {
     imgUrl = srcImg.src;
   }
   if (!imgUrl) {
-    imgUrl = './index.htmlimg/cashmere_cocoon_coat.jpg';
+    imgUrl = './img/cashmere_cocoon_coat.jpg';
   }
 
   // 4. Create Flying Element
