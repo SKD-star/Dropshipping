@@ -1,11 +1,13 @@
 /**
- * NovaDrop PWA Service Worker
+ * Lumina PWA Service Worker
  * Provides offline caching, network-first strategy, and background sync capability.
  */
-const CACHE_NAME = 'novadrop-v1';
+const CACHE_NAME = 'lumina-v1';
 const STATIC_ASSETS = [
-  '/Dropshipping/shop',
-  '/Dropshipping/manifest.json'
+  './index.html',
+  './shop.html',
+  './collections.html',
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
