@@ -1622,7 +1622,7 @@ window.handleExpressOrderSubmit = function(e) {
   formData.append('title', title);
   formData.append('price', price);
   formData.append('image', img);
-  formData.append('csrf_novadrop', '1723d68fdf6b848f758cc5d1eceeae38');
+  formData.append('csrf_novadrop', '17cbaf022c6a52cfa4e47fc463565180');
   
   fetch('./cart.html/add', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
@@ -1641,7 +1641,7 @@ window.handleExpressOrderSubmit = function(e) {
       checkoutData.append('city', city);
       checkoutData.append('state', 'State');
       checkoutData.append('pincode', pincode);
-      checkoutData.append('csrf_novadrop', '1723d68fdf6b848f758cc5d1eceeae38');
+      checkoutData.append('csrf_novadrop', '17cbaf022c6a52cfa4e47fc463565180');
       
       return fetch('./checkout.html', { method: 'POST', body: checkoutData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
     })
@@ -1649,7 +1649,7 @@ window.handleExpressOrderSubmit = function(e) {
       // 3. Confirm order directly in-site
       var confirmData = new FormData();
       confirmData.append('payment_method', paymentMethod === 'online' ? 'cod' : 'cod');
-      confirmData.append('csrf_novadrop', '1723d68fdf6b848f758cc5d1eceeae38');
+      confirmData.append('csrf_novadrop', '17cbaf022c6a52cfa4e47fc463565180');
       
       return fetch('./checkout.html/confirm', { method: 'POST', body: confirmData });
     })
@@ -14684,7 +14684,7 @@ function getCsrfToken() {
   if (match) return decodeURIComponent(match[2]);
   var csrfInput = document.querySelector('input[name="csrf_novadrop"]');
   if (csrfInput) return csrfInput.value;
-  return '1723d68fdf6b848f758cc5d1eceeae38';
+  return '17cbaf022c6a52cfa4e47fc463565180';
 }
 
 function loadQuickBagItems() {

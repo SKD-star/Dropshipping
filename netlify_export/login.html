@@ -1622,7 +1622,7 @@ window.handleExpressOrderSubmit = function(e) {
   formData.append('title', title);
   formData.append('price', price);
   formData.append('image', img);
-  formData.append('csrf_novadrop', 'a2fffa1d3cbc4100987450f703ff1398');
+  formData.append('csrf_novadrop', '03658d99bdd04e292bd5acc55560edc8');
   
   fetch('./cart.html/add', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
@@ -1641,7 +1641,7 @@ window.handleExpressOrderSubmit = function(e) {
       checkoutData.append('city', city);
       checkoutData.append('state', 'State');
       checkoutData.append('pincode', pincode);
-      checkoutData.append('csrf_novadrop', 'a2fffa1d3cbc4100987450f703ff1398');
+      checkoutData.append('csrf_novadrop', '03658d99bdd04e292bd5acc55560edc8');
       
       return fetch('./checkout.html', { method: 'POST', body: checkoutData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
     })
@@ -1649,7 +1649,7 @@ window.handleExpressOrderSubmit = function(e) {
       // 3. Confirm order directly in-site
       var confirmData = new FormData();
       confirmData.append('payment_method', paymentMethod === 'online' ? 'cod' : 'cod');
-      confirmData.append('csrf_novadrop', 'a2fffa1d3cbc4100987450f703ff1398');
+      confirmData.append('csrf_novadrop', '03658d99bdd04e292bd5acc55560edc8');
       
       return fetch('./checkout.html/confirm', { method: 'POST', body: confirmData });
     })
@@ -1820,7 +1820,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ══════════════════════════════════════════════ -->
       <div id="pwdAuthPane" class="space-y-4 hidden">
         <form method="post" action="./login.html" class="space-y-4">
-          <input type="hidden" name="csrf_novadrop" value="a2fffa1d3cbc4100987450f703ff1398">
+          <input type="hidden" name="csrf_novadrop" value="03658d99bdd04e292bd5acc55560edc8">
           
           <div>
             <label class="font-mono text-[11px] uppercase tracking-wider text-stone-700 block mb-1 font-bold">Email Address *</label>
@@ -1929,7 +1929,7 @@ function requestCustomerOtp() {
   var fd = new FormData();
   fd.append('phone', phone);
   fd.append('email', email);
-  fd.append('csrf_novadrop', 'a2fffa1d3cbc4100987450f703ff1398');
+  fd.append('csrf_novadrop', '03658d99bdd04e292bd5acc55560edc8');
 
   fetch('./login.html/send-otp', {
     method: 'POST',
@@ -2031,7 +2031,7 @@ function submitVerifyOtp() {
   fd.append('email', activeOtpEmail);
   fd.append('otp_code', code);
   fd.append('redirect', redirectParam);
-  fd.append('csrf_novadrop', 'a2fffa1d3cbc4100987450f703ff1398');
+  fd.append('csrf_novadrop', '03658d99bdd04e292bd5acc55560edc8');
 
   fetch('./login.html/verify-otp', {
     method: 'POST',
@@ -5523,7 +5523,7 @@ function getCsrfToken() {
   if (match) return decodeURIComponent(match[2]);
   var csrfInput = document.querySelector('input[name="csrf_novadrop"]');
   if (csrfInput) return csrfInput.value;
-  return 'a2fffa1d3cbc4100987450f703ff1398';
+  return '03658d99bdd04e292bd5acc55560edc8';
 }
 
 function loadQuickBagItems() {

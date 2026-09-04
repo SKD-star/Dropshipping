@@ -1623,7 +1623,7 @@ window.handleExpressOrderSubmit = function(e) {
   formData.append('title', title);
   formData.append('price', price);
   formData.append('image', img);
-  formData.append('csrf_novadrop', '102fe88cf6e41096e6ba69b46846a451');
+  formData.append('csrf_novadrop', '722b6a05328ac505cde1a1fb27dffdb9');
   
   fetch('../cart.html/add', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
@@ -1642,7 +1642,7 @@ window.handleExpressOrderSubmit = function(e) {
       checkoutData.append('city', city);
       checkoutData.append('state', 'State');
       checkoutData.append('pincode', pincode);
-      checkoutData.append('csrf_novadrop', '102fe88cf6e41096e6ba69b46846a451');
+      checkoutData.append('csrf_novadrop', '722b6a05328ac505cde1a1fb27dffdb9');
       
       return fetch('../checkout.html', { method: 'POST', body: checkoutData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
     })
@@ -1650,7 +1650,7 @@ window.handleExpressOrderSubmit = function(e) {
       // 3. Confirm order directly in-site
       var confirmData = new FormData();
       confirmData.append('payment_method', paymentMethod === 'online' ? 'cod' : 'cod');
-      confirmData.append('csrf_novadrop', '102fe88cf6e41096e6ba69b46846a451');
+      confirmData.append('csrf_novadrop', '722b6a05328ac505cde1a1fb27dffdb9');
       
       return fetch('../checkout.html/confirm', { method: 'POST', body: confirmData });
     })
@@ -2893,7 +2893,7 @@ function handlePdpBuyNow() {
     bgFd.append('quantity', chosenQty);
     bgFd.append('size', chosenSize);
     bgFd.append('color', chosenColor);
-    bgFd.append('csrf_novadrop', '102fe88cf6e41096e6ba69b46846a451');
+    bgFd.append('csrf_novadrop', '722b6a05328ac505cde1a1fb27dffdb9');
 
     fetch('../checkout.html/buy_now_preview', {
       method: 'POST',
@@ -3163,7 +3163,7 @@ function executeBuyNowOrder() {
   fd.append('apply_loyalty_points', useLoyalty);
   fd.append('is_subscription', isSub);
   fd.append('subscription_plan_id', subPlanId);
-  fd.append(window.currentBuyNowData.csrf_name || 'csrf_novadrop', window.currentBuyNowData.csrf_hash || '102fe88cf6e41096e6ba69b46846a451');
+  fd.append(window.currentBuyNowData.csrf_name || 'csrf_novadrop', window.currentBuyNowData.csrf_hash || '722b6a05328ac505cde1a1fb27dffdb9');
 
   fetch('../checkout.html/buy_now', {
     method: 'POST',
@@ -3522,7 +3522,7 @@ function submitRestockNotify(e) {
   fd.append('product_id', prodId);
   fd.append('variant_id', varId);
   fd.append('contact', contact);
-  fd.append('csrf_novadrop', '102fe88cf6e41096e6ba69b46846a451');
+  fd.append('csrf_novadrop', '722b6a05328ac505cde1a1fb27dffdb9');
   
   fetch('http://localhost/Dropshipping/storefront/products/ajax_notify_restock', { method: 'POST', body: fd })
     .then(r => r.json())
@@ -3582,7 +3582,7 @@ function submitProductReview(e) {
   fd.append('rating', document.getElementById('reviewRatingInput') ? document.getElementById('reviewRatingInput').value : 5);
   fd.append('title', document.getElementById('reviewTitleInput') ? document.getElementById('reviewTitleInput').value : '');
   fd.append('body', document.getElementById('reviewBodyInput') ? document.getElementById('reviewBodyInput').value : '');
-  fd.append('csrf_novadrop', '102fe88cf6e41096e6ba69b46846a451');
+  fd.append('csrf_novadrop', '722b6a05328ac505cde1a1fb27dffdb9');
 
   fetch('./ajax_submit_review.html', { method: 'POST', body: fd })
     .then(r => r.json())
@@ -3623,7 +3623,7 @@ function submitProductReview(e) {
 function markReviewHelpful(reviewId, btn) {
   const fd = new FormData();
   fd.append('review_id', reviewId);
-  fd.append('csrf_novadrop', '102fe88cf6e41096e6ba69b46846a451');
+  fd.append('csrf_novadrop', '722b6a05328ac505cde1a1fb27dffdb9');
 
   fetch('./ajax_helpful.html', { method: 'POST', body: fd })
     .then(r => r.json())
@@ -7051,7 +7051,7 @@ function getCsrfToken() {
   if (match) return decodeURIComponent(match[2]);
   var csrfInput = document.querySelector('input[name="csrf_novadrop"]');
   if (csrfInput) return csrfInput.value;
-  return '102fe88cf6e41096e6ba69b46846a451';
+  return '722b6a05328ac505cde1a1fb27dffdb9';
 }
 
 function loadQuickBagItems() {

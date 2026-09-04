@@ -1622,7 +1622,7 @@ window.handleExpressOrderSubmit = function(e) {
   formData.append('title', title);
   formData.append('price', price);
   formData.append('image', img);
-  formData.append('csrf_novadrop', 'f6b2be4440abd6c3a7fbd83e0958f295');
+  formData.append('csrf_novadrop', 'd3efb87937d57e18d799291fdab1fa9d');
   
   fetch('./cart.html/add', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
@@ -1641,7 +1641,7 @@ window.handleExpressOrderSubmit = function(e) {
       checkoutData.append('city', city);
       checkoutData.append('state', 'State');
       checkoutData.append('pincode', pincode);
-      checkoutData.append('csrf_novadrop', 'f6b2be4440abd6c3a7fbd83e0958f295');
+      checkoutData.append('csrf_novadrop', 'd3efb87937d57e18d799291fdab1fa9d');
       
       return fetch('./checkout.html', { method: 'POST', body: checkoutData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
     })
@@ -1649,7 +1649,7 @@ window.handleExpressOrderSubmit = function(e) {
       // 3. Confirm order directly in-site
       var confirmData = new FormData();
       confirmData.append('payment_method', paymentMethod === 'online' ? 'cod' : 'cod');
-      confirmData.append('csrf_novadrop', 'f6b2be4440abd6c3a7fbd83e0958f295');
+      confirmData.append('csrf_novadrop', 'd3efb87937d57e18d799291fdab1fa9d');
       
       return fetch('./checkout.html/confirm', { method: 'POST', body: confirmData });
     })
@@ -1714,7 +1714,7 @@ function updateCartItem(variantId, qty) {
   var formData = new FormData();
   formData.append('variant_id', variantId);
   formData.append('quantity', qty);
-  formData.append('csrf_novadrop', 'f6b2be4440abd6c3a7fbd83e0958f295');
+  formData.append('csrf_novadrop', 'd3efb87937d57e18d799291fdab1fa9d');
 
   fetch('./cart.html/update', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
@@ -1728,7 +1728,7 @@ function updateCartItemSize(variantId, newSize) {
   var formData = new FormData();
   formData.append('variant_id', variantId);
   formData.append('size', newSize);
-  formData.append('csrf_novadrop', 'f6b2be4440abd6c3a7fbd83e0958f295');
+  formData.append('csrf_novadrop', 'd3efb87937d57e18d799291fdab1fa9d');
 
   fetch('./cart.html/update_size', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
     .then(r => r.json())
@@ -1748,7 +1748,7 @@ function removeAllPackItems() {
     var formData = new FormData();
     formData.append('variant_id', vId);
     formData.append('quantity', 0);
-    formData.append('csrf_novadrop', 'f6b2be4440abd6c3a7fbd83e0958f295');
+    formData.append('csrf_novadrop', 'd3efb87937d57e18d799291fdab1fa9d');
     return fetch('./cart.html/update', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } });
   });
 
@@ -5171,7 +5171,7 @@ function getCsrfToken() {
   if (match) return decodeURIComponent(match[2]);
   var csrfInput = document.querySelector('input[name="csrf_novadrop"]');
   if (csrfInput) return csrfInput.value;
-  return 'f6b2be4440abd6c3a7fbd83e0958f295';
+  return 'd3efb87937d57e18d799291fdab1fa9d';
 }
 
 function loadQuickBagItems() {
